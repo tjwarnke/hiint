@@ -1,7 +1,5 @@
 extends Node2D
 
-#Test
-
 var PlayerScene = preload("res://Player.tscn")  # Load Player scene
 
 @onready var floor = $Floor
