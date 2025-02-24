@@ -1,10 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://b8i6tt208qmrd"]
+[gd_scene load_steps=4 format=3 uid="uid://b8i6tt208qmrd"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_df57k"]
 [ext_resource type="PackedScene" uid="uid://bywhgwiemo0jm" path="res://Floor.tscn" id="2_668a3"]
+[ext_resource type="PackedScene" uid="uid://djnwi3jpjs3gm" path="res://start_menu.tscn" id="3_fbg8a"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_df57k")
 
 [node name="Floor" parent="." instance=ExtResource("2_668a3")]
 position = Vector2(442, 938)
+
+[node name="startMenu" parent="." instance=ExtResource("3_fbg8a")]
