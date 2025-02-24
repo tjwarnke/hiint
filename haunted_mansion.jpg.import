@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djbve0k2lc1cv"
-path="res://.godot/imported/hiint_logo.jpg-af9a0ae92da44d869688705ff08d1afd.ctex"
+uid="uid://c34a11rjxt3k7"
+path="res://.godot/imported/haunted_mansion.jpg-fd7e8d490d5da2587c2fc7ba0c3321ab.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://hiint_logo.jpg"
-dest_files=["res://.godot/imported/hiint_logo.jpg-af9a0ae92da44d869688705ff08d1afd.ctex"]
+source_file="res://haunted_mansion.jpg"
+dest_files=["res://.godot/imported/haunted_mansion.jpg-fd7e8d490d5da2587c2fc7ba0c3321ab.ctex"]
 
 [params]
 

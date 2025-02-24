@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://c05d5482q4qbm"]
+[gd_scene load_steps=4 format=3 uid="uid://c05d5482q4qbm"]
 
 [ext_resource type="Script" path="res://startMenu.gd" id="1_1ihok"]
-[ext_resource type="Texture2D" uid="uid://dcpr53i2anw3v" path="res://hiint_logo_transparent.png" id="2_lvalx"]
+[ext_resource type="Texture2D" uid="uid://ddtr00s176wej" path="res://hiint_logo_transparent.png" id="2_lvalx"]
+[ext_resource type="Texture2D" uid="uid://c34a11rjxt3k7" path="res://haunted_mansion.jpg" id="3_kdkx6"]
 
 [node name="startMenu" type="Control"]
 layout_mode = 3
@@ -34,18 +35,26 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 821.0
-offset_top = 670.0
-offset_right = 1074.0
-offset_bottom = 804.0
+offset_left = 842.0
+offset_top = 666.0
+offset_right = 1041.0
+offset_bottom = 762.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 64
 text = "QUIT
 "
 
-[node name="Node2D" type="Node2D" parent="."]
+[node name="Logo" type="Node2D" parent="."]
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D"]
+[node name="HIINT" type="Sprite2D" parent="Logo"]
 position = Vector2(1018, 278)
 texture = ExtResource("2_lvalx")
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="hauntedMansion" type="Sprite2D" parent="Background"]
+z_index = -1
+position = Vector2(961.25, 539.25)
+scale = Vector2(1.87744, 1.05811)
+texture = ExtResource("3_kdkx6")
