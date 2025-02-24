@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=3 uid="uid://bb6p1hryrq83v"]
+
+[ext_resource type="Script" path="res://startMenu.gd" id="1_1ihok"]
+[ext_resource type="Texture2D" uid="uid://cya7rud3k6r7" path="res://hiint_logo.jpg" id="2_b334g"]
+
+[node name="startMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_1ihok")
+
+[node name="StartButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 842.0
+offset_top = 562.0
+offset_right = 1041.0
+offset_bottom = 658.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 64
+text = "START
+"
+
+[node name="QuitButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 821.0
+offset_top = 670.0
+offset_right = 1074.0
+offset_bottom = 804.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 64
+text = "QUIT
+"
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D"]
+position = Vector2(1018, 278)
+texture = ExtResource("2_b334g")
