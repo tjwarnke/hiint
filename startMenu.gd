@@ -6,6 +6,7 @@ extends Control
 func _ready():
 	start_button.pressed.connect(_on_start_button_pressed)
 	quit_button.pressed.connect(_on_quit_button_pressed)
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 
 func _on_start_button_pressed():
 	get_tree().change_scene_to_file("res://World.tscn")

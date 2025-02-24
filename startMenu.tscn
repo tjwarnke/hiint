@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c05d5482q4qbm"]
+[gd_scene load_steps=6 format=3 uid="uid://svlbq44rfnia"]
 
 [ext_resource type="Script" path="res://startMenu.gd" id="1_1ihok"]
 [ext_resource type="Texture2D" uid="uid://ddtr00s176wej" path="res://hiint_logo_transparent.png" id="2_lvalx"]
