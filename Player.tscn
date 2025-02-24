@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://020ubl5bfdec" path="res://New Piskel-2.png.png" id="2_j55f7"]
 
 [node name="Player" type="CharacterBody2D"]
+scale = Vector2(1.5, 1.5)
 script = ExtResource("1_3hxb4")
 
 [node name="NewPiskel-2_png" type="Sprite2D" parent="."]

@@ -72,7 +72,7 @@ func _physics_process(delta):
 	# Move the character
 	move_and_slide()
 
-func _on_power_up_collected(power_type: Variant) -> void:
+func on_power_up_collected(power_type: Variant) -> void:
 	match power_type:
 		"Jump":
 			max_jumps += 1
