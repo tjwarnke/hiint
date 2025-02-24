@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://brtryt6u2b1ij"]
+
+[ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://dirt_texture.png" id="1_2i3cc"]
+[ext_resource type="Texture2D" uid="uid://drlrvkppfw1pq" path="res://tree_platform.png" id="2_iyxqv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kq5gh"]
+size = Vector2(2037, 2035)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p2d4g"]
+size = Vector2(372.5, 37)
+
+[node name="Level" type="Node2D"]
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(1000, 2000)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2(6.5, -10.5)
+shape = SubResource("RectangleShape2D_kq5gh")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor"]
+position = Vector2(8, -14)
+texture = ExtResource("1_2i3cc")
+
+[node name="Platform1" type="StaticBody2D" parent="."]
+position = Vector2(605, 879)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform1"]
+position = Vector2(-214.25, 18.5)
+shape = SubResource("RectangleShape2D_p2d4g")
+
+[node name="Sprite2D" type="Sprite2D" parent="Platform1"]
+position = Vector2(-214, 19)
+scale = Vector2(5.8125, 2.625)
+texture = ExtResource("2_iyxqv")

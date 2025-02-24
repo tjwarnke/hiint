@@ -6,8 +6,8 @@ var run_speed = 400
 var acceleration = 1500
 var deceleration = 1200
 var air_control = 600  # Less control in the air
-var jump_force = -400  
-var gravity = 1200
+var jump_force = -600  
+var gravity = 1400
 var jump_release_reduction = 0.5  # Reduces jump height if released early
 var inventory = []  
 
