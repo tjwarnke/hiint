@@ -10,14 +10,23 @@
 script = ExtResource("1_e4e5e")
 
 [node name="StartMenu" parent="." instance=ExtResource("5_frqyd")]
+visible = false
 
 [node name="Level" parent="." instance=ExtResource("2_q0pb3")]
 position = Vector2(-16, 9)
 
 [node name="AddJump" parent="Level" instance=ExtResource("3_c2ela")]
-position = Vector2(506, 819)
+position = Vector2(2250, 732)
 
 [node name="Spawn" parent="Level" instance=ExtResource("4_7eghp")]
-position = Vector2(100, 879)
+position = Vector2(47, 959)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(959, 539)
+limit_left = 0
+limit_right = 9000
+limit_smoothed = true
+position_smoothing_enabled = true
+drag_horizontal_enabled = true
 
 [connection signal="collected" from="Level/AddJump" to="." method="on_power_up"]

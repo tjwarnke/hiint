@@ -14,3 +14,8 @@ func _on_start_button_pressed():
 
 func _on_quit_button_pressed():
 	get_tree().quit()
+
+func _input(event):
+	# Check if Enter (Return) key is pressed
+	if event.is_action_pressed("ui_accept"):  
+		_on_start_button_pressed()  # Start the game

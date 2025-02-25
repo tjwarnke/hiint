@@ -2,13 +2,14 @@ extends CharacterBody2D
 
 # Movement variables
 var max_speed = 200
-var run_speed = 400
+var run_speed = 500
 var acceleration = 1500
 var deceleration = 1200
 var air_control = 600  # Less control in the air
-var jump_force = -600  
-var gravity = 1400
+var jump_force = -500  
+var gravity = 1500
 var jump_release_reduction = 0.5  # Reduces jump height if released early
+var sprint_jump_multiplier = 1.15  # Multiplier for carrying sprint momentum into jumps
 var inventory = []  
 
 # Velocity tracking
@@ -18,14 +19,12 @@ var target_speed = 0
 var jumps_left: int
 var item_type = ""
 
-var has_jumped = false  # Tracks if player has jumped at least once
-
 func _ready():
-	jumps_left = max_jumps
-	
+	jumps_left = max_jumps  # Ensure jumps are initialized correctly
+
 func get_input(delta):
 	var direction = Input.get_axis("left", "right")  
-	var is_running = Input.is_action_pressed("run") and is_on_floor()  # Sprint only if on the ground
+	var is_running = Input.is_action_pressed("run") and is_on_floor()  
 	var is_jumping = Input.is_action_just_pressed("jump")
 	var is_releasing_jump = Input.is_action_just_released("jump")
 	
@@ -45,13 +44,18 @@ func get_input(delta):
 	
 	# Jumping logic
 	if is_jumping and jumps_left > 0:
-		# Prevent first jump unless on ground
-		if not has_jumped and not is_on_floor():
-			return  
+		# Carry sprint momentum into the jump
+		if is_running:
+			velocity.x *= sprint_jump_multiplier  # Increase jump distance when sprinting
 
-		velocity.y = jump_force
-		jumps_left -= 1
-		has_jumped = true  # Set flag since player has jumped
+		# Apply additional horizontal momentum if jumping mid-air
+		if not is_on_floor():
+			velocity.x *= 1.1  # Slight mid-air boost for a smoother feel
+
+		# Apply jump force
+		velocity.y = jump_force  
+
+		jumps_left -= 1  # Reduce available jumps
 
 	# Reduce jump height if released early
 	if is_releasing_jump and velocity.y < 0:
@@ -60,11 +64,13 @@ func get_input(delta):
 func _physics_process(delta):
 	# Apply gravity
 	if not is_on_floor():
-		velocity.y += gravity * delta
+		if velocity.y < 0:  # Rising
+			velocity.y += gravity * 0.8 * delta  # Less gravity when moving up
+		else:  # Falling
+			velocity.y += gravity * delta  # Normal gravity when falling
 	else:
 		# Reset jumps when on the ground
-		jumps_left = max_jumps
-		has_jumped = false  # Allow jumping again from ground
+		jumps_left = max_jumps  
 
 	# Get input and apply movement
 	get_input(delta)
@@ -76,9 +82,7 @@ func on_power_up_collected(power_type: Variant) -> void:
 	match power_type:
 		"Jump":
 			max_jumps += 1
-			jumps_left = max_jumps
-			
-			
+			jumps_left = max_jumps  # Update available jumps immediately
 
 func has_item(item_name: String) -> bool:
 	return item_name in inventory
