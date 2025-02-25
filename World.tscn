@@ -13,7 +13,7 @@ script = ExtResource("1_e4e5e")
 visible = false
 
 [node name="Level" parent="." instance=ExtResource("2_q0pb3")]
-position = Vector2(-16, 9)
+position = Vector2(-2, 11)
 
 [node name="AddJump" parent="Level" instance=ExtResource("3_c2ela")]
 position = Vector2(2250, 732)
