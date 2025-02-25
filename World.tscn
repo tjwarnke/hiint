@@ -1,28 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://b8i6tt208qmrd"]
+[gd_scene load_steps=6 format=3 uid="uid://covxogx34ff4x"]
 
-[ext_resource type="Script" path="res://world.gd" id="1_df57k"]
-[ext_resource type="PackedScene" uid="uid://bywhgwiemo0jm" path="res://Floor.tscn" id="2_668a3"]
-<<<<<<< Updated upstream
-[ext_resource type="PackedScene" uid="uid://ckf6g5rpvthh" path="res://add_jump.tscn" id="3_q5bcx"]
-=======
-[ext_resource type="PackedScene" uid="uid://brtryt6u2b1ij" path="res://level.tscn" id="3_biyfl"]
->>>>>>> Stashed changes
+[ext_resource type="Script" path="res://world.gd" id="1_e4e5e"]
+[ext_resource type="PackedScene" uid="uid://brtryt6u2b1ij" path="res://level.tscn" id="2_q0pb3"]
+[ext_resource type="PackedScene" uid="uid://ckf6g5rpvthh" path="res://add_jump.tscn" id="3_c2ela"]
+[ext_resource type="PackedScene" uid="uid://bywhgwiemo0jm" path="res://Floor.tscn" id="4_7eghp"]
+[ext_resource type="PackedScene" uid="uid://svlbq44rfnia" path="res://startMenu.tscn" id="5_frqyd"]
 
 [node name="World" type="Node2D"]
-script = ExtResource("1_df57k")
+script = ExtResource("1_e4e5e")
 
-[node name="Floor" parent="." instance=ExtResource("2_668a3")]
-<<<<<<< Updated upstream
-position = Vector2(442, 938)
+[node name="StartMenu" parent="." instance=ExtResource("5_frqyd")]
 
-[node name="Area2D" parent="Floor" instance=ExtResource("3_q5bcx")]
-position = Vector2(297, -115)
-scale = Vector2(0.75, 0.75)
+[node name="Level" parent="." instance=ExtResource("2_q0pb3")]
+position = Vector2(-16, 9)
 
-[connection signal="collected" from="Floor/Area2D" to="." method="on_power_up"]
-=======
-position = Vector2(124, 965)
+[node name="AddJump" parent="Level" instance=ExtResource("3_c2ela")]
+position = Vector2(506, 819)
 
-[node name="Level" parent="." instance=ExtResource("3_biyfl")]
-position = Vector2(2, 58)
->>>>>>> Stashed changes
+[node name="Spawn" parent="Level" instance=ExtResource("4_7eghp")]
+position = Vector2(100, 879)
+
+[connection signal="collected" from="Level/AddJump" to="." method="on_power_up"]

@@ -2,6 +2,7 @@ extends Control
 
 @onready var start_button = $StartButton
 @onready var quit_button = $QuitButton
+@onready var world = get_parent()  # Reference to World node
 
 func _ready():
 	start_button.pressed.connect(_on_start_button_pressed)
@@ -9,7 +10,7 @@ func _ready():
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 
 func _on_start_button_pressed():
-	get_tree().change_scene_to_file("res://World.tscn")
+	world.start_game()  # Call the start_game function in World.gd
 
 func _on_quit_button_pressed():
 	get_tree().quit()
