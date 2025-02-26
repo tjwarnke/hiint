@@ -9,6 +9,7 @@ var player
 @onready var camera = $Camera2D  # Reference to Camera2D in the World scene
 @onready var jumpscare = $Camera2D/Jumpscare
 @onready var jumpscare_timer = $Camera2D/Timer  # Reference to Timer node
+@onready var jumpscare_noise = $Camera2D/AudioStreamPlayer
 
 func _ready():
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
@@ -22,6 +23,7 @@ func _process(delta):
 		get_tree().quit()
 	if Input.is_action_just_pressed("p"):
 		show_jumpscare()
+		jumpscare_noise.play()
 
 func show_jumpscare():
 	jumpscare.show()

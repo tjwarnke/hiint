@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://covxogx34ff4x"]
+[gd_scene load_steps=8 format=3 uid="uid://covxogx34ff4x"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_e4e5e"]
 [ext_resource type="PackedScene" uid="uid://brtryt6u2b1ij" path="res://level.tscn" id="2_q0pb3"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bywhgwiemo0jm" path="res://Floor.tscn" id="4_7eghp"]
 [ext_resource type="PackedScene" uid="uid://svlbq44rfnia" path="res://startMenu.tscn" id="5_frqyd"]
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://proxy-image-1.jpg" id="6_6uh7w"]
+[ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://scream.mp3" id="7_gd7q5"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_e4e5e")
@@ -41,7 +42,7 @@ process_callback = 0
 wait_time = 0.08
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Camera2D"]
-volume_db = 24.0
-pitch_scale = 0.84
+stream = ExtResource("7_gd7q5")
+volume_db = 5.943
 
 [connection signal="collected" from="Level/AddJump" to="." method="on_power_up"]
