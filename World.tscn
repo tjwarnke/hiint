@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://covxogx34ff4x"]
+[gd_scene load_steps=7 format=3 uid="uid://covxogx34ff4x"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_e4e5e"]
 [ext_resource type="PackedScene" uid="uid://brtryt6u2b1ij" path="res://level.tscn" id="2_q0pb3"]
 [ext_resource type="PackedScene" uid="uid://ckf6g5rpvthh" path="res://add_jump.tscn" id="3_c2ela"]
 [ext_resource type="PackedScene" uid="uid://bywhgwiemo0jm" path="res://Floor.tscn" id="4_7eghp"]
 [ext_resource type="PackedScene" uid="uid://svlbq44rfnia" path="res://startMenu.tscn" id="5_frqyd"]
+[ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://proxy-image-1.jpg" id="6_6uh7w"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_e4e5e")
@@ -13,7 +14,7 @@ script = ExtResource("1_e4e5e")
 visible = false
 
 [node name="Level" parent="." instance=ExtResource("2_q0pb3")]
-position = Vector2(-2, 11)
+position = Vector2(-3, 10)
 
 [node name="AddJump" parent="Level" instance=ExtResource("3_c2ela")]
 position = Vector2(2250, 732)
@@ -28,5 +29,19 @@ limit_right = 9000
 limit_smoothed = true
 position_smoothing_enabled = true
 drag_horizontal_enabled = true
+
+[node name="Jumpscare" type="Sprite2D" parent="Camera2D"]
+visible = false
+position = Vector2(105, -0.500022)
+scale = Vector2(8.84388, 4.12406)
+texture = ExtResource("6_6uh7w")
+
+[node name="Timer" type="Timer" parent="Camera2D"]
+process_callback = 0
+wait_time = 0.08
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Camera2D"]
+volume_db = 24.0
+pitch_scale = 0.84
 
 [connection signal="collected" from="Level/AddJump" to="." method="on_power_up"]

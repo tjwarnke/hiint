@@ -7,15 +7,30 @@ var player
 @onready var start_menu = $StartMenu  
 @onready var level = $Level
 @onready var camera = $Camera2D  # Reference to Camera2D in the World scene
+@onready var jumpscare = $Camera2D/Jumpscare
+@onready var jumpscare_timer = $Camera2D/Timer  # Reference to Timer node
 
 func _ready():
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	jumpscare.hide()
 	start_menu.show()
 	level.hide()
+	jumpscare_timer.timeout.connect(hide_jumpscare)  # Hide jumpscare after timer ends
 
 func _process(delta):
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
+	if Input.is_action_just_pressed("p"):
+		show_jumpscare()
+
+func show_jumpscare():
+	jumpscare.show()
+	jumpscare_timer.start()
+	
+
+func hide_jumpscare():
+	jumpscare.hide()
+
 
 	# Make the camera follow the player horizontally only
 	if player:
@@ -35,3 +50,4 @@ func spawn_player():
 
 func on_power_up(power_type: Variant) -> void:
 	player.on_power_up_collected(power_type)
+	
