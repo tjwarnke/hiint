@@ -21,6 +21,7 @@ var item_type = ""
 
 func _ready():
 	jumps_left = max_jumps  # Ensure jumps are initialized correctly
+	add_to_group("player")
 
 func get_input(delta):
 	var direction = Input.get_axis("left", "right")  

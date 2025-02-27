@@ -1,9 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://brtryt6u2b1ij"]
+[gd_scene load_steps=17 format=3 uid="uid://djd5otj3qrqbw"]
 
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://dirt_texture.png" id="1_2i3cc"]
 [ext_resource type="Texture2D" uid="uid://drlrvkppfw1pq" path="res://tree_platform.png" id="2_iyxqv"]
 [ext_resource type="Texture2D" uid="uid://bvhsd7cymwp35" path="res://background.png" id="3_wj778"]
 [ext_resource type="Texture2D" uid="uid://b13edcjn8gd5" path="res://stump.png" id="4_8j44n"]
+[ext_resource type="Script" path="res://stump_1.gd" id="4_oed3e"]
+[ext_resource type="Script" path="res://stump_2.gd" id="6_5suep"]
+[ext_resource type="Texture2D" uid="uid://1ljnc2k5ucfg" path="res://Mayro.png" id="7_ihoma"]
+[ext_resource type="Script" path="res://mayro.gd" id="8_j6p77"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kq5gh"]
 size = Vector2(1450, 2035.75)
@@ -16,7 +20,7 @@ a = Vector2(11114, -1033)
 b = Vector2(2160, -1027)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p2d4g"]
-size = Vector2(119, 23)
+size = Vector2(119.711, 24.6797)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_jor6c"]
 normal = Vector2(-0.999776, 0.0211717)
@@ -24,6 +28,13 @@ normal = Vector2(-0.999776, 0.0211717)
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_oe1an"]
 normal = Vector2(1, 0)
 distance = -0.0312483
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1avt2"]
+size = Vector2(278.75, 185)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ghkwx"]
+radius = 277.968
+height = 903.361
 
 [node name="Level" type="Node2D"]
 
@@ -59,7 +70,7 @@ shape = SubResource("SegmentShape2D_asshm")
 position = Vector2(249, 747)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform1"]
-position = Vector2(-129.5, 25.5)
+position = Vector2(-129.5, 27)
 shape = SubResource("RectangleShape2D_p2d4g")
 
 [node name="Sprite2D" type="Sprite2D" parent="Platform1"]
@@ -76,7 +87,7 @@ text = "<Stand-in: This is the cabin "
 position = Vector2(249, 747)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform4"]
-position = Vector2(-129.5, 25.5)
+position = Vector2(-129.5, 25.75)
 shape = SubResource("RectangleShape2D_p2d4g")
 
 [node name="Sprite2D" type="Sprite2D" parent="Platform4"]
@@ -120,7 +131,7 @@ position = Vector2(3000, 765)
 rotation = 0.0261799
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform6"]
-position = Vector2(-171.5, 25.5)
+position = Vector2(-171.856, 26.4102)
 shape = SubResource("RectangleShape2D_p2d4g")
 
 [node name="Sprite2D" type="Sprite2D" parent="Platform6"]
@@ -201,7 +212,7 @@ texture = ExtResource("3_wj778")
 
 [node name="Background2" type="Sprite2D" parent="."]
 z_index = -5
-position = Vector2(3226, 558)
+position = Vector2(3225, 556)
 scale = Vector2(1.49826, 2.36979)
 texture = ExtResource("3_wj778")
 
@@ -217,7 +228,7 @@ position = Vector2(7533, 559)
 scale = Vector2(1.49826, 2.36979)
 texture = ExtResource("3_wj778")
 
-[node name="Background5" type="Sprite2D" parent="."]
+[node name="Background5" type="Sprite2D" parent="." groups=["player"]]
 z_index = -5
 position = Vector2(9685, 558)
 scale = Vector2(1.49826, 2.36979)
@@ -241,6 +252,7 @@ shape = SubResource("WorldBoundaryShape2D_oe1an")
 [node name="Stump1" type="StaticBody2D" parent="."]
 position = Vector2(1100, 915)
 scale = Vector2(0.8, 0.8)
+script = ExtResource("4_oed3e")
 
 [node name="Stump" type="Sprite2D" parent="Stump1"]
 position = Vector2(1, 2)
@@ -251,9 +263,17 @@ texture = ExtResource("4_8j44n")
 position = Vector2(3, 4)
 polygon = PackedVector2Array(-51, -52, -42, -70, -39, -71, -33, -71, 80, -47, 81, -34, 81, 10, 84, 26, 89, 28, 89, 33, 87, 37, 89, 42, 95, 48, 95, 55, 92, 61, 81, 71, 69, 73, 55, 72, 25, 62, -11, 71, -94, 60, -90, 54, -89, 47, -88, 42, -82, 39, -82, 35, -88, 26, -88, 10, -83, 3, -77, -15)
 
+[node name="Area2D" type="Area2D" parent="Stump1"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stump1/Area2D"]
+position = Vector2(8.125, -27.5)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_1avt2")
+
 [node name="Stump2" type="StaticBody2D" parent="."]
 position = Vector2(2100.62, 915)
 scale = Vector2(0.8, 0.8)
+script = ExtResource("6_5suep")
 
 [node name="Stump" type="Sprite2D" parent="Stump2"]
 position = Vector2(1, 2)
@@ -263,3 +283,30 @@ texture = ExtResource("4_8j44n")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Stump2"]
 position = Vector2(1.72101, 6.50307)
 polygon = PackedVector2Array(-51, -52, -42, -70, -39, -71, -33, -71, 80, -47, 81, -34, 81, 10, 84, 26, 89, 28, 89, 33, 87, 37, 89, 42, 95, 48, 95, 55, 92, 61, 81, 71, 69, 73, 55, 72, 25, 62, -11, 71, -94, 60, -90, 54, -89, 47, -88, 42, -82, 39, -82, 35, -88, 26, -88, 10, -83, 3, -77, -15)
+
+[node name="Area2D" type="Area2D" parent="Stump2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stump2/Area2D"]
+position = Vector2(8.125, -27.5)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_1avt2")
+
+[node name="Mayro" type="Sprite2D" parent="."]
+position = Vector2(2868, 235)
+scale = Vector2(0.194268, 0.123981)
+texture = ExtResource("7_ihoma")
+script = ExtResource("8_j6p77")
+
+[node name="Area2D" type="Area2D" parent="Mayro"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mayro/Area2D"]
+position = Vector2(-61.7705, 8.06548)
+shape = SubResource("CapsuleShape2D_ghkwx")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="TextBoxMiddleTop" type="Label" parent="UI"]
+offset_left = 904.0
+offset_top = 139.0
+offset_right = 1363.0
+offset_bottom = 207.0
