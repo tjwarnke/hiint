@@ -14,9 +14,13 @@ script = ExtResource("1_e4e5e")
 
 [node name="StartMenu" parent="." instance=ExtResource("5_frqyd")]
 visible = false
+offset_left = 24.0
+offset_top = 3.0
+offset_right = 63.0
+offset_bottom = 65.0
 
 [node name="Level" parent="." instance=ExtResource("2_q0pb3")]
-position = Vector2(-3, 10)
+position = Vector2(28, 19)
 
 [node name="AddJump" parent="Level" instance=ExtResource("3_c2ela")]
 position = Vector2(2250, 732)
@@ -25,7 +29,7 @@ position = Vector2(2250, 732)
 position = Vector2(47, 959)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(959, 539)
+position = Vector2(985, 542)
 limit_left = 0
 limit_right = 9000
 limit_smoothed = true
@@ -46,7 +50,8 @@ wait_time = 0.08
 stream = ExtResource("7_gd7q5")
 volume_db = 5.943
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Camera2D"]
+position = Vector2(-985, -542)
 stream = ExtResource("8_sso4w")
 volume_db = 23.505
 autoplay = true

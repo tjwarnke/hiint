@@ -31,8 +31,8 @@ distance = -0.0312483
 position = Vector2(1000, 2000)
 
 [node name="Sprite2D" type="Sprite2D" parent="Floor"]
-position = Vector2(5064, 5166)
-scale = Vector2(5.90918, 6.05566)
+position = Vector2(4881, 5166.5)
+scale = Vector2(6.08789, 6.05517)
 texture = ExtResource("1_2i3cc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
@@ -195,38 +195,38 @@ texture = ExtResource("2_iyxqv")
 
 [node name="Background" type="Sprite2D" parent="."]
 z_index = -5
-position = Vector2(1079.25, 560.25)
-scale = Vector2(1.49826, 2.36979)
+position = Vector2(932.499, 547.5)
+scale = Vector2(1.70208, 2.42292)
 texture = ExtResource("3_wj778")
 
 [node name="Background2" type="Sprite2D" parent="."]
 z_index = -5
-position = Vector2(3226, 558)
-scale = Vector2(1.49826, 2.36979)
+position = Vector2(3226, 546.875)
+scale = Vector2(1.49826, 2.41615)
 texture = ExtResource("3_wj778")
 
 [node name="Background3" type="Sprite2D" parent="."]
 z_index = -5
-position = Vector2(5377, 559)
-scale = Vector2(1.49826, 2.36979)
+position = Vector2(5377, 547.375)
+scale = Vector2(1.49826, 2.41823)
 texture = ExtResource("3_wj778")
 
 [node name="Background4" type="Sprite2D" parent="."]
 z_index = -5
-position = Vector2(7533, 559)
-scale = Vector2(1.49826, 2.36979)
+position = Vector2(7533, 547.375)
+scale = Vector2(1.49826, 2.41823)
 texture = ExtResource("3_wj778")
 
 [node name="Background5" type="Sprite2D" parent="."]
 z_index = -5
-position = Vector2(9685, 558)
-scale = Vector2(1.49826, 2.36979)
+position = Vector2(9685, 546.875)
+scale = Vector2(1.49826, 2.41614)
 texture = ExtResource("3_wj778")
 
 [node name="Background6" type="Sprite2D" parent="."]
 z_index = -5
-position = Vector2(11840, 558)
-scale = Vector2(1.49826, 2.36979)
+position = Vector2(11840, 547.375)
+scale = Vector2(1.49826, 2.41406)
 texture = ExtResource("3_wj778")
 
 [node name="WorldBounds" type="StaticBody2D" parent="."]

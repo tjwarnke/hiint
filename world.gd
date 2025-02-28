@@ -24,6 +24,12 @@ func _process(delta):
 	if Input.is_action_just_pressed("p"):
 		show_jumpscare()
 		jumpscare_noise.play()
+		
+	# Make the camera follow the player horizontally only
+	if player:
+		camera.position.x = player.position.x  # Follow X movement
+		camera.position.y = camera.position.y  # Keep Y fixed
+
 
 func show_jumpscare():
 	jumpscare.show()
@@ -33,11 +39,6 @@ func show_jumpscare():
 func hide_jumpscare():
 	jumpscare.hide()
 
-
-	# Make the camera follow the player horizontally only
-	if player:
-		camera.position.x = player.position.x  # Follow X movement
-		camera.position.y = camera.position.y  # Keep Y fixed
 
 func start_game():
 	start_menu.hide()
