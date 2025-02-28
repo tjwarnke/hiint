@@ -3,6 +3,7 @@ extends Sprite2D
 @onready var area = $Area2D
 var player_nearby = false
 var dialogue_active = false
+var player = null
 
 @onready var text_box = get_node("/root/World/Level/UI/TextBoxMiddleTop")
 @onready var dialogue = get_node("/root/World/Level/UI/DialogOptions")
@@ -14,6 +15,7 @@ func _ready():
 func _on_body_entered(body):
 	if body.is_in_group("player"):
 		player_nearby = true
+		player = body
 
 func _on_body_exited(body):
 	if body.is_in_group("player"):
@@ -26,11 +28,13 @@ func dialogue_choose(response):
 	dialogue.visible = false
 	text_box.text = response
 	dialogue_active = false
+	player.set_can_move(true)
 	await get_tree().create_timer(2).timeout
 	text_box.visible = false
 
 func _input(event):
 	if event.is_action_pressed("Interact2") and player_nearby:
+		player.set_can_move(false)
 		dialogue_active = false
 		dialogue.visible = false
 		text_box.text = "It's a me Mayro!"

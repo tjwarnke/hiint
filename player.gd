@@ -10,7 +10,7 @@ var jump_force = -500
 var gravity = 1500
 var jump_release_reduction = 0.5  # Reduces jump height if released early
 var sprint_jump_multiplier = 1.15  # Multiplier for carrying sprint momentum into jumps
-var inventory = []  
+var inventory = [] 
 
 # Velocity tracking
 var target_speed = 0  
@@ -19,12 +19,18 @@ var target_speed = 0
 var jumps_left: int
 var item_type = ""
 
+var can_move = true
+
 func _ready():
 	jumps_left = max_jumps  # Ensure jumps are initialized correctly
 	add_to_group("player")
 
 func get_input(delta):
-	var direction = Input.get_axis("left", "right")  
+	if not can_move:
+		velocity = Vector2.ZERO
+		return
+	
+	var direction = Input.get_axis("left", "right")
 	var is_running = Input.is_action_pressed("run") and is_on_floor()  
 	var is_jumping = Input.is_action_just_pressed("jump")
 	var is_releasing_jump = Input.is_action_just_released("jump")
@@ -87,3 +93,6 @@ func on_power_up_collected(power_type: Variant) -> void:
 
 func has_item(item_name: String) -> bool:
 	return item_name in inventory
+	
+func set_can_move(state):
+	can_move = state
