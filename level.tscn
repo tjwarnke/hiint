@@ -299,7 +299,7 @@ script = ExtResource("8_j6p77")
 position = Vector2(-216.196, 306.499)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Mayro/Area2D"]
-position = Vector2(164.722, -274.236)
+position = Vector2(169.869, -274.236)
 shape = SubResource("CapsuleShape2D_ghkwx")
 
 [node name="UI" type="CanvasLayer" parent="."]
@@ -316,7 +316,7 @@ offset_top = 77.0
 offset_right = 1329.0
 offset_bottom = 183.0
 
-[node name="Label" type="Label" parent="."]
+[node name="Press \'e\'" type="Label" parent="."]
 offset_left = 712.0
 offset_top = 817.0
 offset_right = 989.0

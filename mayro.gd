@@ -21,9 +21,17 @@ func _on_body_exited(body):
 		await get_tree().create_timer(1.5).timeout
 		text_box.visible = false
 		dialogue.visible = false
+	
+func dialogue_choose(response):
+	dialogue.visible = false
+	text_box.text = response
+	dialogue_active = false
+	await get_tree().create_timer(2).timeout
+	text_box.visible = false
 
 func _input(event):
 	if event.is_action_pressed("Interact2") and player_nearby:
+		dialogue_active = false
 		dialogue.visible = false
 		text_box.text = "It's a me Mayro!"
 		text_box.visible = true
@@ -33,18 +41,10 @@ func _input(event):
 		dialogue.text = "1. The Green Guy? \n2. No I have not."
 		dialogue.visible = true
 		dialogue_active = true
+		
 	if dialogue_active:
 		if event.is_action_pressed("Option1"):
-			dialogue.visible = false
-			text_box.text = "Yes! He is Here!"
-			dialogue_active = false
-			await get_tree().create_timer(2).timeout
-			text_box.visible = false
+			dialogue_choose("Yes! He is Here!")
 			
 		if event.is_action_pressed("Option2"):
-			dialogue.visible = false
-			text_box.text = "Go find him!"
-			dialogue_active = false
-			await get_tree().create_timer(2).timeout
-			text_box.visible = false
-		
+			dialogue_choose("Go find him!")
