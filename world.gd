@@ -18,7 +18,7 @@ func _ready():
 	level.hide()
 	jumpscare_timer.timeout.connect(hide_jumpscare)  # Hide jumpscare after timer ends
 
-func _process(delta):
+func _process(_delta):
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
 	if Input.is_action_just_pressed("p"):

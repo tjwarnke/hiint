@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://covxogx34ff4x"]
+[gd_scene load_steps=10 format=3 uid="uid://covxogx34ff4x"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_e4e5e"]
 [ext_resource type="PackedScene" uid="uid://brtryt6u2b1ij" path="res://level.tscn" id="2_q0pb3"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://proxy-image-1.jpg" id="6_6uh7w"]
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://scream.mp3" id="7_gd7q5"]
 [ext_resource type="AudioStream" uid="uid://bc3ng53s4n7ad" path="res://GameSongIntro-MP3.mp3" id="8_sso4w"]
+[ext_resource type="Texture2D" uid="uid://cmcsl5q0m2f3d" path="res://pngimg.com - moon_PNG11.png" id="9_dl6lc"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_e4e5e")
@@ -56,5 +57,17 @@ stream = ExtResource("8_sso4w")
 volume_db = 23.505
 autoplay = true
 max_distance = 2001.0
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="Camera2D"]
+energy = 0.1
+
+[node name="Sprite2D" type="Sprite2D" parent="Camera2D/DirectionalLight2D"]
+position = Vector2(526, -545)
+scale = Vector2(0.332, 0.35)
+texture = ExtResource("9_dl6lc")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="Camera2D/DirectionalLight2D/Sprite2D"]
+light_mask = 767
+visibility_layer = 1023
 
 [connection signal="collected" from="Level/AddJump" to="." method="on_power_up"]
