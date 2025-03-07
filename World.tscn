@@ -1,21 +1,17 @@
-[gd_scene load_steps=17 format=3 uid="uid://covxogx34ff4x"]
+[gd_scene load_steps=15 format=3 uid="uid://covxogx34ff4x"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_e4e5e"]
 [ext_resource type="PackedScene" uid="uid://brtryt6u2b1ij" path="res://level.tscn" id="2_q0pb3"]
 [ext_resource type="PackedScene" uid="uid://ckf6g5rpvthh" path="res://add_jump.tscn" id="3_c2ela"]
 [ext_resource type="PackedScene" uid="uid://bywhgwiemo0jm" path="res://Floor.tscn" id="4_7eghp"]
 [ext_resource type="PackedScene" uid="uid://svlbq44rfnia" path="res://startMenu.tscn" id="5_frqyd"]
-[ext_resource type="Texture2D" uid="uid://bsov4xjeelc8h" path="res://torch thing.png" id="6_6ibjt"]
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://proxy-image-1.jpg" id="6_6uh7w"]
+[ext_resource type="PackedScene" uid="uid://cy0fd33il7830" path="res://torch.tscn" id="6_bxrrn"]
 [ext_resource type="Script" path="res://camera_2d.gd" id="6_hh1sh"]
-[ext_resource type="Script" path="res://torch.gd" id="6_l1aef"]
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://scream.mp3" id="7_gd7q5"]
-[ext_resource type="Texture2D" uid="uid://i5go4qxcreqg" path="res://torch.png" id="7_t6y60"]
+[ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://gradient.png" id="7_jublv"]
 [ext_resource type="AudioStream" uid="uid://bc3ng53s4n7ad" path="res://GameSongIntro-MP3.mp3" id="8_sso4w"]
 [ext_resource type="Texture2D" uid="uid://cmcsl5q0m2f3d" path="res://pngimg.com - moon_PNG11.png" id="9_dl6lc"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4t2xx"]
-size = Vector2(57.5, 70)
 
 [sub_resource type="Gradient" id="Gradient_82w26"]
 
@@ -46,30 +42,31 @@ position = Vector2(2250, 732)
 [node name="Spawn" parent="Level" instance=ExtResource("4_7eghp")]
 position = Vector2(47, 959)
 
-[node name="Torch" type="Area2D" parent="Level"]
-position = Vector2(200, 935)
-rotation = 0.0174533
-scale = Vector2(0.942512, 1.30793)
-collision_layer = 65535
-collision_mask = 65535
-script = ExtResource("6_l1aef")
+[node name="Torch" parent="Level" instance=ExtResource("6_bxrrn")]
+rotation = 0.0
 
-[node name="Torch" type="Sprite2D" parent="Level/Torch"]
-position = Vector2(8, -27)
-scale = Vector2(0.270833, 0.270089)
-texture = ExtResource("7_t6y60")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Torch"]
-position = Vector2(0, 1)
-shape = SubResource("RectangleShape2D_4t2xx")
-
-[node name="PointLight2D" type="PointLight2D" parent="Level/Torch"]
-scale = Vector2(1, 0.7)
-color = Color(1, 1, 0.835294, 1)
+[node name="PointLight2D2" type="PointLight2D" parent="Level/Torch"]
+position = Vector2(-0.953867, 4.94716)
+scale = Vector2(1.08683, 0.729654)
+color = Color(1, 1, 0.929412, 1)
+energy = 1.07
 blend_mode = 2
-texture = ExtResource("6_6ibjt")
-offset = Vector2(0, -25)
-texture_scale = 0.76
+texture = ExtResource("7_jublv")
+texture_scale = 0.1
+
+[node name="ReferenceRect" type="Label" parent="Level/Torch/PointLight2D2"]
+anchors_preset = -1
+anchor_left = 0.691
+anchor_top = 0.544
+anchor_right = 0.691
+anchor_bottom = 0.544
+offset_left = -275.4
+offset_top = -268.6
+offset_right = -57.4
+offset_bottom = -175.6
+text = "Press e to pick up
+Press q to set down"
+horizontal_alignment = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(985, 542)
@@ -113,9 +110,9 @@ position = Vector2(-985, -542)
 color = Color(0, 0, 0, 1)
 
 [node name="Moon" type="PointLight2D" parent="."]
-position = Vector2(1801, -2)
+position = Vector2(1867, 112)
 scale = Vector2(4.32773, 4.39062)
-energy = 0.7
+energy = 0.2
 blend_mode = 2
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_htq81")
@@ -128,5 +125,3 @@ scale = Vector2(0.0898004, 0.0881364)
 texture = ExtResource("9_dl6lc")
 
 [connection signal="collected" from="Level/AddJump" to="." method="on_power_up"]
-[connection signal="body_entered" from="Level/Torch" to="Level/Torch" method="_on_body_entered"]
-[connection signal="body_exited" from="Level/Torch" to="Level/Torch" method="_on_body_exited"]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bsov4xjeelc8h"
-path="res://.godot/imported/torch thing.png-f6ab52a22d38cc6133e2ee8df712adf8.ctex"
+uid="uid://id0fuuencf8q"
+path="res://.godot/imported/gradient.png-cb14e6b64d4a427714fd73ed39da5da6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://torch thing.png"
-dest_files=["res://.godot/imported/torch thing.png-f6ab52a22d38cc6133e2ee8df712adf8.ctex"]
+source_file="res://gradient.png"
+dest_files=["res://.godot/imported/gradient.png-cb14e6b64d4a427714fd73ed39da5da6.ctex"]
 
 [params]
 

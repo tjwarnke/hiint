@@ -53,6 +53,7 @@ func start_game():
 	start_menu.hide()
 	level.show()
 	darkness.show()
+	$Level/Torch.show()
 	moon.position.x = (camera.position.x * 0.5) + 1500  # Adjust 0.5 to change speed
 	moon.position.y = camera.position.y  - 550 # Adjust for vertical parallax
 	moon.show()

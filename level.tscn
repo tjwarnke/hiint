@@ -266,7 +266,6 @@ polygon = PackedVector2Array(-51, -52, -42, -70, -39, -71, -33, -71, 80, -47, 81
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Stump1"]
 position = Vector2(3, 4)
-scale = Vector2(1, 1)
 occluder = SubResource("OccluderPolygon2D_6wjun")
 
 [node name="Stump2" type="StaticBody2D" parent="."]
