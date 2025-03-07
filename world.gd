@@ -10,10 +10,15 @@ var player
 @onready var jumpscare = $Camera2D/Jumpscare
 @onready var jumpscare_timer = $Camera2D/Timer  # Reference to Timer node
 @onready var jumpscare_noise = $Camera2D/AudioStreamPlayer
+@onready var moon = $Moon
+@onready var darkness = $Camera2D/CanvasModulate
+
 
 func _ready():
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	jumpscare.hide()
+	moon.hide()
+	darkness.hide()
 	start_menu.show()
 	level.hide()
 	jumpscare_timer.timeout.connect(hide_jumpscare)  # Hide jumpscare after timer ends
@@ -24,11 +29,15 @@ func _process(_delta):
 	if Input.is_action_just_pressed("p"):
 		show_jumpscare()
 		jumpscare_noise.play()
+	if Input.is_action_just_pressed("set_down"):
+		player.drop_torch()
 		
-	# Make the camera follow the player horizontally only
-	if player:
-		camera.position.x = player.position.x  # Follow X movement
-		camera.position.y = camera.position.y  # Keep Y fixed
+		
+	moon.position.x = ((camera.position.x) + 1050) * 0.85
+		
+#
+		
+#
 
 
 func show_jumpscare():
@@ -43,10 +52,15 @@ func hide_jumpscare():
 func start_game():
 	start_menu.hide()
 	level.show()
+	darkness.show()
+	moon.position.x = (camera.position.x * 0.5) + 1500  # Adjust 0.5 to change speed
+	moon.position.y = camera.position.y  - 550 # Adjust for vertical parallax
+	moon.show()
 	spawn_player()
-
+	
 func spawn_player():
 	player = PlayerScene.instantiate()
+	camera.player = player
 	add_child(player)
 	var floor_top = spawn.global_position.y - (spawn.get_node("CollisionShape2D").shape.extents.y)
 	player.global_position = Vector2(spawn.global_position.x + 40, floor_top - 20)
