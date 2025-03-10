@@ -11,14 +11,8 @@ var gravity = 1500
 var fast_fall_gravity = 5000  # Stronger gravity when fast-falling
 var jump_release_reduction = 0.5  # Reduces jump height if released early
 var sprint_jump_multiplier = 1.15  # Multiplier for carrying sprint momentum into jumps
-<<<<<<< Updated upstream
-var inventory = []
-var torch = null
-
-=======
 var inventory = []  
 var torch = null
->>>>>>> Stashed changes
 
 # Velocity tracking
 var target_speed = 0  
@@ -32,15 +26,7 @@ func _ready():
 	jumps_left = max_jumps  # Ensure jumps are initialized correctly
 
 func get_input(delta):
-<<<<<<< Updated upstream
-	if not can_move:
-		velocity = Vector2.ZERO
-		return
-
-	var direction = Input.get_axis("left", "right")
-=======
 	var direction = Input.get_axis("left", "right")  
->>>>>>> Stashed changes
 	var is_running = Input.is_action_pressed("run") and is_on_floor()  
 	var is_jumping = Input.is_action_just_pressed("jump")
 	var is_releasing_jump = Input.is_action_just_released("jump")
@@ -63,11 +49,7 @@ func get_input(delta):
 	# Jumping logic
 	if is_jumping and jumps_left > 0:
 		is_fast_falling = false  # Reset fast-fall when jumping
-<<<<<<< Updated upstream
-
-=======
 		
->>>>>>> Stashed changes
 		# Carry sprint momentum into the jump
 		if is_running:
 			velocity.x *= sprint_jump_multiplier  # Increase jump distance when sprinting
@@ -89,10 +71,6 @@ func get_input(delta):
 	if is_pressing_fast_fall and velocity.y > 0 and not is_on_floor():
 		is_fast_falling = true  # Enable fast-fall mode
 
-	# Fast-falling activation
-	if is_pressing_fast_fall and velocity.y > 0 and not is_on_floor():
-		is_fast_falling = true  # Enable fast-fall mode
-
 func _physics_process(delta):
 	# Apply gravity
 	if not is_on_floor():
@@ -105,11 +83,7 @@ func _physics_process(delta):
 	else:
 		# Reset jumps and disable fast-fall when landing
 		jumps_left = max_jumps  
-<<<<<<< Updated upstream
-		is_fast_falling = false
-=======
 		is_fast_falling = false  
->>>>>>> Stashed changes
 
 	# Get input and apply movement
 	get_input(delta)
@@ -125,31 +99,17 @@ func on_power_up_collected(power_type: Variant) -> void:
 
 func has_item(item_name: String) -> bool:
 	return item_name in inventory
-<<<<<<< Updated upstream
-
-func set_can_move(state):
-	can_move = state
-
-
-func pick_up_torch(torch_instance):
-	if torch == null:
-=======
 	
 
 
 func pick_up_torch(torch_instance):
 	if torch == null: 
->>>>>>> Stashed changes
 		torch = torch_instance
 		torch.can_be_picked_up = false
 		torch.get_parent().remove_child(torch)
 		$TorchHolder.add_child(torch)
 		torch.position = Vector2.ZERO
-<<<<<<< Updated upstream
-
-=======
 		
->>>>>>> Stashed changes
 func drop_torch():
 	if torch:
 		var level = get_tree().current_scene.find_child("Level", true, false)
