@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://covxogx34ff4x"]
+[gd_scene load_steps=16 format=3 uid="uid://covxogx34ff4x"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://world.gd" id="1_e4e5e"]
 [ext_resource type="PackedScene" uid="uid://brtryt6u2b1ij" path="res://level.tscn" id="2_q0pb3"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://cxs3k4lmkyg8b" path="res://camera_2d.gd" id="6_hh1sh"]
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://scream.mp3" id="7_gd7q5"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://gradient.png" id="7_jublv"]
+[ext_resource type="PackedScene" uid="uid://bh5xpj4kmc4b5" path="res://side_dash.tscn" id="8_2o6r5"]
 [ext_resource type="AudioStream" uid="uid://bc3ng53s4n7ad" path="res://GameSongIntro-MP3.mp3" id="8_sso4w"]
 [ext_resource type="Texture2D" uid="uid://cmcsl5q0m2f3d" path="res://pngimg.com - moon_PNG11.png" id="9_dl6lc"]
 
@@ -38,6 +39,9 @@ position = Vector2(28, 19)
 
 [node name="AddJump" parent="Level" instance=ExtResource("3_c2ela")]
 position = Vector2(2250, 732)
+
+[node name="SideDash" parent="Level" instance=ExtResource("8_2o6r5")]
+position = Vector2(-2833, 47)
 
 [node name="Spawn" parent="Level" instance=ExtResource("4_7eghp")]
 position = Vector2(47, 959)
@@ -69,6 +73,7 @@ Press q to set down"
 horizontal_alignment = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
+visible = false
 position = Vector2(985, 542)
 process_callback = 0
 limit_left = 5
@@ -110,7 +115,8 @@ position = Vector2(-985, -542)
 color = Color(0, 0, 0, 1)
 
 [node name="Moon" type="PointLight2D" parent="."]
-position = Vector2(1867, 112)
+visible = false
+position = Vector2(2200, 191)
 scale = Vector2(4.32773, 4.39062)
 energy = 0.2
 blend_mode = 2
@@ -125,3 +131,4 @@ scale = Vector2(0.0898004, 0.0881364)
 texture = ExtResource("9_dl6lc")
 
 [connection signal="collected" from="Level/AddJump" to="." method="on_power_up"]
+[connection signal="collected" from="Level/SideDash" to="." method="on_power_up"]

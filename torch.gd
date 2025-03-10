@@ -6,11 +6,13 @@ var can_be_picked_up = true
 func _on_body_entered(body):
 		player_in_area = body  # Store player reference
 
-func _on_body_exited(body):
+func _on_body_exited(_body):
 		player_in_area = null  # Remove reference when player leaves
 
 func _process(delta):
-	if player_in_area and Input.is_action_just_pressed("pick_up"):
+	
+	if player_in_area and Input.is_action_just_pressed("pick_up") and can_be_picked_up:
 		$PointLight2D2.hide()
 		$PointLight2D2/ReferenceRect.hide()
 		player_in_area.pick_up_torch(self)  # Call player’s function
+		can_be_picked_up = false

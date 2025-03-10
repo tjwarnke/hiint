@@ -68,4 +68,3 @@ func spawn_player():
 
 func on_power_up(power_type: Variant) -> void:
 	player.on_power_up_collected(power_type)
-	
