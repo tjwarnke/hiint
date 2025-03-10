@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1ljnc2k5ucfg"
-path="res://.godot/imported/Mayro.png-20de25babe88eeba738e0cfbbd888bc6.ctex"
+uid="uid://cmcsl5q0m2f3d"
+path="res://.godot/imported/pngimg.com - moon_PNG11.png-7957a96816f7407f00614d3fb4f70282.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Mayro.png"
-dest_files=["res://.godot/imported/Mayro.png-20de25babe88eeba738e0cfbbd888bc6.ctex"]
+source_file="res://pngimg.com - moon_PNG11.png"
+dest_files=["res://.godot/imported/pngimg.com - moon_PNG11.png-7957a96816f7407f00614d3fb4f70282.ctex"]
 
 [params]
 
