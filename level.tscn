@@ -1,3 +1,4 @@
+[gd_scene load_steps=17 format=3 uid="uid://djd5otj3qrqbw"]
 [gd_scene load_steps=15 format=3 uid="uid://brtryt6u2b1ij"]
 
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://dirt_texture.png" id="1_2i3cc"]
@@ -5,6 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://bvhsd7cymwp35" path="res://background.png" id="3_wj778"]
 [ext_resource type="Texture2D" uid="uid://b13edcjn8gd5" path="res://stump.png" id="4_8j44n"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://RainDrop.png" id="5_0teh5"]
+[ext_resource type="Script" path="res://stump_1.gd" id="4_oed3e"]
+[ext_resource type="Script" path="res://stump_2.gd" id="6_5suep"]
+[ext_resource type="Texture2D" uid="uid://1ljnc2k5ucfg" path="res://Mayro.png" id="7_ihoma"]
+[ext_resource type="Script" path="res://mayro.gd" id="8_j6p77"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kq5gh"]
 size = Vector2(1450, 2035.75)
@@ -17,7 +22,7 @@ a = Vector2(11114, -1033)
 b = Vector2(2160, -1027)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p2d4g"]
-size = Vector2(119, 23)
+size = Vector2(119.711, 24.6797)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_jor6c"]
 normal = Vector2(-0.999776, 0.0211717)
@@ -35,6 +40,13 @@ polygon = PackedVector2Array(-1340.78, 62.5, -1337.03, 45, -1330.78, 40, -1338.2
 [sub_resource type="Gradient" id="Gradient_wfdoq"]
 offsets = PackedFloat32Array(0.146667, 0.153333, 0.986667)
 colors = PackedColorArray(0.165656, 0.165656, 0.165656, 1, 0.377919, 0.377919, 0.377919, 1, 0.310617, 0.310617, 0.310617, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1avt2"]
+size = Vector2(278.75, 185)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ghkwx"]
+radius = 370.623
+height = 903.361
 
 [node name="Level" type="Node2D"]
 
@@ -70,7 +82,7 @@ shape = SubResource("SegmentShape2D_asshm")
 position = Vector2(249, 747)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform1"]
-position = Vector2(-129.5, 25.5)
+position = Vector2(-129.5, 27)
 shape = SubResource("RectangleShape2D_p2d4g")
 
 [node name="Sprite2D" type="Sprite2D" parent="Platform1"]
@@ -87,7 +99,7 @@ text = "<Stand-in: This is the cabin "
 position = Vector2(249, 747)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform4"]
-position = Vector2(-129.5, 25.5)
+position = Vector2(-129.5, 25.75)
 shape = SubResource("RectangleShape2D_p2d4g")
 
 [node name="Sprite2D" type="Sprite2D" parent="Platform4"]
@@ -131,7 +143,7 @@ position = Vector2(3000, 765)
 rotation = 0.0261799
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform6"]
-position = Vector2(-171.5, 25.5)
+position = Vector2(-171.856, 26.4102)
 shape = SubResource("RectangleShape2D_p2d4g")
 
 [node name="Sprite2D" type="Sprite2D" parent="Platform6"]
@@ -214,6 +226,8 @@ texture = ExtResource("3_wj778")
 z_index = -5
 position = Vector2(3226, 546.875)
 scale = Vector2(1.49826, 2.41615)
+position = Vector2(3225, 556)
+scale = Vector2(1.49826, 2.36979)
 texture = ExtResource("3_wj778")
 
 [node name="Background3" type="Sprite2D" parent="."]
@@ -228,7 +242,7 @@ position = Vector2(7533, 547.375)
 scale = Vector2(1.49826, 2.41823)
 texture = ExtResource("3_wj778")
 
-[node name="Background5" type="Sprite2D" parent="."]
+[node name="Background5" type="Sprite2D" parent="." groups=["player"]]
 z_index = -5
 position = Vector2(9685, 546.875)
 scale = Vector2(1.49826, 2.41614)
@@ -254,6 +268,7 @@ shape = SubResource("WorldBoundaryShape2D_oe1an")
 [node name="Stump1" type="StaticBody2D" parent="."]
 position = Vector2(1100, 915)
 scale = Vector2(0.8, 0.8)
+script = ExtResource("4_oed3e")
 
 [node name="Stump" type="Sprite2D" parent="Stump1"]
 position = Vector2(1, 2)
@@ -268,9 +283,16 @@ polygon = PackedVector2Array(-51, -52, -42, -70, -39, -71, -33, -71, 80, -47, 81
 position = Vector2(3, 4)
 occluder = SubResource("OccluderPolygon2D_6wjun")
 
+[node name="Area2D" type="Area2D" parent="Stump1"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stump1/Area2D"]
+position = Vector2(8.125, -27.5)
+shape = SubResource("RectangleShape2D_1avt2")
+
 [node name="Stump2" type="StaticBody2D" parent="."]
 position = Vector2(2100.62, 915)
 scale = Vector2(0.8, 0.8)
+script = ExtResource("6_5suep")
 
 [node name="Stump" type="Sprite2D" parent="Stump2"]
 position = Vector2(1, 2)
@@ -302,3 +324,45 @@ angle_max = 5.0
 scale_amount_min = 0.1
 scale_amount_max = 0.5
 color_ramp = SubResource("Gradient_wfdoq")
+
+[node name="Area2D" type="Area2D" parent="Stump2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stump2/Area2D"]
+position = Vector2(8.125, -27.5)
+shape = SubResource("RectangleShape2D_1avt2")
+
+[node name="Mayro" type="Sprite2D" parent="."]
+position = Vector2(858, 908)
+scale = Vector2(0.194268, 0.123981)
+texture = ExtResource("7_ihoma")
+script = ExtResource("8_j6p77")
+
+[node name="Area2D" type="Area2D" parent="Mayro"]
+position = Vector2(-216.196, 306.499)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mayro/Area2D"]
+position = Vector2(169.869, -274.236)
+shape = SubResource("CapsuleShape2D_ghkwx")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="TextBoxMiddleTop" type="Label" parent="UI"]
+offset_left = 862.0
+offset_top = 44.0
+offset_right = 1321.0
+offset_bottom = 117.0
+
+[node name="DialogOptions" type="Label" parent="UI"]
+offset_left = 865.0
+offset_top = 77.0
+offset_right = 1329.0
+offset_bottom = 183.0
+
+[node name="Press \'e\'" type="Label" parent="."]
+offset_left = 712.0
+offset_top = 817.0
+offset_right = 989.0
+offset_bottom = 848.0
+theme_override_font_sizes/font_size = 18
+text = "Press 'e' to interact"
+horizontal_alignment = 1
