@@ -1,6 +1,8 @@
 [gd_scene load_steps=3 format=3 uid="uid://ckf6g5rpvthh"]
 
+
 [ext_resource type="Script" uid="uid://d3fckf51y7jci" path="res://add_jump.gd" id="1_dopcg"]
+
 [ext_resource type="Texture2D" uid="uid://c0lc4oy2wil5u" path="res://plus_jump.png" id="2_pjk5e"]
 
 [node name="Area2D" type="Area2D"]
