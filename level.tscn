@@ -1,10 +1,12 @@
-[gd_scene load_steps=20 format=3 uid="uid://dbgf3t0435pyx"]
+[gd_scene load_steps=23 format=3 uid="uid://dbgf3t0435pyx"]
 
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://dirt_texture.png" id="1_2i3cc"]
 [ext_resource type="Texture2D" uid="uid://drlrvkppfw1pq" path="res://tree_platform.png" id="2_iyxqv"]
 [ext_resource type="Texture2D" uid="uid://bvhsd7cymwp35" path="res://background.png" id="3_wj778"]
 [ext_resource type="Texture2D" uid="uid://b13edcjn8gd5" path="res://stump.png" id="4_8j44n"]
+[ext_resource type="Script" uid="uid://b3i3vj7jn7gou" path="res://stump_1.gd" id="4_oed3e"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://RainDrop.png" id="5_0teh5"]
+[ext_resource type="Script" uid="uid://dpwqbo5p4d0nh" path="res://stump_2.gd" id="6_5suep"]
 [ext_resource type="Texture2D" uid="uid://badubj84oq6ex" path="res://Mayro.png" id="7_ihoma"]
 [ext_resource type="Script" uid="uid://cjkogtmepj6nh" path="res://mayro.gd" id="7_n6hdu"]
 
@@ -30,6 +32,9 @@ distance = -0.0312483
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_6wjun"]
 polygon = PackedVector2Array(1154.5, 58.5, 1159.5, 41, 1167, 37.25, 1160.75, 28.5, 1162, 12.25, 1163.25, 3.5, 1202, -65.25, 1209.5, -74, 1244.5, -71.5, 1283.25, -67.75, 1310.75, -57.75, 1329.5, -49, 1330.75, -39, 1332, -2.75, 1333.25, 23.5, 1339.5, 31, 1338.25, 38.5, 1345.75, 52.25, 1342, 66, 1332, 73.5, 1319.5, 76, 1300.75, 72.25, 1277, 64.75, 1238.25, 73.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1avt2"]
+size = Vector2(278.75, 185)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_axq4i"]
 polygon = PackedVector2Array(-1340.78, 62.5, -1337.03, 45, -1330.78, 40, -1338.28, 25, -1333.28, 2.5, -1290.78, -70, -1257.03, -70, -1230.78, -66.25, -1202.03, -58.75, -1175.78, -48.75, -1168.28, -41.25, -1164.53, 30, -1158.28, 31.25, -1158.28, 37.5, -1162.03, 41.25, -1152.03, 51.25, -1153.28, 61.25, -1164.53, 73.75, -1177.03, 76.25, -1192.03, 75, -1222.03, 67.5, -1259.53, 75)
@@ -16655,6 +16660,7 @@ shape = SubResource("WorldBoundaryShape2D_oe1an")
 [node name="Stump1" type="StaticBody2D" parent="."]
 position = Vector2(1100, 915)
 scale = Vector2(0.8, 0.8)
+script = ExtResource("4_oed3e")
 
 [node name="Stump" type="Sprite2D" parent="Stump1"]
 position = Vector2(1, 2)
@@ -16670,9 +16676,16 @@ visible = false
 position = Vector2(3, 4)
 occluder = SubResource("OccluderPolygon2D_6wjun")
 
+[node name="Area2D" type="Area2D" parent="Stump1"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stump1/Area2D"]
+position = Vector2(8.125, -27.5)
+shape = SubResource("RectangleShape2D_1avt2")
+
 [node name="Stump2" type="StaticBody2D" parent="."]
 position = Vector2(2100.62, 915)
 scale = Vector2(0.8, 0.8)
+script = ExtResource("6_5suep")
 
 [node name="Stump" type="Sprite2D" parent="Stump2"]
 position = Vector2(1, 2)
@@ -16686,6 +16699,12 @@ polygon = PackedVector2Array(-51, -52, -42, -70, -39, -71, -33, -71, 80, -47, 81
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Stump2"]
 visible = false
 occluder = SubResource("OccluderPolygon2D_axq4i")
+
+[node name="Area2D" type="Area2D" parent="Stump2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stump2/Area2D"]
+position = Vector2(8.125, -27.5)
+shape = SubResource("RectangleShape2D_1avt2")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 position = Vector2(6038, -191)
