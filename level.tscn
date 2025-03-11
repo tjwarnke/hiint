@@ -16716,3 +16716,12 @@ offset_left = 865.0
 offset_top = 77.0
 offset_right = 1329.0
 offset_bottom = 183.0
+
+[node name="Press \'f\'" type="Label" parent="."]
+offset_left = 712.0
+offset_top = 817.0
+offset_right = 989.0
+offset_bottom = 848.0
+theme_override_font_sizes/font_size = 18
+text = "Press 'f' to interact"
+horizontal_alignment = 1
