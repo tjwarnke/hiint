@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://brtryt6u2b1ij"]
+[gd_scene load_steps=17 format=3 uid="uid://dbgf3t0435pyx"]
 
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://dirt_texture.png" id="1_2i3cc"]
 [ext_resource type="Texture2D" uid="uid://drlrvkppfw1pq" path="res://tree_platform.png" id="2_iyxqv"]
@@ -16684,11 +16684,11 @@ occluder = SubResource("OccluderPolygon2D_axq4i")
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 position = Vector2(6038, -191)
 amount = 50000
-texture = ExtResource("5_0teh5")
 lifetime = 20.0
 preprocess = 2.0
 fixed_fps = 24
 local_coords = true
+texture = ExtResource("5_0teh5")
 emission_shape = 3
 emission_rect_extents = Vector2(7000, 1)
 direction = Vector2(0, 1)
