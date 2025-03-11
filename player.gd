@@ -7,7 +7,7 @@ var acceleration = 1000
 var deceleration = 1000
 var air_control = 1100  # Less control in the air
 var jump_force = -700  
-var gravity = 1500
+var gravity = 1750
 var fast_fall_gravity = 5000  # Stronger gravity when fast-falling
 var jump_release_reduction = 0.5  # Reduces jump height if released early
 var inventory = []  
@@ -16,7 +16,7 @@ var dash_able = false
 var is_dashing = false
 var dash_time = 0.15  # Duration of dash
 var dash_timer = 0.0
-
+var expected_gravity = gravity
 # Velocity tracking
 var target_speed = 0  
 var is_fast_falling = false  # Track fast-fall state
@@ -37,17 +37,19 @@ func get_input(delta):
 
 	# Handle dashing
 	if dash_able and is_dashing_pressed and not is_dashing:
-		print("pushed dash")
+		#print("pushed dash")
 		is_dashing = true
 		dash_timer = dash_time
 		velocity.x = dash_speed * direction  # Dash in facing direction
+		gravity = 0
+
 
 	# If not dashing, apply normal movement
 	if not is_dashing:
 		target_speed = max_speed * direction
 		var accel = acceleration if is_on_floor() else air_control
 		var decel = deceleration if is_on_floor() else air_control / 2
-		
+		gravity = expected_gravity
 		if direction != 0:
 			velocity.x = move_toward(velocity.x, target_speed, accel * delta)
 		else:
@@ -85,6 +87,7 @@ func _physics_process(delta):
 		dash_timer -= delta
 		if dash_timer <= 0:
 			is_dashing = false  # End dash
+			
 
 	# Get input and apply movement if not dashing
 	if not is_dashing:
