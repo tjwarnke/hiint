@@ -25,10 +25,17 @@ var is_fast_falling = false  # Track fast-fall state
 var jumps_left: int
 var item_type = ""
 
+var can_move = true
+
 func _ready():
 	jumps_left = max_jumps  # Ensure jumps are initialized correctly
+	add_to_group("player")
 
 func get_input(delta):
+	if not can_move:
+		velocity = Vector2.ZERO
+		return
+	
 	var direction = Input.get_axis("left", "right")  
 	var is_jumping = Input.is_action_just_pressed("jump")
 	var is_releasing_jump = Input.is_action_just_released("jump")
@@ -125,3 +132,6 @@ func drop_torch():
 			torch.position = global_position + Vector2(10, -10)  
 			torch.can_be_picked_up = true
 			torch = null
+			
+func set_can_move(state):
+	can_move = state
