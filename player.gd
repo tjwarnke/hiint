@@ -16,7 +16,7 @@ var dash_able = false
 var is_dashing = false
 var dash_time = 0.15  # Duration of dash
 var dash_timer = 0.0
-var expected_gravity = gravity
+var expected_gravity = gravity #allows for gravity to be temporarily changed
 # Velocity tracking
 var target_speed = 0  
 var is_fast_falling = false  # Track fast-fall state
