@@ -1,16 +1,16 @@
 [gd_scene load_steps=16 format=3 uid="uid://c1ij81vluewaj"]
 
-[ext_resource type="Script" path="res://world.gd" id="1_e4e5e"]
+[ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://world.gd" id="1_e4e5e"]
 [ext_resource type="PackedScene" uid="uid://dbgf3t0435pyx" path="res://level.tscn" id="2_q0pb3"]
-[ext_resource type="PackedScene" path="res://add_jump.tscn" id="3_c2ela"]
+[ext_resource type="PackedScene" uid="uid://ckf6g5rpvthh" path="res://add_jump.tscn" id="3_c2ela"]
 [ext_resource type="PackedScene" uid="uid://bywhgwiemo0jm" path="res://Floor.tscn" id="4_7eghp"]
 [ext_resource type="PackedScene" uid="uid://svlbq44rfnia" path="res://startMenu.tscn" id="5_frqyd"]
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://proxy-image-1.jpg" id="6_6uh7w"]
-[ext_resource type="PackedScene" path="res://torch.tscn" id="6_bxrrn"]
-[ext_resource type="Script" path="res://camera_2d.gd" id="6_hh1sh"]
+[ext_resource type="PackedScene" uid="uid://cy0fd33il7830" path="res://torch.tscn" id="6_bxrrn"]
+[ext_resource type="Script" uid="uid://cxs3k4lmkyg8b" path="res://camera_2d.gd" id="6_hh1sh"]
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://scream.mp3" id="7_gd7q5"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://gradient.png" id="7_jublv"]
-[ext_resource type="PackedScene" path="res://side_dash.tscn" id="8_2o6r5"]
+[ext_resource type="PackedScene" uid="uid://bh5xpj4kmc4b5" path="res://side_dash.tscn" id="8_2o6r5"]
 [ext_resource type="AudioStream" uid="uid://bc3ng53s4n7ad" path="res://GameSongIntro-MP3.mp3" id="8_sso4w"]
 [ext_resource type="Texture2D" uid="uid://cmcsl5q0m2f3d" path="res://pngimg.com - moon_PNG11.png" id="9_dl6lc"]
 
@@ -35,24 +35,25 @@ offset_right = 63.0
 offset_bottom = 65.0
 
 [node name="Level" parent="." instance=ExtResource("2_q0pb3")]
-position = Vector2(28, 19)
+position = Vector2(10, 44)
 
 [node name="AddJump" parent="Level" instance=ExtResource("3_c2ela")]
-position = Vector2(2250, 732)
+position = Vector2(1698, 1099)
 
 [node name="SideDash" parent="Level" instance=ExtResource("8_2o6r5")]
-position = Vector2(-277, 51)
+position = Vector2(2230, 490)
+scale = Vector2(0.25, 0.25)
 
 [node name="Spawn" parent="Level" instance=ExtResource("4_7eghp")]
-position = Vector2(47, 959)
+position = Vector2(130, 932)
 
 [node name="Torch" parent="Level" instance=ExtResource("6_bxrrn")]
+position = Vector2(131, 925)
 rotation = 0.0
 
 [node name="PointLight2D2" type="PointLight2D" parent="Level/Torch"]
-position = Vector2(-0.953867, 4.94716)
+position = Vector2(-2.12198, 4.58742)
 scale = Vector2(1.08683, 0.729654)
-color = Color(1, 1, 0.929412, 1)
 energy = 1.07
 blend_mode = 2
 texture = ExtResource("7_jublv")
@@ -87,6 +88,7 @@ drag_right_margin = 0.0
 drag_bottom_margin = 0.0
 editor_draw_screen = false
 script = ExtResource("6_hh1sh")
+fixed_y = 700.0
 
 [node name="Jumpscare" type="Sprite2D" parent="Camera2D"]
 position = Vector2(105, -0.500022)
@@ -128,6 +130,15 @@ texture_scale = 50.0
 position = Vector2(-61.6952, -2.04982)
 scale = Vector2(0.0898004, 0.0881364)
 texture = ExtResource("9_dl6lc")
+
+[node name="PointLight2D2" type="PointLight2D" parent="."]
+position = Vector2(3154, 744.632)
+scale = Vector2(0.56, 1.42684)
+color = Color(1, 0.801031, 0.0157638, 1)
+energy = 1.07
+blend_mode = 2
+texture = ExtResource("7_jublv")
+texture_scale = 0.1
 
 [connection signal="collected" from="Level/AddJump" to="." method="on_power_up"]
 [connection signal="collected" from="Level/SideDash" to="." method="on_power_up"]
