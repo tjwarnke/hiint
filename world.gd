@@ -31,7 +31,8 @@ func _process(_delta):
 		show_jumpscare()
 		jumpscare_noise.play()
 	if Input.is_action_just_pressed("set_down"):
-		player.drop_torch()
+		player.drop_item()
+		
 		
 		
 	moon.position.x = ((camera.position.x) + 1050) * 0.85
@@ -70,7 +71,6 @@ func spawn_player():
 
 func on_power_up(power_type: Variant) -> void:
 	player.on_power_up_collected(power_type)
-
 
 func _on_torch_picked() -> void:
 	$TorchLight.hide()
