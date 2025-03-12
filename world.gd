@@ -17,6 +17,7 @@ var player
 func _ready():
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	jumpscare.hide()
+	$TorchLight.hide()
 	moon.hide()
 	darkness.hide()
 	start_menu.show()
@@ -54,6 +55,7 @@ func start_game():
 	level.show()
 	darkness.show()
 	$Level/Torch.show()
+	$TorchLight.show()
 	moon.position.x = (camera.position.x * 0.5) + 1500  # Adjust 0.5 to change speed
 	moon.position.y = camera.position.y  - 550 # Adjust for vertical parallax
 	moon.show()
@@ -68,3 +70,8 @@ func spawn_player():
 
 func on_power_up(power_type: Variant) -> void:
 	player.on_power_up_collected(power_type)
+
+
+func _on_torch_picked() -> void:
+	$TorchLight.hide()
+	$TorchLight/ReferenceRect.hide()
