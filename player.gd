@@ -117,23 +117,23 @@ func has_item(item_name: String) -> bool:
 
 var held_item = null
 
-func pick_up_item(item_instance):
+func pick_up_item(item):
 	if held_item == null:
-		held_item = item_instance
-		held_item.can_be_picked_up = false
-		item_instance.get_parent().remove_child(item_instance)
-		$TorchHolder.add_child(item_instance)
-		item_instance.position = Vector2.ZERO
+		held_item = item
+		item.can_be_picked_up = false
+		item.get_parent().remove_child(item)
+		$TorchHolder.add_child(item)
+		item.position = Vector2.ZERO
 
 func drop_item():
-	if held_item and is_on_floor():
+	if held_item != null:
+		held_item.can_be_picked_up = true
 		var level = get_tree().current_scene.find_child("Level", true, false)
 		if level:
 			$TorchHolder.remove_child(held_item)
 			level.add_child(held_item)
 			held_item.position = global_position + Vector2(10, -10)
-			held_item.can_be_picked_up = true
 			held_item = null
-			
+
 func set_can_move(state):
 	can_move = state
