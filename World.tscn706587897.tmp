@@ -54,10 +54,10 @@ position = Vector2(233, 916)
 rotation = 0.0
 
 [node name="8Ball" parent="Level" groups=["item"] instance=ExtResource("8_ee7l0")]
-position = Vector2(341, 939)
+position = Vector2(341, 936)
 
-[node name="Book" parent="Level" groups=["item"] instance=ExtResource("9_gn8l5")]
-position = Vector2(457, 938)
+[node name="Book" parent="Level" instance=ExtResource("9_gn8l5")]
+position = Vector2(298, -77)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 visible = false
