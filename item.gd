@@ -14,7 +14,7 @@ func _on_body_exited(_body):
 	player_in_area = null  
 
 func _process(delta):
-	if player_in_area and Input.is_action_just_pressed("pick_up"):
+	if player_in_area and Input.is_action_just_pressed("pick_up") and player_in_area.has_method("pick_up_item"):
 		if player_in_area.held_item != null:
 			return
 		if can_be_picked_up:
