@@ -115,23 +115,25 @@ func on_power_up_collected(power_type: Variant) -> void:
 func has_item(item_name: String) -> bool:
 	return item_name in inventory
 
-func pick_up_torch(torch_instance):
-	if torch == null: 
-		torch = torch_instance
-		torch.can_be_picked_up = false
-		torch.get_parent().remove_child(torch)
-		$TorchHolder.add_child(torch)
-		torch.position = Vector2.ZERO
-		
-func drop_torch():
-	if torch and is_on_floor():
+var held_item = null
+
+func pick_up_item(item):
+	if held_item == null:
+		held_item = item
+		item.can_be_picked_up = false
+		item.get_parent().remove_child(item)
+		$TorchHolder.add_child(item)
+		item.position = Vector2.ZERO
+
+func drop_item():
+	if held_item != null:
+		held_item.can_be_picked_up = true
 		var level = get_tree().current_scene.find_child("Level", true, false)
 		if level:
-			$TorchHolder.remove_child(torch)
-			level.add_child(torch)
-			torch.position = global_position + Vector2(10, -10)  
-			torch.can_be_picked_up = true
-			torch = null
-			
+			$TorchHolder.remove_child(held_item)
+			level.add_child(held_item)
+			held_item.position = global_position + Vector2(10, -10)
+			held_item = null
+
 func set_can_move(state):
 	can_move = state

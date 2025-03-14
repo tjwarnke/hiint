@@ -1,7 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://bywhgwiemo0jm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kta12"]
-size = Vector2(1.0625, 0.5)
+size = Vector2(0, 0)
 
 [node name="Node2D" type="StaticBody2D"]
 position = Vector2(196, -21)

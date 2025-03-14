@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://caw125fejkkxe"]
+
+[ext_resource type="Script" uid="uid://bh1h4s8dp03pc" path="res://item.gd" id="1_el5v3"]
+[ext_resource type="Texture2D" uid="uid://b6y0ovgi0j4yl" path="res://HIINT BOOK.png" id="2_retch"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ckbho"]
+size = Vector2(96.4524, 58.7227)
+
+[node name="Book" type="Area2D"]
+position = Vector2(192, 947)
+rotation = 0.0174533
+scale = Vector2(0.942512, 1.30793)
+collision_layer = 65535
+collision_mask = 65535
+script = ExtResource("1_el5v3")
+
+[node name="Book" type="Sprite2D" parent="."]
+position = Vector2(0.0185127, 0.764456)
+scale = Vector2(0.115259, 0.0836588)
+texture = ExtResource("2_retch")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2.09808e-05, -1.71661e-05)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_ckbho")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

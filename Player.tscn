@@ -18,3 +18,8 @@ position = Vector2(26, 8)
 rotation = 0.436332
 scale = Vector2(0.5, 0.5)
 skew = -0.0698132
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2(-0.666667, 0)
+target_position = Vector2(5.33333, 710)
+collide_with_areas = true

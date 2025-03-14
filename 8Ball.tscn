@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://dcdv6e0x7117h"]
+
+[ext_resource type="Script" uid="uid://bh1h4s8dp03pc" path="res://item.gd" id="1_7drw6"]
+[ext_resource type="Texture2D" uid="uid://dr0nbg5alwfwb" path="res://8Ball.png" id="2_7drw6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2e611"]
+radius = 57.686
+
+[node name="8Ball" type="Area2D"]
+position = Vector2(200, 935)
+rotation = 0.0174533
+scale = Vector2(0.942512, 1.30793)
+collision_layer = 65535
+collision_mask = 65535
+script = ExtResource("1_7drw6")
+
+[node name="8Ball" type="Sprite2D" parent="."]
+position = Vector2(-2.06611, 2.32002)
+scale = Vector2(1.14196, 0.930919)
+texture = ExtResource("2_7drw6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(9.53674e-07, -6.19888e-06)
+shape = SubResource("CircleShape2D_2e611")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

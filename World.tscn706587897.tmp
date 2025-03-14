@@ -11,10 +11,10 @@
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://scream.mp3" id="7_gd7q5"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://gradient.png" id="7_jublv"]
 [ext_resource type="PackedScene" uid="uid://bh5xpj4kmc4b5" path="res://side_dash.tscn" id="8_2o6r5"]
-[ext_resource type="PackedScene" path="res://8Ball.tscn" id="8_ee7l0"]
+[ext_resource type="PackedScene" uid="uid://dcdv6e0x7117h" path="res://8Ball.tscn" id="8_ee7l0"]
 [ext_resource type="AudioStream" uid="uid://bc3ng53s4n7ad" path="res://GameSongIntro-MP3.mp3" id="8_sso4w"]
 [ext_resource type="Texture2D" uid="uid://cmcsl5q0m2f3d" path="res://pngimg.com - moon_PNG11.png" id="9_dl6lc"]
-[ext_resource type="PackedScene" path="res://Book.tscn" id="9_gn8l5"]
+[ext_resource type="PackedScene" uid="uid://caw125fejkkxe" path="res://Book.tscn" id="9_gn8l5"]
 
 [sub_resource type="Gradient" id="Gradient_82w26"]
 
@@ -54,10 +54,10 @@ position = Vector2(233, 916)
 rotation = 0.0
 
 [node name="8Ball" parent="Level" groups=["item"] instance=ExtResource("8_ee7l0")]
-position = Vector2(341, 939)
+position = Vector2(341, 936)
 
-[node name="Book" parent="Level" groups=["item"] instance=ExtResource("9_gn8l5")]
-position = Vector2(457, 938)
+[node name="Book" parent="Level" instance=ExtResource("9_gn8l5")]
+position = Vector2(298, -77)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 visible = false
