@@ -17416,7 +17416,7 @@ tile_map_data = PackedByteArray("AAD0/yMAAQAGABAAAAD1/yMAAQAGABAAAAD2/yMAAQAGABA
 tile_set = SubResource("TileSet_1ainy")
 
 [node name="Book Shelf" type="Sprite2D" parent="."]
-position = Vector2(2711, 862)
+position = Vector2(508, 862)
 texture = ExtResource("9_aicyk")
 script = ExtResource("10_8b0r0")
 
