@@ -50,11 +50,11 @@ scale = Vector2(0.25, 0.25)
 position = Vector2(84, 927)
 
 [node name="Torch" parent="Level" groups=["item"] instance=ExtResource("6_bxrrn")]
-position = Vector2(233, 916)
+position = Vector2(355, 919)
 rotation = 0.0
 
 [node name="8Ball" parent="Level" groups=["item"] instance=ExtResource("8_ee7l0")]
-position = Vector2(341, 939)
+position = Vector2(671, 939)
 
 [node name="Book" parent="Level" groups=["item"] instance=ExtResource("9_gn8l5")]
 position = Vector2(731, 2927)
@@ -129,7 +129,7 @@ texture_scale = 0.1
 [node name="TorchLight" type="PointLight2D" parent="."]
 light_mask = 1023
 visibility_layer = 1023
-position = Vector2(244, 961)
+position = Vector2(366, 966)
 scale = Vector2(1.02435, 0.954336)
 energy = 1.3
 blend_mode = 2
