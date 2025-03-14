@@ -4,7 +4,7 @@ var PlayerScene = preload("res://Player.tscn")
 var player
 
 @onready var spawn = $Level/Spawn
-@onready var start_menu = $StartMenu  
+  
 @onready var level = $Level
 @onready var camera = $Camera2D  # Reference to Camera2D in the World scene
 @onready var jumpscare = $Camera2D/Jumpscare
@@ -15,13 +15,14 @@ var player
 
 
 func _ready():
-	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-	jumpscare.hide()
-	$TorchLight.hide()
-	moon.hide()
-	darkness.hide()
-	start_menu.show()
-	level.hide()
+	level.show()
+	darkness.show()
+	$Level/Torch.show()
+	$TorchLight.show()
+	moon.position.x = (camera.position.x * 0.5) + 1500  # Adjust 0.5 to change speed
+	moon.position.y = camera.position.y  - 550 # Adjust for vertical parallax
+	moon.show()
+	spawn_player()
 	jumpscare_timer.timeout.connect(hide_jumpscare)  # Hide jumpscare after timer ends
 
 func _process(_delta):
@@ -52,7 +53,8 @@ func hide_jumpscare():
 
 
 func start_game():
-	start_menu.hide()
+	var title_music = get_node("StartMenu/AudioStreamPlayer2D")
+	title_music.fade_out_music()	
 	level.show()
 	darkness.show()
 	$Level/Torch.show()

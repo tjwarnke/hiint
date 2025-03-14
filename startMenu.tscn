@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://svlbq44rfnia"]
+[gd_scene load_steps=8 format=3 uid="uid://svlbq44rfnia"]
 
-[ext_resource type="Script" uid="uid://bj6ucwqcc486p" path="res://startMenu.gd" id="1_1ihok"]
+[ext_resource type="Script" uid="uid://do8axnurbe1ey" path="res://startMenu.gd" id="1_1ihok"]
 [ext_resource type="Texture2D" uid="uid://ddtr00s176wej" path="res://hiint_logo_transparent.png" id="2_lvalx"]
 [ext_resource type="Texture2D" uid="uid://c34a11rjxt3k7" path="res://haunted_mansion.jpg" id="3_kdkx6"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://RainDrop.png" id="4_hrbhn"]
+[ext_resource type="AudioStream" uid="uid://bc3ng53s4n7ad" path="res://GameSongIntro-MP3.mp3" id="5_t72po"]
+[ext_resource type="Script" uid="uid://c8tw4m8l0kbo4" path="res://menu_music.gd" id="6_0nytm"]
 
 [sub_resource type="Gradient" id="Gradient_ew5yv"]
 offsets = PackedFloat32Array(0.146667, 0.153333, 0.986667)
@@ -81,3 +83,12 @@ initial_velocity_max = 200.0
 scale_amount_min = 0.5
 scale_amount_max = 0.75
 color_ramp = SubResource("Gradient_ew5yv")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_t72po")
+volume_db = 20.0
+autoplay = true
+script = ExtResource("6_0nytm")
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
