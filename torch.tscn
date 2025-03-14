@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cy0fd33il7830"]
 
-[ext_resource type="Script" path="res://item.gd" id="1_1e30y"]
+[ext_resource type="Script" uid="uid://bh1h4s8dp03pc" path="res://item.gd" id="1_1e30y"]
 [ext_resource type="Texture2D" uid="uid://i5go4qxcreqg" path="res://torch.png" id="2_jnefu"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://gradient.png" id="3_4xckj"]
 
