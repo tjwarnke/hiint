@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://bh5xpj4kmc4b5"]
+
+[ext_resource type="Script" uid="uid://qqf56q1f03tl" path="res://scripts/side_dash.gd" id="1_ny0hr"]
+[ext_resource type="Texture2D" uid="uid://cclbqo4clissx" path="res://assets/images/side_dash.png" id="2_7lsvu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3p3u7"]
+size = Vector2(169, 122.5)
+
+[node name="SideDash" type="Area2D"]
+script = ExtResource("1_ny0hr")
+
+[node name="SideDash" type="Sprite2D" parent="."]
+position = Vector2(1.90735e-06, -1.90735e-06)
+scale = Vector2(0.383146, 0.273648)
+texture = ExtResource("2_7lsvu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_3p3u7")
