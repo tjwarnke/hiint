@@ -32,7 +32,7 @@ func _ready():
 	schedule_creepy_sound()
 
 func apply_random_variation(sound):
-	sound.pitch_scale = rng.randf_range(0.8, 1.2)  # Slightly vary pitch
+	sound.pitch_scale = rng.randf_range(0, 2)  # Slightly vary pitch
 
 
 	# Apply random variation every few seconds

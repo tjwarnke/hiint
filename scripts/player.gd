@@ -20,6 +20,9 @@ var expected_gravity = gravity #allows for gravity to be temporarily changed
 # Velocity tracking
 var target_speed = 0  
 var is_fast_falling = false  # Track fast-fall state
+var max_dash = 0
+var num_dash = 0
+
 
 @export var max_jumps: int = 1  
 var jumps_left: int
@@ -42,13 +45,14 @@ func get_input(delta):
 	var is_pressing_fast_fall = Input.is_action_just_pressed("fast_fall")  
 	var is_dashing_pressed = Input.is_action_just_pressed("dash")  # Dash key
 
-	# Handle dashing
-	if dash_able and is_dashing_pressed and not is_dashing:
+
+	if dash_able and is_dashing_pressed and not is_dashing and num_dash > 0 and not is_on_floor():
 		#print("pushed dash")
 		is_dashing = true
 		dash_timer = dash_time
 		velocity.x = dash_speed * direction  # Dash in facing direction
 		gravity = 0
+		num_dash -= 1
 
 
 	# If not dashing, apply normal movement
@@ -88,6 +92,7 @@ func _physics_process(delta):
 	else:
 		jumps_left = max_jumps  
 		is_fast_falling = false  
+		num_dash = max_dash
 
 	# Handle dash timing
 	if is_dashing:
@@ -104,13 +109,16 @@ func _physics_process(delta):
 	move_and_slide()
 
 func on_power_up_collected(power_type: Variant) -> void:
-	print(power_type)
+
 	match power_type:
 		"Jump":
 			max_jumps += 1
 			jumps_left = max_jumps  
 		"Dash":
 			dash_able = true
+			max_dash += 1
+			num_dash = max_dash
+			
 
 func has_item(item_name: String) -> bool:
 	return item_name in inventory
@@ -126,7 +134,7 @@ func pick_up_item(item):
 		item.position = Vector2.ZERO
 
 func drop_item():
-	if held_item != null:
+	if held_item != null and is_on_floor():  # Ensure the player is on a surface
 		held_item.can_be_picked_up = true
 		var level = get_tree().current_scene.find_child("Level", true, false)
 		if level:
