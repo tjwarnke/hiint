@@ -13,7 +13,10 @@ config_version=5
 config/name="HIINT"
 run/main_scene="uid://svlbq44rfnia"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://icon.svg"
+
+[autoload]
+
+MainMusic="*res://scenes/main_music.tscn"
 
 [display]
 
