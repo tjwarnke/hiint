@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://cbgltbu076cth"]
 
-[ext_resource type="Script" uid="uid://cxxw4voa3gu27" path="res://ambient_noise.gd" id="1_thqkt"]
+[ext_resource type="Script" uid="uid://cxxw4voa3gu27" path="res://scripts/ambient_noise.gd" id="1_thqkt"]
 [ext_resource type="AudioStream" uid="uid://dyecu2l7unodx" path="res://assets/audio/rain.wav" id="2_u8tlf"]
 [ext_resource type="AudioStream" uid="uid://bdu4wkqdijrwq" path="res://assets/audio/Birds.wav" id="3_kr0th"]
 [ext_resource type="AudioStream" uid="uid://b7y85kwhdmoiw" path="res://assets/audio/wind.wav" id="4_etaa8"]

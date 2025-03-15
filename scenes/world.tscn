@@ -31,6 +31,7 @@ script = ExtResource("1_jhx03")
 position = Vector2(10, 44)
 
 [node name="AddJump" parent="Level" instance=ExtResource("3_xo05s")]
+z_index = 1
 position = Vector2(1698, 1099)
 
 [node name="SideDash" parent="Level" instance=ExtResource("4_dss4m")]
@@ -84,6 +85,7 @@ stream = ExtResource("11_kpybi")
 volume_db = 5.943
 
 [node name="CanvasModulate" type="CanvasModulate" parent="Camera2D"]
+visible = false
 position = Vector2(-985, -542)
 color = Color(0, 0, 0, 1)
 
