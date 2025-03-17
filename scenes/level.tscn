@@ -17399,9 +17399,9 @@ shape = SubResource("RectangleShape2D_1avt2")
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 z_index = 1
 position = Vector2(1550, -313)
-amount = 50000
+amount = 1000
 texture = ExtResource("5_0teh5")
-lifetime = 20.0
+lifetime = 1.6
 preprocess = 2.0
 speed_scale = 2.0
 fixed_fps = 24
