@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://dls4gqrvoyvx6"]
+
+[ext_resource type="Script" uid="uid://dj4f0hbfhj8ka" path="res://scripts/loading_screen.gd" id="1_yufpw"]
+
+[node name="LoadingScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_yufpw")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 320.0
+offset_right = 375.0
+offset_bottom = 343.0
+text = "Loading..."
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_left = 342.0
+offset_top = 237.0
+offset_right = 737.0
+offset_bottom = 291.0
