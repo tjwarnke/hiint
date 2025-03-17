@@ -1,11 +1,10 @@
-[gd_scene load_steps=29 format=4 uid="uid://dbgf3t0435pyx"]
+[gd_scene load_steps=27 format=4 uid="uid://dbgf3t0435pyx"]
 
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_2i3cc"]
 [ext_resource type="Texture2D" uid="uid://drlrvkppfw1pq" path="res://assets/images/tree_platform.png" id="2_iyxqv"]
 [ext_resource type="Texture2D" uid="uid://bvhsd7cymwp35" path="res://assets/images/background.png" id="3_wj778"]
 [ext_resource type="Texture2D" uid="uid://b13edcjn8gd5" path="res://assets/images/stump.png" id="4_8j44n"]
 [ext_resource type="Script" uid="uid://b3i3vj7jn7gou" path="res://scripts/stump_1.gd" id="4_oed3e"]
-[ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="5_0teh5"]
 [ext_resource type="Script" uid="uid://dpwqbo5p4d0nh" path="res://scripts/stump_2.gd" id="6_5suep"]
 [ext_resource type="Texture2D" uid="uid://y0dxq16y7wu0" path="res://dungeon_sidescroller-Raou/Tilesetv3.png" id="6_l0ff8"]
 [ext_resource type="Texture2D" uid="uid://badubj84oq6ex" path="res://assets/images/Mayro.png" id="7_ihoma"]
@@ -41,10 +40,6 @@ size = Vector2(278.75, 185)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_axq4i"]
 polygon = PackedVector2Array(-1340.78, 62.5, -1337.03, 45, -1330.78, 40, -1338.28, 25, -1333.28, 2.5, -1290.78, -70, -1257.03, -70, -1230.78, -66.25, -1202.03, -58.75, -1175.78, -48.75, -1168.28, -41.25, -1164.53, 30, -1158.28, 31.25, -1158.28, 37.5, -1162.03, 41.25, -1152.03, 51.25, -1153.28, 61.25, -1164.53, 73.75, -1177.03, 76.25, -1192.03, 75, -1222.03, 67.5, -1259.53, 75)
-
-[sub_resource type="Gradient" id="Gradient_wfdoq"]
-offsets = PackedFloat32Array(0.146667, 0.153333, 0.986667)
-colors = PackedColorArray(0.165656, 0.165656, 0.165656, 1, 0.377919, 0.377919, 0.377919, 1, 0.310617, 0.310617, 0.310617, 1)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_f2txt"]
 texture = ExtResource("1_2i3cc")
@@ -16436,7 +16431,9 @@ texture = ExtResource("1_2i3cc")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_y4kon"]
 texture = ExtResource("6_l0ff8")
+0:0/next_alternative_id = 2
 0:0/0 = 0
+0:0/1 = 1
 1:0/0 = 0
 2:0/0 = 0
 3:0/0 = 0
@@ -17390,27 +17387,6 @@ occluder = SubResource("OccluderPolygon2D_axq4i")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Stump2/Area2D"]
 position = Vector2(8.125, -27.5)
 shape = SubResource("RectangleShape2D_1avt2")
-
-[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
-z_index = 1
-position = Vector2(1550, -313)
-amount = 50000
-texture = ExtResource("5_0teh5")
-lifetime = 20.0
-preprocess = 2.0
-speed_scale = 2.0
-fixed_fps = 24
-local_coords = true
-emission_shape = 3
-emission_rect_extents = Vector2(2000, 1)
-direction = Vector2(0, 1)
-spread = 0.0
-initial_velocity_max = 85.86
-angle_min = -5.0
-angle_max = 5.0
-scale_amount_min = 0.1
-scale_amount_max = 0.5
-color_ramp = SubResource("Gradient_wfdoq")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 z_index = 1
