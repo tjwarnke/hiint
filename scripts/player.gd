@@ -23,7 +23,6 @@ var is_fast_falling = false  # Track fast-fall state
 var max_dash = 0
 var num_dash = 0
 
-
 @export var max_jumps: int = 1  
 var jumps_left: int
 var item_type = ""
@@ -126,12 +125,14 @@ func has_item(item_name: String) -> bool:
 var held_item = null
 
 func pick_up_item(item):
+
 	if held_item == null:
 		held_item = item
 		item.can_be_picked_up = false
 		item.get_parent().remove_child(item)
 		$TorchHolder.add_child(item)
 		item.position = Vector2.ZERO
+		
 
 func drop_item():
 	if held_item != null and is_on_floor():  # Ensure the player is on a surface

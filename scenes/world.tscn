@@ -6,25 +6,20 @@
 [ext_resource type="PackedScene" uid="uid://bh5xpj4kmc4b5" path="res://scenes/side_dash.tscn" id="4_dss4m"]
 [ext_resource type="PackedScene" uid="uid://bywhgwiemo0jm" path="res://scenes/Floor.tscn" id="5_7t5mc"]
 [ext_resource type="PackedScene" uid="uid://cy0fd33il7830" path="res://scenes/torch.tscn" id="6_lakw3"]
+[ext_resource type="Script" uid="uid://cvx006n8smlea" path="res://scenes/torch.gd" id="7_dss4m"]
 [ext_resource type="PackedScene" uid="uid://dcdv6e0x7117h" path="res://scenes/8Ball.tscn" id="7_pm21f"]
 [ext_resource type="PackedScene" uid="uid://caw125fejkkxe" path="res://scenes/Book.tscn" id="8_2lf6f"]
 [ext_resource type="Script" uid="uid://cxs3k4lmkyg8b" path="res://scripts/camera_2d.gd" id="9_7iits"]
+[ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="10_dss4m"]
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://assets/images/proxy-image-1.jpg" id="10_oo54l"]
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://assets/audio/scream.mp3" id="11_kpybi"]
-[ext_resource type="Texture2D" uid="uid://cmcsl5q0m2f3d" path="res://assets/images/pngimg.com - moon_PNG11.png" id="12_ctatt"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="13_xgqkh"]
 [ext_resource type="PackedScene" uid="uid://4lpqlm3tspu3" path="res://scenes/dining_room.tscn" id="14_o8fc1"]
 [ext_resource type="PackedScene" uid="uid://dhh62wmxavnow" path="res://scenes/Library.tscn" id="15_xo05s"]
 
-[sub_resource type="Gradient" id="Gradient_82w26"]
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_htq81"]
-gradient = SubResource("Gradient_82w26")
-width = 131
-height = 94
-use_hdr = true
-fill_from = Vector2(0, 1)
-fill_to = Vector2(0, 0)
+[sub_resource type="Curve" id="Curve_7t5mc"]
+_data = [Vector2(0.00729926, 0.54065), 0.0, 0.0, 0, 0, Vector2(0.313869, 0.833333), 0.0, 0.0, 0, 0, Vector2(0.726277, 0.731707), 0.0, 0.0, 0, 0, Vector2(0.981752, 0.678862), 0.0, 0.0, 0, 0]
+point_count = 4
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_jhx03")
@@ -44,9 +39,10 @@ scale = Vector2(0.25, 0.25)
 position = Vector2(84, 965)
 
 [node name="Torch" parent="Level" groups=["item"] instance=ExtResource("6_lakw3")]
-z_index = 1
+z_index = 2
 position = Vector2(246, 914)
 rotation = 0.0
+script = ExtResource("7_dss4m")
 
 [node name="8Ball" parent="Level" groups=["item"] instance=ExtResource("7_pm21f")]
 z_index = 1
@@ -55,6 +51,22 @@ position = Vector2(671, 939)
 [node name="Book" parent="Level" groups=["item"] instance=ExtResource("8_2lf6f")]
 z_index = 1
 position = Vector2(731, 2927)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Level"]
+position = Vector2(1506, -251)
+amount = 5000
+texture = ExtResource("10_dss4m")
+lifetime = 5.0
+preprocess = 5.0
+fixed_fps = 24
+emission_shape = 3
+emission_rect_extents = Vector2(2000, 1)
+angle_min = -1.0
+angle_max = 1.0
+scale_amount_min = 0.2
+scale_amount_max = 0.8
+scale_amount_curve = SubResource("Curve_7t5mc")
+color = Color(0.442911, 0.442911, 0.442911, 1)
 
 [node name="DiningRoom" parent="." instance=ExtResource("14_o8fc1")]
 position = Vector2(3347, -20)
@@ -93,23 +105,7 @@ volume_db = 5.943
 [node name="CanvasModulate" type="CanvasModulate" parent="Camera2D"]
 visible = false
 position = Vector2(-985, -542)
-color = Color(0, 0, 0, 1)
-
-[node name="Moon" type="PointLight2D" parent="."]
-visible = false
-position = Vector2(2200, 191)
-scale = Vector2(4.32773, 4.39062)
-energy = 0.2
-blend_mode = 2
-shadow_enabled = true
-texture = SubResource("GradientTexture2D_htq81")
-offset = Vector2(0, 77.56)
-texture_scale = 50.0
-
-[node name="Sprite2D" type="Sprite2D" parent="Moon"]
-position = Vector2(-61.6952, -2.04982)
-scale = Vector2(0.0898004, 0.0881364)
-texture = ExtResource("12_ctatt")
+color = Color(0.0980985, 0.0980985, 0.0980985, 1)
 
 [node name="PointLight2D2" type="PointLight2D" parent="."]
 position = Vector2(3154, 744.632)
@@ -120,34 +116,10 @@ blend_mode = 2
 texture = ExtResource("13_xgqkh")
 texture_scale = 0.1
 
-[node name="TorchLight" type="PointLight2D" parent="."]
-light_mask = 1023
-visibility_layer = 1023
-z_index = 1
-position = Vector2(258, 959)
-scale = Vector2(1.02435, 0.954336)
-energy = 1.3
-blend_mode = 2
-texture = ExtResource("13_xgqkh")
-texture_scale = 0.1
-
-[node name="ReferenceRect" type="Label" parent="TorchLight"]
-anchors_preset = -1
-anchor_left = 0.691
-anchor_top = 0.544
-anchor_right = 0.691
-anchor_bottom = 0.544
-offset_left = -377.928
-offset_top = -352.773
-offset_right = -159.928
-offset_bottom = -259.773
-text = "Press e to pick up
-Press q to set down"
-horizontal_alignment = 1
-
 [node name="Node2D" parent="." instance=ExtResource("15_xo05s")]
 position = Vector2(8577, 350)
 scale = Vector2(0.49, 0.49)
 
 [connection signal="collected" from="Level/AddJump" to="." method="on_power_up"]
 [connection signal="collected" from="Level/SideDash" to="." method="on_power_up"]
+[connection signal="torch_picked" from="Level/Torch" to="." method="_on_torch_picked"]
