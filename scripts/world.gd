@@ -1,8 +1,10 @@
 extends Node2D
 
+# Load player scene
 var PlayerScene = preload("res://scenes/Player.tscn")  
 var player
 
+# Nodes
 @onready var spawn = $Level/Spawn
 @onready var level = $Level
 @onready var camera = $Camera2D  
@@ -11,15 +13,14 @@ var player
 @onready var jumpscare_noise = $Camera2D/AudioStreamPlayer
 @onready var moon = $Moon
 @onready var darkness = $Camera2D/CanvasModulate
-var AmbientNoiseScene = preload("res://scenes/ambient_noise.tscn")  
-var ambient_noise  
 @onready var dining_wall = $DiningRoom/Wall
 @onready var dining_threshold = $DiningRoom/dining_bounds
-@onready var dining_camera_target = $DiningRoom/CameraTarget  
+@onready var ambient_noise = preload("res://scenes/ambient_noise.tscn").instantiate()
 
 var moving_player = false
 var move_distance = 500
 var move_speed = 100.0
+var camera_smooth_speed = 0.0001  # Adjust this value for smoother/slower movement
 
 func _ready():
 	level.show()
@@ -29,11 +30,16 @@ func _ready():
 	jumpscare_timer.timeout.connect(hide_jumpscare)  
 	MainMusic.fade_out_music()
 
-	ambient_noise = AmbientNoiseScene.instantiate()
+	# Add ambient noise
 	add_child(ambient_noise)
-	dining_threshold.body_entered.connect(_on_dining_threshold_entered)
 
-func _process(_delta):
+	# Connect dining threshold trigger
+	if dining_threshold:
+		dining_threshold.body_entered.connect(_on_dining_threshold_entered)
+	else:
+		print("Error: dining_threshold is missing!")
+
+func _process(delta):
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
 	if Input.is_action_just_pressed("p"):
@@ -42,15 +48,16 @@ func _process(_delta):
 	if Input.is_action_just_pressed("set_down"):
 		player.drop_item()
 
-
-
 	if moving_player:
-		player.position.x += move_speed * _delta
-		move_distance -= move_speed * _delta
+		player.position.x += move_speed * delta
+		move_distance -= move_speed * delta
 		if move_distance <= 0:
 			moving_player = false  
 			player.set_can_move(true)
-			drop_wall()  # Drop the wall only after player finishes moving
+			drop_wall()
+
+	# Smoothly move the camera towards the player's new position
+	camera.position = camera.position.lerp(player.position, camera_smooth_speed * delta)
 
 func show_jumpscare():
 	jumpscare.show()
@@ -61,7 +68,7 @@ func hide_jumpscare():
 
 func start_game():
 	var title_music = get_node("StartMenu/AudioStreamPlayer2D")
-	title_music.fade_out_music()	
+	title_music.fade_out_music()  
 	level.show()
 	darkness.show()
 	$Level/Torch.show()
@@ -75,6 +82,7 @@ func spawn_player():
 	player = PlayerScene.instantiate()
 	camera.player = player
 	add_child(player)
+
 	var floor_top = spawn.global_position.y - (spawn.get_node("CollisionShape2D").shape.extents.y)
 	player.global_position = Vector2(spawn.global_position.x + 40, floor_top - 20)
 
@@ -83,35 +91,32 @@ func on_power_up(power_type: Variant) -> void:
 
 func _on_dining_threshold_entered(body):
 	if body == player:
-		await wait_until_grounded()  # Wait for player to be on ground
-		move_camera_to_target()
+		await wait_until_grounded()  # Ensure player is stable before continuing
+		update_camera_bounds()  # Update camera dynamically instead of moving
 		move_player_slowly()
 
 func wait_until_grounded():
 	while not player.is_on_floor():  
 		await get_tree().process_frame  
 
-func move_camera_to_target():
-	var tween = create_tween()
-	tween.tween_property(camera, "position", dining_camera_target.global_position, 1.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	await tween.finished  # Wait for the camera movement to complete
+func update_camera_bounds():
+	if not dining_threshold:
+		print("Error: dining_threshold is null!")
+		return
 
-	# Set new camera constraints after reaching the target
-	adjust_camera_bounds()
-
-func adjust_camera_bounds():
-	# Set left camera limit to the dining threshold position
+	# Lock camera's left side at dining_threshold's position
 	camera.limit_left = dining_threshold.global_position.x  
 
-	# Unlock horizontal movement (remove right limit)
-	camera.limit_right = 999999  # Effectively unlocks movement  
+	# Effectively remove limits in all other directions
+	camera.limit_right = 999999  # Allow movement to the right indefinitely
+	camera.limit_top = -999999   # No limit upwards
+	camera.limit_bottom = 999999  # No limit downwards
 
-	# Unlock vertical movement but set default Y offset
-	camera.offset = Vector2(0, -100)  
-	camera.limit_top = -999999  # No top limit  
-	camera.limit_bottom = 999999  # No bottom limit 
-	
-	
+	# Optional: Adjust camera offset if necessary
+	camera.offset = Vector2(0, -100)
+
+	print("Camera bounds updated:", camera.limit_left, camera.limit_right, camera.limit_top, camera.limit_bottom)
+
 func move_player_slowly():
 	player.set_can_move(false)
 	moving_player = true

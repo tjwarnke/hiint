@@ -17205,6 +17205,8 @@ sources/1 = SubResource("TileSetAtlasSource_f61xt")
 sources/2 = SubResource("TileSetAtlasSource_fdbqf")
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_dytne"]
+rough = true
+bounce = 0.5
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cli76"]
 size = Vector2(200, 2000)
