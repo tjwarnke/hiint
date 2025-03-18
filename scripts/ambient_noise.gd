@@ -5,6 +5,8 @@ extends Node
 
 var random_sounds = []
 var rng = RandomNumberGenerator.new()
+var delay = rng.randf_range(min_creepy_interval, max_creepy_interval)
+var timer = Timer.new()
 
 func _ready():
 	# Get references to sounds
@@ -35,8 +37,6 @@ func apply_random_variation(sound):
 	sound.pitch_scale = rng.randf_range(0, 2)  # Slightly vary pitch
 
 
-	# Apply random variation every few seconds
-	var timer = Timer.new()
 	timer.wait_time = rng.randf_range(3, 7)  # Change variation every 3-7 seconds
 	timer.autostart = true
 	timer.one_shot = false
@@ -46,8 +46,6 @@ func apply_random_variation(sound):
 	add_child(timer)
 
 func schedule_creepy_sound():
-	var delay = rng.randf_range(min_creepy_interval, max_creepy_interval)
-	var timer = Timer.new()
 	timer.wait_time = delay
 	timer.one_shot = true
 	timer.timeout.connect(func():

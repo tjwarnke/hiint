@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=18 format=3 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://dbgf3t0435pyx" path="res://scenes/level.tscn" id="2_o8fc1"]
@@ -13,6 +13,8 @@
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://assets/audio/scream.mp3" id="11_kpybi"]
 [ext_resource type="Texture2D" uid="uid://cmcsl5q0m2f3d" path="res://assets/images/pngimg.com - moon_PNG11.png" id="12_ctatt"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="13_xgqkh"]
+[ext_resource type="PackedScene" uid="uid://4lpqlm3tspu3" path="res://scenes/dining_room.tscn" id="14_o8fc1"]
+[ext_resource type="PackedScene" uid="uid://dhh62wmxavnow" path="res://scenes/Library.tscn" id="15_xo05s"]
 
 [sub_resource type="Gradient" id="Gradient_82w26"]
 
@@ -54,11 +56,15 @@ position = Vector2(671, 939)
 z_index = 1
 position = Vector2(731, 2927)
 
+[node name="DiningRoom" parent="." instance=ExtResource("14_o8fc1")]
+position = Vector2(3347, -20)
+scale = Vector2(0.5, 0.5)
+
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(985, 542)
 process_callback = 0
 limit_left = 5
-limit_right = 9000
+limit_right = 100000
 limit_smoothed = true
 position_smoothing_enabled = true
 drag_horizontal_enabled = true
@@ -138,6 +144,10 @@ offset_bottom = -259.773
 text = "Press e to pick up
 Press q to set down"
 horizontal_alignment = 1
+
+[node name="Node2D" parent="." instance=ExtResource("15_xo05s")]
+position = Vector2(8577, 350)
+scale = Vector2(0.49, 0.49)
 
 [connection signal="collected" from="Level/AddJump" to="." method="on_power_up"]
 [connection signal="collected" from="Level/SideDash" to="." method="on_power_up"]
