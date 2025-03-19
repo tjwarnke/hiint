@@ -16,7 +16,6 @@ var player
 @onready var dining_wall = $DiningRoom/Wall
 @onready var dining_threshold = $DiningRoom/dining_bounds
 @onready var ambient_noise = preload("res://scenes/ambient_noise.tscn").instantiate()
-
 var moving_player = false
 var move_distance = 500
 var move_speed = 100.0
@@ -28,7 +27,7 @@ func _ready():
 	$Level/Torch.show()
 	spawn_player()
 	jumpscare_timer.timeout.connect(hide_jumpscare)  
-	MainMusic.fade_out_music()
+	MainMusic.fade_out(MainMusic)
 
 	# Add ambient noise
 	add_child(ambient_noise)
@@ -94,6 +93,10 @@ func _on_dining_threshold_entered(body):
 		await wait_until_grounded()  # Ensure player is stable before continuing
 		update_camera_bounds()  # Update camera dynamically instead of moving
 		move_player_slowly()
+		ambient_noise.on_dining()
+		darkness.set_color(Color("ffeea4"))
+		
+		
 
 func wait_until_grounded():
 	while not player.is_on_floor():  
