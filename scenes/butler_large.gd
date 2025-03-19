@@ -1,0 +1,38 @@
+extends Sprite2D
+
+@onready var area = $Area2D
+var player_nearby = false
+var dialogue_active = false
+var player = null
+var cut_scene_seen = false
+
+@onready var text_box = get_node("/root/World/Level/UI/TextBoxMiddleTop")
+@onready var text_box2 = get_node("/root/World/Level/UI/TextBoxMiddleTop2")
+@onready var dialogue = get_node("/root/World/Level/UI/DialogOptions")
+
+func _ready():
+	area.body_entered.connect(_on_body_entered)
+	area.body_exited.connect(_on_body_exited)
+	
+func _on_body_entered(body):
+	if body.is_in_group("player"):
+		if cut_scene_seen == false:
+			player_nearby = true
+			text_box.visible = true
+			text_box.text = "Welcome to the Kusnetzov Mansion!"
+			await get_tree().create_timer(2).timeout
+			text_box2.visible = true
+			text_box2.text = "Take a seat at the table!"
+			await get_tree().create_timer(2).timeout
+			text_box2.visible = false
+			text_box.text = "The dinner will start shortly!"
+			await get_tree().create_timer(2).timeout
+			text_box.visible = false
+			cut_scene_seen = true
+		
+func _on_body_exited(body):
+	if body.is_in_group("player"):
+		player_nearby = false
+		
+		
+		

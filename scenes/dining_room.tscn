@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://4lpqlm3tspu3"]
+[gd_scene load_steps=16 format=4 uid="uid://4lpqlm3tspu3"]
 
 [ext_resource type="Script" uid="uid://cg5owrlrb3yao" path="res://scenes/dining_room.gd" id="1_cli76"]
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_evklq"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ctjiur77808b3" path="res://FreeCuteTileset/Tileset.png" id="3_2brsr"]
 [ext_resource type="Texture2D" uid="uid://2hfv7mv78x3s" path="res://assets/images/wall.png" id="4_0sv24"]
 [ext_resource type="Texture2D" uid="uid://dlfid7yanwimm" path="res://assets/images/butler_large.png" id="5_dytne"]
+[ext_resource type="Script" uid="uid://c4rdm8sbbkrjk" path="res://scenes/butler_large.gd" id="7_o5vmx"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_064a2"]
 texture = ExtResource("1_evklq")
@@ -17215,6 +17216,9 @@ size = Vector2(200, 2000)
 a = Vector2(2, 0)
 b = Vector2(2, 2105)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r37lo"]
+size = Vector2(1680, 618)
+
 [node name="DiningRoom" type="Node2D"]
 script = ExtResource("1_cli76")
 
@@ -17256,6 +17260,13 @@ shape = SubResource("SegmentShape2D_0sv24")
 position = Vector2(874, 1890)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("5_dytne")
+script = ExtResource("7_o5vmx")
+
+[node name="Area2D" type="Area2D" parent="ButlerLarge"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ButlerLarge/Area2D"]
+position = Vector2(-738, 1)
+shape = SubResource("RectangleShape2D_r37lo")
 
 [node name="CameraTarget" type="Node2D" parent="."]
 position = Vector2(1907, 1216)
