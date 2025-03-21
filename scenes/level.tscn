@@ -4,13 +4,13 @@
 [ext_resource type="Texture2D" uid="uid://drlrvkppfw1pq" path="res://assets/images/tree_platform.png" id="2_iyxqv"]
 [ext_resource type="Texture2D" uid="uid://bvhsd7cymwp35" path="res://assets/images/background.png" id="3_wj778"]
 [ext_resource type="Texture2D" uid="uid://b13edcjn8gd5" path="res://assets/images/stump.png" id="4_8j44n"]
-[ext_resource type="Script" path="res://scripts/stump_1.gd" id="4_oed3e"]
-[ext_resource type="Script" path="res://scripts/stump_2.gd" id="6_5suep"]
+[ext_resource type="Script" uid="uid://b3i3vj7jn7gou" path="res://scripts/stump_1.gd" id="4_oed3e"]
+[ext_resource type="Script" uid="uid://dpwqbo5p4d0nh" path="res://scripts/stump_2.gd" id="6_5suep"]
 [ext_resource type="Texture2D" uid="uid://y0dxq16y7wu0" path="res://dungeon_sidescroller-Raou/Tilesetv3.png" id="6_l0ff8"]
 [ext_resource type="Texture2D" uid="uid://badubj84oq6ex" path="res://assets/images/Mayro.png" id="7_ihoma"]
-[ext_resource type="Script" path="res://scripts/mayro.gd" id="7_n6hdu"]
+[ext_resource type="Script" uid="uid://cjkogtmepj6nh" path="res://scripts/mayro.gd" id="7_n6hdu"]
 [ext_resource type="Texture2D" uid="uid://cvhhgbt5q8rv0" path="res://assets/images/book_shelf_transparent.png" id="9_aicyk"]
-[ext_resource type="Script" path="res://scripts/book_shelf.gd" id="10_8b0r0"]
+[ext_resource type="Script" uid="uid://c8a1h1fvehgc6" path="res://scripts/book_shelf.gd" id="10_8b0r0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kq5gh"]
 size = Vector2(1435.25, 2040.23)
