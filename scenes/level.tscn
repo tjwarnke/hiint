@@ -17451,6 +17451,7 @@ text = "Press 'f' to interact"
 horizontal_alignment = 1
 
 [node name="Press \'f\'2" type="Label" parent="."]
+z_index = 1
 offset_left = 364.0
 offset_top = 729.0
 offset_right = 641.0
