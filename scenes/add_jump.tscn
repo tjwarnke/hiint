@@ -12,5 +12,20 @@ scale = Vector2(0.688406, 0.656512)
 polygon = PackedVector2Array(-56, -38, -44, -45, -33, -50, -20, -54, -10, -55, 7, -55, 18, -53, 34, -48, 48, -41, 54, -36, 58, -30, 58, -24, 56, -7, 61, -10, 64, -10, 69, 2, 76, 25, 76, 28, 74, 30, 63, 30, 51, 64, 24, 64, 24, 59, 26, 50, 18, 57, 5, 64, -7, 64, -21, 58, -39, 41, -45, 32, -51, 20, -57, 5, -60, -7, -62, -23, -61, -31)
 
 [node name="PlusJump" type="Sprite2D" parent="."]
+position = Vector2(1, -1)
 scale = Vector2(0.689453, 0.664062)
 texture = ExtResource("2_pjk5e")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+amount = 500
+lifetime = 0.1
+preprocess = 2.0
+speed_scale = 0.1
+emission_shape = 2
+emission_sphere_radius = 62.56
+spread = 180.0
+gravity = Vector2(0, 20)
+orbit_velocity_min = -1.0
+orbit_velocity_max = 1.0
+scale_amount_max = 4.0
+color = Color(0, 1, 1, 0.376471)

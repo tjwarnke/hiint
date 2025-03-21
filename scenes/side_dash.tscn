@@ -16,3 +16,18 @@ texture = ExtResource("2_7lsvu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_3p3u7")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+scale = Vector2(2, 2)
+amount = 500
+lifetime = 0.1
+preprocess = 2.0
+speed_scale = 0.1
+emission_shape = 2
+emission_sphere_radius = 70.0
+spread = 180.0
+gravity = Vector2(0, 20)
+orbit_velocity_min = -1.0
+orbit_velocity_max = 1.0
+scale_amount_max = 4.0
+color = Color(0, 1, 1, 0.376471)
