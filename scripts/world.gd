@@ -55,7 +55,6 @@ func _process(delta):
 		move_distance -= move_speed * delta
 		if move_distance <= 0:
 			moving_player = false  
-			player.set_can_move(true)
 			drop_wall()
 			player.drop_item()
 
@@ -125,11 +124,12 @@ func update_camera_bounds():
 	camera.offset = Vector2(0, -100)
 
 	
-
 func move_player_slowly():
 	player.set_can_move(false)
 	moving_player = true
 
 func drop_wall():
 	wall_fall.play("wall")
+	await wall_fall.animation_finished  # Wait until the animation finishes
+	player.set_can_move(true)  # Allow player movement after animation ends
 	

@@ -32,6 +32,7 @@ z_index = 1
 position = Vector2(1698, 1099)
 
 [node name="SideDash" parent="Level" instance=ExtResource("4_dss4m")]
+z_index = 1
 position = Vector2(2230, 490)
 scale = Vector2(0.5, 0.5)
 

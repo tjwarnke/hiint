@@ -13,6 +13,8 @@ func _on_quit_button_pressed():
 func _input(event):
 	if event.is_action_pressed("ui_accept"):
 		_on_start_button_pressed()
+	if event.is_action_pressed("ui_cancel"):
+		get_tree().quit()
 
 func _on_start_button_pressed():
 	# Just load the loading screen — let it handle the main scene loading
