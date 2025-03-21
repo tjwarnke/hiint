@@ -21,6 +21,8 @@ var move_distance = 500
 var move_speed = 100.0
 var camera_smooth_speed = 0.0001  # Adjust this value for smoother/slower movement
 @onready var wall_fall = $DiningRoom/WallFall
+@onready var player_anim = $Player/player_anim
+
 
 func _ready():
 	level.show()
@@ -98,6 +100,7 @@ func _on_dining_threshold_entered(body):
 		darkness.set_color(Color("ffeea4"))
 		
 		
+		
 
 func wait_until_grounded():
 	while not player.is_on_floor():  
@@ -110,7 +113,6 @@ func update_camera_bounds():
 
 	# Lock camera's left side at dining_threshold's position
 	camera.limit_left = dining_threshold.global_position.x  
-
 	# Effectively remove limits in all other directions
 	camera.limit_right = 999999  # Allow movement to the right indefinitely
 	camera.limit_top = -999999   # No limit upwards
@@ -119,12 +121,12 @@ func update_camera_bounds():
 	# Optional: Adjust camera offset if necessary
 	camera.offset = Vector2(0, -100)
 
-	print("Camera bounds updated:", camera.limit_left, camera.limit_right, camera.limit_top, camera.limit_bottom)
+	
 
 func move_player_slowly():
 	player.set_can_move(false)
 	moving_player = true
 
 func drop_wall():
-	wall_fall.play(wall)
+	wall_fall.play("wall")
 	
