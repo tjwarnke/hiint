@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://4lpqlm3tspu3"]
+[gd_scene load_steps=19 format=4 uid="uid://4lpqlm3tspu3"]
 
 [ext_resource type="Script" uid="uid://cg5owrlrb3yao" path="res://scenes/dining_room.gd" id="1_cli76"]
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_evklq"]
@@ -17219,6 +17219,63 @@ b = Vector2(2, 2105)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r37lo"]
 size = Vector2(1680, 618)
 
+[sub_resource type="Animation" id="Animation_r37lo"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Wall:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(11, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Wall:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-2009, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_o5vmx"]
+resource_name = "wall"
+length = 3.0
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Wall:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(11, -0.25, 0, 0.25, 0, 8, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(-0.0333333, 3)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Wall:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-2009, -0.25, 0, 0.25, 0, -4, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(-0.0333333, 3)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ulncm"]
+_data = {
+&"RESET": SubResource("Animation_r37lo"),
+&"wall": SubResource("Animation_o5vmx")
+}
+
 [node name="DiningRoom" type="Node2D"]
 script = ExtResource("1_cli76")
 
@@ -17238,22 +17295,25 @@ tile_map_data = PackedByteArray("AAAAACAAAQAAAAIAAAABACAAAQAAAAIAAAACACAAAQAAAAI
 tile_set = SubResource("TileSet_rrbvt")
 
 [node name="Wall" type="RigidBody2D" parent="."]
+position = Vector2(11, -2009)
 physics_material_override = SubResource("PhysicsMaterial_dytne")
 lock_rotation = true
 freeze = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wall"]
-position = Vector2(122, -886)
+position = Vector2(112, 1050)
 shape = SubResource("RectangleShape2D_cli76")
 
 [node name="Wall" type="Sprite2D" parent="Wall"]
-position = Vector2(122, -886)
-scale = Vector2(2, 2)
+position = Vector2(106, 1053.5)
+scale = Vector2(2, 1.997)
 texture = ExtResource("4_0sv24")
 
 [node name="dining_bounds" type="Area2D" parent="."]
+position = Vector2(8, 69)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="dining_bounds"]
+position = Vector2(-9, -96)
 shape = SubResource("SegmentShape2D_0sv24")
 
 [node name="ButlerLarge" type="Sprite2D" parent="."]
@@ -17270,5 +17330,10 @@ shape = SubResource("RectangleShape2D_r37lo")
 
 [node name="CameraTarget" type="Node2D" parent="."]
 position = Vector2(1907, 1216)
+
+[node name="WallFall" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ulncm")
+}
 
 [connection signal="body_entered" from="dining_bounds" to="." method="_on_dining_threshold_entered"]

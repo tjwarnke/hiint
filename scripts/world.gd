@@ -20,6 +20,7 @@ var moving_player = false
 var move_distance = 500
 var move_speed = 100.0
 var camera_smooth_speed = 0.0001  # Adjust this value for smoother/slower movement
+@onready var wall_fall = $DiningRoom/WallFall
 
 func _ready():
 	level.show()
@@ -125,5 +126,5 @@ func move_player_slowly():
 	moving_player = true
 
 func drop_wall():
-	dining_wall.freeze = false  
-	dining_wall.apply_central_impulse(Vector2(0, -300))  
+	wall_fall.play(wall)
+	
