@@ -21,7 +21,7 @@ var move_distance = 500
 var move_speed = 100.0
 var camera_smooth_speed = 0.0001  # Adjust this value for smoother/slower movement
 @onready var wall_fall = $DiningRoom/WallFall
-@onready var player_anim = $Player/player_anim
+
 
 
 func _ready():
@@ -57,6 +57,7 @@ func _process(delta):
 			moving_player = false  
 			player.set_can_move(true)
 			drop_wall()
+			player.drop_item()
 
 	# Smoothly move the camera towards the player's new position
 	camera.position = camera.position.lerp(player.position, camera_smooth_speed * delta)
@@ -85,6 +86,7 @@ func spawn_player():
 	camera.player = player
 	add_child(player)
 
+
 	var floor_top = spawn.global_position.y - (spawn.get_node("CollisionShape2D").shape.extents.y)
 	player.global_position = Vector2(spawn.global_position.x + 40, floor_top - 20)
 
@@ -98,6 +100,7 @@ func _on_dining_threshold_entered(body):
 		move_player_slowly()
 		ambient_noise.on_dining()
 		darkness.set_color(Color("ffeea4"))
+
 		
 		
 		

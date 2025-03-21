@@ -25,7 +25,8 @@ position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_4t2xx")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-scale = Vector2(1, 0.7)
+position = Vector2(-0.222203, -9.17341)
+scale = Vector2(1.429, 1)
 color = Color(0.878431, 0.878431, 0.878431, 1)
 energy = 0.77
 shadow_enabled = true
@@ -33,6 +34,26 @@ shadow_color = Color(0.796243, 0.796243, 0.796243, 0)
 texture = ExtResource("3_4xckj")
 offset = Vector2(0, -25)
 texture_scale = 0.25
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+position = Vector2(-0.592541, -24.4624)
+amount = 20
+lifetime = 0.29
+preprocess = 1.14
+speed_scale = 0.56
+explosiveness = 0.18
+randomness = 0.3
+emission_shape = 1
+emission_sphere_radius = 23.23
+gravity = Vector2(0, 20)
+initial_velocity_max = 20.0
+tangential_accel_min = -100.0
+tangential_accel_max = 100.0
+scale_amount_min = 3.0
+scale_amount_max = 3.0
+color = Color(1, 0.317647, 0, 1)
+hue_variation_min = -1.0
+hue_variation_max = 1.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

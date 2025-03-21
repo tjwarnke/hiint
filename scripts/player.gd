@@ -135,14 +135,34 @@ func pick_up_item(item):
 		
 
 func drop_item():
-	if held_item != null and is_on_floor():  # Ensure the player is on a surface
+	if held_item != null and is_on_floor():  
+		# Play throw animation
+		$player_anim.play("throw item")
+		
+		# Wait for the animation to finish before dropping the item
+		await $player_anim.animation_finished
+		
 		held_item.can_be_picked_up = true
 		var level = get_tree().current_scene.find_child("Level", true, false)
 		if level:
 			$TorchHolder.remove_child(held_item)
 			level.add_child(held_item)
-			held_item.position = global_position + Vector2(10, -10)
-			held_item = null
+			held_item.global_position = global_position + Vector2(60, 40)  # Offset slightly forward
+			held_item.global_rotation_degrees = 90
+			held_item.scale = Vector2(0.9,0.9)
+			held_item.set_skew(0)
+			$TorchHolder.position = Vector2(26, 8)
+			$TorchHolder.global_rotation_degrees = -65
+			$TorchHolder.global_scale = Vector2(1,1)
+			$TorchHolder.set_skew(0)
+
+		# Reset `held_item` and ensure `TorchHolder` is empty
+		held_item = null
+		for child in $TorchHolder.get_children():
+			$TorchHolder.remove_child(child)
+
+			
+			
 
 func set_can_move(state):
 	can_move = state
