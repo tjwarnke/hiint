@@ -34,14 +34,14 @@ position = Vector2(1698, 1099)
 [node name="SideDash" parent="Level" instance=ExtResource("4_dss4m")]
 z_index = 1
 position = Vector2(2230, 490)
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.436426, 0.438548)
 
 [node name="Spawn" parent="Level" instance=ExtResource("5_7t5mc")]
 position = Vector2(84, 965)
 
 [node name="Torch" parent="Level" groups=["item"] instance=ExtResource("6_lakw3")]
 z_index = 2
-position = Vector2(246, 914)
+position = Vector2(238, 917)
 rotation = 0.0
 script = ExtResource("7_dss4m")
 

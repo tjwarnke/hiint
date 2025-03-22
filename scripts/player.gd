@@ -58,7 +58,7 @@ func get_input(delta):
 	if not is_dashing:
 		target_speed = max_speed * direction
 		var accel = acceleration if is_on_floor() else air_control
-		var decel = deceleration if is_on_floor() else air_control / 2
+		var decel = deceleration if is_on_floor() else air_control / 2.0
 		gravity = expected_gravity
 		if direction != 0:
 			velocity.x = move_toward(velocity.x, target_speed, accel * delta)

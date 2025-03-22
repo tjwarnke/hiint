@@ -57,6 +57,7 @@ func _process(delta):
 			moving_player = false  
 			drop_wall()
 			player.drop_item()
+			
 
 	# Smoothly move the camera towards the player's new position
 	camera.position = camera.position.lerp(player.position, camera_smooth_speed * delta)
@@ -100,8 +101,6 @@ func _on_dining_threshold_entered(body):
 		ambient_noise.on_dining()
 		darkness.set_color(Color("ffeea4"))
 
-		
-		
 		
 
 func wait_until_grounded():
