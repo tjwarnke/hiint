@@ -11,7 +11,6 @@ var player
 @onready var jumpscare = $Camera2D/Jumpscare
 @onready var jumpscare_timer = $Camera2D/Timer  
 @onready var jumpscare_noise = $Camera2D/AudioStreamPlayer
-@onready var moon = $Moon
 @onready var darkness = $Camera2D/CanvasModulate
 @onready var dining_wall = $DiningRoom/Wall
 @onready var dining_threshold = $DiningRoom/dining_bounds
@@ -76,20 +75,26 @@ func start_game():
 	darkness.show()
 	$Level/Torch.show()
 	$TorchLight.show()
-	moon.position.x = (camera.position.x * 0.5) + 1500  
-	moon.position.y = camera.position.y - 550  
-	moon.show()
 	spawn_player()
-
+	
 func spawn_player():
 	player = PlayerScene.instantiate()
-	camera.player = player
 	add_child(player)
+	camera.player = player
+
+	# Ensure the Spawn node exists
+	if not spawn:
+		print("Error: Spawn node is missing!")
+		return
+
+	# Set player's position directly at the Spawn node's position
+	player.global_position = spawn.global_position
+
+	camera.position_smoothing_enabled = true  # Enable smoothing
+	camera.position_smoothing_speed = 5.0  # Adjust speed for smooth tracking
 
 
-	var floor_top = spawn.global_position.y - (spawn.get_node("CollisionShape2D").shape.extents.y)
-	player.global_position = Vector2(spawn.global_position.x + 40, floor_top - 20)
-
+	
 func on_power_up(power_type: Variant) -> void:
 	player.on_power_up_collected(power_type)
 
@@ -99,7 +104,7 @@ func _on_dining_threshold_entered(body):
 		update_camera_bounds()  # Update camera dynamically instead of moving
 		move_player_slowly()
 		ambient_noise.on_dining()
-		darkness.set_color(Color("ffeea4"))
+		darkness.set_color(Color("868686"))
 
 		
 

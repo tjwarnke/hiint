@@ -22,9 +22,9 @@ func toggle_lever():
 
 	is_on = !is_on # Toggle the state
 
-func _on_body_entered(body):
+func _on_body_entered(_body):
 	player_in_range = true
 
 
-func _on_body_exited(body):
+func _on_body_exited(_body):
 	player_in_range = false

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="HIINT"
-run/main_scene="uid://svlbq44rfnia"
+run/main_scene="uid://bl007siqf1w1o"
 config/features=PackedStringArray("4.4", "Forward Plus")
 run/frame_delay_msec=20
 
