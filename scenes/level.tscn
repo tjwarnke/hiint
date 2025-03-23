@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://b13edcjn8gd5" path="res://assets/images/stump.png" id="4_8j44n"]
 [ext_resource type="Script" uid="uid://b3i3vj7jn7gou" path="res://scripts/stump_1.gd" id="4_oed3e"]
 [ext_resource type="Script" uid="uid://dpwqbo5p4d0nh" path="res://scripts/stump_2.gd" id="6_5suep"]
-[ext_resource type="TileSet" uid="uid://cb6nrwwkgjg1x" path="res://assets/images/level.tres" id="6_olg7q"]
+[ext_resource type="TileSet" uid="uid://d1dkd72yf40tm" path="res://assets/images/level.tres" id="6_olg7q"]
 [ext_resource type="Texture2D" uid="uid://badubj84oq6ex" path="res://assets/images/Mayro.png" id="7_ihoma"]
 [ext_resource type="Script" uid="uid://cjkogtmepj6nh" path="res://scripts/mayro.gd" id="7_n6hdu"]
 [ext_resource type="Texture2D" uid="uid://cvhhgbt5q8rv0" path="res://assets/images/book_shelf_transparent.png" id="9_aicyk"]
