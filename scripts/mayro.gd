@@ -9,6 +9,7 @@ var player = null
 @onready var dialogue = get_node("/root/World/Level/UI/DialogOptions")
 @onready var sprite = get_node("/root/World/Level/UI/Speaker")
 @onready var Box1 = get_node("/root/World/Level/UI/TextBoxMiddleTopBack")
+@onready var Box2 = get_node("/root/World/Level/UI/TextBoxMiddleTopBack2")
 var mayro = preload("res://assets/images/MayroHead.png")
 
 func _ready():
@@ -39,6 +40,7 @@ func dialogue_choose(response):
 	text_box.visible = false
 	sprite.visible = false
 	Box1.visible = false
+	Box2.visible = false
 
 func _input(event):
 	if event.is_action_pressed("Interact2") and player_nearby:
@@ -54,6 +56,7 @@ func _input(event):
 		await get_tree().create_timer(2).timeout
 		text_box.text = "Have you seen my brother?"
 		await get_tree().create_timer(1).timeout
+		Box2.visible = true
 		dialogue.text = "1. The Green Guy? \n2. No I have not."
 		dialogue.visible = true
 		dialogue_active = true

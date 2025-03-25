@@ -184,8 +184,15 @@ offset_bottom = 114.0
 [node name="TextBoxMiddleTopBack" type="Sprite2D" parent="UI"]
 visible = false
 z_index = 1
-position = Vector2(1001.5, 53.5)
+position = Vector2(1002, 53)
 scale = Vector2(0.484616, 0.57)
+texture = ExtResource("11_t1rx8")
+
+[node name="TextBoxMiddleTopBack2" type="Sprite2D" parent="UI"]
+visible = false
+z_index = 1
+position = Vector2(1002, 107.25)
+scale = Vector2(0.484616, 0.675)
 texture = ExtResource("11_t1rx8")
 
 [node name="TextBoxMiddleTop2" type="Label" parent="UI"]
@@ -198,9 +205,9 @@ offset_bottom = 141.0
 [node name="DialogOptions" type="Label" parent="UI"]
 z_index = 2
 offset_left = 865.0
-offset_top = 77.0
+offset_top = 79.0
 offset_right = 1329.0
-offset_bottom = 197.0
+offset_bottom = 199.0
 
 [node name="Speaker" type="Sprite2D" parent="UI"]
 z_index = 2
