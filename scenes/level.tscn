@@ -1,15 +1,16 @@
-[gd_scene load_steps=19 format=4 uid="uid://dbgf3t0435pyx"]
+[gd_scene load_steps=20 format=4 uid="uid://dbgf3t0435pyx"]
 
 [ext_resource type="Texture2D" uid="uid://drlrvkppfw1pq" path="res://assets/images/tree_platform.png" id="2_iyxqv"]
 [ext_resource type="Texture2D" uid="uid://bvhsd7cymwp35" path="res://assets/images/background.png" id="3_wj778"]
 [ext_resource type="Texture2D" uid="uid://b13edcjn8gd5" path="res://assets/images/stump.png" id="4_8j44n"]
-[ext_resource type="Script" uid="uid://b3i3vj7jn7gou" path="res://scripts/stump_1.gd" id="4_oed3e"]
-[ext_resource type="Script" uid="uid://dpwqbo5p4d0nh" path="res://scripts/stump_2.gd" id="6_5suep"]
+[ext_resource type="Script" path="res://scripts/stump_1.gd" id="4_oed3e"]
+[ext_resource type="Script" path="res://scripts/stump_2.gd" id="6_5suep"]
 [ext_resource type="TileSet" uid="uid://cb6nrwwkgjg1x" path="res://assets/images/level.tres" id="6_olg7q"]
 [ext_resource type="Texture2D" uid="uid://badubj84oq6ex" path="res://assets/images/Mayro.png" id="7_ihoma"]
 [ext_resource type="Script" uid="uid://cjkogtmepj6nh" path="res://scripts/mayro.gd" id="7_n6hdu"]
 [ext_resource type="Texture2D" uid="uid://cvhhgbt5q8rv0" path="res://assets/images/book_shelf_transparent.png" id="9_aicyk"]
-[ext_resource type="Script" uid="uid://c8a1h1fvehgc6" path="res://scripts/book_shelf.gd" id="10_8b0r0"]
+[ext_resource type="Script" path="res://scripts/book_shelf.gd" id="10_8b0r0"]
+[ext_resource type="Texture2D" uid="uid://dualh52hqk7gi" path="res://assets/images/TextBoxMiddleTop.png" id="11_t1rx8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p2d4g"]
 size = Vector2(119, 23)
@@ -174,22 +175,36 @@ shape = SubResource("CapsuleShape2D_ghkwx")
 layer = 2
 
 [node name="TextBoxMiddleTop" type="Label" parent="UI"]
-offset_left = 862.0
-offset_top = 44.0
-offset_right = 1484.0
-offset_bottom = 117.0
+z_index = 2
+offset_left = 856.0
+offset_top = 41.0
+offset_right = 1478.0
+offset_bottom = 114.0
+
+[node name="TextBoxMiddleTopBack" type="Sprite2D" parent="UI"]
+visible = false
+z_index = 1
+position = Vector2(1001.5, 53.5)
+scale = Vector2(0.484616, 0.57)
+texture = ExtResource("11_t1rx8")
 
 [node name="TextBoxMiddleTop2" type="Label" parent="UI"]
+z_index = 2
 offset_left = 862.0
 offset_top = 68.0
 offset_right = 1484.0
 offset_bottom = 141.0
 
 [node name="DialogOptions" type="Label" parent="UI"]
+z_index = 2
 offset_left = 865.0
 offset_top = 77.0
 offset_right = 1329.0
 offset_bottom = 197.0
+
+[node name="Speaker" type="Sprite2D" parent="UI"]
+z_index = 2
+position = Vector2(783, 70)
 
 [node name="Press \'f\'" type="Label" parent="."]
 offset_left = 712.0

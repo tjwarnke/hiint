@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=4 uid="uid://dhh62wmxavnow"]
 
-[ext_resource type="Script" uid="uid://clpleomktaup1" path="res://scenes/library.gd" id="1_cupxr"]
+[ext_resource type="Script" path="res://scenes/library.gd" id="1_cupxr"]
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_gl8ag"]
 [ext_resource type="Texture2D" uid="uid://y0dxq16y7wu0" path="res://dungeon_sidescroller-Raou/Tilesetv3.png" id="2_mfc4n"]
 [ext_resource type="Texture2D" uid="uid://ctjiur77808b3" path="res://FreeCuteTileset/Tileset.png" id="3_vglhb"]
@@ -17214,21 +17214,6 @@ sources/0 = SubResource("TileSetAtlasSource_x4li0")
 sources/1 = SubResource("TileSetAtlasSource_fdt70")
 sources/2 = SubResource("TileSetAtlasSource_lgnb8")
 
-[sub_resource type="Animation" id="Animation_cjn25"]
-resource_name = "lever"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Lever/Pivot:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.785398, -0.785398]
-}
-
 [sub_resource type="Animation" id="Animation_e6m40"]
 length = 0.001
 tracks/0/type = "value"
@@ -17242,6 +17227,21 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.785398]
+}
+
+[sub_resource type="Animation" id="Animation_cjn25"]
+resource_name = "lever"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lever/Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.785398, -0.785398]
 }
 
 [sub_resource type="Animation" id="Animation_ky021"]
@@ -17311,11 +17311,9 @@ position = Vector2(3487, 252)
 [node name="Pivot" type="Node2D" parent="Lever"]
 position = Vector2(-12, 81)
 rotation = 0.785398
-scale = Vector2(1, 1)
 
 [node name="lever_sprite" type="Sprite2D" parent="Lever/Pivot"]
 position = Vector2(-2.82849, -137.179)
-scale = Vector2(1, 1)
 texture = ExtResource("5_24kl2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Lever"]
