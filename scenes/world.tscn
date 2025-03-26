@@ -1,22 +1,21 @@
-[gd_scene load_steps=20 format=3 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=19 format=3 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://dbgf3t0435pyx" path="res://scenes/level.tscn" id="2_o8fc1"]
-[ext_resource type="PackedScene" path="res://scenes/add_jump.tscn" id="3_xo05s"]
-[ext_resource type="PackedScene" path="res://scenes/side_dash.tscn" id="4_dss4m"]
+[ext_resource type="PackedScene" uid="uid://ckf6g5rpvthh" path="res://scenes/add_jump.tscn" id="3_xo05s"]
+[ext_resource type="PackedScene" uid="uid://bh5xpj4kmc4b5" path="res://scenes/side_dash.tscn" id="4_dss4m"]
 [ext_resource type="PackedScene" uid="uid://cy0fd33il7830" path="res://scenes/torch.tscn" id="6_lakw3"]
-[ext_resource type="Script" path="res://scenes/torch.gd" id="7_dss4m"]
-[ext_resource type="PackedScene" path="res://scenes/8Ball.tscn" id="7_pm21f"]
-[ext_resource type="PackedScene" path="res://scenes/Book.tscn" id="8_2lf6f"]
-[ext_resource type="Script" path="res://scripts/camera_2d.gd" id="9_7iits"]
+[ext_resource type="Script" uid="uid://cvx006n8smlea" path="res://scenes/torch.gd" id="7_dss4m"]
+[ext_resource type="PackedScene" uid="uid://dcdv6e0x7117h" path="res://scenes/8Ball.tscn" id="7_pm21f"]
+[ext_resource type="PackedScene" uid="uid://caw125fejkkxe" path="res://scenes/Book.tscn" id="8_2lf6f"]
+[ext_resource type="Script" uid="uid://cxs3k4lmkyg8b" path="res://scripts/camera_2d.gd" id="9_7iits"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="10_dss4m"]
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://assets/images/proxy-image-1.jpg" id="10_oo54l"]
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://assets/audio/scream.mp3" id="11_kpybi"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="13_xgqkh"]
-[ext_resource type="PackedScene" path="res://scenes/dining_room_theshold.tscn" id="14_o8fc1"]
+[ext_resource type="PackedScene" uid="uid://4lpqlm3tspu3" path="res://scenes/dining_room_theshold.tscn" id="14_o8fc1"]
 [ext_resource type="PackedScene" uid="uid://dhh62wmxavnow" path="res://scenes/Library.tscn" id="15_xo05s"]
 [ext_resource type="PackedScene" uid="uid://bp2xka1pwcwry" path="res://scenes/billiards_room.tscn" id="16_dss4m"]
-[ext_resource type="PackedScene" uid="uid://1o0i4q5k8xte" path="res://scenes/tutorial.tscn" id="17_7t5mc"]
 [ext_resource type="PackedScene" uid="uid://cfrd10xr8oexr" path="res://scenes/dungeon.tscn" id="18_lakw3"]
 
 [sub_resource type="Curve" id="Curve_7t5mc"]
@@ -27,24 +26,24 @@ point_count = 4
 script = ExtResource("1_jhx03")
 
 [node name="Level" parent="." instance=ExtResource("2_o8fc1")]
-position = Vector2(10, 44)
+position = Vector2(37, -4)
 
 [node name="AddJump" parent="Level" instance=ExtResource("3_xo05s")]
 z_index = 1
-position = Vector2(1698, 1099)
+position = Vector2(3044, 1011)
 
 [node name="SideDash" parent="Level" instance=ExtResource("4_dss4m")]
 z_index = 1
-position = Vector2(2230, 490)
+position = Vector2(4731, 175)
 scale = Vector2(0.436426, 0.438548)
 
 [node name="8Ball" parent="Level" groups=["item"] instance=ExtResource("7_pm21f")]
 z_index = 1
-position = Vector2(371, 889)
+position = Vector2(380, 832)
 
 [node name="Torch" parent="Level" groups=["item"] instance=ExtResource("6_lakw3")]
 z_index = 2
-position = Vector2(553, 910)
+position = Vector2(478, 831)
 rotation = 0.0
 script = ExtResource("7_dss4m")
 
@@ -53,14 +52,14 @@ z_index = 1
 position = Vector2(731, 2927)
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="Level"]
-position = Vector2(1506, -251)
+position = Vector2(2774, -286)
 amount = 5000
 texture = ExtResource("10_dss4m")
-lifetime = 5.0
+lifetime = 2.0
 preprocess = 5.0
 fixed_fps = 24
 emission_shape = 3
-emission_rect_extents = Vector2(2000, 1)
+emission_rect_extents = Vector2(3000, 1)
 angle_min = -1.0
 angle_max = 1.0
 scale_amount_min = 0.2
@@ -69,10 +68,10 @@ scale_amount_curve = SubResource("Curve_7t5mc")
 color = Color(0.442911, 0.442911, 0.442911, 1)
 
 [node name="Spawn" type="Node2D" parent="Level"]
-position = Vector2(254, 878)
+position = Vector2(300, 830)
 
 [node name="DiningRoom" parent="." instance=ExtResource("14_o8fc1")]
-position = Vector2(3347, -36)
+position = Vector2(5756, -149)
 scale = Vector2(0.5, 0.5)
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -112,7 +111,7 @@ position = Vector2(-985, -542)
 color = Color(0.0475577, 0.0475577, 0.0475576, 1)
 
 [node name="PointLight2D2" type="PointLight2D" parent="."]
-position = Vector2(3154, 744.632)
+position = Vector2(5529, 577)
 scale = Vector2(0.56, 1.42684)
 color = Color(1, 0.801031, 0.0157638, 1)
 energy = 1.07
@@ -121,18 +120,15 @@ texture = ExtResource("13_xgqkh")
 texture_scale = 0.1
 
 [node name="Library" parent="." instance=ExtResource("15_xo05s")]
-position = Vector2(5398, 287)
+position = Vector2(7799, 208)
 scale = Vector2(0.5, 0.5)
 
 [node name="BilliardsRoom" parent="." instance=ExtResource("16_dss4m")]
-position = Vector2(7478, 118)
+position = Vector2(9870, 80)
 scale = Vector2(0.5, 0.5)
 
-[node name="Tutorial" parent="." instance=ExtResource("17_7t5mc")]
-position = Vector2(-412, -4886)
-
 [node name="Dungeon" parent="." instance=ExtResource("18_lakw3")]
-position = Vector2(4472, 1807)
+position = Vector2(8029, -3110)
 scale = Vector2(0.5, 0.5)
 
 [connection signal="collected" from="Level/AddJump" to="." method="on_power_up"]
