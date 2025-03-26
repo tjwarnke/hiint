@@ -21,8 +21,6 @@ var move_speed = 100.0
 var camera_smooth_speed = 0.0001  # Adjust this value for smoother/slower movement
 @onready var wall_fall = $DiningRoom/WallFall
 
-
-
 func _ready():
 	level.show()
 	darkness.show()
