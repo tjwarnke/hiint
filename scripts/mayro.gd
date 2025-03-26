@@ -9,7 +9,7 @@ var player = null
 @onready var dialogue = get_node("/root/World/Level/UI/DialogOptions")
 @onready var sprite = get_node("/root/World/Level/UI/Speaker")
 @onready var Box1 = get_node("/root/World/Level/UI/TextBoxMiddleTopBack")
-@onready var Box2 = get_node("/root/World/Level/UI/TextBoxMiddleTopBack2")
+@onready var Box2 = get_node("/root/World/Level/UI/TextBoxDialog")
 var mayro = preload("res://assets/images/MayroHead.png")
 
 func _ready():
