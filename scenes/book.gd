@@ -11,7 +11,7 @@ func _ready():
 func _on_body_entered(body):
 	player_in_area = body 
 	text_box.visible = true
-	text_box.text = "Press 'e' to take 8-Ball" 
+	text_box.text = "Press 'e' to take Book" 
 
 func _on_body_exited(_body):
 	player_in_area = null
@@ -25,5 +25,5 @@ func _process(_delta):
 			text_box.visible = false
 			player_in_area.pick_up_item(self)
 			can_be_picked_up = false
-			
+			text_box.visible = false
 		
