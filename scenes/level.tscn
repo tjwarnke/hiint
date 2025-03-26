@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dbgf3t0435pyx"]
+[gd_scene load_steps=13 format=3 uid="uid://dbgf3t0435pyx"]
 
 [ext_resource type="Texture2D" uid="uid://b13edcjn8gd5" path="res://assets/images/stump.png" id="4_8j44n"]
 [ext_resource type="Script" uid="uid://b3i3vj7jn7gou" path="res://scripts/stump_1.gd" id="4_oed3e"]
@@ -13,9 +13,6 @@
 normal = Vector2(1, 0)
 distance = -0.0312483
 
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_6wjun"]
-polygon = PackedVector2Array(1154.5, 58.5, 1159.5, 41, 1167, 37.25, 1160.75, 28.5, 1162, 12.25, 1163.25, 3.5, 1202, -65.25, 1209.5, -74, 1244.5, -71.5, 1283.25, -67.75, 1310.75, -57.75, 1329.5, -49, 1330.75, -39, 1332, -2.75, 1333.25, 23.5, 1339.5, 31, 1338.25, 38.5, 1345.75, 52.25, 1342, 66, 1332, 73.5, 1319.5, 76, 1300.75, 72.25, 1277, 64.75, 1238.25, 73.5)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1avt2"]
 size = Vector2(278.75, 185)
 
@@ -23,8 +20,8 @@ size = Vector2(278.75, 185)
 size = Vector2(152, 200)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ghkwx"]
-radius = 370.623
-height = 903.361
+radius = 180.163
+height = 984.021
 
 [node name="Level" type="Node2D"]
 z_index = -1
@@ -49,11 +46,6 @@ texture = ExtResource("4_8j44n")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Stump1"]
 position = Vector2(3, 4)
 polygon = PackedVector2Array(-51, -52, -42, -70, -39, -71, -33, -71, 80, -47, 81, -34, 81, 10, 84, 26, 89, 28, 89, 33, 87, 37, 89, 42, 95, 48, 95, 55, 92, 61, 81, 71, 69, 73, 55, 72, 25, 62, -11, 71, -94, 60, -90, 54, -89, 47, -88, 42, -82, 39, -82, 35, -88, 26, -88, 10, -83, 3, -77, -15)
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="Stump1"]
-visible = false
-position = Vector2(3, 4)
-occluder = SubResource("OccluderPolygon2D_6wjun")
 
 [node name="Area2D" type="Area2D" parent="Stump1"]
 
@@ -134,25 +126,6 @@ offset_bottom = 199.0
 [node name="Speaker" type="Sprite2D" parent="UI"]
 z_index = 2
 position = Vector2(783, 70)
-
-[node name="Press \'f\'" type="Label" parent="."]
-offset_left = 712.0
-offset_top = 817.0
-offset_right = 989.0
-offset_bottom = 848.0
-theme_override_font_sizes/font_size = 18
-text = "Press 'f' to interact"
-horizontal_alignment = 1
-
-[node name="Press \'f\'2" type="Label" parent="."]
-z_index = 1
-offset_left = 364.0
-offset_top = 729.0
-offset_right = 641.0
-offset_bottom = 760.0
-theme_override_font_sizes/font_size = 18
-text = "Press 'f' to interact"
-horizontal_alignment = 1
 
 [node name="Tutorial" parent="." instance=ExtResource("9_8c41q")]
 z_index = -4
