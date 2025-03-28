@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://dbgf3t0435pyx" path="res://scenes/level.tscn" id="2_o8fc1"]
-[ext_resource type="PackedScene" path="res://scenes/add_jump.tscn" id="3_xo05s"]
-[ext_resource type="PackedScene" path="res://scenes/side_dash.tscn" id="4_dss4m"]
+[ext_resource type="PackedScene" uid="uid://ckf6g5rpvthh" path="res://scenes/add_jump.tscn" id="3_xo05s"]
+[ext_resource type="PackedScene" uid="uid://bh5xpj4kmc4b5" path="res://scenes/side_dash.tscn" id="4_dss4m"]
 [ext_resource type="PackedScene" uid="uid://cy0fd33il7830" path="res://scenes/torch.tscn" id="6_lakw3"]
 [ext_resource type="Script" uid="uid://cvx006n8smlea" path="res://scenes/torch.gd" id="7_dss4m"]
-[ext_resource type="PackedScene" path="res://scenes/8Ball.tscn" id="7_pm21f"]
+[ext_resource type="PackedScene" uid="uid://bj4km16cexdn7" path="res://scenes/8Ball.tscn" id="7_pm21f"]
 [ext_resource type="PackedScene" path="res://scenes/Book.tscn" id="8_2lf6f"]
 [ext_resource type="Script" path="res://scripts/camera_2d.gd" id="9_7iits"]
 [ext_resource type="Script" uid="uid://ddi7dok0wovj8" path="res://scenes/book.gd" id="9_pm21f"]
@@ -14,11 +14,11 @@
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://assets/images/proxy-image-1.jpg" id="10_oo54l"]
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://assets/audio/scream.mp3" id="11_kpybi"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="13_xgqkh"]
-[ext_resource type="PackedScene" path="res://scenes/dining_room_theshold.tscn" id="14_o8fc1"]
+[ext_resource type="PackedScene" uid="uid://4lpqlm3tspu3" path="res://scenes/dining_room_theshold.tscn" id="14_o8fc1"]
 [ext_resource type="PackedScene" uid="uid://dhh62wmxavnow" path="res://scenes/Library.tscn" id="15_xo05s"]
-[ext_resource type="PackedScene" path="res://scenes/billiards_room.tscn" id="16_dss4m"]
-[ext_resource type="PackedScene" path="res://scenes/tutorial.tscn" id="17_7t5mc"]
-[ext_resource type="PackedScene" path="res://scenes/dungeon.tscn" id="18_lakw3"]
+[ext_resource type="PackedScene" uid="uid://bp2xka1pwcwry" path="res://scenes/billiards_room.tscn" id="16_dss4m"]
+[ext_resource type="PackedScene" uid="uid://1o0i4q5k8xte" path="res://scenes/tutorial.tscn" id="17_7t5mc"]
+[ext_resource type="PackedScene" uid="uid://cfrd10xr8oexr" path="res://scenes/dungeon.tscn" id="18_lakw3"]
 
 [sub_resource type="Curve" id="Curve_7t5mc"]
 _data = [Vector2(0.00729926, 0.54065), 0.0, 0.0, 0, 0, Vector2(0.313869, 0.833333), 0.0, 0.0, 0, 0, Vector2(0.726277, 0.731707), 0.0, 0.0, 0, 0, Vector2(0.981752, 0.678862), 0.0, 0.0, 0, 0]
@@ -41,11 +41,11 @@ scale = Vector2(0.436426, 0.438548)
 
 [node name="8Ball" parent="Level" groups=["item"] instance=ExtResource("7_pm21f")]
 z_index = 1
-position = Vector2(371, 889)
+position = Vector2(377, 939)
 
 [node name="Torch" parent="Level" groups=["item"] instance=ExtResource("6_lakw3")]
 z_index = 2
-position = Vector2(553, 910)
+position = Vector2(553, 919)
 rotation = 0.0
 script = ExtResource("7_dss4m")
 

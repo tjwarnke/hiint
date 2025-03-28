@@ -12,8 +12,9 @@ func _ready():
 
 func _on_body_entered(body):
 	player_in_area = body  
-	text_box.visible = true
-	text_box.text = "Press 'e' to take Torch"
+	if can_be_picked_up:
+		text_box.visible = true
+		text_box.text = "Press 'e' to take Torch"
 
 func _on_body_exited(_body):
 	player_in_area = null  
