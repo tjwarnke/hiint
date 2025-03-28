@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=22 format=3 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://dbgf3t0435pyx" path="res://scenes/level.tscn" id="2_o8fc1"]
@@ -9,16 +9,17 @@
 [ext_resource type="PackedScene" uid="uid://dcdv6e0x7117h" path="res://scenes/8Ball.tscn" id="7_pm21f"]
 [ext_resource type="PackedScene" path="res://scenes/Book.tscn" id="8_2lf6f"]
 [ext_resource type="Script" path="res://scripts/camera_2d.gd" id="9_7iits"]
-[ext_resource type="Script" path="res://scenes/book.gd" id="9_pm21f"]
+[ext_resource type="Script" uid="uid://ddi7dok0wovj8" path="res://scenes/book.gd" id="9_pm21f"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="10_dss4m"]
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://assets/images/proxy-image-1.jpg" id="10_oo54l"]
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://assets/audio/scream.mp3" id="11_kpybi"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="13_xgqkh"]
-[ext_resource type="PackedScene" path="res://scenes/dining_room_theshold.tscn" id="14_o8fc1"]
+[ext_resource type="PackedScene" uid="uid://4lpqlm3tspu3" path="res://scenes/dining_room_theshold.tscn" id="14_o8fc1"]
 [ext_resource type="PackedScene" uid="uid://dhh62wmxavnow" path="res://scenes/Library.tscn" id="15_xo05s"]
-[ext_resource type="PackedScene" path="res://scenes/billiards_room.tscn" id="16_dss4m"]
-[ext_resource type="PackedScene" path="res://scenes/tutorial.tscn" id="17_7t5mc"]
-[ext_resource type="PackedScene" path="res://scenes/dungeon.tscn" id="18_lakw3"]
+[ext_resource type="PackedScene" uid="uid://bp2xka1pwcwry" path="res://scenes/billiards_room.tscn" id="16_dss4m"]
+[ext_resource type="PackedScene" uid="uid://1o0i4q5k8xte" path="res://scenes/tutorial.tscn" id="17_7t5mc"]
+[ext_resource type="PackedScene" uid="uid://cfrd10xr8oexr" path="res://scenes/dungeon.tscn" id="18_lakw3"]
+[ext_resource type="PackedScene" uid="uid://bs66fy6n0empc" path="res://scenes/hot_bar.tscn" id="20_2lf6f"]
 
 [sub_resource type="Curve" id="Curve_7t5mc"]
 _data = [Vector2(0.00729926, 0.54065), 0.0, 0.0, 0, 0, Vector2(0.313869, 0.833333), 0.0, 0.0, 0, 0, Vector2(0.726277, 0.731707), 0.0, 0.0, 0, 0, Vector2(0.981752, 0.678862), 0.0, 0.0, 0, 0]
@@ -136,6 +137,9 @@ position = Vector2(-412, -4886)
 [node name="Dungeon" parent="." instance=ExtResource("18_lakw3")]
 position = Vector2(4472, 1807)
 scale = Vector2(0.5, 0.5)
+
+[node name="HotBar" parent="." instance=ExtResource("20_2lf6f")]
+z_index = 4
 
 [connection signal="collected" from="Level/AddJump" to="." method="on_power_up"]
 [connection signal="collected" from="Level/SideDash" to="." method="on_power_up"]

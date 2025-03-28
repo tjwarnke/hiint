@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://dbgf3t0435pyx"]
+[gd_scene load_steps=20 format=4 uid="uid://dbgf3t0435pyx"]
 
 [ext_resource type="Texture2D" uid="uid://drlrvkppfw1pq" path="res://assets/images/tree_platform.png" id="2_iyxqv"]
 [ext_resource type="Texture2D" uid="uid://bvhsd7cymwp35" path="res://assets/images/background.png" id="3_wj778"]
@@ -11,7 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://cvhhgbt5q8rv0" path="res://assets/images/book_shelf_transparent.png" id="9_aicyk"]
 [ext_resource type="Script" path="res://scripts/book_shelf.gd" id="10_8b0r0"]
 [ext_resource type="Texture2D" uid="uid://dualh52hqk7gi" path="res://assets/images/TextBoxMiddleTop.png" id="11_t1rx8"]
-[ext_resource type="Script" uid="uid://cwqwh7110thu7" path="res://scenes/Hotbar.gd" id="12_8iemx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p2d4g"]
 size = Vector2(119, 23)
@@ -220,13 +219,6 @@ offset_bottom = 199.0
 [node name="Speaker" type="Sprite2D" parent="UI"]
 z_index = 2
 position = Vector2(783, 70)
-
-[node name="Hotbar" type="Sprite2D" parent="UI"]
-z_index = 5
-position = Vector2(979, 1063)
-scale = Vector2(1.02462, 1.53)
-texture = ExtResource("11_t1rx8")
-script = ExtResource("12_8iemx")
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="."]
 z_index = -1

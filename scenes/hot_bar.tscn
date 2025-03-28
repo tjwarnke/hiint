@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://bs66fy6n0empc"]
+
+[ext_resource type="Texture2D" uid="uid://dualh52hqk7gi" path="res://assets/images/TextBoxMiddleTop.png" id="1_kib42"]
+[ext_resource type="Script" uid="uid://d1nrc7bnpvrsx" path="res://scripts/hot_bar.gd" id="2_lofj5"]
+
+[node name="HotBar" type="Sprite2D"]
+texture = ExtResource("1_kib42")
+script = ExtResource("2_lofj5")
