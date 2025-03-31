@@ -1,24 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://bml4ala0ibbu5"]
+[gd_scene load_steps=4 format=3 uid="uid://cjhvjqqvgyv6m"]
 
-[ext_resource type="Script" uid="uid://cfasnveui4d18" path="res://scenes/hot_bar.gd" id="1_xkonb"]
+[ext_resource type="Script" uid="uid://b432s33ca3t70" path="res://scripts/hotbar.gd" id="1_yj1xu"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8mxvt"]
-bg_color = Color(0.327996, 0.215275, 0.0471337, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5q0r0"]
 
-[node name="HotBar" type="Control"]
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_5q0r0"]
+
+[node name="Hotbar" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_xkonb")
+script = ExtResource("1_yj1xu")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
 offset_right = 241.0
 offset_bottom = 40.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_8mxvt")
+theme_override_styles/panel = SubResource("StyleBoxFlat_5q0r0")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 0
-offset_right = 235.0
+offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
@@ -28,15 +29,19 @@ layout_mode = 2
 [node name="TextureRect2" type="TextureRect" parent="HBoxContainer"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
+texture = SubResource("PlaceholderTexture2D_5q0r0")
 
 [node name="TextureRect3" type="TextureRect" parent="HBoxContainer"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
+texture = SubResource("PlaceholderTexture2D_5q0r0")
 
 [node name="TextureRect4" type="TextureRect" parent="HBoxContainer"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
+texture = SubResource("PlaceholderTexture2D_5q0r0")
 
 [node name="TextureRect5" type="TextureRect" parent="HBoxContainer"]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
+texture = SubResource("PlaceholderTexture2D_5q0r0")

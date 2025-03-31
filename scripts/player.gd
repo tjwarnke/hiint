@@ -123,6 +123,7 @@ func has_item(item_name: String) -> bool:
 
 var held_item = null
 
+@onready var hotbar = get_tree().current_scene.find_child("Hotbar", true, false)
 
 func pick_up_item(item):
 	if held_item == null:
@@ -131,6 +132,10 @@ func pick_up_item(item):
 		item.get_parent().remove_child(item)
 		$TorchHolder.add_child(item)
 		item.position = Vector2.ZERO
+		if hotbar:
+			var sprite = item.get_node_or_null("Sprite2D")  # Ensure item has a Sprite2D
+			if sprite:
+				hotbar.add_item(sprite.texture, 0)
 
 func drop_item():
 	if held_item != null and is_on_floor():  

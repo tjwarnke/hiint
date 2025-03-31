@@ -19,7 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://bp2xka1pwcwry" path="res://scenes/billiards_room.tscn" id="16_dss4m"]
 [ext_resource type="PackedScene" uid="uid://1o0i4q5k8xte" path="res://scenes/tutorial.tscn" id="17_7t5mc"]
 [ext_resource type="PackedScene" uid="uid://cfrd10xr8oexr" path="res://scenes/dungeon.tscn" id="18_lakw3"]
-[ext_resource type="PackedScene" uid="uid://bml4ala0ibbu5" path="res://scenes/hot_bar.tscn" id="20_2lf6f"]
+[ext_resource type="PackedScene" uid="uid://cjhvjqqvgyv6m" path="res://scenes/hotbar.tscn" id="20_2lf6f"]
 
 [sub_resource type="Curve" id="Curve_7t5mc"]
 _data = [Vector2(0.00729926, 0.54065), 0.0, 0.0, 0, 0, Vector2(0.313869, 0.833333), 0.0, 0.0, 0, 0, Vector2(0.726277, 0.731707), 0.0, 0.0, 0, 0, Vector2(0.981752, 0.678862), 0.0, 0.0, 0, 0]
@@ -138,7 +138,11 @@ position = Vector2(-412, -4886)
 position = Vector2(4472, 1807)
 scale = Vector2(0.5, 0.5)
 
-[node name="HotBar" parent="." instance=ExtResource("20_2lf6f")]
+[node name="Hotbar" parent="." instance=ExtResource("20_2lf6f")]
+offset_left = 444.0
+offset_top = 510.0
+offset_right = 444.0
+offset_bottom = 510.0
 
 [connection signal="collected" from="Level/AddJump" to="." method="on_power_up"]
 [connection signal="collected" from="Level/SideDash" to="." method="on_power_up"]

@@ -26,5 +26,3 @@ func _process(_delta):
 			text_box.visible = false
 			player_in_area.pick_up_item(self)
 			can_be_picked_up = false
-			
-		
