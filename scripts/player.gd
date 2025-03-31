@@ -161,7 +161,3 @@ func drop_item():
 
 func set_can_move(state):
 	can_move = state
-
-
-
-		
