@@ -124,28 +124,32 @@ func has_item(item_name: String) -> bool:
 var held_item = null
 
 @onready var hotbar = get_tree().current_scene.find_child("Hotbar", true, false)
+var num_items := 0
 
 func pick_up_item(item):
-	if held_item == null:
-		held_item = item
+	#if held_item == null:
+		#held_item = item
 		item.can_be_picked_up = false
 		item.get_parent().remove_child(item)
-		$TorchHolder.add_child(item)
+		if num_items == 0:
+			$TorchHolder.add_child(item)
 		item.position = Vector2.ZERO
 		if hotbar:
 			var sprite = item.get_node_or_null("Sprite2D")
 			if sprite:
-				hotbar.add_item(sprite.texture, 0)
+				hotbar.add_item(sprite.texture, num_items)
+				num_items += 1
 
 func drop_item():
-	if held_item != null and is_on_floor():  
+	#held_item != null and
+	if  is_on_floor():  
 		# Play throw animation
 		$player_anim.play("throw item")
 		
 		# Wait for the animation to finish before dropping the item
 		await $player_anim.animation_finished
 		
-		held_item.can_be_picked_up = true
+		#held_item.can_be_picked_up = true
 		var level = get_tree().current_scene.find_child("Level", true, false)
 		if level:
 			$TorchHolder.remove_child(held_item)
@@ -159,9 +163,10 @@ func drop_item():
 			$TorchHolder.global_scale = Vector2(1,1)
 			$TorchHolder.set_skew(0)
 		if hotbar:
-			var sprite = held_item.get_node_or_null("Sprite2D")  # Ensure held_item has a Sprite2D
-			if sprite and hotbar:
+			var sprite = held_item.get_node_or_null("Sprite2D")
+			if sprite:
 				hotbar.remove_item(sprite.texture)
+				num_items -= 1
 
 		# Reset `held_item` and ensure `TorchHolder` is empty
 		held_item = null
