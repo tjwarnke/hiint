@@ -14,7 +14,7 @@ collision_layer = 65535
 collision_mask = 65535
 script = ExtResource("1_7drw6")
 
-[node name="8Ball" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-2.06611, 2.32002)
 scale = Vector2(1.14196, 0.930919)
 texture = ExtResource("2_7drw6")

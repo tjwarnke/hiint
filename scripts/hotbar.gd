@@ -23,7 +23,14 @@ func _ready():
 func add_item(item_texture, index):
 	if index < max_slots:
 		items[index] = item_texture
-		slots[index].texture = item_texture  # Update slot texture
+		slots[index].texture = item_texture
+		
+func remove_item(item):
+	for i in range(max_slots):
+		if items[i] == item:
+			items[i] = null
+			slots[i].texture = null
+			break
 
 func update_selection():
 	for i in range(max_slots):

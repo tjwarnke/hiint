@@ -133,7 +133,7 @@ func pick_up_item(item):
 		$TorchHolder.add_child(item)
 		item.position = Vector2.ZERO
 		if hotbar:
-			var sprite = item.get_node_or_null("Sprite2D")  # Ensure item has a Sprite2D
+			var sprite = item.get_node_or_null("Sprite2D")
 			if sprite:
 				hotbar.add_item(sprite.texture, 0)
 
@@ -158,6 +158,10 @@ func drop_item():
 			$TorchHolder.global_rotation_degrees = -65
 			$TorchHolder.global_scale = Vector2(1,1)
 			$TorchHolder.set_skew(0)
+		if hotbar:
+			var sprite = held_item.get_node_or_null("Sprite2D")  # Ensure held_item has a Sprite2D
+			if sprite and hotbar:
+				hotbar.remove_item(sprite.texture)
 
 		# Reset `held_item` and ensure `TorchHolder` is empty
 		held_item = null

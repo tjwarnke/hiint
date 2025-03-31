@@ -15,9 +15,9 @@ collision_layer = 65535
 collision_mask = 65535
 script = ExtResource("1_1e30y")
 
-[node name="Torch" type="Sprite2D" parent="."]
-position = Vector2(8, -27)
-scale = Vector2(0.270833, 0.270089)
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(9.45536, -21.3206)
+scale = Vector2(0.263253, 0.244734)
 texture = ExtResource("2_jnefu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -25,7 +25,7 @@ position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_4t2xx")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(-0.222203, -9.17341)
+position = Vector2(-2.08464, 1.55558)
 scale = Vector2(1.429, 1)
 color = Color(0.878431, 0.878431, 0.878431, 1)
 energy = 0.77

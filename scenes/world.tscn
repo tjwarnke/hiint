@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://ctbtqie8fru15" path="res://scenes/torch.tscn" id="6_lakw3"]
 [ext_resource type="Script" uid="uid://cvx006n8smlea" path="res://scenes/torch.gd" id="7_dss4m"]
 [ext_resource type="PackedScene" uid="uid://dcdv6e0x7117h" path="res://scenes/8Ball.tscn" id="7_pm21f"]
-[ext_resource type="PackedScene" path="res://scenes/Book.tscn" id="8_2lf6f"]
+[ext_resource type="PackedScene" uid="uid://b30jemxysqbka" path="res://scenes/Book.tscn" id="8_2lf6f"]
 [ext_resource type="Script" path="res://scripts/camera_2d.gd" id="9_7iits"]
 [ext_resource type="Script" uid="uid://ddi7dok0wovj8" path="res://scenes/book.gd" id="9_pm21f"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="10_dss4m"]
@@ -139,6 +139,8 @@ position = Vector2(4472, 1807)
 scale = Vector2(0.5, 0.5)
 
 [node name="Hotbar" parent="." instance=ExtResource("20_2lf6f")]
+visibility_layer = 512
+z_index = 10
 offset_left = 444.0
 offset_top = 510.0
 offset_right = 444.0
