@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=4 uid="uid://dhh62wmxavnow"]
 
-[ext_resource type="Script" path="res://scenes/library.gd" id="1_cupxr"]
+[ext_resource type="Script" uid="uid://clpleomktaup1" path="res://scenes/library.gd" id="1_cupxr"]
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_gl8ag"]
 [ext_resource type="Texture2D" uid="uid://y0dxq16y7wu0" path="res://dungeon_sidescroller-Raou/Tilesetv3.png" id="2_mfc4n"]
 [ext_resource type="Texture2D" uid="uid://ctjiur77808b3" path="res://FreeCuteTileset/Tileset.png" id="3_vglhb"]
@@ -17270,6 +17270,7 @@ _data = {
 size = Vector2(305, 147)
 
 [node name="Library" type="Node2D"]
+scale = Vector2(0.5, 0.5)
 script = ExtResource("1_cupxr")
 metadata/_edit_horizontal_guides_ = [3656.0]
 
@@ -17319,6 +17320,12 @@ texture = ExtResource("5_24kl2")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Lever"]
 position = Vector2(-2.5, -3.5)
 shape = SubResource("RectangleShape2D_fio33")
+
+[node name="AttachLeft" type="Node2D" parent="."]
+position = Vector2(1, 1336)
+
+[node name="AttachRight" type="Node2D" parent="."]
+position = Vector2(4159, 1336)
 
 [connection signal="body_entered" from="Lever" to="." method="_on_body_entered"]
 [connection signal="body_exited" from="Lever" to="." method="_on_body_exited"]

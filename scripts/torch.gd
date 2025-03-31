@@ -1,4 +1,4 @@
-extends "res://scenes/item.gd"
+extends Area2D
 
 signal torch_picked
 
