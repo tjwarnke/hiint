@@ -7,11 +7,13 @@ extends Camera2D
 
 func _process(delta):
 	if player:
-		var distance_x = abs(player.position.x - position.x)
+		var target_x = player.position.x - 5000  # Apply 2000px offset
+		var distance_x = abs(target_x - position.x)
 
 		if distance_x > deadzone:
-			# Smoothly follow player on X-axis, keep Y fixed
-			position.x = lerp(position.x, player.position.x, follow_speed * delta)
+			position.x = lerp(position.x, target_x, follow_speed * delta)
+		else:
+			position.x = target_x  
 
-		# Force Y position to always stay at fixed_y
+		# Keep Y position fixed
 		position.y = fixed_y

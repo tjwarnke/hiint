@@ -3,7 +3,7 @@ extends Control
 const WORLD_SCENE_PATH = "res://scenes/world.tscn"
 
 # Error handling constants
-const ERROR_TIMEOUT = 30.0  # Maximum time to wait for loading
+const ERROR_TIMEOUT = 60.0  # Maximum time to wait for loading
 const ERROR_RETRY_COUNT = 3  # Number of times to retry loading
 const ERROR_RETRY_DELAY = 1.0  # Delay between retries in seconds
 

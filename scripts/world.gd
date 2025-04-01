@@ -9,10 +9,10 @@ const DINING_ROOM_PATH = "res://scenes/dining_room.tscn"
 const LIBRARY_PATH = "res://scenes/Library.tscn"
 const BILLIARDS_ROOM_PATH = "res://scenes/billiards_room.tscn"
 const DUNGEON_PATH = "res://scenes/dungeon.tscn"
-const TUTORIAL_PATH = "res://scenes/second_tutoiral.tscnd"
+const TUTORIAL_PATH = "res://scenes/second_tutorial.tscn"
 
 # Nodes
-@onready var spawn = $Spawn
+@onready var spawn = get_node_or_null("Spawn")
 @onready var camera = $Camera2D  
 @onready var jumpscare = $Camera2D/Jumpscare
 @onready var jumpscare_timer = $Camera2D/Timer  
@@ -27,7 +27,7 @@ var wall_fall = null
 
 
 var scenes_to_load = [
-	"res://scenes/tutorial.tscn",
+	"res://scenes/second_tutorial.tscn",
 	"res://scenes/dining_room.tscn",
 	"res://scenes/library.tscn",
 	"res://scenes/billiards_room.tscn",
@@ -42,10 +42,11 @@ var move_speed = 100.0
 var camera_smooth_speed = 0.0001  # Adjust this value for smoother/slower movement
 
 func _ready():
+	spawn_player()
 	load_next_scene(0)
-	# Initialize game state
 	initialize_game_state()
-	
+	call_deferred("set_camera_target")
+
 
 func _process(delta):
 	# Handle input
@@ -53,20 +54,22 @@ func _process(delta):
 	
 	# Handle player movement
 	handle_player_movement(delta)
-	
-	# Update camera
-	update_camera(delta)
-	
 
+func set_camera_target():
+	if player:
+		camera.player = player
+	else:
+		push_error("Player is missing when setting camera target!")
+		
 func initialize_game_state():
 	darkness.show()
 	$cabin/Torch.show()
-	spawn_player()
 	jumpscare_timer.timeout.connect(hide_jumpscare)  
 	MainMusic.fade_out(MainMusic)
 
 	# Add ambient noise
 	add_child(ambient_noise)
+	
 
 func handle_input():
 	if Input.is_action_just_pressed("ui_cancel"):
@@ -86,8 +89,6 @@ func handle_player_movement(delta):
 			drop_wall()
 			player.drop_item()
 
-func update_camera(delta):
-	camera.position = camera.position.lerp(player.position, camera_smooth_speed * delta)
 
 func show_jumpscare():
 	jumpscare.show()
@@ -107,23 +108,31 @@ func start_game():
 	
 func spawn_player():
 	player = PlayerScene.instantiate()
-	if player == null:
-		print("Failed to instantiate player scene")
+	if not player:
+		push_error("Failed to instantiate player scene")
 		return
-		
+
 	add_child(player)
-	camera.player = player
 
-	# Ensure the Spawn node exists
+	# Ensure spawn exists before setting position
 	if not spawn:
-		print("Spawn node is missing!")
+		push_error("Spawn node is missing!")
 		return
-
-	# Set player's position directly at the Spawn node's position
 	player.global_position = spawn.global_position
 
-	camera.position_smoothing_enabled = true  # Enable smoothing
-	camera.position_smoothing_speed = 5.0  # Adjust speed for smooth tracking
+	# Force the camera to follow the player immediately
+	camera.player = player
+	camera.position = player.position  
+	camera.force_update_scroll()  # Ensure immediate update
+	camera.position_smoothing_enabled = true  
+	camera.position_smoothing_speed = 5.0  
+	
+	
+func initialize_camera():
+	camera.position = player.position  
+	camera.force_update_scroll()
+	camera.position_smoothing_enabled = true  
+	camera.position_smoothing_speed = 5.0  
 	
 func on_power_up(power_type: Variant) -> void:
 	if player:
@@ -202,11 +211,12 @@ func check_loading_progress(index):
 			loaded_scenes[path] = new_scene
 			print("Loaded and attached: ", path)
 		
-		# Load the next scene
-		load_next_scene(index + 1)
+		# Load next scene in the next frame
+		call_deferred("load_next_scene", index + 1)
 	elif status == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
-		await get_tree().create_timer(0.1).timeout
-		check_loading_progress(index)
+		# Use a slightly longer delay to reduce performance impact
+		await get_tree().create_timer(0.2).timeout
+		call_deferred("check_loading_progress", index)
 		
 func attach_scene(new_scene):
 	# Ensure the world scene has an "Attach" node
