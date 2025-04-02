@@ -1,10 +1,8 @@
-[gd_scene load_steps=19 format=4 uid="uid://dbgf3t0435pyx"]
+[gd_scene load_steps=18 format=4 uid="uid://crwbxkxnuuddi"]
 
 [ext_resource type="Texture2D" uid="uid://drlrvkppfw1pq" path="res://assets/images/tree_platform.png" id="2_iyxqv"]
 [ext_resource type="Texture2D" uid="uid://bvhsd7cymwp35" path="res://assets/images/background.png" id="3_wj778"]
 [ext_resource type="Texture2D" uid="uid://b13edcjn8gd5" path="res://assets/images/stump.png" id="4_8j44n"]
-[ext_resource type="Script" path="res://scripts/stump_1.gd" id="4_oed3e"]
-[ext_resource type="Script" path="res://scripts/stump_2.gd" id="6_5suep"]
 [ext_resource type="TileSet" uid="uid://d1dkd72yf40tm" path="res://assets/images/level.tres" id="6_olg7q"]
 [ext_resource type="Texture2D" uid="uid://badubj84oq6ex" path="res://assets/images/Mayro.png" id="7_ihoma"]
 [ext_resource type="Texture2D" uid="uid://cvhhgbt5q8rv0" path="res://assets/images/book_shelf_transparent.png" id="9_aicyk"]
@@ -21,11 +19,64 @@ normal = Vector2(-0.999776, 0.0211717)
 normal = Vector2(1, 0)
 distance = -0.0312483
 
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_6wjun"]
-polygon = PackedVector2Array(1154.5, 58.5, 1159.5, 41, 1167, 37.25, 1160.75, 28.5, 1162, 12.25, 1163.25, 3.5, 1202, -65.25, 1209.5, -74, 1244.5, -71.5, 1283.25, -67.75, 1310.75, -57.75, 1329.5, -49, 1330.75, -39, 1332, -2.75, 1333.25, 23.5, 1339.5, 31, 1338.25, 38.5, 1345.75, 52.25, 1342, 66, 1332, 73.5, 1319.5, 76, 1300.75, 72.25, 1277, 64.75, 1238.25, 73.5)
+[sub_resource type="GDScript" id="GDScript_b121j"]
+script/source = "extends StaticBody2D
+
+@onready var area = $Area2D
+var player_nearby = false
+
+@onready var text_box = get_node(\"/root/World/Level/UI/TextBoxMiddleTop\")
+
+func _ready():
+	area.body_entered.connect(_on_body_entered)
+	area.body_exited.connect(_on_body_exited)
+
+func _on_body_entered(body):
+	if body.is_in_group(\"player\"):
+		player_nearby = true
+
+func _on_body_exited(body):
+	if body.is_in_group(\"player\"):
+		player_nearby = false
+		await get_tree().create_timer(1.5).timeout
+		text_box.visible = false
+
+func _input(event):
+	if event.is_action_pressed(\"Interact2\") and player_nearby:
+		text_box.text = \"This is a stump.\"
+		text_box.visible = true
+"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1avt2"]
 size = Vector2(278.75, 185)
+
+[sub_resource type="GDScript" id="GDScript_8c41q"]
+script/source = "extends StaticBody2D
+
+@onready var area = $Area2D
+var player_nearby = false
+
+@onready var text_box = get_node(\"/root/World/Level/UI/TextBoxMiddleTop\")
+
+func _ready():
+	area.body_entered.connect(_on_body_entered)
+	area.body_exited.connect(_on_body_exited)
+
+func _on_body_entered(body):
+	if body.is_in_group(\"player\"):
+		player_nearby = true
+
+func _on_body_exited(body):
+	if body.is_in_group(\"player\"):
+		player_nearby = false
+		await get_tree().create_timer(1.5).timeout
+		text_box.visible = false
+
+func _input(event):
+	if event.is_action_pressed(\"Interact2\") and player_nearby:
+		text_box.text = \"This is a stump.\"
+		text_box.visible = true
+"
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_axq4i"]
 polygon = PackedVector2Array(-1340.78, 62.5, -1337.03, 45, -1330.78, 40, -1338.28, 25, -1333.28, 2.5, -1290.78, -70, -1257.03, -70, -1230.78, -66.25, -1202.03, -58.75, -1175.78, -48.75, -1168.28, -41.25, -1164.53, 30, -1158.28, 31.25, -1158.28, 37.5, -1162.03, 41.25, -1152.03, 51.25, -1153.28, 61.25, -1164.53, 73.75, -1177.03, 76.25, -1192.03, 75, -1222.03, 67.5, -1259.53, 75)
@@ -92,7 +143,7 @@ shape = SubResource("WorldBoundaryShape2D_oe1an")
 [node name="Stump1" type="StaticBody2D" parent="."]
 position = Vector2(1088, 912)
 scale = Vector2(0.8, 0.8)
-script = ExtResource("4_oed3e")
+script = SubResource("GDScript_b121j")
 
 [node name="Stump" type="Sprite2D" parent="Stump1"]
 position = Vector2(1, 2)
@@ -103,11 +154,6 @@ texture = ExtResource("4_8j44n")
 position = Vector2(3, 4)
 polygon = PackedVector2Array(-51, -52, -42, -70, -39, -71, -33, -71, 80, -47, 81, -34, 81, 10, 84, 26, 89, 28, 89, 33, 87, 37, 89, 42, 95, 48, 95, 55, 92, 61, 81, 71, 69, 73, 55, 72, 25, 62, -11, 71, -94, 60, -90, 54, -89, 47, -88, 42, -82, 39, -82, 35, -88, 26, -88, 10, -83, 3, -77, -15)
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="Stump1"]
-visible = false
-position = Vector2(3, 4)
-occluder = SubResource("OccluderPolygon2D_6wjun")
-
 [node name="Area2D" type="Area2D" parent="Stump1"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Stump1/Area2D"]
@@ -117,7 +163,7 @@ shape = SubResource("RectangleShape2D_1avt2")
 [node name="Stump2" type="StaticBody2D" parent="."]
 position = Vector2(2100.62, 915)
 scale = Vector2(0.8, 0.8)
-script = ExtResource("6_5suep")
+script = SubResource("GDScript_8c41q")
 
 [node name="Stump" type="Sprite2D" parent="Stump2"]
 position = Vector2(1, 2)

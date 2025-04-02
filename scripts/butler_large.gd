@@ -6,12 +6,12 @@ var dialogue_active = false
 var player = null
 var cut_scene_seen = false
 
-@onready var text_box = get_node("/root/World/Level/UI/TextBoxMiddleTop")
-@onready var text_box2 = get_node("/root/World/Level/UI/TextBoxMiddleTop2")
-@onready var dialogue = get_node("/root/World/Level/UI/DialogOptions")
-@onready var sprite = get_node("/root/World/Level/UI/Speaker")
-@onready var Box1 = get_node("/root/World/Level/UI/TextBoxMiddleTopBack")
-@onready var Box2 = get_node("/root/World/Level/UI/TextBoxMiddleTopBack2")
+@onready var text_box = get_node("/root/World/UI/TextBoxMiddleTop")
+@onready var text_box2 = get_node("/root/World/UI/TextBoxMiddleTop2")
+@onready var dialogue = get_node("/root/World/UI/DialogOptions")
+@onready var sprite = get_node("/root/World/UI/Speaker")
+@onready var Box1 = get_node("/root/World/UI/TextBoxMiddleTopBack")
+@onready var Box2 = get_node("/root/World/UI/TextBoxMiddleTopBack2")
 var butler = preload("res://assets/images/ButlerHead.png")
 
 func _ready():

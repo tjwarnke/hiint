@@ -3,7 +3,7 @@ extends Camera2D
 @export var player: CharacterBody2D  # Assign the player dynamically
 @export var deadzone: float = 100.0  # Free movement area before camera moves
 @export var follow_speed: float = 3.0  # Speed of camera movement
-@export var fixed_y: float = 700.0  # The locked Y position
+@export var fixed_y: float = 600.0  # The locked Y position (100 pixels higher)
 
 func _process(delta):
 	if player:

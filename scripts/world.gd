@@ -19,12 +19,12 @@ const TUTORIAL_PATH = "res://scenes/second_tutorial.tscn"
 @onready var jumpscare_noise = $Camera2D/AudioStreamPlayer
 @onready var darkness = $Camera2D/CanvasModulate
 @onready var ambient_noise = preload("res://scenes/ambient_noise.tscn").instantiate()
+@onready var world_attach_node = $Attach  # Rename to clarify this is the world's attach node
 
 # Dining room nodes (will be set after scene is loaded)
 var dining_wall = null
 var dining_threshold = null
 var wall_fall = null
-
 
 var scenes_to_load = [
 	"res://scenes/second_tutorial.tscn",
@@ -35,18 +35,24 @@ var scenes_to_load = [
 ]
 
 var loaded_scenes = {}
+var current_attach_node = null  # Track the current attach node for the next scene
 
 var moving_player = false
 var move_distance = 500
 var move_speed = 100.0
 var camera_smooth_speed = 0.0001  # Adjust this value for smoother/slower movement
 
+var loading_thread: Thread
+var mutex: Mutex
+
 func _ready():
 	spawn_player()
-	load_next_scene(0)
 	initialize_game_state()
 	call_deferred("set_camera_target")
-
+	# Start background loading immediately
+	mutex = Mutex.new()
+	loading_thread = Thread.new()
+	loading_thread.start(Callable(self, "load_scenes_in_background"))
 
 func _process(delta):
 	# Handle input
@@ -186,70 +192,102 @@ func drop_wall():
 	else:
 		print("Wall fall animation node is missing!")
 	
-func load_next_scene(index):
-	if index >= scenes_to_load.size():
-		return  # All scenes loaded
-
-	var path = scenes_to_load[index]
-	print("Loading: ", path)
-	ResourceLoader.load_threaded_request(path)
-
-	await get_tree().create_timer(0.1).timeout  # Small delay to avoid frame drops
-
-	check_loading_progress(index)
-
-func check_loading_progress(index):
-	var path = scenes_to_load[index]
-	var status = ResourceLoader.load_threaded_get_status(path)
+func load_scenes_in_background():
+	# Load first scene
+	load_first_scene()
 	
-	if status == ResourceLoader.THREAD_LOAD_LOADED:
-		var scene_resource = ResourceLoader.load_threaded_get(path)
-		if scene_resource:
-			var new_scene = scene_resource.instantiate()
-			attach_scene(new_scene)
-			loaded_scenes[path] = new_scene
-			print("Loaded and attached: ", path)
+	# Load remaining scenes in sequence
+	for i in range(1, scenes_to_load.size()):
+		load_next_scene(i)
+
+func load_first_scene():
+	if not world_attach_node:
+		push_error("World attach node is missing!")
+		return
 		
-		# Load next scene in the next frame
-		call_deferred("load_next_scene", index + 1)
-	elif status == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
-		# Use a slightly longer delay to reduce performance impact
-		await get_tree().create_timer(0.2).timeout
-		call_deferred("check_loading_progress", index)
+	var first_scene_path = scenes_to_load[0]
+	var first_scene = load(first_scene_path)
+	if not first_scene:
+		push_error("Failed to load scene: " + first_scene_path)
+		return
 		
-func attach_scene(new_scene):
-	# Ensure the world scene has an "Attach" node
-	var world_attach = $Attach  # Assuming the world scene has this node
-
-	# If this is the first scene, position it at the world's attach node
-	if loaded_scenes.size() == 0:
-		new_scene.global_position = world_attach.global_position
-	else:
-		# Get the last attached scene
-		var last_scene = loaded_scenes.values()[-1]
-
-		# Find attach points
-		var last_attach_right = last_scene.get_node_or_null("AttachRight")
-		var new_attach_left = new_scene.get_node_or_null("AttachLeft")
-
-		if last_attach_right and new_attach_left:
-			# Directly set the new scene's global position at last_attach_right
-			var offset = last_attach_right.global_position - new_attach_left.global_position
-			new_scene.global_position += offset  # Adjust scene position correctly
-		else:
-			print("Attach nodes missing in scenes!")
-
-	# Add the new scene to the world
-	add_child(new_scene)
-
-	# Debugginga
-	debug_attach_nodes(new_scene)
+	var instance = first_scene.instantiate()
+	if not instance:
+		push_error("Failed to instantiate scene: " + first_scene_path)
+		return
+		
+	# Scale the scene first
+	instance.scale = Vector2(0.5, 0.5)
+		
+	# Find the AttachLeft node in the instantiated scene
+	var attach_left = instance.get_node_or_null("AttachLeft")
+	if not attach_left:
+		push_error("AttachLeft node not found in scene: " + first_scene_path)
+		return
+		
+	# Position the scene so AttachLeft aligns with the world's Attach node
+	instance.global_position = world_attach_node.global_position - attach_left.global_position
 	
-func debug_attach_nodes(scene):
-	var attach_left = scene.get_node_or_null("AttachLeft")
-	var attach_right = scene.get_node_or_null("AttachRight")
+	# Add the scene as a child
+	call_deferred("add_child", instance)
+	
+	# Store the loaded scene and update the current attach node
+	mutex.lock()
+	loaded_scenes[first_scene_path] = instance
+	mutex.unlock()
+	
+	# Set the current attach node for the next scene
+	current_attach_node = instance.get_node_or_null("Attach")
+	if not current_attach_node:
+		push_error("Attach node not found in first scene: " + first_scene_path)
+		return
+	
+	print("Loaded first scene: ", first_scene_path)  # Debug print
 
-	if attach_left and attach_right:
-		print(scene.name, " AttachLeft: ", attach_left.global_position, " AttachRight: ", attach_right.global_position)
-	else:
-		print(scene.name, " is missing an Attach node!")
+func load_next_scene(index: int):
+	if not current_attach_node:
+		push_error("Current attach node is missing!")
+		return
+		
+	var scene_path = scenes_to_load[index]
+	var scene = load(scene_path)
+	if not scene:
+		push_error("Failed to load scene: " + scene_path)
+		return
+		
+	var instance = scene.instantiate()
+	if not instance:
+		push_error("Failed to instantiate scene: " + scene_path)
+		return
+		
+	# Scale the scene first
+	instance.scale = Vector2(0.5, 0.5)
+		
+	# Find the AttachLeft node in the instantiated scene
+	var attach_left = instance.get_node_or_null("AttachLeft")
+	if not attach_left:
+		push_error("AttachLeft node not found in scene: " + scene_path)
+		return
+		
+	# Position the scene so AttachLeft aligns with the previous scene's Attach node
+	instance.global_position = current_attach_node.global_position - attach_left.global_position
+	
+	# Add the scene as a child
+	call_deferred("add_child", instance)
+	
+	# Store the loaded scene
+	mutex.lock()
+	loaded_scenes[scene_path] = instance
+	mutex.unlock()
+	
+	# Update the current attach node for the next scene
+	current_attach_node = instance.get_node_or_null("Attach")
+	if not current_attach_node:
+		push_error("Attach node not found in loaded scene: " + scene_path)
+		return
+	
+	print("Loaded scene: ", scene_path)  # Debug print
+
+func _exit_tree():
+	if loading_thread and loading_thread.is_started():
+		loading_thread.wait_to_finish()

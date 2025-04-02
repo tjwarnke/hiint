@@ -24,12 +24,14 @@ func _ready():
 	show()
 
 func add_item(item_texture, index):
+	print("Adding item to hotbar at index: ", index)  # Debug print
 	if index < max_slots:
 		items[index] = item_texture
 		slots[index].texture = item_texture
 		update_slot_appearance()
 		
 func remove_item(index):
+	print("Removing item from hotbar at index: ", index)  # Debug print
 	if index < max_slots:
 		items[index] = null
 		slots[index].texture = null

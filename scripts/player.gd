@@ -29,7 +29,7 @@ var item_type = ""
 
 var can_move = true
 
-@onready var hotbar = $Hotbar
+@onready var hotbar = get_node("/root/World/Camera2D/Hotbar")
 var num_items := 0
 var selected_item_index := 0
 var held_items = []
@@ -37,6 +37,13 @@ var held_items = []
 func _ready():
 	jumps_left = max_jumps  # Ensure jumps are initialized correctly
 	add_to_group("player")
+	print("Player initialized with max_jumps: ", max_jumps)  # Debug print
+	
+	# Connect to powerup signals
+	print("Player ready, connecting to powerup signals")  # Debug print
+	for powerup in get_tree().get_nodes_in_group("powerup"):
+		print("Found powerup: ", powerup)  # Debug print
+		powerup.collected.connect(_on_powerup_collected)
 
 func get_input(delta):
 	if not can_move:
@@ -49,15 +56,16 @@ func get_input(delta):
 	var is_pressing_fast_fall = Input.is_action_just_pressed("fast_fall")  
 	var is_dashing_pressed = Input.is_action_just_pressed("dash")  # Dash key
 
+	print("Movement state - Jumps left: ", jumps_left, " Max jumps: ", max_jumps, " Dash able: ", dash_able, " Num dash: ", num_dash)  # Debug print
 
 	if dash_able and is_dashing_pressed and not is_dashing and num_dash > 0 and not is_on_floor():
-		#print("pushed dash")
+		print("Starting dash!")  # Debug print
 		is_dashing = true
 		dash_timer = dash_time
 		velocity.x = dash_speed * direction  # Dash in facing direction
 		gravity = 0
 		num_dash -= 1
-
+		print("Dash remaining: ", num_dash)  # Debug print
 
 	# If not dashing, apply normal movement
 	if not is_dashing:
@@ -72,9 +80,11 @@ func get_input(delta):
 
 	# Jumping logic
 	if is_jumping and jumps_left > 0:
+		print("Jumping! Jumps left: ", jumps_left)  # Debug print
 		is_fast_falling = false  
 		velocity.y = jump_force  
 		jumps_left -= 1  
+		print("After jump - Jumps left: ", jumps_left)  # Debug print
 
 	# Reduce jump height if released early
 	if is_releasing_jump and velocity.y < 0:
@@ -112,26 +122,32 @@ func _physics_process(delta):
 	# Move the character
 	move_and_slide()
 
-func on_power_up_collected(power_type: Variant) -> void:
+func _on_powerup_collected(power_type: String, power_value: int) -> void:
+	print("Powerup collected! Type: ", power_type, " Value: ", power_value)  # Debug print
 	match power_type:
 		"Jump":
-			max_jumps += 1
-			jumps_left = max_jumps  
+			print("Adding jump powerup. Current jumps: ", max_jumps)  # Debug print
+			max_jumps += power_value
+			jumps_left = max_jumps
+			print("New max jumps: ", max_jumps)  # Debug print
 		"Dash":
+			print("Adding dash powerup. Current dashes: ", max_dash)  # Debug print
 			dash_able = true
-			max_dash += 1
+			max_dash += power_value
 			num_dash = max_dash
-			
+			print("New max dashes: ", max_dash)  # Debug print
 
 func has_item(item_name: String) -> bool:
 	return item_name in inventory
 
 func pick_up_item(item):
+	print("Picking up item: ", item)  # Debug print
 	item.can_be_picked_up = false
 	item.get_parent().remove_child(item)
 	
 	# Add to held items array
 	held_items.append(item)
+	print("Held items count: ", held_items.size())  # Debug print
 	
 	# If this is the first item, select it
 	if held_items.size() == 1:
@@ -141,11 +157,15 @@ func pick_up_item(item):
 	if hotbar:
 		var sprite = item.get_node_or_null("Sprite2D")
 		if sprite:
+			print("Adding item to hotbar at index: ", num_items)  # Debug print
 			hotbar.add_item(sprite.texture, num_items)
 			num_items += 1
+			print("New num_items: ", num_items)  # Debug print
 
 func drop_item():
+	print("Attempting to drop item")  # Debug print
 	if is_on_floor() and not held_items.is_empty():  
+		print("Can drop item - Held items: ", held_items.size())  # Debug print
 		# Play throw animation
 		$player_anim.play("throw item")
 		
@@ -155,16 +175,34 @@ func drop_item():
 		var level = get_tree().current_scene.find_child("Level", true, false)
 		if level:
 			var item_to_drop = held_items[selected_item_index]
-			$TorchHolder.remove_child(item_to_drop)
+			print("Dropping item at index: ", selected_item_index)  # Debug print
+			
+			# Remove from TorchHolder first
+			if item_to_drop.get_parent() == $TorchHolder:
+				print("Removing from TorchHolder")  # Debug print
+				$TorchHolder.remove_child(item_to_drop)
+			
+			# Add to level and set position
 			level.add_child(item_to_drop)
-			item_to_drop.global_position = global_position + Vector2(60, 40)  # Offset slightly forward
+			
+			# Calculate the final position based on the animation's end state
+			var final_position = global_position + Vector2(60, 40)  # Offset slightly forward
+			item_to_drop.global_position = final_position
 			item_to_drop.global_rotation_degrees = 90
-			item_to_drop.scale = Vector2(0.9,0.9)
+			item_to_drop.scale = Vector2(0.9, 0.9)
 			item_to_drop.set_skew(0)
 			item_to_drop.can_be_picked_up = true
 			
+			# Update hotbar first
+			if hotbar:
+				print("Updating hotbar - Removing item at index: ", selected_item_index)  # Debug print
+				hotbar.remove_item(selected_item_index)
+				num_items -= 1
+				print("New num_items: ", num_items)  # Debug print
+			
 			# Remove from held items
 			held_items.remove_at(selected_item_index)
+			print("Remaining held items: ", held_items.size())  # Debug print
 			
 			# Update selection and held item
 			if held_items.is_empty():
@@ -173,14 +211,11 @@ func drop_item():
 				selected_item_index = min(selected_item_index, held_items.size() - 1)
 			update_held_item()
 			
+			# Reset TorchHolder position and rotation
 			$TorchHolder.position = Vector2(26, 8)
 			$TorchHolder.global_rotation_degrees = -65
-			$TorchHolder.global_scale = Vector2(1,1)
+			$TorchHolder.global_scale = Vector2(1, 1)
 			$TorchHolder.set_skew(0)
-			
-		if hotbar:
-			hotbar.remove_item(selected_item_index)
-			num_items -= 1
 
 func set_can_move(state):
 	can_move = state
