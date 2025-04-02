@@ -1,4 +1,5 @@
 [gd_scene load_steps=22 format=3 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=13 format=3 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://dbgf3t0435pyx" path="res://scenes/level.tscn" id="2_o8fc1"]
@@ -10,6 +11,18 @@
 [ext_resource type="PackedScene" uid="uid://b30jemxysqbka" path="res://scenes/Book.tscn" id="8_2lf6f"]
 [ext_resource type="Script" path="res://scripts/camera_2d.gd" id="9_7iits"]
 [ext_resource type="Script" uid="uid://ddi7dok0wovj8" path="res://scenes/book.gd" id="9_pm21f"]
+[ext_resource type="PackedScene" uid="uid://ckf6g5rpvthh" path="res://scenes/add_jump.tscn" id="3_xo05s"]
+[ext_resource type="PackedScene" uid="uid://bh5xpj4kmc4b5" path="res://scenes/side_dash.tscn" id="4_dss4m"]
+[ext_resource type="PackedScene" uid="uid://cy0fd33il7830" path="res://scenes/torch.tscn" id="6_lakw3"]
+[ext_resource type="Script" uid="uid://cvx006n8smlea" path="res://scenes/torch.gd" id="7_dss4m"]
+[ext_resource type="PackedScene" uid="uid://dcdv6e0x7117h" path="res://scenes/8Ball.tscn" id="7_pm21f"]
+[ext_resource type="PackedScene" uid="uid://caw125fejkkxe" path="res://scenes/Book.tscn" id="8_2lf6f"]
+[ext_resource type="Script" uid="uid://cxs3k4lmkyg8b" path="res://scripts/camera_2d.gd" id="9_7iits"]
+[ext_resource type="Script" uid="uid://cvx006n8smlea" path="res://scripts/torch.gd" id="7_dss4m"]
+[ext_resource type="PackedScene" uid="uid://b1ivw32oueigk" path="res://scenes/cabin.tscn" id="7_e3hyu"]
+[ext_resource type="PackedScene" uid="uid://dcdv6e0x7117h" path="res://scenes/8Ball.tscn" id="7_pm21f"]
+[ext_resource type="PackedScene" uid="uid://caw125fejkkxe" path="res://scenes/Book.tscn" id="8_2lf6f"]
+[ext_resource type="Script" uid="uid://cxs3k4lmkyg8b" path="res://scripts/camera_2d.gd" id="9_7iits"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="10_dss4m"]
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://assets/images/proxy-image-1.jpg" id="10_oo54l"]
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://assets/audio/scream.mp3" id="11_kpybi"]
@@ -115,7 +128,7 @@ position = Vector2(-985, -542)
 color = Color(0.0475577, 0.0475577, 0.0475576, 1)
 
 [node name="PointLight2D2" type="PointLight2D" parent="."]
-position = Vector2(3154, 744.632)
+position = Vector2(5529, 577)
 scale = Vector2(0.56, 1.42684)
 color = Color(1, 0.801031, 0.0157638, 1)
 energy = 1.07
@@ -123,21 +136,49 @@ blend_mode = 2
 texture = ExtResource("13_xgqkh")
 texture_scale = 0.1
 
-[node name="Library" parent="." instance=ExtResource("15_xo05s")]
-position = Vector2(5398, 287)
-scale = Vector2(0.5, 0.5)
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+position = Vector2(2811, -290)
+amount = 5000
+texture = ExtResource("10_dss4m")
+lifetime = 2.0
+preprocess = 5.0
+fixed_fps = 24
+emission_shape = 3
+emission_rect_extents = Vector2(3000, 1)
+angle_min = -1.0
+angle_max = 1.0
+scale_amount_min = 0.2
+scale_amount_max = 0.8
+scale_amount_curve = SubResource("Curve_7t5mc")
+color = Color(0.442911, 0.442911, 0.442911, 1)
 
-[node name="BilliardsRoom" parent="." instance=ExtResource("16_dss4m")]
-position = Vector2(7478, 118)
-scale = Vector2(0.5, 0.5)
+[node name="cabin" parent="." instance=ExtResource("7_e3hyu")]
 
-[node name="Tutorial" parent="." instance=ExtResource("17_7t5mc")]
-position = Vector2(-412, -4886)
+[node name="Torch" parent="cabin" groups=["item"] instance=ExtResource("6_lakw3")]
+z_index = 2
+position = Vector2(478, 831)
+rotation = 0.0
+script = ExtResource("7_dss4m")
+
+[node name="Book" parent="cabin" groups=["item"] instance=ExtResource("8_2lf6f")]
+z_index = 1
+position = Vector2(731, 2927)
+
+[node name="8Ball" parent="cabin" groups=["item"] instance=ExtResource("7_pm21f")]
+z_index = 1
+position = Vector2(380, 832)
 
 [node name="Dungeon" parent="." instance=ExtResource("18_lakw3")]
-position = Vector2(4472, 1807)
+position = Vector2(4241, 1697)
 scale = Vector2(0.5, 0.5)
 
+[node name="Attach" type="Node2D" parent="."]
+position = Vector2(2363, 877)
+
+[node name="Spawn" type="Node2D" parent="."]
+position = Vector2(335, 740)
+
+[connection signal="torch_picked" from="cabin/Torch" to="." method="_on_torch_picked"]
 [node name="Hotbar" parent="." instance=ExtResource("20_2lf6f")]
 visibility_layer = 512
 z_index = 10

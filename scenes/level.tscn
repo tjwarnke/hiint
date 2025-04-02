@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://badubj84oq6ex" path="res://assets/images/Mayro.png" id="7_ihoma"]
 [ext_resource type="Script" uid="uid://cjkogtmepj6nh" path="res://scripts/mayro.gd" id="7_n6hdu"]
 [ext_resource type="Texture2D" uid="uid://cvhhgbt5q8rv0" path="res://assets/images/book_shelf_transparent.png" id="9_aicyk"]
-[ext_resource type="Script" path="res://scripts/book_shelf.gd" id="10_8b0r0"]
+[ext_resource type="Script" uid="uid://c8a1h1fvehgc6" path="res://scripts/book_shelf.gd" id="10_8b0r0"]
 [ext_resource type="Texture2D" uid="uid://dualh52hqk7gi" path="res://assets/images/TextBoxMiddleTop.png" id="11_t1rx8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p2d4g"]
@@ -172,7 +172,7 @@ position = Vector2(169.869, -274.236)
 shape = SubResource("CapsuleShape2D_ghkwx")
 
 [node name="UI" type="CanvasLayer" parent="."]
-layer = 11
+layer = 2
 
 [node name="TextBoxMiddleTop" type="Label" parent="UI"]
 z_index = 2
@@ -219,6 +219,25 @@ offset_bottom = 199.0
 [node name="Speaker" type="Sprite2D" parent="UI"]
 z_index = 2
 position = Vector2(783, 70)
+
+[node name="Press \'f\'" type="Label" parent="."]
+offset_left = 712.0
+offset_top = 817.0
+offset_right = 989.0
+offset_bottom = 848.0
+theme_override_font_sizes/font_size = 18
+text = "Press 'f' to interact"
+horizontal_alignment = 1
+
+[node name="Press \'f\'2" type="Label" parent="."]
+z_index = 1
+offset_left = 364.0
+offset_top = 729.0
+offset_right = 641.0
+offset_bottom = 760.0
+theme_override_font_sizes/font_size = 18
+text = "Press 'f' to interact"
+horizontal_alignment = 1
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="."]
 z_index = -1

@@ -29,10 +29,10 @@ func _on_body_exited(body):
 		text_box.visible = false
 		player_nearby = false
 		await get_tree().create_timer(1.5).timeout
-		text_box.visible = false
-		dialogue.visible = false
-		sprite.visible = false
-		Box1.visible = false
+		#text_box.visible = false
+		#dialogue.visible = false
+		#sprite.visible = false
+		#Box1.visible = false
 	
 func dialogue_choose(response):
 	dialogue.visible = false

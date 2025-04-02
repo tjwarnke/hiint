@@ -1,0 +1,110 @@
+[gd_scene load_steps=10 format=3 uid="uid://b1ivw32oueigk"]
+
+[ext_resource type="Texture2D" uid="uid://cvhhgbt5q8rv0" path="res://assets/images/book_shelf_transparent.png" id="1_qf7ms"]
+[ext_resource type="Script" uid="uid://c8a1h1fvehgc6" path="res://scripts/book_shelf.gd" id="2_0rnjq"]
+[ext_resource type="Texture2D" uid="uid://badubj84oq6ex" path="res://assets/images/Mayro.png" id="3_g3osi"]
+[ext_resource type="Script" uid="uid://cjkogtmepj6nh" path="res://scripts/mayro.gd" id="4_on2ml"]
+[ext_resource type="Texture2D" uid="uid://dualh52hqk7gi" path="res://assets/images/TextBoxMiddleTop.png" id="5_fj1ae"]
+[ext_resource type="PackedScene" uid="uid://cy0j7muohkimm" path="res://scenes/tutorial_old.tscn" id="6_qf7ms"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_oe1an"]
+normal = Vector2(1, 0)
+distance = -0.0312483
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h6smj"]
+size = Vector2(152, 200)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ghkwx"]
+radius = 180.163
+height = 984.021
+
+[node name="Level" type="Node2D"]
+z_index = -1
+
+[node name="Attach" type="Node2D" parent="."]
+position = Vector2(2365, 877)
+
+[node name="WorldBounds" type="StaticBody2D" parent="."]
+position = Vector2(-98, 445)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="WorldBounds"]
+position = Vector2(99, 85)
+shape = SubResource("WorldBoundaryShape2D_oe1an")
+
+[node name="Book Shelf" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(185, 780)
+texture = ExtResource("1_qf7ms")
+script = ExtResource("2_0rnjq")
+
+[node name="Area2D" type="Area2D" parent="Book Shelf"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Book Shelf/Area2D"]
+position = Vector2(3, -5)
+shape = SubResource("RectangleShape2D_h6smj")
+
+[node name="Mayro" type="Sprite2D" parent="."]
+position = Vector2(930, 825)
+scale = Vector2(0.194268, 0.123981)
+texture = ExtResource("3_g3osi")
+script = ExtResource("4_on2ml")
+
+[node name="Area2D" type="Area2D" parent="Mayro"]
+position = Vector2(-216.196, 306.499)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mayro/Area2D"]
+position = Vector2(169.869, -274.236)
+shape = SubResource("CapsuleShape2D_ghkwx")
+
+[node name="UI" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="TextBoxMiddleTop" type="Label" parent="UI"]
+z_index = 2
+offset_left = 856.0
+offset_top = 41.0
+offset_right = 1478.0
+offset_bottom = 114.0
+
+[node name="TextBoxMiddleTopBack" type="Sprite2D" parent="UI"]
+visible = false
+z_index = 1
+position = Vector2(1002, 53)
+scale = Vector2(0.484616, 0.57)
+texture = ExtResource("5_fj1ae")
+
+[node name="TextBoxDialog" type="Sprite2D" parent="UI"]
+visible = false
+z_index = 1
+position = Vector2(1002, 107.25)
+scale = Vector2(0.484616, 0.675)
+texture = ExtResource("5_fj1ae")
+
+[node name="TextBoxMiddleTop2" type="Label" parent="UI"]
+z_index = 2
+offset_left = 862.0
+offset_top = 68.0
+offset_right = 1484.0
+offset_bottom = 141.0
+
+[node name="TextBoxMiddleTopBack2" type="Sprite2D" parent="UI"]
+visible = false
+z_index = 1
+position = Vector2(1018.5, 66)
+scale = Vector2(0.524616, 0.7)
+texture = ExtResource("5_fj1ae")
+
+[node name="DialogOptions" type="Label" parent="UI"]
+z_index = 2
+offset_left = 865.0
+offset_top = 79.0
+offset_right = 1329.0
+offset_bottom = 199.0
+
+[node name="Speaker" type="Sprite2D" parent="UI"]
+z_index = 2
+position = Vector2(783, 70)
+
+[node name="tutorial_old" parent="." instance=ExtResource("6_qf7ms")]
+position = Vector2(-2, -147)
+scale = Vector2(0.5, 0.5)
