@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://caw125fejkkxe"]
+[gd_scene load_steps=4 format=3 uid="uid://b30jemxysqbka"]
 
 [ext_resource type="Script" uid="uid://bh1h4s8dp03pc" path="res://scripts/item.gd" id="1_el5v3"]
 [ext_resource type="Texture2D" uid="uid://b6y0ovgi0j4yl" path="res://assets/images/HIINT BOOK.png" id="2_retch"]
@@ -14,7 +14,7 @@ collision_layer = 65535
 collision_mask = 65535
 script = ExtResource("1_el5v3")
 
-[node name="Book" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0.0185127, 0.764456)
 scale = Vector2(0.115259, 0.0836588)
 texture = ExtResource("2_retch")
