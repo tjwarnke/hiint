@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://dbgf3t0435pyx"]
+[gd_scene load_steps=19 format=4 uid="uid://dbgf3t0435pyx"]
 
 [ext_resource type="Texture2D" uid="uid://drlrvkppfw1pq" path="res://assets/images/tree_platform.png" id="2_iyxqv"]
 [ext_resource type="Texture2D" uid="uid://bvhsd7cymwp35" path="res://assets/images/background.png" id="3_wj778"]
@@ -7,7 +7,6 @@
 [ext_resource type="Script" path="res://scripts/stump_2.gd" id="6_5suep"]
 [ext_resource type="TileSet" uid="uid://d1dkd72yf40tm" path="res://assets/images/level.tres" id="6_olg7q"]
 [ext_resource type="Texture2D" uid="uid://badubj84oq6ex" path="res://assets/images/Mayro.png" id="7_ihoma"]
-[ext_resource type="Script" uid="uid://cjkogtmepj6nh" path="res://scripts/mayro.gd" id="7_n6hdu"]
 [ext_resource type="Texture2D" uid="uid://cvhhgbt5q8rv0" path="res://assets/images/book_shelf_transparent.png" id="9_aicyk"]
 [ext_resource type="Script" uid="uid://c8a1h1fvehgc6" path="res://scripts/book_shelf.gd" id="10_8b0r0"]
 [ext_resource type="Texture2D" uid="uid://dualh52hqk7gi" path="res://assets/images/TextBoxMiddleTop.png" id="11_t1rx8"]
@@ -162,7 +161,6 @@ shape = SubResource("RectangleShape2D_h6smj")
 position = Vector2(858, 908)
 scale = Vector2(0.194268, 0.123981)
 texture = ExtResource("7_ihoma")
-script = ExtResource("7_n6hdu")
 
 [node name="Area2D" type="Area2D" parent="Mayro"]
 position = Vector2(-216.196, 306.499)
