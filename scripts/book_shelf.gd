@@ -23,8 +23,7 @@ func _on_body_exited(body):
 	if body.is_in_group("player"):
 		player_nearby = false
 		await get_tree().create_timer(1.5).timeout
-		text_box.visible = false
-		dialogue.visible = false
+
 	
 func grab_item(response):
 	dialogue.visible = false

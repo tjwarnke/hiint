@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://cbgltbu076cth"]
+[gd_scene load_steps=9 format=3 uid="uid://cbgltbu076cth"]
 
 [ext_resource type="Script" uid="uid://cxxw4voa3gu27" path="res://scripts/ambient_noise.gd" id="1_thqkt"]
-[ext_resource type="AudioStream" uid="uid://dyecu2l7unodx" path="res://assets/audio/rain.wav" id="2_u8tlf"]
-[ext_resource type="AudioStream" uid="uid://bdu4wkqdijrwq" path="res://assets/audio/Birds.wav" id="3_kr0th"]
-[ext_resource type="AudioStream" uid="uid://b7y85kwhdmoiw" path="res://assets/audio/wind.wav" id="4_etaa8"]
+[ext_resource type="AudioStream" uid="uid://bmcp6ece7x2ox" path="res://assets/audio/Birds.mp3" id="2_ax3hl"]
+[ext_resource type="AudioStream" uid="uid://dw2l57an447gx" path="res://assets/audio/rain.mp3" id="2_u8tlf"]
+[ext_resource type="AudioStream" uid="uid://dqfi1obov5j27" path="res://assets/audio/wind.mp3" id="4_kr0th"]
 [ext_resource type="AudioStream" uid="uid://dbe1yiv0igm5y" path="res://assets/audio/horrorShing.wav" id="5_ga43x"]
 [ext_resource type="AudioStream" uid="uid://cwx7wcl41385m" path="res://assets/audio/horrorWosh.mp3" id="6_73sa3"]
 [ext_resource type="AudioStream" uid="uid://7djxedqh17ed" path="res://assets/audio/horrorBoom.wav" id="7_ae0qw"]
+[ext_resource type="AudioStream" uid="uid://d4nig0aynotop" path="res://assets/audio/game_level.mp3" id="8_u8tlf"]
 
 [node name="AmbientNoise" type="Node"]
 script = ExtResource("1_thqkt")
@@ -16,11 +17,12 @@ stream = ExtResource("2_u8tlf")
 autoplay = true
 
 [node name="Birds" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_kr0th")
+stream = ExtResource("2_ax3hl")
+volume_db = -6.0
 autoplay = true
 
 [node name="Wind" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_etaa8")
+stream = ExtResource("4_kr0th")
 volume_db = -11.429
 autoplay = true
 
@@ -33,3 +35,7 @@ stream = ExtResource("6_73sa3")
 
 [node name="Boom" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_ae0qw")
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_u8tlf")
+volume_db = -6.0

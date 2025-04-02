@@ -6,7 +6,7 @@ var dash_speed = 1000  # Speed for dashing
 var acceleration = 1000
 var deceleration = 1000
 var air_control = 1100  # Less control in the air
-var jump_force = -700  
+var jump_force = -800  
 var gravity = 1750
 var fast_fall_gravity = 5000  # Stronger gravity when fast-falling
 var jump_release_reduction = 0.5  # Reduces jump height if released early
@@ -22,7 +22,6 @@ var target_speed = 0
 var is_fast_falling = false  # Track fast-fall state
 var max_dash = 0
 var num_dash = 0
-
 
 @export var max_jumps: int = 1  
 var jumps_left: int
@@ -59,7 +58,7 @@ func get_input(delta):
 	if not is_dashing:
 		target_speed = max_speed * direction
 		var accel = acceleration if is_on_floor() else air_control
-		var decel = deceleration if is_on_floor() else air_control / 2
+		var decel = deceleration if is_on_floor() else air_control / 2.0
 		gravity = expected_gravity
 		if direction != 0:
 			velocity.x = move_toward(velocity.x, target_speed, accel * delta)
@@ -126,22 +125,44 @@ func has_item(item_name: String) -> bool:
 var held_item = null
 
 func pick_up_item(item):
+
 	if held_item == null:
 		held_item = item
 		item.can_be_picked_up = false
 		item.get_parent().remove_child(item)
 		$TorchHolder.add_child(item)
 		item.position = Vector2.ZERO
+		
 
 func drop_item():
-	if held_item != null and is_on_floor():  # Ensure the player is on a surface
+	if held_item != null and is_on_floor():  
+		# Play throw animation
+		$player_anim.play("throw item")
+		
+		# Wait for the animation to finish before dropping the item
+		await $player_anim.animation_finished
+		
 		held_item.can_be_picked_up = true
 		var level = get_tree().current_scene.find_child("Level", true, false)
 		if level:
 			$TorchHolder.remove_child(held_item)
 			level.add_child(held_item)
-			held_item.position = global_position + Vector2(10, -10)
-			held_item = null
+			held_item.global_position = global_position + Vector2(60, 40)  # Offset slightly forward
+			held_item.global_rotation_degrees = 90
+			held_item.scale = Vector2(0.9,0.9)
+			held_item.set_skew(0)
+			$TorchHolder.position = Vector2(26, 8)
+			$TorchHolder.global_rotation_degrees = -65
+			$TorchHolder.global_scale = Vector2(1,1)
+			$TorchHolder.set_skew(0)
+
+		# Reset `held_item` and ensure `TorchHolder` is empty
+		held_item = null
+		for child in $TorchHolder.get_children():
+			$TorchHolder.remove_child(child)
+
+			
+			
 
 func set_can_move(state):
 	can_move = state

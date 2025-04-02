@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://dls4gqrvoyvx6"]
+[gd_scene load_steps=6 format=3 uid="uid://dls4gqrvoyvx6"]
 
 [ext_resource type="Script" uid="uid://dj4f0hbfhj8ka" path="res://scripts/loading_screen.gd" id="1_yufpw"]
+[ext_resource type="Texture2D" uid="uid://ddtr00s176wej" path="res://assets/images/hiint_logo_transparent.png" id="2_7kfin"]
+[ext_resource type="Texture2D" uid="uid://c34a11rjxt3k7" path="res://assets/images/haunted_mansion.jpg" id="3_nk48g"]
+[ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="4_bq4j4"]
+
+[sub_resource type="Gradient" id="Gradient_ew5yv"]
+offsets = PackedFloat32Array(0.146667, 0.153333, 0.986667)
+colors = PackedColorArray(0.165656, 0.165656, 0.165656, 1, 0.377919, 0.377919, 0.377919, 1, 0.310617, 0.310617, 0.310617, 1)
 
 [node name="LoadingScreen" type="Control"]
 layout_mode = 3
@@ -9,17 +16,66 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_yufpw")
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 300.0
-offset_top = 320.0
-offset_right = 375.0
-offset_bottom = 343.0
-text = "Loading..."
+[node name="Background" type="Node2D" parent="."]
+
+[node name="hauntedMansion" type="Sprite2D" parent="Background"]
+z_index = -1
+position = Vector2(961.25, 539.25)
+scale = Vector2(1.87744, 1.05811)
+texture = ExtResource("3_nk48g")
+
+[node name="Logo" type="Node2D" parent="."]
+
+[node name="HIINT" type="Sprite2D" parent="Logo"]
+position = Vector2(1018, 278)
+texture = ExtResource("2_7kfin")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+position = Vector2(479, -272)
+rotation = -0.450062
+amount = 200
+texture = ExtResource("4_bq4j4")
+lifetime = 1.8
+preprocess = 2.0
+local_coords = true
+emission_shape = 3
+emission_rect_extents = Vector2(1100, 1)
+direction = Vector2(0, 1)
+spread = 0.0
+initial_velocity_min = 20.0
+initial_velocity_max = 200.0
+scale_amount_min = 0.5
+scale_amount_max = 0.75
+color_ramp = SubResource("Gradient_ew5yv")
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
-layout_mode = 0
-offset_left = 342.0
-offset_top = 237.0
-offset_right = 737.0
-offset_bottom = 291.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 536.0
+offset_top = 545.0
+offset_right = 1333.0
+offset_bottom = 601.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 860.0
+offset_top = 629.0
+offset_right = 1009.0
+offset_bottom = 674.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "Loading..."
+horizontal_alignment = 1
