@@ -9,7 +9,7 @@ var player = null
 @onready var dialogue = get_node("/root/World/Level/UI/DialogOptions")
 @onready var sprite = get_node("/root/World/Level/UI/Speaker")
 @onready var Box1 = get_node("/root/World/Level/UI/TextBoxMiddleTopBack")
-@onready var Box2 = get_node("/root/World/Level/UI/TextBoxMiddleTopBack2")
+@onready var Box2 = get_node("/root/World/Level/UI/TextBoxDialog")
 var mayro = preload("res://assets/images/MayroHead.png")
 
 func _ready():
@@ -26,10 +26,10 @@ func _on_body_exited(body):
 	if body.is_in_group("player"):
 		player_nearby = false
 		await get_tree().create_timer(1.5).timeout
-		text_box.visible = false
-		dialogue.visible = false
-		sprite.visible = false
-		Box1.visible = false
+		#text_box.visible = false
+		#dialogue.visible = false
+		#sprite.visible = false
+		#Box1.visible = false
 	
 func dialogue_choose(response):
 	dialogue.visible = false
