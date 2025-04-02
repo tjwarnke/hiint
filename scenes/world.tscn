@@ -54,7 +54,6 @@ drag_right_margin = 0.0
 drag_bottom_margin = 0.0
 editor_draw_screen = false
 script = ExtResource("11_7iits")
-fixed_y = 700.0
 
 [node name="Jumpscare" type="Sprite2D" parent="Camera2D"]
 visible = false
@@ -75,6 +74,20 @@ visible = false
 z_index = 1
 position = Vector2(-985, -542)
 color = Color(0.0475577, 0.0475577, 0.0475576, 1)
+
+[node name="Hotbar" parent="Camera2D" instance=ExtResource("22_2lf6f")]
+z_index = 100
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = 400.0
+offset_right = 187.0
+offset_bottom = 464.0
+grow_horizontal = 2
+grow_vertical = 0
 
 [node name="PointLight2D2" type="PointLight2D" parent="."]
 position = Vector2(5529, 577)
@@ -105,7 +118,7 @@ color = Color(0.442911, 0.442911, 0.442911, 1)
 
 [node name="Torch" parent="cabin" groups=["item"] instance=ExtResource("6_lakw3")]
 z_index = 2
-position = Vector2(478, 831)
+position = Vector2(498, 823)
 rotation = 0.0
 script = ExtResource("7_dss4m")
 
@@ -122,13 +135,5 @@ position = Vector2(2363, 877)
 
 [node name="Spawn" type="Node2D" parent="."]
 position = Vector2(335, 740)
-
-[node name="Hotbar" parent="." instance=ExtResource("22_2lf6f")]
-visibility_layer = 512
-z_index = 10
-offset_left = 444.0
-offset_top = 510.0
-offset_right = 444.0
-offset_bottom = 510.0
 
 [connection signal="torch_picked" from="cabin/Torch" to="." method="_on_torch_picked"]

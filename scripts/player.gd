@@ -29,6 +29,11 @@ var item_type = ""
 
 var can_move = true
 
+@onready var hotbar = $Hotbar
+var num_items := 0
+var selected_item_index := 0
+var held_items = []
+
 func _ready():
 	jumps_left = max_jumps  # Ensure jumps are initialized correctly
 	add_to_group("player")
@@ -121,57 +126,96 @@ func on_power_up_collected(power_type: Variant) -> void:
 func has_item(item_name: String) -> bool:
 	return item_name in inventory
 
-var held_item = null
-
-@onready var hotbar = get_tree().current_scene.find_child("Hotbar", true, false)
-var num_items := 0
-
 func pick_up_item(item):
-	#if held_item == null:
-		#held_item = item
-		item.can_be_picked_up = false
-		item.get_parent().remove_child(item)
-		if num_items == 0:
-			$TorchHolder.add_child(item)
-		item.position = Vector2.ZERO
-		if hotbar:
-			var sprite = item.get_node_or_null("Sprite2D")
-			if sprite:
-				hotbar.add_item(sprite.texture, num_items)
-				num_items += 1
+	item.can_be_picked_up = false
+	item.get_parent().remove_child(item)
+	
+	# Add to held items array
+	held_items.append(item)
+	
+	# If this is the first item, select it
+	if held_items.size() == 1:
+		selected_item_index = 0
+		update_held_item()
+	
+	if hotbar:
+		var sprite = item.get_node_or_null("Sprite2D")
+		if sprite:
+			hotbar.add_item(sprite.texture, num_items)
+			num_items += 1
 
 func drop_item():
-	#held_item != null and
-	if  is_on_floor():  
+	if is_on_floor() and not held_items.is_empty():  
 		# Play throw animation
 		$player_anim.play("throw item")
 		
 		# Wait for the animation to finish before dropping the item
 		await $player_anim.animation_finished
 		
-		#held_item.can_be_picked_up = true
 		var level = get_tree().current_scene.find_child("Level", true, false)
 		if level:
-			$TorchHolder.remove_child(held_item)
-			level.add_child(held_item)
-			held_item.global_position = global_position + Vector2(60, 40)  # Offset slightly forward
-			held_item.global_rotation_degrees = 90
-			held_item.scale = Vector2(0.9,0.9)
-			held_item.set_skew(0)
+			var item_to_drop = held_items[selected_item_index]
+			$TorchHolder.remove_child(item_to_drop)
+			level.add_child(item_to_drop)
+			item_to_drop.global_position = global_position + Vector2(60, 40)  # Offset slightly forward
+			item_to_drop.global_rotation_degrees = 90
+			item_to_drop.scale = Vector2(0.9,0.9)
+			item_to_drop.set_skew(0)
+			item_to_drop.can_be_picked_up = true
+			
+			# Remove from held items
+			held_items.remove_at(selected_item_index)
+			
+			# Update selection and held item
+			if held_items.is_empty():
+				selected_item_index = 0
+			else:
+				selected_item_index = min(selected_item_index, held_items.size() - 1)
+			update_held_item()
+			
 			$TorchHolder.position = Vector2(26, 8)
 			$TorchHolder.global_rotation_degrees = -65
 			$TorchHolder.global_scale = Vector2(1,1)
 			$TorchHolder.set_skew(0)
+			
 		if hotbar:
-			var sprite = held_item.get_node_or_null("Sprite2D")
-			if sprite:
-				hotbar.remove_item(sprite.texture)
-				num_items -= 1
-
-		# Reset `held_item` and ensure `TorchHolder` is empty
-		held_item = null
-		for child in $TorchHolder.get_children():
-			$TorchHolder.remove_child(child)
+			hotbar.remove_item(selected_item_index)
+			num_items -= 1
 
 func set_can_move(state):
 	can_move = state
+
+func _input(event):
+	if event.is_action_pressed("number_1"):
+		switch_item(0)
+	elif event.is_action_pressed("number_2"):
+		switch_item(1)
+	elif event.is_action_pressed("number_3"):
+		switch_item(2)
+	elif event.is_action_pressed("number_4"):
+		switch_item(3)
+	elif event.is_action_pressed("number_5"):
+		switch_item(4)
+
+func switch_item(index: int):
+	if index >= held_items.size():
+		return
+		
+	selected_item_index = index
+	update_held_item()
+
+func update_held_item():
+	# Clear TorchHolder
+	for child in $TorchHolder.get_children():
+		$TorchHolder.remove_child(child)
+	
+	# If we have items and a valid selection
+	if not held_items.is_empty() and selected_item_index < held_items.size():
+		var selected_item = held_items[selected_item_index]
+		$TorchHolder.add_child(selected_item)
+		selected_item.position = Vector2.ZERO
+		selected_item.visible = true
+		
+		# Update hotbar selection
+		if hotbar:
+			hotbar.set_selected(selected_item_index)

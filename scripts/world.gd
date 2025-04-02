@@ -97,14 +97,6 @@ func show_jumpscare():
 func hide_jumpscare():
 	jumpscare.hide()
 
-func start_game():
-	var title_music = get_node("StartMenu/AudioStreamPlayer2D")
-	if title_music:
-		title_music.fade_out_music()  
-	darkness.show()
-	$Level/Torch.show()
-	$TorchLight.show()
-	spawn_player()
 	
 func spawn_player():
 	player = PlayerScene.instantiate()
@@ -120,19 +112,26 @@ func spawn_player():
 		return
 	player.global_position = spawn.global_position
 
-	# Force the camera to follow the player immediately
+	# Set up the camera
 	camera.player = player
-	camera.position = player.position  
-	camera.force_update_scroll()  # Ensure immediate update
-	camera.position_smoothing_enabled = true  
-	camera.position_smoothing_speed = 5.0  
-	
+	camera.position = Vector2(player.position.x, camera.fixed_y)
+	camera.position_smoothing_enabled = true
+	camera.position_smoothing_speed = 5.0
+	camera.drag_horizontal_enabled = true
+	camera.drag_left_margin = 0.1
+	camera.drag_top_margin = 0.1
+	camera.drag_right_margin = 0.1
+	camera.drag_bottom_margin = 0.1
 	
 func initialize_camera():
-	camera.position = player.position  
-	camera.force_update_scroll()
-	camera.position_smoothing_enabled = true  
-	camera.position_smoothing_speed = 5.0  
+	camera.position = Vector2(player.position.x, camera.fixed_y)
+	camera.position_smoothing_enabled = true
+	camera.position_smoothing_speed = 5.0
+	camera.drag_horizontal_enabled = true
+	camera.drag_left_margin = 0.1
+	camera.drag_top_margin = 0.1
+	camera.drag_right_margin = 0.1
+	camera.drag_bottom_margin = 0.1
 	
 func on_power_up(power_type: Variant) -> void:
 	if player:
