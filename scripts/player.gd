@@ -1,12 +1,12 @@
 extends CharacterBody2D
 
 # Movement variables
-var max_speed = 400
-var dash_speed = 1000  # Speed for dashing
-var acceleration = 1000
-var deceleration = 1000
-var air_control = 1100  # Less control in the air
-var jump_force = -800  
+var max_speed = 800
+var dash_speed = 2000  # Speed for dashing
+var acceleration = 2000
+var deceleration = 2000
+var air_control = 2200  # Less control in the air
+var jump_force = -1600  
 var gravity = 1750
 var fast_fall_gravity = 5000  # Stronger gravity when fast-falling
 var jump_release_reduction = 0.5  # Reduces jump height if released early
@@ -37,10 +37,9 @@ var held_items = []
 func _ready():
 	jumps_left = max_jumps  # Ensure jumps are initialized correctly
 	add_to_group("player")
-	print("Player initialized with max_jumps: ", max_jumps)  # Debug print
+
 	
 	# Connect to powerup signals
-	print("Player ready, connecting to powerup signals")  # Debug print
 	for powerup in get_tree().get_nodes_in_group("powerup"):
 		print("Found powerup: ", powerup)  # Debug print
 		powerup.collected.connect(_on_powerup_collected)
@@ -56,7 +55,7 @@ func get_input(delta):
 	var is_pressing_fast_fall = Input.is_action_just_pressed("fast_fall")  
 	var is_dashing_pressed = Input.is_action_just_pressed("dash")  # Dash key
 
-	print("Movement state - Jumps left: ", jumps_left, " Max jumps: ", max_jumps, " Dash able: ", dash_able, " Num dash: ", num_dash)  # Debug print
+
 
 	if dash_able and is_dashing_pressed and not is_dashing and num_dash > 0 and not is_on_floor():
 		print("Starting dash!")  # Debug print
@@ -65,7 +64,7 @@ func get_input(delta):
 		velocity.x = dash_speed * direction  # Dash in facing direction
 		gravity = 0
 		num_dash -= 1
-		print("Dash remaining: ", num_dash)  # Debug print
+		
 
 	# If not dashing, apply normal movement
 	if not is_dashing:
@@ -80,11 +79,10 @@ func get_input(delta):
 
 	# Jumping logic
 	if is_jumping and jumps_left > 0:
-		print("Jumping! Jumps left: ", jumps_left)  # Debug print
 		is_fast_falling = false  
 		velocity.y = jump_force  
 		jumps_left -= 1  
-		print("After jump - Jumps left: ", jumps_left)  # Debug print
+		
 
 	# Reduce jump height if released early
 	if is_releasing_jump and velocity.y < 0:
@@ -123,31 +121,24 @@ func _physics_process(delta):
 	move_and_slide()
 
 func _on_powerup_collected(power_type: String, power_value: int) -> void:
-	print("Powerup collected! Type: ", power_type, " Value: ", power_value)  # Debug print
 	match power_type:
 		"Jump":
-			print("Adding jump powerup. Current jumps: ", max_jumps)  # Debug print
 			max_jumps += power_value
 			jumps_left = max_jumps
-			print("New max jumps: ", max_jumps)  # Debug print
 		"Dash":
-			print("Adding dash powerup. Current dashes: ", max_dash)  # Debug print
 			dash_able = true
 			max_dash += power_value
 			num_dash = max_dash
-			print("New max dashes: ", max_dash)  # Debug print
 
 func has_item(item_name: String) -> bool:
 	return item_name in inventory
 
 func pick_up_item(item):
-	print("Picking up item: ", item)  # Debug print
 	item.can_be_picked_up = false
 	item.get_parent().remove_child(item)
 	
 	# Add to held items array
 	held_items.append(item)
-	print("Held items count: ", held_items.size())  # Debug print
 	
 	# If this is the first item, select it
 	if held_items.size() == 1:

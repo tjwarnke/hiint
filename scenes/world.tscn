@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=13 format=3 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://ctbtqie8fru15" path="res://scenes/torch.tscn" id="6_lakw3"]
@@ -10,12 +10,14 @@
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://assets/images/proxy-image-1.jpg" id="14_oo54l"]
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://assets/audio/scream.mp3" id="15_kpybi"]
 [ext_resource type="PackedScene" uid="uid://cjhvjqqvgyv6m" path="res://scenes/hotbar.tscn" id="22_2lf6f"]
+[ext_resource type="PackedScene" path="res://scenes/SceneManager.tscn" id="23_scene"]
 
 [sub_resource type="Curve" id="Curve_7t5mc"]
 _data = [Vector2(0.00729926, 0.54065), 0.0, 0.0, 0, 0, Vector2(0.313869, 0.833333), 0.0, 0.0, 0, 0, Vector2(0.726277, 0.731707), 0.0, 0.0, 0, 0, Vector2(0.981752, 0.678862), 0.0, 0.0, 0, 0]
 point_count = 4
 
 [node name="World" type="Node2D"]
+scale = Vector2(2, 2)
 script = ExtResource("1_jhx03")
 
 [node name="UI" type="CanvasLayer" parent="."]
@@ -155,7 +157,12 @@ script = ExtResource("7_dss4m")
 [node name="Attach" type="Node2D" parent="."]
 position = Vector2(2363, 877)
 
+[node name="AttachRight" type="Node2D" parent="."]
+position = Vector2(2363, 877)
+
 [node name="Spawn" type="Node2D" parent="."]
 position = Vector2(335, 740)
+
+[node name="SceneManager" parent="." instance=ExtResource("23_scene")]
 
 [connection signal="torch_picked" from="cabin/Torch" to="." method="_on_torch_picked"]
