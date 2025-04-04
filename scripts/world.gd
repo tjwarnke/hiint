@@ -26,14 +26,6 @@ var move_speed = 100.0
 var camera_smooth_speed = 0.0001  # Adjust this value for smoother/slower movement
 
 func _ready():
-	# Initialize scene manager first
-	if scene_manager:
-		print("SceneManager found, initializing with world attach node")
-		scene_manager.initialize(world_attach_node)
-	else:
-		push_error("SceneManager node not found in World scene!")
-	
-	# Then initialize the rest of the game
 	spawn_player()
 	initialize_game_state()
 	call_deferred("set_camera_target")

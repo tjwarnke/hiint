@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://dd41uw5bd62ul"]
+[gd_scene load_steps=13 format=4 uid="uid://dd41uw5bd62ul"]
 
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_wxqht"]
 [ext_resource type="Texture2D" uid="uid://y0dxq16y7wu0" path="res://dungeon_sidescroller-Raou/Tilesetv3.png" id="2_a6kou"]
@@ -6,10 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://bvhsd7cymwp35" path="res://assets/images/background.png" id="4_e5crs"]
 [ext_resource type="TileSet" uid="uid://d1dkd72yf40tm" path="res://assets/images/level.tres" id="5_j7t5i"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="6_vb7hl"]
-[ext_resource type="PackedScene" uid="uid://ckf6g5rpvthh" path="res://scenes/add_jump.tscn" id="7_74cwp"]
-[ext_resource type="PackedScene" uid="uid://bh5xpj4kmc4b5" path="res://scenes/side_dash.tscn" id="8_3oue1"]
-[ext_resource type="Script" uid="uid://bj445s8633ird" path="res://scripts/stump.gd" id="9_vb7hl"]
-[ext_resource type="Texture2D" uid="uid://b13edcjn8gd5" path="res://assets/images/stump.png" id="10_ehgwo"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ckvwl"]
 texture = ExtResource("1_wxqht")
@@ -19923,9 +19919,6 @@ sources/1 = SubResource("TileSetAtlasSource_nlqja")
 sources/2 = SubResource("TileSetAtlasSource_0epgs")
 sources/3 = SubResource("TileSetAtlasSource_g2equ")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_llolg"]
-size = Vector2(278.75, 185)
-
 [node name="Tutorial" type="Node2D"]
 position = Vector2(0, -166)
 
@@ -19965,30 +19958,3 @@ energy = 1.07
 blend_mode = 2
 texture = ExtResource("6_vb7hl")
 texture_scale = 0.1
-
-[node name="Area2D" parent="." instance=ExtResource("7_74cwp")]
-position = Vector2(6008, 2254)
-scale = Vector2(2, 2)
-
-[node name="SideDash" parent="." instance=ExtResource("8_3oue1")]
-position = Vector2(9521, 676)
-
-[node name="Stump1" type="StaticBody2D" parent="."]
-position = Vector2(2000, 1925)
-scale = Vector2(2, 2)
-script = ExtResource("9_vb7hl")
-
-[node name="Stump" type="Sprite2D" parent="Stump1"]
-position = Vector2(1, 2)
-scale = Vector2(0.396907, 0.385417)
-texture = ExtResource("10_ehgwo")
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Stump1"]
-position = Vector2(3, 4)
-polygon = PackedVector2Array(-51, -52, -42, -70, -39, -71, -33, -71, 80, -47, 81, -34, 81, 10, 84, 26, 89, 28, 89, 33, 87, 37, 89, 42, 95, 48, 95, 55, 92, 61, 81, 71, 69, 73, 55, 72, 25, 62, -11, 71, -94, 60, -90, 54, -89, 47, -88, 42, -82, 39, -82, 35, -88, 26, -88, 10, -83, 3, -77, -15)
-
-[node name="Area2D" type="Area2D" parent="Stump1"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Stump1/Area2D"]
-position = Vector2(22.5, -1.90735e-06)
-shape = SubResource("RectangleShape2D_llolg")
