@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cxijm118rrsly"]
+
+[ext_resource type="Texture2D" uid="uid://5rjn6pbr58gg" path="res://assets/images/sargent_relish_large.png" id="1_emj17"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_urunj"]
+radius = 287.439
+height = 673.922
+
+[node name="Sarge" type="Sprite2D"]
+position = Vector2(144, 145)
+scale = Vector2(0.445313, 0.442187)
+texture = ExtResource("1_emj17")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_urunj")
