@@ -1,20 +1,31 @@
-[gd_scene load_steps=13 format=3 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=22 format=3 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://ctbtqie8fru15" path="res://scenes/torch.tscn" id="6_lakw3"]
 [ext_resource type="Script" uid="uid://cvx006n8smlea" path="res://scripts/torch.gd" id="7_dss4m"]
 [ext_resource type="Script" uid="uid://cxs3k4lmkyg8b" path="res://scripts/camera_2d.gd" id="11_7iits"]
+[ext_resource type="PackedScene" uid="uid://dd41uw5bd62ul" path="res://scenes/second_tutorial.tscn" id="12_dss4m"]
 [ext_resource type="PackedScene" uid="uid://b1ivw32oueigk" path="res://scenes/cabin.tscn" id="12_e3hyu"]
+[ext_resource type="PackedScene" uid="uid://ckf6g5rpvthh" path="res://scenes/add_jump.tscn" id="12_pm21f"]
+[ext_resource type="PackedScene" uid="uid://bh5xpj4kmc4b5" path="res://scenes/side_dash.tscn" id="13_2lf6f"]
+[ext_resource type="PackedScene" uid="uid://t35a8wmq30e1" path="res://scenes/dining_room.tscn" id="13_7t5mc"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="13_dss4m"]
 [ext_resource type="Texture2D" uid="uid://dualh52hqk7gi" path="res://assets/images/TextBoxMiddleTop.png" id="13_jhx03"]
+[ext_resource type="Script" uid="uid://bj445s8633ird" path="res://scripts/stump.gd" id="14_7iits"]
+[ext_resource type="PackedScene" uid="uid://dhh62wmxavnow" path="res://scenes/Library.tscn" id="14_lakw3"]
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://assets/images/proxy-image-1.jpg" id="14_oo54l"]
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://assets/audio/scream.mp3" id="15_kpybi"]
+[ext_resource type="Texture2D" uid="uid://b13edcjn8gd5" path="res://assets/images/stump.png" id="15_oo54l"]
+[ext_resource type="PackedScene" uid="uid://bp2xka1pwcwry" path="res://scenes/billiards_room.tscn" id="15_pm21f"]
+[ext_resource type="PackedScene" uid="uid://cfrd10xr8oexr" path="res://scenes/dungeon.tscn" id="16_2lf6f"]
 [ext_resource type="PackedScene" uid="uid://cjhvjqqvgyv6m" path="res://scenes/hotbar.tscn" id="22_2lf6f"]
-[ext_resource type="PackedScene" path="res://scenes/SceneManager.tscn" id="23_scene"]
 
 [sub_resource type="Curve" id="Curve_7t5mc"]
 _data = [Vector2(0.00729926, 0.54065), 0.0, 0.0, 0, 0, Vector2(0.313869, 0.833333), 0.0, 0.0, 0, 0, Vector2(0.726277, 0.731707), 0.0, 0.0, 0, 0, Vector2(0.981752, 0.678862), 0.0, 0.0, 0, 0]
 point_count = 4
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kpybi"]
+size = Vector2(278.75, 185)
 
 [node name="World" type="Node2D"]
 scale = Vector2(2, 2)
@@ -131,14 +142,15 @@ offset_right = 373.0
 offset_bottom = -136.0
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
-position = Vector2(2811, -290)
-amount = 5000
+z_index = 2
+position = Vector2(3951.5, -142)
+amount = 10000
 texture = ExtResource("13_dss4m")
-lifetime = 2.0
+lifetime = 2.5
 preprocess = 5.0
 fixed_fps = 24
 emission_shape = 3
-emission_rect_extents = Vector2(3000, 1)
+emission_rect_extents = Vector2(4200, 1)
 angle_min = -1.0
 angle_max = 1.0
 scale_amount_min = 0.2
@@ -163,6 +175,53 @@ position = Vector2(2363, 877)
 [node name="Spawn" type="Node2D" parent="."]
 position = Vector2(335, 740)
 
-[node name="SceneManager" parent="." instance=ExtResource("23_scene")]
+[node name="Tutorial" parent="." instance=ExtResource("12_dss4m")]
+position = Vector2(2366, -146.5)
+scale = Vector2(0.5, 0.5)
+
+[node name="Area2D2" parent="Tutorial" instance=ExtResource("12_pm21f")]
+position = Vector2(6008, 2254)
+scale = Vector2(2, 2)
+
+[node name="SideDash2" parent="Tutorial" instance=ExtResource("13_2lf6f")]
+position = Vector2(9521, 676)
+
+[node name="Stump2" type="StaticBody2D" parent="Tutorial"]
+position = Vector2(2000, 1925)
+scale = Vector2(2, 2)
+script = ExtResource("14_7iits")
+
+[node name="Stump" type="Sprite2D" parent="Tutorial/Stump2"]
+position = Vector2(1, 2)
+scale = Vector2(0.396907, 0.385417)
+texture = ExtResource("15_oo54l")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Tutorial/Stump2"]
+position = Vector2(3, 4)
+polygon = PackedVector2Array(-51, -52, -42, -70, -39, -71, -33, -71, 80, -47, 81, -34, 81, 10, 84, 26, 89, 28, 89, 33, 87, 37, 89, 42, 95, 48, 95, 55, 92, 61, 81, 71, 69, 73, 55, 72, 25, 62, -11, 71, -94, 60, -90, 54, -89, 47, -88, 42, -82, 39, -82, 35, -88, 26, -88, 10, -83, 3, -77, -15)
+
+[node name="Area2D" type="Area2D" parent="Tutorial/Stump2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/Stump2/Area2D"]
+position = Vector2(22.5, -1.90735e-06)
+shape = SubResource("RectangleShape2D_kpybi")
+
+[node name="DiningRoom" parent="." instance=ExtResource("13_7t5mc")]
+position = Vector2(8112.5, -146)
+scale = Vector2(0.5, 0.5)
+
+[node name="Library" parent="." instance=ExtResource("14_lakw3")]
+position = Vector2(13381.5, 210.5)
+scale = Vector2(0.5, 0.5)
+
+[node name="BilliardsRoom" parent="." instance=ExtResource("15_pm21f")]
+position = Vector2(15456.5, 78)
+scale = Vector2(0.5, 0.5)
+
+[node name="Dungeon" parent="." instance=ExtResource("16_2lf6f")]
+position = Vector2(17536, -931)
+scale = Vector2(0.5, 0.5)
 
 [connection signal="torch_picked" from="cabin/Torch" to="." method="_on_torch_picked"]
+[connection signal="collected" from="Tutorial/Area2D2" to="." method="on_power_up"]
+[connection signal="collected" from="Tutorial/SideDash2" to="." method="on_power_up"]

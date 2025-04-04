@@ -1,6 +1,6 @@
-[gd_scene load_steps=21 format=4 uid="uid://kakqu4nc78ms"]
+[gd_scene load_steps=21 format=4 uid="uid://t35a8wmq30e1"]
 
-[ext_resource type="Script" path="res://scripts/dining_room.gd" id="1_cli76"]
+[ext_resource type="Script" uid="uid://cg5owrlrb3yao" path="res://scripts/dining_room.gd" id="1_cli76"]
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_evklq"]
 [ext_resource type="Texture2D" uid="uid://y0dxq16y7wu0" path="res://dungeon_sidescroller-Raou/Tilesetv3.png" id="2_7wveb"]
 [ext_resource type="PackedScene" uid="uid://prawu0c35qs" path="res://scenes/penguins.tscn" id="2_r37lo"]
@@ -17279,7 +17279,6 @@ _data = {
 }
 
 [node name="DiningRoom" type="Node2D"]
-scale = Vector2(0.5, 0.5)
 script = ExtResource("1_cli76")
 
 [node name="Penguins" parent="." instance=ExtResource("2_r37lo")]
