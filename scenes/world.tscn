@@ -2,14 +2,14 @@
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://ctbtqie8fru15" path="res://scenes/torch.tscn" id="6_lakw3"]
-[ext_resource type="Script" path="res://scripts/torch.gd" id="7_dss4m"]
+[ext_resource type="Script" uid="uid://cvx006n8smlea" path="res://scripts/torch.gd" id="7_dss4m"]
 [ext_resource type="PackedScene" uid="uid://caw125fejkkxe" path="res://scenes/Book.tscn" id="8_2lf6f"]
 [ext_resource type="Script" uid="uid://cxs3k4lmkyg8b" path="res://scripts/camera_2d.gd" id="11_7iits"]
-[ext_resource type="PackedScene" path="res://scenes/second_tutorial.tscn" id="12_dss4m"]
-[ext_resource type="PackedScene" path="res://scenes/cabin.tscn" id="12_e3hyu"]
+[ext_resource type="PackedScene" uid="uid://dd41uw5bd62ul" path="res://scenes/second_tutorial.tscn" id="12_dss4m"]
+[ext_resource type="PackedScene" uid="uid://b1ivw32oueigk" path="res://scenes/cabin.tscn" id="12_e3hyu"]
 [ext_resource type="PackedScene" uid="uid://ckf6g5rpvthh" path="res://scenes/add_jump.tscn" id="12_pm21f"]
 [ext_resource type="PackedScene" uid="uid://bh5xpj4kmc4b5" path="res://scenes/side_dash.tscn" id="13_2lf6f"]
-[ext_resource type="PackedScene" uid="uid://4lpqlm3tspu3" path="res://scenes/dining_room.tscn" id="13_7t5mc"]
+[ext_resource type="PackedScene" uid="uid://t35a8wmq30e1" path="res://scenes/dining_room.tscn" id="13_7t5mc"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="13_dss4m"]
 [ext_resource type="Texture2D" uid="uid://dualh52hqk7gi" path="res://assets/images/TextBoxMiddleTop.png" id="13_jhx03"]
 [ext_resource type="Script" path="res://scripts/stump.gd" id="14_7iits"]
@@ -17,8 +17,8 @@
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://assets/images/proxy-image-1.jpg" id="14_oo54l"]
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://assets/audio/scream.mp3" id="15_kpybi"]
 [ext_resource type="Texture2D" uid="uid://b13edcjn8gd5" path="res://assets/images/stump.png" id="15_oo54l"]
-[ext_resource type="PackedScene" path="res://scenes/billiards_room.tscn" id="15_pm21f"]
-[ext_resource type="PackedScene" path="res://scenes/dungeon.tscn" id="16_2lf6f"]
+[ext_resource type="PackedScene" uid="uid://bp2xka1pwcwry" path="res://scenes/billiards_room.tscn" id="15_pm21f"]
+[ext_resource type="PackedScene" uid="uid://cfrd10xr8oexr" path="res://scenes/dungeon.tscn" id="16_2lf6f"]
 [ext_resource type="PackedScene" uid="uid://cjhvjqqvgyv6m" path="res://scenes/hotbar.tscn" id="22_2lf6f"]
 
 [sub_resource type="Curve" id="Curve_7t5mc"]
@@ -36,6 +36,7 @@ script = ExtResource("1_jhx03")
 
 [node name="TextBoxMiddleTop" type="Label" parent="UI"]
 visible = false
+z_index = 2
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -48,7 +49,6 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 24
-text = "Press 'e' to pick up"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -62,7 +62,7 @@ offset_bottom = 114.0
 [node name="TextBoxMiddleTopBack" type="Sprite2D" parent="UI"]
 visible = false
 z_index = 1
-position = Vector2(1002, 53)
+position = Vector2(1000, -6)
 scale = Vector2(0.484616, 0.57)
 texture = ExtResource("13_jhx03")
 
@@ -81,23 +81,22 @@ offset_right = 1484.0
 offset_bottom = 141.0
 
 [node name="TextBoxMiddleTopBack2" type="Sprite2D" parent="UI"]
-visible = false
 z_index = 1
-position = Vector2(1018.5, 66)
-scale = Vector2(0.524616, 0.7)
+position = Vector2(960.5, 66)
+scale = Vector2(0.703077, 0.7)
 texture = ExtResource("13_jhx03")
 
 [node name="DialogOptions" type="Label" parent="UI"]
 z_index = 2
-offset_left = 865.0
-offset_top = 79.0
-offset_right = 1329.0
-offset_bottom = 199.0
-theme_override_font_sizes/font_size = 20
+offset_left = 824.0
+offset_top = 95.0
+offset_right = 1288.0
+offset_bottom = 215.0
+theme_override_font_sizes/font_size = 24
 
 [node name="Speaker" type="Sprite2D" parent="UI"]
 z_index = 2
-position = Vector2(783, 70)
+position = Vector2(674, 68)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(985, 542)
