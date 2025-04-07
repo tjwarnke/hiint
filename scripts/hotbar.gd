@@ -11,13 +11,9 @@ func _ready():
 	update_slot_appearance()
 	
 	# Set up anchors for bottom center positioning
-	anchors_preset = PRESET_BOTTOM_WIDE
-	anchor_left = 0.5
-	anchor_right = 0.5
+	anchors_preset = Control.PRESET_BOTTOM_WIDE
 	anchor_bottom = 1.0
-	offset_left = -200.0  # Half of the hotbar width
-	offset_right = 200.0  # Half of the hotbar width
-	offset_bottom = -20.0  # Distance from bottom of screen
+	offset_bottom = -400
 	
 	# Ensure we're on top of everything
 	z_index = 100

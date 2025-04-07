@@ -157,50 +157,16 @@ func drop_item():
 	print("Attempting to drop item")  # Debug print
 	if not held_items.is_empty() and is_on_floor():  
 		print("Can drop item - Held items: ", held_items.size())  # Debug print
-
-		var item_to_drop = held_items[selected_item_index]
-		var level = get_tree().current_scene.find_child("Level", true, false)
-		
-		if level and item_to_drop:
-			# Reparent first so it stops following the player
-			item_to_drop.reparent(level, true)
-			item_to_drop.position = global_position + Vector2(10, -10)
-			item_to_drop.can_be_picked_up = true
-
-			# Then play the animation
-			$player_anim.play("throw item")
-			await $player_anim.animation_finished
-
-			# Remove from held items
-			held_items.remove_at(selected_item_index)
-
-			# Update hotbar
-			if hotbar:
-				print("Updating hotbar - Removing item at index: ", selected_item_index)
-				hotbar.remove_item(selected_item_index)
-				num_items -= 1
-
-			# Update selected index
-			if held_items.is_empty():
-				selected_item_index = 0
-			else:
-				selected_item_index = min(selected_item_index, held_items.size() - 1)
-			update_held_item()
-
-#func drop_item():
-#	print("Attempting to drop item")  # Debug print
-#	if not held_items.is_empty() and is_on_floor():  
-#		print("Can drop item - Held items: ", held_items.size())  # Debug print
 		# Play throw animation
-#		$player_anim.play("throw item")
+		$player_anim.play("throw item")
 		
 		# Wait for the animation to finish before dropping the item
-#		await $player_anim.animation_finished
+		await $player_anim.animation_finished
 		
-#		var level = get_tree().current_scene.find_child("Level", true, false)
-#		if level:
-#			var item_to_drop = held_items[selected_item_index]
-#			print("Dropping item at index: ", selected_item_index)  # Debug print
+		var level = get_tree().current_scene.find_child("Level", true, false)
+		if level:
+			var item_to_drop = held_items[selected_item_index]
+			print("Dropping item at index: ", selected_item_index)  # Debug print
 			
 #			item_to_drop.reparent(level, true)
 			
@@ -210,7 +176,7 @@ func drop_item():
 			#	$TorchHolder.remove_child(item_to_drop)
 			
 			# Add to level and set position
-#			level.add_child(item_to_drop)
+			level.add_child(item_to_drop)
 			
 			# Calculate the final position based on the animation's end state
 			#var final_position = global_position + Vector2(60, 40)  # Offset slightly forward
@@ -219,8 +185,8 @@ func drop_item():
 			#item_to_drop.scale = Vector2(0.9, 0.9)
 			#item_to_drop.set_skew(0)
 			#item_to_drop.can_be_picked_up = true
-#			item_to_drop.position = global_position + Vector2(10, -10)
-#			held_items = null
+			item_to_drop.position = global_position + Vector2(10, -10)
+			held_items = null
 			
 			# Update hotbar first
 			#if hotbar:

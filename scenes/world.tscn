@@ -19,7 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://b13edcjn8gd5" path="res://assets/images/stump.png" id="15_oo54l"]
 [ext_resource type="PackedScene" path="res://scenes/billiards_room.tscn" id="15_pm21f"]
 [ext_resource type="PackedScene" path="res://scenes/dungeon.tscn" id="16_2lf6f"]
-[ext_resource type="PackedScene" path="res://scenes/hotbar.tscn" id="22_2lf6f"]
+[ext_resource type="PackedScene" uid="uid://cjhvjqqvgyv6m" path="res://scenes/hotbar.tscn" id="22_2lf6f"]
 
 [sub_resource type="Curve" id="Curve_7t5mc"]
 _data = [Vector2(0.00729926, 0.54065), 0.0, 0.0, 0, 0, Vector2(0.313869, 0.833333), 0.0, 0.0, 0, 0, Vector2(0.726277, 0.731707), 0.0, 0.0, 0, 0, Vector2(0.981752, 0.678862), 0.0, 0.0, 0, 0]
