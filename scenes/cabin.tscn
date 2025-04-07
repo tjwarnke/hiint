@@ -102,7 +102,7 @@ shape = SubResource("WorldBoundaryShape2D_oe1an")
 
 [node name="Book Shelf" type="Sprite2D" parent="."]
 z_index = 1
-position = Vector2(185, 780)
+position = Vector2(220, 780)
 texture = ExtResource("1_qf7ms")
 script = ExtResource("2_0rnjq")
 

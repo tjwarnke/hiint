@@ -12,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://t35a8wmq30e1" path="res://scenes/dining_room.tscn" id="13_7t5mc"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="13_dss4m"]
 [ext_resource type="Texture2D" uid="uid://dualh52hqk7gi" path="res://assets/images/TextBoxMiddleTop.png" id="13_jhx03"]
-[ext_resource type="Script" path="res://scripts/stump.gd" id="14_7iits"]
+[ext_resource type="Script" uid="uid://bj445s8633ird" path="res://scripts/stump.gd" id="14_7iits"]
 [ext_resource type="PackedScene" uid="uid://dhh62wmxavnow" path="res://scenes/Library.tscn" id="14_lakw3"]
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://assets/images/proxy-image-1.jpg" id="14_oo54l"]
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://assets/audio/scream.mp3" id="15_kpybi"]
@@ -133,14 +133,21 @@ z_index = 1
 position = Vector2(-985, -542)
 color = Color(0.0475577, 0.0475577, 0.0475576, 1)
 
-[node name="Hotbar" parent="Camera2D" instance=ExtResource("22_2lf6f")]
+[node name="Control" type="Control" parent="Camera2D"]
+layout_direction = 1
+layout_mode = 3
+offset_bottom = 750.0
+grow_horizontal = 2
+
+[node name="Hotbar" parent="Camera2D/Control" instance=ExtResource("22_2lf6f")]
+layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.405
 anchor_right = 1.205
-offset_left = -60.0
-offset_top = -200.0
-offset_right = 373.0
-offset_bottom = -136.0
+offset_left = -76.2
+offset_top = -240.0
+offset_right = 356.8
+offset_bottom = -176.0
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 z_index = 2
@@ -163,7 +170,7 @@ color = Color(0.442911, 0.442911, 0.442911, 1)
 
 [node name="Torch" parent="cabin" groups=["item"] instance=ExtResource("6_lakw3")]
 z_index = 2
-position = Vector2(498, 823)
+position = Vector2(522.5, 823)
 rotation = 0.0
 script = ExtResource("7_dss4m")
 
