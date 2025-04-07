@@ -31,11 +31,22 @@ func remove_item(index):
 	if index < max_slots:
 		items[index] = null
 		slots[index].texture = null
+		
+		# Shift remaining items to fill the gap
+		for i in range(index, items.size() - 1):
+			items[i] = items[i + 1]
+			slots[i].texture = slots[i + 1].texture
+		
+		# Clear the last slot
+		items[items.size() - 1] = null
+		slots[items.size() - 1].texture = null
+		
 		update_slot_appearance()
 
 func set_selected(index: int):
-	selected_slot = index
-	update_slot_appearance()
+	if index >= 0 and index < max_slots:
+		selected_slot = index
+		update_slot_appearance()
 
 func update_slot_appearance():
 	for i in range(slots.size()):

@@ -158,59 +158,68 @@ func drop_item():
 	if not held_items.is_empty() and is_on_floor():  
 		print("Can drop item - Held items: ", held_items.size())  # Debug print
 		# Play throw animation
+		print("Playing throw animation")  # Debug print
 		$player_anim.play("throw item")
 		
 		# Wait for the animation to finish before dropping the item
+		print("Waiting for animation to finish")  # Debug print
 		await $player_anim.animation_finished
+		print("Animation finished")  # Debug print
 		
-		var level = get_tree().current_scene.find_child("Level", true, false)
-		if level:
+		# Get the World node
+		var world = get_node("/root/World")
+		if world:
 			var item_to_drop = held_items[selected_item_index]
 			print("Dropping item at index: ", selected_item_index)  # Debug print
 			
-#			item_to_drop.reparent(level, true)
-			
 			# Remove from TorchHolder first
-			#if item_to_drop.get_parent() == $TorchHolder:
-			#	print("Removing from TorchHolder")  # Debug print
-			#	$TorchHolder.remove_child(item_to_drop)
+			if item_to_drop.get_parent() == $TorchHolder:
+				print("Removing from TorchHolder")  # Debug print
+				$TorchHolder.remove_child(item_to_drop)
 			
-			# Add to level and set position
-			level.add_child(item_to_drop)
+			# Add to world and set position
+			world.add_child(item_to_drop)
+			print("Added item to world")  # Debug print
 			
-			# Calculate the final position based on the animation's end state
-			#var final_position = global_position + Vector2(60, 40)  # Offset slightly forward
-			#item_to_drop.global_position = final_position
-			#item_to_drop.global_rotation_degrees = 90
-			#item_to_drop.scale = Vector2(0.9, 0.9)
-			#item_to_drop.set_skew(0)
-			#item_to_drop.can_be_picked_up = true
+			# Set the item's position and make it pickable again
 			item_to_drop.position = global_position + Vector2(10, -10)
-			held_items = null
+			item_to_drop.can_be_picked_up = true
+			print("Set item position and made it pickable")  # Debug print
 			
 			# Update hotbar first
-			#if hotbar:
-			#	print("Updating hotbar - Removing item at index: ", selected_item_index)  # Debug print
-			#	hotbar.remove_item(selected_item_index)
-			#	num_items -= 1
-			#	print("New num_items: ", num_items)  # Debug print
+			if hotbar:
+				print("Updating hotbar - Removing item at index: ", selected_item_index)  # Debug print
+				hotbar.remove_item(selected_item_index)
+				num_items -= 1
+				print("New num_items: ", num_items)  # Debug print
 			
 			# Remove from held items
-			#held_items.remove_at(selected_item_index)
-			#print("Remaining held items: ", held_items.size())  # Debug print
+			held_items.remove_at(selected_item_index)
+			print("Remaining held items: ", held_items.size())  # Debug print
 			
-			## Update selection and held item
-			#if held_items.is_empty():
-			#	selected_item_index = 0
-			#else:
-			#	selected_item_index = min(selected_item_index, held_items.size() - 1)
-			#update_held_item()
+			# Update selection and held item
+			if held_items.is_empty():
+				selected_item_index = 0
+			else:
+				selected_item_index = min(selected_item_index, held_items.size() - 1)
+			update_held_item()
+			print("Updated selection and held item")  # Debug print
 			
 			# Reset TorchHolder position and rotation
-			#$TorchHolder.position = Vector2(26, 8)
-			#$TorchHolder.global_rotation_degrees = -65
-			#$TorchHolder.global_scale = Vector2(1, 1)
-			#$TorchHolder.set_skew(0)
+			$TorchHolder.position = Vector2(26, 8)
+			$TorchHolder.global_rotation_degrees = -65
+			$TorchHolder.global_scale = Vector2(1, 1)
+			$TorchHolder.set_skew(0)
+			print("Reset TorchHolder")  # Debug print
+		else:
+			print("World node not found!")  # Debug print
+			# Reset animation state even if we couldn't drop the item
+			$player_anim.play("RESET")
+	else:
+		if held_items.is_empty():
+			print("No items to drop")  # Debug print
+		if not is_on_floor():
+			print("Player is not on floor")  # Debug print
 
 func set_can_move(state):
 	can_move = state
@@ -230,11 +239,11 @@ func _input(event):
 		drop_item()
 
 func switch_item(index: int):
-	if index >= held_items.size():
-		return
-		
-	selected_item_index = index
-	update_held_item()
+	if index >= 0 and index < held_items.size():
+		selected_item_index = index
+		update_held_item()
+		if hotbar:
+			hotbar.set_selected(index)
 
 func update_held_item():
 	# Clear TorchHolder

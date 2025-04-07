@@ -134,14 +134,21 @@ z_index = 1
 position = Vector2(-985, -542)
 color = Color(0.0475577, 0.0475577, 0.0475576, 1)
 
-[node name="Hotbar" parent="Camera2D" instance=ExtResource("22_2lf6f")]
+[node name="Control" type="Control" parent="Camera2D"]
+layout_direction = 1
+layout_mode = 3
+offset_bottom = 750.0
+grow_horizontal = 2
+
+[node name="Hotbar" parent="Camera2D/Control" instance=ExtResource("22_2lf6f")]
+layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.405
 anchor_right = 1.205
-offset_left = -60.0
-offset_top = -200.0
-offset_right = 373.0
-offset_bottom = -136.0
+offset_left = -76.2
+offset_top = -240.0
+offset_right = 356.8
+offset_bottom = -176.0
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 z_index = 2
@@ -164,7 +171,7 @@ color = Color(0.442911, 0.442911, 0.442911, 1)
 
 [node name="Torch" parent="cabin" groups=["item"] instance=ExtResource("6_lakw3")]
 z_index = 2
-position = Vector2(498, 823)
+position = Vector2(522.5, 823)
 rotation = 0.0
 script = ExtResource("7_dss4m")
 

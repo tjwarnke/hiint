@@ -13,7 +13,6 @@ var player
 @onready var darkness = $Camera2D/CanvasModulate
 @onready var ambient_noise = preload("res://scenes/ambient_noise.tscn").instantiate()
 @onready var world_attach_node = $Attach  # Rename to clarify this is the world's attach node
-@onready var scene_manager = $SceneManager
 
 # Dining room nodes (will be set after scene is loaded)
 var dining_wall = null
@@ -70,8 +69,6 @@ func handle_input():
 	if Input.is_action_just_pressed("p"):
 		show_jumpscare()
 		jumpscare_noise.play()
-	if Input.is_action_just_pressed("set_down"):
-		player.drop_item()
 
 func handle_player_movement(delta):
 	if moving_player:
@@ -80,7 +77,6 @@ func handle_player_movement(delta):
 		if move_distance <= 0:
 			moving_player = false  
 			drop_wall()
-			player.drop_item()
 
 
 func show_jumpscare():
@@ -126,9 +122,9 @@ func initialize_camera():
 	camera.drag_right_margin = 0.1
 	camera.drag_bottom_margin = 0.1
 	
-func on_power_up(power_type: Variant) -> void:
+func on_power_up(power_type: String, power_value: int) -> void:
 	if player:
-		player.on_power_up_collected(power_type)
+		player._on_powerup_collected(power_type, power_value)
 
 func _on_dining_threshold_entered(body):
 	if body == player:
