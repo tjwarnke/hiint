@@ -214,20 +214,20 @@ polygon = PackedVector2Array(-51, -52, -42, -70, -39, -71, -33, -71, 80, -47, 81
 position = Vector2(22.5, -1.90735e-06)
 shape = SubResource("RectangleShape2D_kpybi")
 
+[node name="Dungeon" parent="." instance=ExtResource("16_2lf6f")]
+position = Vector2(11664, 1648)
+scale = Vector2(0.5, 0.5)
+
 [node name="DiningRoom" parent="." instance=ExtResource("13_7t5mc")]
-position = Vector2(8112.5, -146)
+position = Vector2(8112, -144)
 scale = Vector2(0.5, 0.5)
 
 [node name="Library" parent="." instance=ExtResource("14_lakw3")]
-position = Vector2(13381.5, 210.5)
+position = Vector2(13584, 212)
 scale = Vector2(0.5, 0.5)
 
 [node name="BilliardsRoom" parent="." instance=ExtResource("15_pm21f")]
-position = Vector2(15456.5, 78)
-scale = Vector2(0.5, 0.5)
-
-[node name="Dungeon" parent="." instance=ExtResource("16_2lf6f")]
-position = Vector2(17536, -931)
+position = Vector2(15888, 80)
 scale = Vector2(0.5, 0.5)
 
 [node name="Book" parent="." instance=ExtResource("8_2lf6f")]
