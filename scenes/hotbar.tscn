@@ -1,25 +1,39 @@
 [gd_scene load_steps=3 format=3 uid="uid://cjhvjqqvgyv6m"]
 
 [ext_resource type="Script" uid="uid://b432s33ca3t70" path="res://scripts/hotbar.gd" id="1_yj1xu"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5q0r0"]
+[ext_resource type="Texture2D" uid="uid://dualh52hqk7gi" path="res://assets/images/TextBoxMiddleTop.png" id="2_4qkdb"]
 
 [node name="Hotbar" type="Control"]
+z_index = 100
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -309.0
+offset_top = -543.0
+offset_right = 91.0
+offset_bottom = -463.0
+grow_horizontal = 2
+grow_vertical = 0
 script = ExtResource("1_yj1xu")
 
-[node name="Panel" type="Panel" parent="."]
-layout_mode = 0
-offset_right = 337.0
-offset_bottom = 64.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_5q0r0")
+[node name="Back" type="Sprite2D" parent="."]
+z_index = 100
+position = Vector2(242.5, 34)
+scale = Vector2(0.644615, 0.79)
+texture = ExtResource("2_4qkdb")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-custom_minimum_size = Vector2(240, 0)
+z_index = 101
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 42.0
+offset_top = 3.0
+offset_right = 442.0
+offset_bottom = 67.0
+theme_override_constants/separation = 20
+alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
 custom_minimum_size = Vector2(64, 64)

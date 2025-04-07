@@ -4,13 +4,6 @@ extends Node2D
 var PlayerScene = preload("res://scenes/Player.tscn")  
 var player
 
-# Scene paths
-const DINING_ROOM_PATH = "res://scenes/dining_room.tscn"
-const LIBRARY_PATH = "res://scenes/Library.tscn"
-const BILLIARDS_ROOM_PATH = "res://scenes/billiards_room.tscn"
-const DUNGEON_PATH = "res://scenes/dungeon.tscn"
-const TUTORIAL_PATH = "res://scenes/second_tutorial.tscn"
-
 # Nodes
 @onready var spawn = get_node_or_null("Spawn")
 @onready var camera = $Camera2D  
@@ -19,22 +12,12 @@ const TUTORIAL_PATH = "res://scenes/second_tutorial.tscn"
 @onready var jumpscare_noise = $Camera2D/AudioStreamPlayer
 @onready var darkness = $Camera2D/CanvasModulate
 @onready var ambient_noise = preload("res://scenes/ambient_noise.tscn").instantiate()
+@onready var world_attach_node = $Attach  # Rename to clarify this is the world's attach node
 
 # Dining room nodes (will be set after scene is loaded)
 var dining_wall = null
 var dining_threshold = null
 var wall_fall = null
-
-
-var scenes_to_load = [
-	"res://scenes/second_tutorial.tscn",
-	"res://scenes/dining_room.tscn",
-	"res://scenes/library.tscn",
-	"res://scenes/billiards_room.tscn",
-	"res://scenes/dungeon.tscn"
-]
-
-var loaded_scenes = {}
 
 var moving_player = false
 var move_distance = 500
@@ -43,10 +26,19 @@ var camera_smooth_speed = 0.0001  # Adjust this value for smoother/slower moveme
 
 func _ready():
 	spawn_player()
-	load_next_scene(0)
 	initialize_game_state()
 	call_deferred("set_camera_target")
-
+	
+	# Initialize dining room components
+	dining_threshold = $DiningRoom/dining_bounds
+	if dining_threshold:
+		dining_threshold.body_entered.connect(_on_dining_threshold_entered)
+	else:
+		push_error("Dining threshold not found!")
+		
+	wall_fall = $DiningRoom/WallFall
+	if not wall_fall:
+		push_error("Wall fall animation not found!")
 
 func _process(delta):
 	# Handle input
@@ -77,8 +69,6 @@ func handle_input():
 	if Input.is_action_just_pressed("p"):
 		show_jumpscare()
 		jumpscare_noise.play()
-	if Input.is_action_just_pressed("set_down"):
-		player.drop_item()
 
 func handle_player_movement(delta):
 	if moving_player:
@@ -87,7 +77,6 @@ func handle_player_movement(delta):
 		if move_distance <= 0:
 			moving_player = false  
 			drop_wall()
-			player.drop_item()
 
 
 func show_jumpscare():
@@ -97,14 +86,6 @@ func show_jumpscare():
 func hide_jumpscare():
 	jumpscare.hide()
 
-func start_game():
-	var title_music = get_node("StartMenu/AudioStreamPlayer2D")
-	if title_music:
-		title_music.fade_out_music()  
-	darkness.show()
-	$Level/Torch.show()
-	$TorchLight.show()
-	spawn_player()
 	
 func spawn_player():
 	player = PlayerScene.instantiate()
@@ -120,23 +101,30 @@ func spawn_player():
 		return
 	player.global_position = spawn.global_position
 
-	# Force the camera to follow the player immediately
+	# Set up the camera
 	camera.player = player
-	camera.position = player.position  
-	camera.force_update_scroll()  # Ensure immediate update
-	camera.position_smoothing_enabled = true  
-	camera.position_smoothing_speed = 5.0  
-	
+	camera.position = Vector2(player.position.x, camera.fixed_y)
+	camera.position_smoothing_enabled = true
+	camera.position_smoothing_speed = 5.0
+	camera.drag_horizontal_enabled = true
+	camera.drag_left_margin = 0.1
+	camera.drag_top_margin = 0.1
+	camera.drag_right_margin = 0.1
+	camera.drag_bottom_margin = 0.1
 	
 func initialize_camera():
-	camera.position = player.position  
-	camera.force_update_scroll()
-	camera.position_smoothing_enabled = true  
-	camera.position_smoothing_speed = 5.0  
+	camera.position = Vector2(player.position.x, camera.fixed_y)
+	camera.position_smoothing_enabled = true
+	camera.position_smoothing_speed = 5.0
+	camera.drag_horizontal_enabled = true
+	camera.drag_left_margin = 0.1
+	camera.drag_top_margin = 0.1
+	camera.drag_right_margin = 0.1
+	camera.drag_bottom_margin = 0.1
 	
-func on_power_up(power_type: Variant) -> void:
+func on_power_up(power_type: String, power_value: int) -> void:
 	if player:
-		player.on_power_up_collected(power_type)
+		player._on_powerup_collected(power_type, power_value)
 
 func _on_dining_threshold_entered(body):
 	if body == player:
@@ -186,71 +174,3 @@ func drop_wall():
 			player.set_can_move(true)  # Allow player movement after animation ends
 	else:
 		print("Wall fall animation node is missing!")
-	
-func load_next_scene(index):
-	if index >= scenes_to_load.size():
-		return  # All scenes loaded
-
-	var path = scenes_to_load[index]
-	print("Loading: ", path)
-	ResourceLoader.load_threaded_request(path)
-
-	await get_tree().create_timer(0.1).timeout  # Small delay to avoid frame drops
-
-	check_loading_progress(index)
-
-func check_loading_progress(index):
-	var path = scenes_to_load[index]
-	var status = ResourceLoader.load_threaded_get_status(path)
-	
-	if status == ResourceLoader.THREAD_LOAD_LOADED:
-		var scene_resource = ResourceLoader.load_threaded_get(path)
-		if scene_resource:
-			var new_scene = scene_resource.instantiate()
-			attach_scene(new_scene)
-			loaded_scenes[path] = new_scene
-			print("Loaded and attached: ", path)
-		
-		# Load next scene in the next frame
-		call_deferred("load_next_scene", index + 1)
-	elif status == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
-		# Use a slightly longer delay to reduce performance impact
-		await get_tree().create_timer(0.2).timeout
-		call_deferred("check_loading_progress", index)
-		
-func attach_scene(new_scene):
-	# Ensure the world scene has an "Attach" node
-	var world_attach = $Attach  # Assuming the world scene has this node
-
-	# If this is the first scene, position it at the world's attach node
-	if loaded_scenes.size() == 0:
-		new_scene.global_position = world_attach.global_position
-	else:
-		# Get the last attached scene
-		var last_scene = loaded_scenes.values()[-1]
-
-		# Find attach points
-		var last_attach_right = last_scene.get_node_or_null("AttachRight")
-		var new_attach_left = new_scene.get_node_or_null("AttachLeft")
-
-		if last_attach_right and new_attach_left:
-			# Directly set the new scene's global position at last_attach_right
-			var offset = last_attach_right.global_position - new_attach_left.global_position
-			new_scene.global_position += offset  # Adjust scene position correctly
-		else:
-			print("Attach nodes missing in scenes!")
-
-	# Add the new scene to the world
-	add_child(new_scene)
-
-	# Debugginga
-	debug_attach_nodes(new_scene)
-	
-func debug_attach_nodes(scene):
-	var attach_left = scene.get_node_or_null("AttachLeft")
-	var attach_right = scene.get_node_or_null("AttachRight")
-
-	if attach_left and attach_right:
-		print(scene.name, " AttachLeft: ", attach_left.global_position, " AttachRight: ", attach_right.global_position)
-	else:
-		print(scene.name, " is missing an Attach node!")

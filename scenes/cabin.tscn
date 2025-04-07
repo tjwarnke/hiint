@@ -3,7 +3,6 @@
 [ext_resource type="Texture2D" uid="uid://cvhhgbt5q8rv0" path="res://assets/images/book_shelf_transparent.png" id="1_qf7ms"]
 [ext_resource type="Script" uid="uid://c8a1h1fvehgc6" path="res://scripts/book_shelf.gd" id="2_0rnjq"]
 [ext_resource type="Texture2D" uid="uid://badubj84oq6ex" path="res://assets/images/Mayro.png" id="3_g3osi"]
-[ext_resource type="Script" uid="uid://cjkogtmepj6nh" path="res://scripts/mayro.gd" id="4_on2ml"]
 [ext_resource type="Texture2D" uid="uid://dualh52hqk7gi" path="res://assets/images/TextBoxMiddleTop.png" id="5_fj1ae"]
 [ext_resource type="PackedScene" uid="uid://cy0j7muohkimm" path="res://scenes/tutorial_old.tscn" id="6_qf7ms"]
 
@@ -13,6 +12,76 @@ distance = -0.0312483
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h6smj"]
 size = Vector2(152, 200)
+
+[sub_resource type="GDScript" id="GDScript_em8ck"]
+script/source = "extends Sprite2D
+
+@onready var area = $Area2D
+var player_nearby = false
+var dialogue_active = false
+var player = null
+
+@onready var text_box = get_node(\"/root/World/Level/UI/TextBoxMiddleTop\")
+@onready var dialogue = get_node(\"/root/World/Level/UI/DialogOptions\")
+@onready var sprite = get_node(\"/root/World/Level/UI/Speaker\")
+@onready var Box1 = get_node(\"/root/World/Level/UI/TextBoxMiddleTopBack\")
+@onready var Box2 = get_node(\"/root/World/Level/UI/TextBoxDialog\")
+var mayro = preload(\"res://assets/images/MayroHead.png\")
+
+func _ready():
+	area.body_entered.connect(_on_body_entered)
+	area.body_exited.connect(_on_body_exited)
+	
+
+
+func _on_body_exited(body):
+	if body.is_in_group(\"player\"):
+		text_box.visible = false
+		player_nearby = false
+		await get_tree().create_timer(1.5).timeout
+		#text_box.visible = false
+		#dialogue.visible = false
+		#sprite.visible = false
+		#Box1.visible = false
+	
+func dialogue_choose(response):
+	dialogue.visible = false
+	Box2.visible = false
+	text_box.text = response
+	dialogue_active = false
+	player.set_can_move(true)
+	await get_tree().create_timer(2).timeout
+	text_box.visible = false
+	sprite.visible = false
+	Box1.visible = false
+
+func _input(event):
+	if event.is_action_pressed(\"Interact2\") and player_nearby:
+		text_box.visible = false
+		sprite.scale = Vector2(0.25, 0.25)
+		player.set_can_move(false)
+		dialogue_active = false
+		dialogue.visible = false
+		Box1.visible = true
+		sprite.texture = mayro
+		sprite.visible = true
+		text_box.visible = true
+		text_box.text = \"It's a me Mayro!\"
+		await get_tree().create_timer(2).timeout
+		text_box.text = \"Have you seen my brother?\"
+		await get_tree().create_timer(1).timeout
+		Box2.visible = true
+		dialogue.text = \"1. The Green Guy? \\n2. No I have not.\"
+		dialogue.visible = true
+		dialogue_active = true
+		
+	if dialogue_active:
+		if event.is_action_pressed(\"Option1\"):
+			dialogue_choose(\"Yes! He is Here!\")
+			
+		if event.is_action_pressed(\"Option2\"):
+			dialogue_choose(\"Go find him!\")
+"
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ghkwx"]
 radius = 180.163
@@ -33,7 +102,7 @@ shape = SubResource("WorldBoundaryShape2D_oe1an")
 
 [node name="Book Shelf" type="Sprite2D" parent="."]
 z_index = 1
-position = Vector2(185, 780)
+position = Vector2(220, 780)
 texture = ExtResource("1_qf7ms")
 script = ExtResource("2_0rnjq")
 
@@ -47,7 +116,7 @@ shape = SubResource("RectangleShape2D_h6smj")
 position = Vector2(930, 825)
 scale = Vector2(0.194268, 0.123981)
 texture = ExtResource("3_g3osi")
-script = ExtResource("4_on2ml")
+script = SubResource("GDScript_em8ck")
 
 [node name="Area2D" type="Area2D" parent="Mayro"]
 position = Vector2(-216.196, 306.499)
