@@ -29,6 +29,17 @@ func _ready():
 	spawn_player()
 	initialize_game_state()
 	call_deferred("set_camera_target")
+	
+	# Initialize dining room components
+	dining_threshold = $DiningRoom/dining_bounds
+	if dining_threshold:
+		dining_threshold.body_entered.connect(_on_dining_threshold_entered)
+	else:
+		push_error("Dining threshold not found!")
+		
+	wall_fall = $DiningRoom/WallFall
+	if not wall_fall:
+		push_error("Wall fall animation not found!")
 
 func _process(delta):
 	# Handle input
