@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://prawu0c35qs"]
+
+[ext_resource type="Texture2D" uid="uid://bklsfeoeiws5x" path="res://assets/images/penguins_large.png" id="1_aj412"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oxnca"]
+radius = 314.483
+height = 699.077
+
+[node name="Penguins" type="Sprite2D"]
+position = Vector2(96.5, 107)
+scale = Vector2(0.295313, 0.33125)
+texture = ExtResource("1_aj412")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_oxnca")

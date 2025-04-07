@@ -14,7 +14,7 @@ collision_layer = 65535
 collision_mask = 65535
 script = ExtResource("1_el5v3")
 
-[node name="Book" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0.0185127, 0.764456)
 scale = Vector2(0.115259, 0.0836588)
 texture = ExtResource("2_retch")

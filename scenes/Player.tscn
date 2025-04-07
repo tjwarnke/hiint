@@ -1,9 +1,71 @@
-[gd_scene load_steps=3 format=3 uid="uid://bvwuj8tj3uphj"]
+[gd_scene load_steps=6 format=3 uid="uid://bvwuj8tj3uphj"]
 
 [ext_resource type="Script" uid="uid://74pnunwqokr7" path="res://scripts/player.gd" id="1_3hxb4"]
 [ext_resource type="Texture2D" uid="uid://020ubl5bfdec" path="res://assets/images/New Piskel-2.png.png" id="2_j55f7"]
 
+[sub_resource type="Animation" id="Animation_3li8b"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TorchHolder:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(26, 8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TorchHolder:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.436332]
+}
+
+[sub_resource type="Animation" id="Animation_v6fml"]
+resource_name = "throw item"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TorchHolder:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(26, 8), Vector2(47.3333, 31.3333)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TorchHolder:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.436332, 1.5708]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mdl7e"]
+_data = {
+&"RESET": SubResource("Animation_3li8b"),
+&"throw item": SubResource("Animation_v6fml")
+}
+
 [node name="Player" type="CharacterBody2D"]
+z_index = 1
 scale = Vector2(1.5, 1.5)
 script = ExtResource("1_3hxb4")
 
@@ -17,9 +79,13 @@ polygon = PackedVector2Array(-5, -28, 6, -28, 6, -27, 9, -27, 9, -26, 10, -26, 1
 position = Vector2(26, 8)
 rotation = 0.436332
 scale = Vector2(0.5, 0.5)
-skew = -0.0698132
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 position = Vector2(-0.666667, 0)
 target_position = Vector2(5.33333, 710)
 collide_with_areas = true
+
+[node name="player_anim" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_mdl7e")
+}

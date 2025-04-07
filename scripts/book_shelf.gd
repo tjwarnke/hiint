@@ -6,13 +6,26 @@ var dialogue_active = false
 var player = null
 var book_taken = false
 
-@onready var text_box = get_node("/root/World/Level/UI/TextBoxMiddleTop")
-@onready var dialogue = get_node("/root/World/Level/UI/DialogOptions")
-@onready var book = get_node("/root/World/Level/Book")
+# UI elements - will be set in _ready
+var text_box = null
+var dialogue = null
+var book = null
 
 func _ready():
 	area.body_entered.connect(_on_body_entered)
 	area.body_exited.connect(_on_body_exited)
+	
+	# Try to find UI elements in the scene tree
+	text_box = get_node_or_null("../../UI/TextBoxMiddleTop")
+	dialogue = get_node_or_null("../../UI/DialogOptions")
+	book = get_node_or_null("../../Book")
+	
+	if not text_box:
+		push_warning("TextBoxMiddleTop not found in scene")
+	if not dialogue:
+		push_warning("DialogOptions not found in scene")
+	if not book:
+		push_warning("Book not found in scene")
 
 func _on_body_entered(body):
 	if body.is_in_group("player"):
@@ -25,7 +38,7 @@ func _on_body_exited(body):
 		await get_tree().create_timer(1.5).timeout
 		text_box.visible = false
 		dialogue.visible = false
-	
+
 func grab_item(response):
 	dialogue.visible = false
 	text_box.text = response
@@ -34,6 +47,7 @@ func grab_item(response):
 	player.set_can_move(true)
 	await get_tree().create_timer(2).timeout
 	text_box.visible = false
+
 
 func _input(event):
 	if event.is_action_pressed("Interact2") and player_nearby:
