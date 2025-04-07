@@ -41,7 +41,6 @@ func _ready():
 	
 	# Connect to powerup signals
 	for powerup in get_tree().get_nodes_in_group("powerup"):
-		print("Found powerup: ", powerup)  # Debug print
 		powerup.collected.connect(_on_powerup_collected)
 
 func get_input(delta):
@@ -58,7 +57,6 @@ func get_input(delta):
 
 
 	if dash_able and is_dashing_pressed and not is_dashing and num_dash > 0 and not is_on_floor():
-		print("Starting dash!")  # Debug print
 		is_dashing = true
 		dash_timer = dash_time
 		velocity.x = dash_speed * direction  # Dash in facing direction
@@ -134,84 +132,100 @@ func has_item(item_name: String) -> bool:
 	return item_name in inventory
 
 func pick_up_item(item):
-	item.can_be_picked_up = false
-	item.get_parent().remove_child(item)
-	
-	# Add to held items array
-	held_items.append(item)
-	
-	# If this is the first item, select it
-	if held_items.size() == 1:
-		selected_item_index = 0
+	if not held_items.has(item):
+		# Play pickup animation
+		$player_anim.play("pickup item")
+		
+		# Wait for the animation to finish before picking up the item
+		await $player_anim.animation_finished
+		
+		# Remove from parent first
+		if item.get_parent():
+			item.get_parent().remove_child(item)
+		
+		# Add to held items
+		held_items.append(item)
+		selected_item_index = held_items.size() - 1
+		
+		# Update hotbar
+		if hotbar:
+			hotbar.add_item(item, selected_item_index)
+		
+		# Update held item
 		update_held_item()
-	
-	if hotbar:
-		var sprite = item.get_node_or_null("Sprite2D")
-		if sprite:
-			print("Adding item to hotbar at index: ", num_items)  # Debug print
-			hotbar.add_item(sprite.texture, num_items)
-			num_items += 1
-			print("New num_items: ", num_items)  # Debug print
+		
+		# Reset animation state
+		$player_anim.play("RESET")
 
 func drop_item():
-	print("Attempting to drop item")  # Debug print
 	if not held_items.is_empty() and is_on_floor():  
-		print("Can drop item - Held items: ", held_items.size())  # Debug print
 		# Play throw animation
-		print("Playing throw animation")  # Debug print
 		$player_anim.play("throw item")
 		
 		# Wait for the animation to finish before dropping the item
-		print("Waiting for animation to finish")  # Debug print
 		await $player_anim.animation_finished
-		print("Animation finished")  # Debug print
 		
 		# Get the World node
 		var world = get_node("/root/World")
 		if world:
 			var item_to_drop = held_items[selected_item_index]
-			print("Dropping item at index: ", selected_item_index)  # Debug print
+			
+			# Store original properties for torch
+			var is_torch = item_to_drop.name.contains("Torch")
+			var original_scale = item_to_drop.scale
+			var original_rotation = item_to_drop.rotation
 			
 			# Remove from TorchHolder first
 			if item_to_drop.get_parent() == $TorchHolder:
-				print("Removing from TorchHolder")  # Debug print
 				$TorchHolder.remove_child(item_to_drop)
 			
 			# Add to world and set position
 			world.add_child(item_to_drop)
-			print("Added item to world")  # Debug print
 			
 			# Position relative to the World node
 			var drop_position = global_position  # Start with player's global position
-			print("Player global position: ", global_position)  # Debug print
 			
 			# Convert to World's local space
 			var world_local_pos = world.to_local(drop_position)
-			print("Player position in World space: ", world_local_pos)  # Debug print
 			
 			# Set drop position in World's local space
 			drop_position = world_local_pos
 			# Adjust Y position to be at ground level
 			drop_position.y += 20  # Small offset to place on ground
 			drop_position.x += 10  # Small offset to the right
-			print("Drop position in World space: ", drop_position)  # Debug print
 			
 			# Set the item's position and scale
 			item_to_drop.position = drop_position
-			item_to_drop.scale = Vector2(1, 1)  # Reset scale to match world scale
+			
+			# Reset scale and rotation based on item type
+			if is_torch:
+				# For torch, use the original scale from the torch.tscn file
+				# Since World has a scale of 2.0, we need to compensate
+				item_to_drop.scale = Vector2(0.471256, 0.653965)  # Half of the original scale to compensate for World's scale
+				item_to_drop.rotation = 0  # Reset rotation to upright
+				
+				# Reset the PointLight2D scale to ensure proper light shape
+				var light = item_to_drop.get_node_or_null("PointLight2D")
+				if light:
+					light.scale = Vector2(1.429, 1)  # Original light scale from torch.tscn
+			else:
+				# For other items, use a standard scale
+				item_to_drop.scale = Vector2(0.25, 0.25)  # Half of 0.5 to compensate for World's scale
+				item_to_drop.rotation = 0
+			
 			item_to_drop.can_be_picked_up = true
-			print("Set item position and made it pickable")  # Debug print
+			
+			# Call the _on_dropped function on the item
+			if item_to_drop.has_method("_on_dropped"):
+				item_to_drop._on_dropped()
 			
 			# Update hotbar first
 			if hotbar:
-				print("Updating hotbar - Removing item at index: ", selected_item_index)  # Debug print
 				hotbar.remove_item(selected_item_index)
 				num_items -= 1
-				print("New num_items: ", num_items)  # Debug print
 			
 			# Remove from held items
 			held_items.remove_at(selected_item_index)
-			print("Remaining held items: ", held_items.size())  # Debug print
 			
 			# Update selection and held item
 			if held_items.is_empty():
@@ -219,23 +233,20 @@ func drop_item():
 			else:
 				selected_item_index = min(selected_item_index, held_items.size() - 1)
 			update_held_item()
-			print("Updated selection and held item")  # Debug print
 			
-			# Reset TorchHolder position and rotation
+			# Reset TorchHolder position and rotation to consistent values
 			$TorchHolder.position = Vector2(26, 8)
-			$TorchHolder.global_rotation_degrees = -65
-			$TorchHolder.global_scale = Vector2(1, 1)
+			$TorchHolder.scale = Vector2(0.5, 0.5)  # Set a consistent scale
+			$TorchHolder.rotation = deg_to_rad(25)  # Set a consistent rotation of 25 degrees
 			$TorchHolder.set_skew(0)
-			print("Reset TorchHolder")  # Debug print
 		else:
-			print("World node not found!")  # Debug print
 			# Reset animation state even if we couldn't drop the item
 			$player_anim.play("RESET")
 	else:
 		if held_items.is_empty():
-			print("No items to drop")  # Debug print
+			pass  # No items to drop
 		if not is_on_floor():
-			print("Player is not on floor")  # Debug print
+			pass  # Player is not on floor
 
 func set_can_move(state):
 	can_move = state
@@ -266,12 +277,38 @@ func update_held_item():
 	for child in $TorchHolder.get_children():
 		$TorchHolder.remove_child(child)
 	
+	# Set TorchHolder to consistent values
+	$TorchHolder.position = Vector2(26, 8)
+	$TorchHolder.scale = Vector2(0.5, 0.5)  # Set a consistent scale
+	$TorchHolder.rotation = deg_to_rad(25)  # Set a consistent rotation of 25 degrees
+	$TorchHolder.set_skew(0)
+	
 	# If we have items and a valid selection
 	if not held_items.is_empty() and selected_item_index < held_items.size():
 		var selected_item = held_items[selected_item_index]
+		
+		# Store the current scale before adding to TorchHolder
+		var current_scale = selected_item.scale
+		
 		$TorchHolder.add_child(selected_item)
 		selected_item.position = Vector2.ZERO
 		selected_item.visible = true
+		
+		# Set appropriate scale and rotation for torch
+		if selected_item.name.contains("Torch"):
+			# For torch, use a consistent scale that matches the dropped state
+			# This ensures consistency between dropped and held states
+			selected_item.scale = Vector2(0.471256, 0.653965)  # Same scale as when dropped
+			selected_item.rotation = 0
+			
+			# Reset the PointLight2D scale to ensure proper light shape
+			var light = selected_item.get_node_or_null("PointLight2D")
+			if light:
+				light.scale = Vector2(1.429, 1)  # Original light scale from torch.tscn
+		else:
+			# For other items, use a standard scale
+			selected_item.scale = Vector2(0.25, 0.25)
+			selected_item.rotation = 0
 		
 		# Update hotbar selection
 		if hotbar:

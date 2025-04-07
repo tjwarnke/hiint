@@ -1,27 +1,65 @@
 extends Area2D
 
-var player_in_area = null  
 var can_be_picked_up = true
+var player = null
 
-@onready var text_box = get_tree().current_scene.find_child("TextBoxMiddleTop", true, false)
+# Store original properties for debugging
+var original_scale
+var original_rotation
+var original_position
+var original_parent
 
-func _ready(): 
-	add_to_group("item")
-
-func _on_body_entered(body):
-	player_in_area = body 
-	if can_be_picked_up and text_box:
-		text_box.visible = true
-		text_box.text = "Press 'e' to take 8-Ball" 
-
-func _on_body_exited(_body):
-	player_in_area = null
-	if text_box:
-		text_box.visible = false
+func _ready():
+	# Store original properties for debugging
+	original_scale = scale
+	original_rotation = rotation
+	original_position = position
+	original_parent = get_parent()
+	
+	# Connect to the player's powerup_ready signal
+	player = get_node("/root/World/Player")
+	if player:
+		player.powerup_ready.connect(_on_player_powerup_ready)
+	
+	# Connect to the player's powerup_used signal
+	if player:
+		player.powerup_used.connect(_on_player_powerup_used)
 
 func _process(_delta):
-	if player_in_area and Input.is_action_just_pressed("pick_up") and player_in_area.has_method("pick_up_item"):
+	if player and player.is_in_powerup_area and player.powerup_area == self:
+		if Input.is_action_just_pressed("interact") and can_be_picked_up:
+			player.pick_up_item(self)
+			queue_free()
+
+func _on_player_powerup_ready(powerup_name, value):
+	if powerup_name == "Jump":
+		# Handle jump powerup
+		pass
+	elif powerup_name == "Dash":
+		# Handle dash powerup
+		pass
+
+func _on_player_powerup_used(powerup_name):
+	if powerup_name == "Jump":
+		# Handle jump powerup used
+		pass
+	elif powerup_name == "Dash":
+		# Handle dash powerup used
+		pass
+
+func _on_body_entered(body):
+	if body.is_in_group("player"):
+		player = body
 		if can_be_picked_up:
-			if text_box:
-				text_box.visible = false
-			player_in_area.pick_up_item(self)
+			$TextBox.visible = true
+			$TextBox/Label.text = "Press 'e' to pick up"
+
+func _on_body_exited(body):
+	if body.is_in_group("player"):
+		player = null
+		$TextBox.visible = false
+
+func _on_dropped():
+	# This function is called when the item is dropped
+	# It can be overridden by child classes to add specific behavior
+	pass

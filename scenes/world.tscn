@@ -171,7 +171,7 @@ color = Color(0.442911, 0.442911, 0.442911, 1)
 
 [node name="Torch" parent="cabin" groups=["item"] instance=ExtResource("6_lakw3")]
 z_index = 2
-position = Vector2(522.5, 823)
+position = Vector2(527, 838.5)
 rotation = 0.0
 script = ExtResource("7_dss4m")
 
