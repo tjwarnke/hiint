@@ -29,7 +29,7 @@ var item_type = ""
 
 var can_move = true
 
-@onready var hotbar = get_node("/root/World/Camera2D/Hotbar")
+@onready var hotbar = get_node("/root/World/Camera2D/Control/Hotbar")
 var num_items := 0
 var selected_item_index := 0
 var held_items = []
@@ -181,8 +181,24 @@ func drop_item():
 			world.add_child(item_to_drop)
 			print("Added item to world")  # Debug print
 			
-			# Set the item's position and make it pickable again
-			item_to_drop.position = global_position + Vector2(10, -10)
+			# Position relative to the World node
+			var drop_position = global_position  # Start with player's global position
+			print("Player global position: ", global_position)  # Debug print
+			
+			# Convert to World's local space
+			var world_local_pos = world.to_local(drop_position)
+			print("Player position in World space: ", world_local_pos)  # Debug print
+			
+			# Set drop position in World's local space
+			drop_position = world_local_pos
+			# Adjust Y position to be at ground level
+			drop_position.y += 20  # Small offset to place on ground
+			drop_position.x += 10  # Small offset to the right
+			print("Drop position in World space: ", drop_position)  # Debug print
+			
+			# Set the item's position and scale
+			item_to_drop.position = drop_position
+			item_to_drop.scale = Vector2(1, 1)  # Reset scale to match world scale
 			item_to_drop.can_be_picked_up = true
 			print("Set item position and made it pickable")  # Debug print
 			

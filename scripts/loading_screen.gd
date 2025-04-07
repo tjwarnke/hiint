@@ -22,11 +22,11 @@ const LOADING_STATES = [
 
 var current_state_index = 0
 var state_timer = 0.0
-const STATE_CHANGE_TIME = 5.0  # Change state every second
+const STATE_CHANGE_TIME = 7.0  # Change state every second
 
 # Progress animation settings
 var current_progress = 0.0
-const PROGRESS_SPEED = 0.05  # Progress per second (5% per second)
+const PROGRESS_SPEED = 0.04  # Progress per second (5% per second)
 var is_loading_complete = false
 
 # Scene loading queue
