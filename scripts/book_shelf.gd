@@ -36,46 +36,41 @@ func _on_body_exited(body):
 	if body.is_in_group("player"):
 		player_nearby = false
 		await get_tree().create_timer(1.5).timeout
+		text_box.visible = false
+		dialogue.visible = false
 
 func grab_item(response):
-	if dialogue:
-		dialogue.visible = false
-	if text_box:
-		text_box.text = response
-		text_box.visible = true
+	dialogue.visible = false
+	text_box.text = response
 	dialogue_active = false
-	if player and book:
-		player.pick_up_item(book)
-		player.set_can_move(true)
+	player.pick_up_item(book)
+	player.set_can_move(true)
 	await get_tree().create_timer(2).timeout
-	if text_box:
-		text_box.visible = false
+	text_box.visible = false
+
 
 func _input(event):
 	if event.is_action_pressed("Interact2") and player_nearby:
-		if player:
-			player.set_can_move(false)
-		if dialogue:
-			dialogue_active = false
-			dialogue.visible = false
+		player.set_can_move(false)
+		dialogue_active = false
+		dialogue.visible = false
 		
 		if book_taken:
-			if text_box:
-				text_box.text = "You already took the book."
-				text_box.visible = true
-			if player:
-				player.set_can_move(true)
+			text_box.text = "You already took the book."
+			text_box.visible = true
+			player.set_can_move(true)
 			await get_tree().create_timer(1.5).timeout
-			if text_box:
-				text_box.visible = false
+			text_box.visible = false
 		else:
-			if text_box:
-				text_box.text = "There is a book on the shelf"
-				text_box.visible = true
-			if dialogue:
-				dialogue.visible = true
-				dialogue_active = true
-
+			text_box.text = "There is a book on the shelf"
+			text_box.visible = true
+			await get_tree().create_timer(2).timeout
+			text_box.text = "Would you like to take it?"
+			await get_tree().create_timer(1).timeout
+			dialogue.text = "1. Yes \n2. No"
+			dialogue.visible = true
+			dialogue_active = true
+		
 	if dialogue_active:
 		if event.is_action_pressed("Option1"):
 			book_taken = true

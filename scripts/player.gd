@@ -168,13 +168,15 @@ func drop_item():
 			var item_to_drop = held_items[selected_item_index]
 			print("Dropping item at index: ", selected_item_index)  # Debug print
 			
+			item_to_drop.reparent(level, true)
+			
 			# Remove from TorchHolder first
-			if item_to_drop.get_parent() == $TorchHolder:
-				print("Removing from TorchHolder")  # Debug print
-				$TorchHolder.remove_child(item_to_drop)
+			#if item_to_drop.get_parent() == $TorchHolder:
+			#	print("Removing from TorchHolder")  # Debug print
+			#	$TorchHolder.remove_child(item_to_drop)
 			
 			# Add to level and set position
-			level.add_child(item_to_drop)
+			#level.add_child(item_to_drop)
 			
 			# Calculate the final position based on the animation's end state
 			var final_position = global_position + Vector2(60, 40)  # Offset slightly forward
