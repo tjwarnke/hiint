@@ -30168,7 +30168,6 @@ _data = {
 size = Vector2(305, 147)
 
 [node name="Library" type="Node2D"]
-scale = Vector2(0.5, 0.5)
 script = ExtResource("1_cupxr")
 metadata/_edit_horizontal_guides_ = [3656.0]
 

@@ -1,30 +1,46 @@
 extends Control
 
 var max_slots := 5
-
 var items := []
+var selected_slot := 0
 
-@onready var camera = get_viewport().get_camera_2d()
-
-func _process(delta):
-	if camera:
-		var screen_size = get_viewport_rect().size
-		var bottom_center = camera.get_screen_center_position() + Vector2(0, (screen_size.y / 2) * camera.zoom.y)
-		position = Vector2(bottom_center.x - size.x / 2, bottom_center.y - size.y - 80)
-		
 @onready var slots := $HBoxContainer.get_children()
 
 func _ready():
 	items.resize(max_slots)
+	update_slot_appearance()
+	
+	# Set up anchors for bottom center positioning
+	anchors_preset = Control.PRESET_BOTTOM_WIDE
+	anchor_bottom = 1.0
+	offset_bottom = -400
+	
+	# Ensure we're on top of everything
+	z_index = 100
+	show()
 
 func add_item(item_texture, index):
+	print("Adding item to hotbar at index: ", index)  # Debug print
 	if index < max_slots:
 		items[index] = item_texture
 		slots[index].texture = item_texture
+		update_slot_appearance()
 		
-func remove_item(item):
-	for i in range(max_slots):
-		if items[i] == item:
-			items[i] = null
-			slots[i].texture = null
-			break
+func remove_item(index):
+	print("Removing item from hotbar at index: ", index)  # Debug print
+	if index < max_slots:
+		items[index] = null
+		slots[index].texture = null
+		update_slot_appearance()
+
+func set_selected(index: int):
+	selected_slot = index
+	update_slot_appearance()
+
+func update_slot_appearance():
+	for i in range(slots.size()):
+		var slot = slots[i]
+		if i == selected_slot:
+			slot.modulate = Color(1, 1, 1, 1)  # Full brightness for selected
+		else:
+			slot.modulate = Color(0.5, 0.5, 0.5, 1)  # Dimmed for unselected
