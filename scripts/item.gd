@@ -71,5 +71,14 @@ func _on_body_exited(body):
 
 func _on_dropped():
 	# This function is called when the item is dropped
-	# It can be overridden by child classes to add specific behavior
-	pass
+	# Reset to original scale
+	scale = original_scale
+	rotation = original_rotation
+	
+	# Make sure the item is visible and can be picked up again
+	visible = true
+	can_be_picked_up = true
+	
+	# Reset the player reference and area state
+	player = null
+	player_in_area = false

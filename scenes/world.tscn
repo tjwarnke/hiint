@@ -127,12 +127,6 @@ wait_time = 0.08
 stream = ExtResource("15_kpybi")
 volume_db = 5.943
 
-[node name="CanvasModulate" type="CanvasModulate" parent="Camera2D"]
-visible = false
-z_index = 1
-position = Vector2(-985, -542)
-color = Color(0.18359, 0.183591, 0.18359, 1)
-
 [node name="Control" type="Control" parent="Camera2D"]
 layout_direction = 1
 layout_mode = 3
@@ -149,6 +143,12 @@ offset_left = -76.2
 offset_top = -240.0
 offset_right = 356.8
 offset_bottom = -176.0
+
+[node name="CanvasModulate" type="CanvasModulate" parent="Camera2D"]
+visible = false
+z_index = 1
+position = Vector2(-985, -542)
+color = Color(0.18359, 0.183591, 0.18359, 1)
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 z_index = 2

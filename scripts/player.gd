@@ -135,6 +135,7 @@ func has_item(item_name: String) -> bool:
 func pick_up_item(item):
 	print("PLAYER DEBUG: Starting pick_up_item with item: ", item.name)
 	print("PLAYER DEBUG: Item scale before pickup: ", item.scale)
+	print("PLAYER DEBUG: Item original scale: ", item.original_scale)
 	
 	# Check if already picking up an item
 	if is_picking_up:
@@ -203,6 +204,11 @@ func pick_up_item(item):
 		item.position = Vector2.ZERO
 		item.visible = true
 		
+		# Keep track of the original scale value for later use
+		if not item.has_meta("original_scale_stored"):
+			item.set_meta("original_scale_stored", item.original_scale)
+			print("PLAYER DEBUG: Stored original scale: ", item.get_meta("original_scale_stored"))
+		
 		# Set appropriate scale and rotation for torch
 		if item.name.contains("Torch"):
 			print("PLAYER DEBUG: Setting torch scale before: ", item.scale)
@@ -217,9 +223,10 @@ func pick_up_item(item):
 				light.scale = Vector2(1.0, 1.0)  # Set light scale to 1.0, 1.0
 				print("PLAYER DEBUG: Light scale set to: ", light.scale)
 		else:
-			# For other items, use a standard scale
-			item.scale = Vector2(0.25, 0.25)
+			# For all other items, keep original scale
+			item.scale = item.original_scale
 			item.rotation = 0
+			print("PLAYER DEBUG: Setting item to original scale: ", item.scale)
 		
 		# Update held item display
 		update_held_item()
@@ -252,9 +259,10 @@ func drop_item():
 			
 			# Store original properties for torch
 			var is_torch = item_to_drop.name.contains("Torch")
-			var _original_scale = item_to_drop.scale
-			var _original_rotation = item_to_drop.rotation
-			print("PLAYER DEBUG: Original scale stored: ", _original_scale)
+			var stored_original_scale = item_to_drop.original_scale
+			if item_to_drop.has_meta("original_scale_stored"):
+				stored_original_scale = item_to_drop.get_meta("original_scale_stored")
+			print("PLAYER DEBUG: Original scale stored: ", stored_original_scale)
 			
 			# Remove from TorchHolder first
 			if item_to_drop.get_parent() == $TorchHolder:
@@ -292,9 +300,10 @@ func drop_item():
 					light.scale = Vector2(1.0, 1.0)  # Set light scale to 1.0, 1.0
 					print("PLAYER DEBUG: Light scale set to: ", light.scale)
 			else:
-				# For other items, use a standard scale
-				item_to_drop.scale = Vector2(0.25, 0.25)  # Half of 0.5 to compensate for World's scale
+				# For other items, use their original scale
+				item_to_drop.scale = stored_original_scale
 				item_to_drop.rotation = 0
+				print("PLAYER DEBUG: Setting non-torch item to original scale: ", item_to_drop.scale)
 			
 			item_to_drop.can_be_picked_up = true
 			
@@ -371,8 +380,10 @@ func update_held_item():
 	if not held_items.is_empty() and selected_item_index < held_items.size():
 		var selected_item = held_items[selected_item_index]
 		
-		# Store the current scale before adding to TorchHolder
-		var _current_scale = selected_item.scale
+		# Get the original scale from meta
+		var stored_original_scale = selected_item.original_scale
+		if selected_item.has_meta("original_scale_stored"):
+			stored_original_scale = selected_item.get_meta("original_scale_stored")
 		
 		$TorchHolder.add_child(selected_item)
 		selected_item.position = Vector2.ZERO
@@ -389,8 +400,8 @@ func update_held_item():
 			if light:
 				light.scale = Vector2(1.0, 1.0)  # Set light scale to 1.0, 1.0
 		else:
-			# For other items, use a standard scale
-			selected_item.scale = Vector2(0.25, 0.25)
+			# For other items, use their original scale
+			selected_item.scale = stored_original_scale
 			selected_item.rotation = 0
 		
 		# Update hotbar selection
