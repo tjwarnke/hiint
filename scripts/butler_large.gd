@@ -36,6 +36,7 @@ func _on_body_entered(body):
 			await get_tree().create_timer(2).timeout
 			text_box.visible = false
 			sprite.visible = false
+			Box2.visible = false
 			cut_scene_seen = true
 		
 func _on_body_exited(body):

@@ -81,6 +81,7 @@ offset_right = 1484.0
 offset_bottom = 141.0
 
 [node name="TextBoxMiddleTopBack2" type="Sprite2D" parent="UI"]
+visible = false
 z_index = 1
 position = Vector2(960.5, 66)
 scale = Vector2(0.703077, 0.7)
@@ -136,6 +137,7 @@ color = Color(0.0475577, 0.0475577, 0.0475576, 1)
 [node name="Control" type="Control" parent="Camera2D"]
 layout_direction = 1
 layout_mode = 3
+anchors_preset = 0
 offset_bottom = 750.0
 grow_horizontal = 2
 
