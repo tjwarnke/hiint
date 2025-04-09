@@ -132,30 +132,70 @@ func has_item(item_name: String) -> bool:
 	return item_name in inventory
 
 func pick_up_item(item):
+	print("Player: pick_up_item called with item: ", item.name)
 	if not held_items.has(item):
+		print("Player: Item not already held, proceeding with pickup")
 		# Play pickup animation
 		$player_anim.play("pickup item")
+		print("Player: Started pickup animation")
 		
 		# Wait for the animation to finish before picking up the item
 		await $player_anim.animation_finished
+		print("Player: Pickup animation finished")
 		
-		# Remove from parent first
-		if item.get_parent():
+		# Check if the item still exists and has a parent
+		if is_instance_valid(item) and item.get_parent():
+			print("Player: Removing item from parent: ", item.get_parent().name)
 			item.get_parent().remove_child(item)
 		
 		# Add to held items
 		held_items.append(item)
 		selected_item_index = held_items.size() - 1
+		print("Player: Added item to held_items, new count: ", held_items.size())
 		
 		# Update hotbar
 		if hotbar:
-			hotbar.add_item(item, selected_item_index)
+			print("Player: Updating hotbar with item at index: ", selected_item_index)
+			# Get the item's sprite texture from the Sprite2D node
+			var sprite_node = item.get_node_or_null("Sprite2D")
+			if sprite_node:
+				var item_texture = sprite_node.texture
+				print("Player: Item texture: ", item_texture)
+				hotbar.add_item(item_texture, selected_item_index)
+			else:
+				print("Player: No Sprite2D node found on item")
+		else:
+			print("Player: No hotbar found!")
 		
-		# Update held item
-		update_held_item()
+		# Add the item to the TorchHolder
+		$TorchHolder.add_child(item)
+		item.position = Vector2.ZERO
+		item.visible = true
+		
+		# Set appropriate scale and rotation for torch
+		if item.name.contains("Torch"):
+			# For torch, use a consistent scale that matches the dropped state
+			item.scale = Vector2(0.471256, 0.653965)  # Same scale as when dropped
+			item.rotation = 0
+			
+			# Reset the PointLight2D scale to ensure proper light shape
+			var light = item.get_node_or_null("PointLight2D")
+			if light:
+				light.scale = Vector2(1.429, 1)  # Original light scale from torch.tscn
+		else:
+			# For other items, use a standard scale
+			item.scale = Vector2(0.25, 0.25)
+			item.rotation = 0
+		
+		# Update hotbar selection
+		if hotbar:
+			hotbar.set_selected(selected_item_index)
 		
 		# Reset animation state
 		$player_anim.play("RESET")
+		print("Player: Reset animation state")
+	else:
+		print("Player: Item already held, skipping pickup")
 
 func drop_item():
 	if not held_items.is_empty() and is_on_floor():  
@@ -172,8 +212,8 @@ func drop_item():
 			
 			# Store original properties for torch
 			var is_torch = item_to_drop.name.contains("Torch")
-			var original_scale = item_to_drop.scale
-			var original_rotation = item_to_drop.rotation
+			var _original_scale = item_to_drop.scale
+			var _original_rotation = item_to_drop.rotation
 			
 			# Remove from TorchHolder first
 			if item_to_drop.get_parent() == $TorchHolder:
@@ -288,7 +328,7 @@ func update_held_item():
 		var selected_item = held_items[selected_item_index]
 		
 		# Store the current scale before adding to TorchHolder
-		var current_scale = selected_item.scale
+		var _current_scale = selected_item.scale
 		
 		$TorchHolder.add_child(selected_item)
 		selected_item.position = Vector2.ZERO
