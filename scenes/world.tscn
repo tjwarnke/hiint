@@ -131,7 +131,7 @@ volume_db = 5.943
 visible = false
 z_index = 1
 position = Vector2(-985, -542)
-color = Color(0.0475577, 0.0475577, 0.0475576, 1)
+color = Color(0.18359, 0.183591, 0.18359, 1)
 
 [node name="Control" type="Control" parent="Camera2D"]
 layout_direction = 1

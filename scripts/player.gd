@@ -28,6 +28,7 @@ var jumps_left: int
 var item_type = ""
 
 var can_move = true
+var is_picking_up = false  # Flag to prevent multiple simultaneous pickups
 
 @onready var hotbar = get_node("/root/World/Camera2D/Control/Hotbar")
 var num_items := 0
@@ -134,7 +135,14 @@ func has_item(item_name: String) -> bool:
 func pick_up_item(item):
 	print("PLAYER DEBUG: Starting pick_up_item with item: ", item.name)
 	print("PLAYER DEBUG: Item scale before pickup: ", item.scale)
+	
+	# Check if already picking up an item
+	if is_picking_up:
+		print("PLAYER DEBUG: Already picking up an item, ignoring request")
+		return
+		
 	if not held_items.has(item):
+		is_picking_up = true  # Set flag to prevent multiple pickups
 		print("PLAYER DEBUG: Item not already held, proceeding with pickup")
 		# Play pickup animation
 		$player_anim.play("pickup item")
@@ -168,6 +176,7 @@ func pick_up_item(item):
 			# If still no slot found, the hotbar is full
 			if next_available_slot == selected_item_index:
 				print("PLAYER DEBUG: Hotbar is full, cannot pick up item")
+				is_picking_up = false  # Reset flag
 				return
 		
 		# Add to held items
@@ -212,15 +221,21 @@ func pick_up_item(item):
 			item.scale = Vector2(0.25, 0.25)
 			item.rotation = 0
 		
+		# Update held item display
+		update_held_item()
+		
 		# Reset animation state
 		$player_anim.play("RESET")
 		print("PLAYER DEBUG: Reset animation state")
 		print("PLAYER DEBUG: Final item scale after pickup: ", item.scale)
+		
+		# Reset the pickup flag
+		is_picking_up = false
 	else:
 		print("PLAYER DEBUG: Item already held, skipping pickup")
 
 func drop_item():
-	if not held_items.is_empty() and is_on_floor():  
+	if not held_items.is_empty() and is_on_floor() and not is_picking_up:  
 		print("PLAYER DEBUG: Starting drop_item")
 		# Play throw animation
 		$player_anim.play("throw item")
@@ -377,3 +392,7 @@ func update_held_item():
 			# For other items, use a standard scale
 			selected_item.scale = Vector2(0.25, 0.25)
 			selected_item.rotation = 0
+		
+		# Update hotbar selection
+		if hotbar:
+			hotbar.set_selected(selected_item_index)

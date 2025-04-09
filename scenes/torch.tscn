@@ -24,15 +24,14 @@ position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_4t2xx")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(-1.01731, -0.982416)
-scale = Vector2(1.429, 1)
+position = Vector2(-0.999842, 0.0174315)
 color = Color(0.878431, 0.878431, 0.878431, 1)
 energy = 0.77
 shadow_enabled = true
 shadow_color = Color(0.796243, 0.796243, 0.796243, 0)
 texture = ExtResource("3_4xckj")
 offset = Vector2(0, -25)
-texture_scale = 0.25
+texture_scale = 0.4
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 position = Vector2(-0.592541, -24.4624)
