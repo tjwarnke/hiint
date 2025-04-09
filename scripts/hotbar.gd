@@ -45,23 +45,7 @@ func remove_item(index):
 		else:
 			print("Hotbar: Failed to clear slot - slot is null")
 		
-		# Shift remaining items to fill the gap
-		for i in range(index, items.size() - 1):
-			items[i] = items[i + 1]
-			if slots[i] and slots[i + 1]:
-				slots[i].texture = slots[i + 1].texture
-				print("Hotbar: Shifted item from slot ", i + 1, " to ", i)
-			else:
-				print("Hotbar: Failed to shift item - slot is null")
-		
-		# Clear the last slot
-		items[items.size() - 1] = null
-		if slots[items.size() - 1]:
-			slots[items.size() - 1].texture = null
-			print("Hotbar: Cleared last slot")
-		else:
-			print("Hotbar: Failed to clear last slot - slot is null")
-		
+		# Don't shift items, just clear the slot
 		update_slot_appearance()
 	else:
 		print("Hotbar: Index out of range: ", index)

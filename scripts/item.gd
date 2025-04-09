@@ -1,18 +1,23 @@
 extends Area2D
 
+signal item_picked
+
 var can_be_picked_up = true
 var player = null
+var player_in_area = false  # Track when player is in the item's area
 
 # Store original properties for debugging
-var original_scale
-var original_rotation
-var original_position
-var original_parent
+var original_scale = Vector2.ZERO
+var original_rotation = 0.0
+var original_position = Vector2.ZERO
+var original_parent = null
 
 @onready var text_box = get_node("/root/World/UI/TextBoxMiddleTop")
+@onready var sprite = $Sprite2D
 
 func _ready():
-	# Store original properties for debugging
+	add_to_group("item")
+	# Store original properties
 	original_scale = scale
 	original_rotation = rotation
 	original_position = position
@@ -26,21 +31,12 @@ func _ready():
 	var world = get_node_or_null("/root/World")
 	if world:
 		player = world.get_node_or_null("Player")
-		if player:
-			print("Item: Found player node")
-		else:
-			print("Item: Player node not found in World")
-	else:
-		print("Item: World node not found")
 
 func _process(_delta):
-	if player and Input.is_action_just_pressed("pick_up") and can_be_picked_up:
-		print("Item: Pick up action detected")
-		print("Item: Player reference valid: ", player != null)
-		print("Item: Can be picked up: ", can_be_picked_up)
+	if player and Input.is_action_just_pressed("pick_up") and can_be_picked_up and player_in_area:
 		can_be_picked_up = false  # Prevent multiple pickups
+		emit_signal("item_picked")
 		player.pick_up_item(self)
-		print("Item: Called player.pick_up_item")
 		# Don't free the item here - let the player handle it
 
 func _on_player_powerup_ready(powerup_name, value):
@@ -62,6 +58,7 @@ func _on_player_powerup_used(powerup_name):
 func _on_body_entered(body):
 	if body.is_in_group("player"):
 		player = body
+		player_in_area = true  # Set player_in_area to true when player enters
 		if can_be_picked_up:
 			text_box.visible = true
 			text_box.text = "Press 'e' to pick up"
@@ -69,6 +66,7 @@ func _on_body_entered(body):
 func _on_body_exited(body):
 	if body.is_in_group("player"):
 		player = null
+		player_in_area = false  # Set player_in_area to false when player exits
 		text_box.visible = false
 
 func _on_dropped():

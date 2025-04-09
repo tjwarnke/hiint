@@ -232,7 +232,7 @@ position = Vector2(15888, 80)
 scale = Vector2(0.5, 0.5)
 
 [node name="Book" parent="." instance=ExtResource("8_2lf6f")]
-position = Vector2(558.5, 1772)
+position = Vector2(404, 825)
 
 [connection signal="torch_picked" from="cabin/Torch" to="." method="_on_torch_picked"]
 [connection signal="collected" from="Tutorial/Area2D2" to="." method="on_power_up"]
