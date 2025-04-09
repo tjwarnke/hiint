@@ -30,7 +30,7 @@ var item_type = ""
 var can_move = true
 var is_picking_up = false  # Flag to prevent multiple simultaneous pickups
 
-@onready var hotbar = get_node("/root/World/Camera2D/Control/Hotbar")
+@onready var hotbar = get_node("/root/World/UI/Hotbar")
 var num_items := 0
 var selected_item_index := 0
 var held_items = []
@@ -133,29 +133,20 @@ func has_item(item_name: String) -> bool:
 	return item_name in inventory
 
 func pick_up_item(item):
-	print("PLAYER DEBUG: Starting pick_up_item with item: ", item.name)
-	print("PLAYER DEBUG: Item scale before pickup: ", item.scale)
-	print("PLAYER DEBUG: Item original scale: ", item.original_scale)
-	
 	# Check if already picking up an item
 	if is_picking_up:
-		print("PLAYER DEBUG: Already picking up an item, ignoring request")
 		return
 		
 	if not held_items.has(item):
 		is_picking_up = true  # Set flag to prevent multiple pickups
-		print("PLAYER DEBUG: Item not already held, proceeding with pickup")
 		# Play pickup animation
 		$player_anim.play("pickup item")
-		print("PLAYER DEBUG: Started pickup animation")
 		
 		# Wait for the animation to finish before picking up the item
 		await $player_anim.animation_finished
-		print("PLAYER DEBUG: Pickup animation finished")
 		
 		# Check if the item still exists and has a parent
 		if is_instance_valid(item) and item.get_parent():
-			print("PLAYER DEBUG: Removing item from parent: ", item.get_parent().name)
 			item.get_parent().remove_child(item)
 		
 		# Find the next available slot in the hotbar
@@ -176,28 +167,20 @@ func pick_up_item(item):
 			
 			# If still no slot found, the hotbar is full
 			if next_available_slot == selected_item_index:
-				print("PLAYER DEBUG: Hotbar is full, cannot pick up item")
 				is_picking_up = false  # Reset flag
 				return
 		
 		# Add to held items
 		held_items.append(item)
 		selected_item_index = next_available_slot
-		print("PLAYER DEBUG: Added item to held_items at index: ", selected_item_index)
 		
 		# Update hotbar
 		if hotbar:
-			print("PLAYER DEBUG: Updating hotbar with item at index: ", selected_item_index)
 			# Get the item's sprite texture from the Sprite2D node
 			var sprite_node = item.get_node_or_null("Sprite2D")
 			if sprite_node:
 				var item_texture = sprite_node.texture
-				print("PLAYER DEBUG: Item texture: ", item_texture)
 				hotbar.add_item(item_texture, selected_item_index)
-			else:
-				print("PLAYER DEBUG: No Sprite2D node found on item")
-		else:
-			print("PLAYER DEBUG: No hotbar found!")
 		
 		# Add the item to the TorchHolder
 		$TorchHolder.add_child(item)
@@ -207,62 +190,49 @@ func pick_up_item(item):
 		# Keep track of the original scale value for later use
 		if not item.has_meta("original_scale_stored"):
 			item.set_meta("original_scale_stored", item.original_scale)
-			print("PLAYER DEBUG: Stored original scale: ", item.get_meta("original_scale_stored"))
 		
 		# Set appropriate scale and rotation for torch
 		if item.name.contains("Torch"):
-			print("PLAYER DEBUG: Setting torch scale before: ", item.scale)
 			# For torch, use a consistent scale of 1.0
 			item.scale = Vector2(1.0, 1.0)
-			print("PLAYER DEBUG: Setting torch scale after: ", item.scale)
 			item.rotation = 0
 			
 			# Reset the PointLight2D scale to ensure proper light shape
 			var light = item.get_node_or_null("PointLight2D")
 			if light:
 				light.scale = Vector2(1.0, 1.0)  # Set light scale to 1.0, 1.0
-				print("PLAYER DEBUG: Light scale set to: ", light.scale)
 		else:
 			# For all other items, keep original scale
 			item.scale = item.original_scale
 			item.rotation = 0
-			print("PLAYER DEBUG: Setting item to original scale: ", item.scale)
 		
 		# Update held item display
 		update_held_item()
 		
 		# Reset animation state
 		$player_anim.play("RESET")
-		print("PLAYER DEBUG: Reset animation state")
-		print("PLAYER DEBUG: Final item scale after pickup: ", item.scale)
 		
 		# Reset the pickup flag
 		is_picking_up = false
-	else:
-		print("PLAYER DEBUG: Item already held, skipping pickup")
 
 func drop_item():
 	if not held_items.is_empty() and is_on_floor() and not is_picking_up:  
-		print("PLAYER DEBUG: Starting drop_item")
 		# Play throw animation
 		$player_anim.play("throw item")
 		
 		# Wait for the animation to finish before dropping the item
 		await $player_anim.animation_finished
-		print("PLAYER DEBUG: Throw animation finished")
 		
 		# Get the World node
 		var world = get_node("/root/World")
 		if world:
 			var item_to_drop = held_items[selected_item_index]
-			print("PLAYER DEBUG: Item to drop scale before: ", item_to_drop.scale)
 			
 			# Store original properties for torch
 			var is_torch = item_to_drop.name.contains("Torch")
 			var stored_original_scale = item_to_drop.original_scale
 			if item_to_drop.has_meta("original_scale_stored"):
 				stored_original_scale = item_to_drop.get_meta("original_scale_stored")
-			print("PLAYER DEBUG: Original scale stored: ", stored_original_scale)
 			
 			# Remove from TorchHolder first
 			if item_to_drop.get_parent() == $TorchHolder:
@@ -288,30 +258,24 @@ func drop_item():
 			
 			# Reset scale and rotation based on item type
 			if is_torch:
-				print("PLAYER DEBUG: Setting torch scale before drop: ", item_to_drop.scale)
 				# For torch, use a consistent scale of 1.0
 				item_to_drop.scale = Vector2(1.0, 1.0)
-				print("PLAYER DEBUG: Setting torch scale after drop: ", item_to_drop.scale)
 				item_to_drop.rotation = 0  # Reset rotation to upright
 				
 				# Reset the PointLight2D scale to ensure proper light shape
 				var light = item_to_drop.get_node_or_null("PointLight2D")
 				if light:
 					light.scale = Vector2(1.0, 1.0)  # Set light scale to 1.0, 1.0
-					print("PLAYER DEBUG: Light scale set to: ", light.scale)
 			else:
 				# For other items, use their original scale
 				item_to_drop.scale = stored_original_scale
 				item_to_drop.rotation = 0
-				print("PLAYER DEBUG: Setting non-torch item to original scale: ", item_to_drop.scale)
 			
 			item_to_drop.can_be_picked_up = true
 			
 			# Call the _on_dropped function on the item
 			if item_to_drop.has_method("_on_dropped"):
-				print("PLAYER DEBUG: Calling _on_dropped on item")
 				item_to_drop._on_dropped()
-				print("PLAYER DEBUG: Item scale after _on_dropped: ", item_to_drop.scale)
 			
 			# Update hotbar first
 			if hotbar:
@@ -333,7 +297,6 @@ func drop_item():
 			$TorchHolder.scale = Vector2(0.5, 0.5)  # Set a consistent scale
 			$TorchHolder.rotation = deg_to_rad(25)  # Set a consistent rotation of 25 degrees
 			$TorchHolder.set_skew(0)
-			print("PLAYER DEBUG: Final item scale after drop: ", item_to_drop.scale)
 		else:
 			# Reset animation state even if we couldn't drop the item
 			$player_anim.play("RESET")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=24 format=3 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://ctbtqie8fru15" path="res://scenes/torch.tscn" id="6_lakw3"]
@@ -27,6 +27,10 @@ point_count = 4
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kpybi"]
 size = Vector2(278.75, 185)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_2lf6f"]
+a = Vector2(-6, -138)
+b = Vector2(0, 208)
 
 [node name="World" type="Node2D"]
 scale = Vector2(2, 2)
@@ -98,6 +102,13 @@ theme_override_font_sizes/font_size = 24
 z_index = 2
 position = Vector2(674, 68)
 
+[node name="Hotbar" parent="UI" instance=ExtResource("22_2lf6f")]
+z_index = 2
+offset_left = -200.0
+offset_top = -100.0
+offset_right = 200.0
+offset_bottom = -36.0
+
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(985, 542)
 process_callback = 0
@@ -133,16 +144,6 @@ layout_mode = 3
 anchors_preset = 0
 offset_bottom = 750.0
 grow_horizontal = 2
-
-[node name="Hotbar" parent="Camera2D/Control" instance=ExtResource("22_2lf6f")]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.405
-anchor_right = 1.205
-offset_left = -76.2
-offset_top = -240.0
-offset_right = 356.8
-offset_bottom = -176.0
 
 [node name="CanvasModulate" type="CanvasModulate" parent="Camera2D"]
 visible = false
@@ -226,6 +227,13 @@ scale = Vector2(0.5, 0.5)
 [node name="Library" parent="." instance=ExtResource("14_lakw3")]
 position = Vector2(13584, 212)
 scale = Vector2(0.5, 0.5)
+
+[node name="LibraryThreshold" type="Area2D" parent="Library"]
+position = Vector2(-241, 1170)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Library/LibraryThreshold"]
+position = Vector2(-9, 0)
+shape = SubResource("SegmentShape2D_2lf6f")
 
 [node name="BilliardsRoom" parent="." instance=ExtResource("15_pm21f")]
 position = Vector2(15888, 80)
