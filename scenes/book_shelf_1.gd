@@ -4,7 +4,7 @@ extends Sprite2D
 var player_nearby = false
 var dialogue_active = false
 var player = null
-var book_taken = false
+#var book_lever = false
 
 # UI elements - will be set in _ready
 var text_box = null
@@ -39,11 +39,11 @@ func _on_body_exited(body):
 		text_box.visible = false
 		dialogue.visible = false
 
-func grab_item(response):
+func give_dialogue(response):
 	dialogue.visible = false
 	text_box.text = response
 	dialogue_active = false
-	player.pick_up_item(book)
+	#player.pick_up_item(book)
 	player.set_can_move(true)
 	await get_tree().create_timer(2).timeout
 	text_box.visible = false
@@ -55,28 +55,27 @@ func _input(event):
 		dialogue_active = false
 		dialogue.visible = false
 		
-		if book_taken:
-			text_box.text = "You already took the book."
-			text_box.visible = true
-			player.set_can_move(true)
-			await get_tree().create_timer(1.5).timeout
-			text_box.visible = false
-		else:
-			text_box.text = "There is a book on the shelf"
-			text_box.visible = true
-			await get_tree().create_timer(2).timeout
-			text_box.text = "Would you like to take it?"
-			await get_tree().create_timer(1).timeout
-			dialogue.text = "1. Yes \n2. No"
-			dialogue.visible = true
-			dialogue_active = true
+		#if book_taken:
+			#text_box.text = "You already took the book."
+			#text_box.visible = true
+			#player.set_can_move(true)
+			#await get_tree().create_timer(1.5).timeout
+			#text_box.visible = false
+		
+		
+		text_box.text = "Some books on the shelf stand out, having fingerprints in the dust"
+		text_box.visible = true
+		await get_tree().create_timer(2).timeout
+		text_box.text = "Would you like to read any? Read:"
+		await get_tree().create_timer(1).timeout
+		dialogue.text = "1. The Kusnetzov Family - Nana Kusnetsov \n2. Surprise! - Abuton Press \n3. Goosebumps - RL Stein"
+		dialogue.visible = true
+		dialogue_active = true
 		
 	if dialogue_active:
 		if event.is_action_pressed("Option1"):
-			book_taken = true
-			grab_item("The book has been taken")
-			
+			give_dialogue("The book gives a brief history of the family, mentioning how they bought the mansion to help the russians spy on the government")
 		if event.is_action_pressed("Option2"):
-			dialogue.visible = false
-			text_box.visible = false
-			player.set_can_move(true)
+			give_dialogue("The book can't be pulled of the shelf")
+		if event.is_action_pressed("Option3"):
+			give_dialogue("A classic, you laugh, you get scared, then you remember you should be chasing the killer")
