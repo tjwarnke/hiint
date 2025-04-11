@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://8iyr4cj2qyud"]
+
+[ext_resource type="Texture2D" uid="uid://dyrib443h8e3d" path="res://dungeon_sidescroller-Raou/HIINT BOOK.png" id="1_ow7xw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wbisa"]
+size = Vector2(637, 523)
+
+[node name="Nana_Autobiography2" type="RigidBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_wbisa")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ow7xw")

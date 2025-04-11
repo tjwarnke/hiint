@@ -8,7 +8,6 @@ var original_scale
 var original_rotation
 var original_position
 var original_parent
-
 @onready var text_box = get_node("/root/World/UI/TextBoxMiddleTop")
 
 func _ready():

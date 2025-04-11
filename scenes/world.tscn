@@ -1,9 +1,8 @@
-[gd_scene load_steps=23 format=3 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=22 format=3 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://ctbtqie8fru15" path="res://scenes/torch.tscn" id="6_lakw3"]
 [ext_resource type="Script" uid="uid://cvx006n8smlea" path="res://scripts/torch.gd" id="7_dss4m"]
-[ext_resource type="PackedScene" uid="uid://caw125fejkkxe" path="res://scenes/Book.tscn" id="8_2lf6f"]
 [ext_resource type="Script" uid="uid://cxs3k4lmkyg8b" path="res://scripts/camera_2d.gd" id="11_7iits"]
 [ext_resource type="PackedScene" uid="uid://dd41uw5bd62ul" path="res://scenes/second_tutorial.tscn" id="12_dss4m"]
 [ext_resource type="PackedScene" uid="uid://b1ivw32oueigk" path="res://scenes/cabin.tscn" id="12_e3hyu"]
@@ -230,9 +229,6 @@ scale = Vector2(0.5, 0.5)
 [node name="BilliardsRoom" parent="." instance=ExtResource("15_pm21f")]
 position = Vector2(15888, 80)
 scale = Vector2(0.5, 0.5)
-
-[node name="Book" parent="." instance=ExtResource("8_2lf6f")]
-position = Vector2(558.5, 1772)
 
 [connection signal="torch_picked" from="cabin/Torch" to="." method="_on_torch_picked"]
 [connection signal="collected" from="Tutorial/Area2D2" to="." method="on_power_up"]
