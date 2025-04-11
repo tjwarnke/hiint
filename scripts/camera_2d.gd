@@ -16,8 +16,6 @@ func _process(delta):
 		var distance_x = abs(target_x - position.x)
 
 		if distance_x > deadzone:
-			# Calculate the direction to move
-			var direction = 1 if target_x > position.x else -1
 			# Move towards target with smooth interpolation
 			position.x = lerp(position.x, target_x, follow_speed * delta)
 		else:

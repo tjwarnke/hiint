@@ -30,15 +30,12 @@ func _on_body_entered(body):
 			Box2.visible = true
 			text_box.text = "Welcome to the Kusnetzov Mansion!"
 			await get_tree().create_timer(2).timeout
-			text_box2.visible = true
-			text_box2.text = "Take a seat at the table!"
+			text_box.text = "Take a seat at the table!"
 			await get_tree().create_timer(2).timeout
-			text_box2.visible = false
 			text_box.text = "The dinner will start shortly!"
 			await get_tree().create_timer(2).timeout
 			text_box.visible = false
 			sprite.visible = false
-			Box2.visible = false
 			cut_scene_seen = true
 		
 func _on_body_exited(body):

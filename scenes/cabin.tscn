@@ -1,7 +1,5 @@
-[gd_scene load_steps=10 format=3 uid="uid://b1ivw32oueigk"]
+[gd_scene load_steps=7 format=3 uid="uid://b1ivw32oueigk"]
 
-[ext_resource type="Texture2D" uid="uid://cvhhgbt5q8rv0" path="res://assets/images/book_shelf_transparent.png" id="1_qf7ms"]
-[ext_resource type="Script" uid="uid://c8a1h1fvehgc6" path="res://scripts/book_shelf.gd" id="2_0rnjq"]
 [ext_resource type="Texture2D" uid="uid://badubj84oq6ex" path="res://assets/images/Mayro.png" id="3_g3osi"]
 [ext_resource type="Texture2D" uid="uid://dualh52hqk7gi" path="res://assets/images/TextBoxMiddleTop.png" id="5_fj1ae"]
 [ext_resource type="PackedScene" uid="uid://cy0j7muohkimm" path="res://scenes/tutorial_old.tscn" id="6_qf7ms"]
@@ -9,9 +7,6 @@
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_oe1an"]
 normal = Vector2(1, 0)
 distance = -0.0312483
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_h6smj"]
-size = Vector2(152, 200)
 
 [sub_resource type="GDScript" id="GDScript_em8ck"]
 script/source = "extends Sprite2D
@@ -99,18 +94,6 @@ position = Vector2(-98, 445)
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="WorldBounds"]
 position = Vector2(99, 85)
 shape = SubResource("WorldBoundaryShape2D_oe1an")
-
-[node name="Book Shelf" type="Sprite2D" parent="."]
-z_index = 1
-position = Vector2(185, 780)
-texture = ExtResource("1_qf7ms")
-script = ExtResource("2_0rnjq")
-
-[node name="Area2D" type="Area2D" parent="Book Shelf"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Book Shelf/Area2D"]
-position = Vector2(3, -5)
-shape = SubResource("RectangleShape2D_h6smj")
 
 [node name="Mayro" type="Sprite2D" parent="."]
 position = Vector2(930, 825)

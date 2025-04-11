@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://ctjiur77808b3" path="res://FreeCuteTileset/Tileset.png" id="3_2brsr"]
 [ext_resource type="Texture2D" uid="uid://2hfv7mv78x3s" path="res://assets/images/wall.png" id="4_0sv24"]
 [ext_resource type="Texture2D" uid="uid://dlfid7yanwimm" path="res://assets/images/butler_large.png" id="5_dytne"]
-[ext_resource type="Script" path="res://scripts/butler_large.gd" id="7_o5vmx"]
+[ext_resource type="Script" uid="uid://c4rdm8sbbkrjk" path="res://scripts/butler_large.gd" id="7_o5vmx"]
 [ext_resource type="PackedScene" uid="uid://cxijm118rrsly" path="res://scenes/sarge.tscn" id="9_ulncm"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_064a2"]
