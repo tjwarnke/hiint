@@ -1,5 +1,7 @@
 extends Node2D
 
+#TODO: You cant take your powerups with you into dining
+#TODO: powerup pickup gives text to tell you what they do
 # Load player scene
 var PlayerScene = preload("res://scenes/Player.tscn")  
 var player
