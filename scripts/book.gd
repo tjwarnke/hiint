@@ -1,4 +1,4 @@
-extends Area2D
+extends RigidBody2D
 
 var player_in_area = null  
 var can_be_picked_up = true
