@@ -19,9 +19,21 @@ var timer = Timer.new()
 func _ready():
 	random_sounds = [shing, woosh, boom]
 
+	# Set audio buses for proper volume control
+	music.bus = "Music"
+	
+	# Ambient sounds
+	rain.bus = "Ambient"
+	birds.bus = "Ambient"
+	wind.bus = "Ambient"
+	
+	# Spooky sounds
+	shing.bus = "Spooky"
+	woosh.bus = "Spooky"
+	boom.bus = "Spooky"
+
 	# Schedule first random creepy sound
 	schedule_creepy_sound()
-
 
 func schedule_creepy_sound():
 	timer.wait_time = delay

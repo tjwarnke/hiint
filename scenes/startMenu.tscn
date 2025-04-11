@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://svlbq44rfnia"]
+[gd_scene load_steps=9 format=3 uid="uid://svlbq44rfnia"]
 
 [ext_resource type="Script" uid="uid://do8axnurbe1ey" path="res://scripts/startMenu.gd" id="1_yhodh"]
 [ext_resource type="Texture2D" uid="uid://ddtr00s176wej" path="res://assets/images/hiint_logo_transparent.png" id="2_7kfin"]
 [ext_resource type="Texture2D" uid="uid://c34a11rjxt3k7" path="res://assets/images/haunted_mansion.jpg" id="3_nk48g"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="4_bq4j4"]
 [ext_resource type="AudioStream" uid="uid://bc3ng53s4n7ad" path="res://assets/audio/GameSongIntro-MP3.mp3" id="5_1stqc"]
+[ext_resource type="AudioStream" uid="uid://dw2l57an447gx" path="res://assets/audio/rain.mp3" id="6_o2nds"]
 
 [sub_resource type="Gradient" id="Gradient_ew5yv"]
 offsets = PackedFloat32Array(0.146667, 0.153333, 0.986667)
@@ -20,61 +21,59 @@ func fade_out_music(duration: float = 10.0):
 
 [node name="startMenu" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_yhodh")
 
-[node name="StartButton" type="Button" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 842.0
-offset_top = 562.0
-offset_right = 1041.0
-offset_bottom = 658.0
+offset_left = -100.0
+offset_top = 50.0
+offset_right = 100.0
+offset_bottom = 350.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 64
-text = "START
-"
+theme_override_constants/separation = 20
 
-[node name="QuitButton" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 842.0
-offset_top = 666.0
-offset_right = 1041.0
-offset_bottom = 762.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="StartButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
 theme_override_font_sizes/font_size = 64
-text = "QUIT
-"
+text = "START"
+
+[node name="SettingsButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "SETTINGS"
+
+[node name="QuitButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "QUIT"
 
 [node name="Logo" type="Node2D" parent="."]
+position = Vector2(960, 250)
 
 [node name="HIINT" type="Sprite2D" parent="Logo"]
-position = Vector2(1018, 278)
 texture = ExtResource("2_7kfin")
 
 [node name="Background" type="Node2D" parent="."]
 
 [node name="hauntedMansion" type="Sprite2D" parent="Background"]
 z_index = -1
-position = Vector2(961.25, 539.25)
+position = Vector2(960, 540)
 scale = Vector2(1.87744, 1.05811)
 texture = ExtResource("3_nk48g")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
-position = Vector2(479, -272)
+position = Vector2(960, -50)
 rotation = -0.450062
 amount = 200
 texture = ExtResource("4_bq4j4")
@@ -92,10 +91,17 @@ scale_amount_max = 0.75
 color_ramp = SubResource("Gradient_ew5yv")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(960, 540)
 stream = ExtResource("5_1stqc")
 volume_db = 20.0
 autoplay = true
 script = SubResource("GDScript_8fwge")
 
-[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
+[node name="RainSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_o2nds")
+volume_db = -5.0
+autoplay = true
+
+[connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

@@ -3,6 +3,9 @@ extends AudioStreamPlayer
 var is_playing_music = false
 
 func _ready():
+	# Set the audio bus to Music for volume control
+	bus = "Music"
+	
 	if not is_playing_music:
 		play()
 		is_playing_music = true
