@@ -22,6 +22,7 @@ var target_speed = 0
 var is_fast_falling = false  # Track fast-fall state
 var max_dash = 0
 var num_dash = 0
+@onready var dash_sound = $dash_sound
 
 @export var max_jumps: int = 1  
 var jumps_left: int
@@ -59,6 +60,7 @@ func get_input(delta):
 
 	if dash_able and is_dashing_pressed and not is_dashing and num_dash > 0 and not is_on_floor():
 		is_dashing = true
+		dash_sound.play()
 		dash_timer = dash_time
 		velocity.x = dash_speed * direction  # Dash in facing direction
 		gravity = 0

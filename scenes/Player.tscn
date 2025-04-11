@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bvwuj8tj3uphj"]
+[gd_scene load_steps=8 format=3 uid="uid://bvwuj8tj3uphj"]
 
 [ext_resource type="Script" uid="uid://74pnunwqokr7" path="res://scripts/player.gd" id="1_3hxb4"]
 [ext_resource type="Texture2D" uid="uid://020ubl5bfdec" path="res://assets/images/New Piskel-2.png.png" id="2_j55f7"]
+[ext_resource type="AudioStream" uid="uid://bj4mmgk1uiuu1" path="res://assets/audio/dash.wav" id="3_3li8b"]
 
 [sub_resource type="Animation" id="Animation_3li8b"]
 length = 0.001
@@ -117,3 +118,6 @@ collide_with_areas = true
 libraries = {
 &"": SubResource("AnimationLibrary_mdl7e")
 }
+
+[node name="dash_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_3li8b")

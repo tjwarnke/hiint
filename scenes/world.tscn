@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=26 format=3 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://ctbtqie8fru15" path="res://scenes/torch.tscn" id="6_lakw3"]
@@ -11,7 +11,6 @@
 [ext_resource type="PackedScene" uid="uid://bh5xpj4kmc4b5" path="res://scenes/side_dash.tscn" id="13_2lf6f"]
 [ext_resource type="PackedScene" uid="uid://t35a8wmq30e1" path="res://scenes/dining_room.tscn" id="13_7t5mc"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="13_dss4m"]
-[ext_resource type="Texture2D" uid="uid://dualh52hqk7gi" path="res://assets/images/TextBoxMiddleTop.png" id="13_jhx03"]
 [ext_resource type="Script" uid="uid://bj445s8633ird" path="res://scripts/stump.gd" id="14_7iits"]
 [ext_resource type="PackedScene" uid="uid://dhh62wmxavnow" path="res://scenes/Library.tscn" id="14_lakw3"]
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://assets/images/proxy-image-1.jpg" id="14_oo54l"]
