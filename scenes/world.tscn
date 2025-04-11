@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=24 format=3 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://ctbtqie8fru15" path="res://scenes/torch.tscn" id="6_lakw3"]
@@ -11,7 +11,6 @@
 [ext_resource type="PackedScene" uid="uid://bh5xpj4kmc4b5" path="res://scenes/side_dash.tscn" id="13_2lf6f"]
 [ext_resource type="PackedScene" uid="uid://t35a8wmq30e1" path="res://scenes/dining_room.tscn" id="13_7t5mc"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="13_dss4m"]
-[ext_resource type="Texture2D" uid="uid://dualh52hqk7gi" path="res://assets/images/TextBoxMiddleTop.png" id="13_jhx03"]
 [ext_resource type="Script" uid="uid://bj445s8633ird" path="res://scripts/stump.gd" id="14_7iits"]
 [ext_resource type="PackedScene" uid="uid://dhh62wmxavnow" path="res://scenes/Library.tscn" id="14_lakw3"]
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://assets/images/proxy-image-1.jpg" id="14_oo54l"]
@@ -20,6 +19,13 @@
 [ext_resource type="PackedScene" uid="uid://bp2xka1pwcwry" path="res://scenes/billiards_room.tscn" id="15_pm21f"]
 [ext_resource type="PackedScene" uid="uid://cfrd10xr8oexr" path="res://scenes/dungeon.tscn" id="16_2lf6f"]
 [ext_resource type="PackedScene" uid="uid://cjhvjqqvgyv6m" path="res://scenes/hotbar.tscn" id="22_2lf6f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2lf6f"]
+bg_color = Color(0.6, 0.372549, 0.247059, 1)
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7iits"]
+bg_color = Color(0.6, 0.372549, 0.247059, 1)
 
 [sub_resource type="Curve" id="Curve_7t5mc"]
 _data = [Vector2(0.00729926, 0.54065), 0.0, 0.0, 0, 0, Vector2(0.313869, 0.833333), 0.0, 0.0, 0, 0, Vector2(0.726277, 0.731707), 0.0, 0.0, 0, 0, Vector2(0.981752, 0.678862), 0.0, 0.0, 0, 0]
@@ -40,76 +46,33 @@ z_index = 2
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -100.0
-offset_top = 50.0
-offset_right = 100.0
-offset_bottom = 75.0
+offset_left = -112.0
+offset_top = 55.0
+offset_right = 88.0
+offset_bottom = 89.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_2lf6f")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextBoxMiddleTop2" type="Label" parent="UI"]
-z_index = 2
-offset_left = 856.0
-offset_top = 41.0
-offset_right = 1478.0
-offset_bottom = 114.0
-
-[node name="TextBoxMiddleTopBack" type="Sprite2D" parent="UI"]
-visible = false
-z_index = 1
-position = Vector2(1000, -6)
-scale = Vector2(0.484616, 0.57)
-texture = ExtResource("13_jhx03")
-
-[node name="TextBoxDialog" type="Sprite2D" parent="UI"]
-visible = false
-z_index = 1
-position = Vector2(1002, 107.25)
-scale = Vector2(0.484616, 0.675)
-texture = ExtResource("13_jhx03")
-
-[node name="TextBoxMiddleTop3" type="Label" parent="UI"]
-z_index = 2
-offset_left = 862.0
-offset_top = 68.0
-offset_right = 1484.0
-offset_bottom = 141.0
-
-[node name="TextBoxMiddleTopBack2" type="Sprite2D" parent="UI"]
-visible = false
-z_index = 1
-position = Vector2(962, 66)
-scale = Vector2(0.793846, 0.7)
-texture = ExtResource("13_jhx03")
-
 [node name="DialogOptions" type="Label" parent="UI"]
+visible = false
 z_index = 2
-offset_left = 824.0
-offset_top = 95.0
-offset_right = 1288.0
-offset_bottom = 215.0
+offset_left = 776.0
+offset_top = 94.0
+offset_right = 1123.0
+offset_bottom = 239.0
 theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_7iits")
 
 [node name="Speaker" type="Sprite2D" parent="UI"]
+visible = false
 z_index = 2
 position = Vector2(663, 68)
-
-[node name="MeetCharBox" type="Sprite2D" parent="UI"]
-visible = false
-position = Vector2(991, 177)
-scale = Vector2(0.590769, 2.16)
-texture = ExtResource("13_jhx03")
-
-[node name="SmallerBox" type="Sprite2D" parent="UI"]
-visible = false
-position = Vector2(964, 66)
-scale = Vector2(0.553846, 0.9)
-texture = ExtResource("13_jhx03")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(985, 542)

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://d00pa2rwuh52k"]
+
+[ext_resource type="Texture2D" uid="uid://b4kjiu38fffev" path="res://assets/images/girl.png" id="1_jetl1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_eninh"]
+radius = 348.914
+
+[node name="Girl" type="Sprite2D"]
+texture = ExtResource("1_jetl1")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_eninh")
