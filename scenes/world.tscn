@@ -22,6 +22,13 @@
 [ext_resource type="AudioStream" uid="uid://dfotkcdfygmdi" path="res://assets/audio/dungon.mp3" id="17_7iits"]
 [ext_resource type="PackedScene" uid="uid://cjhvjqqvgyv6m" path="res://scenes/hotbar.tscn" id="22_2lf6f"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2lf6f"]
+bg_color = Color(0.6, 0.372549, 0.247059, 1)
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7iits"]
+bg_color = Color(0.6, 0.372549, 0.247059, 1)
+
 [sub_resource type="Curve" id="Curve_7t5mc"]
 _data = [Vector2(0.00729926, 0.54065), 0.0, 0.0, 0, 0, Vector2(0.313869, 0.833333), 0.0, 0.0, 0, 0, Vector2(0.726277, 0.731707), 0.0, 0.0, 0, 0, Vector2(0.981752, 0.678862), 0.0, 0.0, 0, 0]
 point_count = 4
@@ -45,63 +52,33 @@ z_index = 2
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -100.0
-offset_top = 50.0
-offset_right = 100.0
-offset_bottom = 75.0
+offset_left = -112.0
+offset_top = 55.0
+offset_right = 88.0
+offset_bottom = 89.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_2lf6f")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextBoxMiddleTop2" type="Label" parent="UI"]
-z_index = 2
-offset_left = 856.0
-offset_top = 41.0
-offset_right = 1478.0
-offset_bottom = 114.0
-
-[node name="TextBoxMiddleTopBack" type="Sprite2D" parent="UI"]
-visible = false
-z_index = 1
-position = Vector2(1000, -6)
-scale = Vector2(0.484616, 0.57)
-texture = ExtResource("13_jhx03")
-
-[node name="TextBoxDialog" type="Sprite2D" parent="UI"]
-visible = false
-z_index = 1
-position = Vector2(1002, 107.25)
-scale = Vector2(0.484616, 0.675)
-texture = ExtResource("13_jhx03")
-
-[node name="TextBoxMiddleTop3" type="Label" parent="UI"]
-z_index = 2
-offset_left = 862.0
-offset_top = 68.0
-offset_right = 1484.0
-offset_bottom = 141.0
-
-[node name="TextBoxMiddleTopBack2" type="Sprite2D" parent="UI"]
-z_index = 1
-position = Vector2(960.5, 66)
-scale = Vector2(0.703077, 0.7)
-texture = ExtResource("13_jhx03")
-
 [node name="DialogOptions" type="Label" parent="UI"]
+visible = false
 z_index = 2
-offset_left = 824.0
-offset_top = 95.0
-offset_right = 1288.0
-offset_bottom = 215.0
+offset_left = 776.0
+offset_top = 94.0
+offset_right = 1123.0
+offset_bottom = 239.0
 theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_7iits")
 
 [node name="Speaker" type="Sprite2D" parent="UI"]
+visible = false
 z_index = 2
-position = Vector2(674, 68)
+position = Vector2(663, 68)
 
 [node name="Hotbar" parent="UI" instance=ExtResource("22_2lf6f")]
 z_index = 2
