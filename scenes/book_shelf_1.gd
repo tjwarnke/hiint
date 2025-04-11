@@ -74,8 +74,10 @@ func _input(event):
 		
 	if dialogue_active:
 		if event.is_action_pressed("Option1"):
+			#This texxt should be changed cause it sucks
 			give_dialogue("The book gives a brief history of the family, mentioning how they bought the mansion to help the russians spy on the government")
 		if event.is_action_pressed("Option2"):
 			give_dialogue("The book can't be pulled of the shelf")
+			$Library.toggle_platform()
 		if event.is_action_pressed("Option3"):
 			give_dialogue("A classic, you laugh, you get scared, then you remember you should be chasing the killer")

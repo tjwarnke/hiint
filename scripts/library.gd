@@ -10,17 +10,20 @@ func _ready():
 	
 func _input(event):
 	if event.is_action_pressed("pick_up") and player_in_range:
-		toggle_lever()
+		toggle_platform()
 		
-func toggle_lever():
+func toggle_platform():
 	if is_on:
-		animation_player.play("lever_off")
+		#play a sound
 		platform.enabled = false
 	else:
-		animation_player.play("lever")
+		#play a sound
 		platform.enabled = true
-
 	is_on = !is_on # Toggle the state
+	
+func drop_books():
+	pass
+	
 
 func _on_body_entered(_body):
 	player_in_range = true
