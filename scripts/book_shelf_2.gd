@@ -11,7 +11,7 @@ var book_taken = false
 # UI elements - will be set in _ready
 var text_box = null
 var dialogue = null
-var book = null
+#var book = null
 
 var annas = null
 var vlads = null
@@ -21,6 +21,9 @@ func _ready():
 	annas = get_parent().get_node("Anna_Autobiography")
 	vlads = get_parent().get_node("Vlad_Autobiography")
 	nanas = get_parent().get_node("Nana_Autobiography")
+	annas.set_freeze_enabled(true)
+	vlads.set_freeze_enabled(true)
+	nanas.set_freeze_enabled(true)
 	annas.hide()
 	vlads.hide()
 	nanas.hide()
@@ -31,14 +34,14 @@ func _ready():
 	# Try to find UI elements in the scene tree
 	text_box = get_node_or_null("../../UI/TextBoxMiddleTop")
 	dialogue = get_node_or_null("../../UI/DialogOptions")
-	book = get_node_or_null("../../Book")
+	#book = get_node_or_null("../../Book")
 	
 	if not text_box:
 		push_warning("TextBoxMiddleTop not found in scene")
 	if not dialogue:
 		push_warning("DialogOptions not found in scene")
-	if not book:
-		push_warning("Book not found in scene")
+	#if not book:
+	#	push_warning("Book not found in scene")
 
 func _on_body_entered(body):
 	if body.is_in_group("player"):
@@ -95,6 +98,9 @@ func _input(event):
 			
 func drop_books():
 	#play sound and animation
+	annas.set_freeze_enabled(false)
+	vlads.set_freeze_enabled(false)
+	nanas.set_freeze_enabled(false)
 	annas.show()
 	vlads.show()
 	nanas.show()

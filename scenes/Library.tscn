@@ -30246,7 +30246,6 @@ script = ExtResource("8_old6g")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bookshelf/Area2D"]
 position = Vector2(3, -5)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_pggvk")
 
 [node name="Bookshelf2" type="Sprite2D" parent="."]
