@@ -118,11 +118,18 @@ func _ready():
 	top_level = true
 	z_index = 100
 
+func set_position_in_center(in_center: bool):
+	# Store the positioning mode
+	position_in_center = in_center
+	
+	# Position the menu accordingly
+	set_proper_positioning()
+
 func set_proper_positioning():
 	if position_in_center:
-		# In-game context: Center the menu with a semi-transparent background
+		# In-game context: Fill the entire screen
 		
-		# First, set anchors to fill the screen
+		# Set anchors to fill the screen
 		set_anchors_preset(Control.PRESET_FULL_RECT)
 		anchor_right = 1.0
 		anchor_bottom = 1.0
@@ -130,9 +137,18 @@ func set_proper_positioning():
 		offset_top = 0
 		offset_right = 0
 		offset_bottom = 0
+		scale = Vector2(1, 1)  # Ensure scale is 1
+		size = DisplayServer.window_get_size()
 		
-		# Darken the background
+		# Make background fully cover screen
 		$ColorRect.color = Color(0, 0, 0, 0.8)
+		$ColorRect.set_anchors_preset(Control.PRESET_FULL_RECT)
+		$ColorRect.anchor_right = 1.0
+		$ColorRect.anchor_bottom = 1.0
+		$ColorRect.offset_left = 0
+		$ColorRect.offset_top = 0
+		$ColorRect.offset_right = 0
+		$ColorRect.offset_bottom = 0
 		
 		# Center the main container
 		$MarginContainer.set_anchors_preset(Control.PRESET_CENTER)
@@ -161,6 +177,7 @@ func set_proper_positioning():
 		offset_top = 0
 		offset_right = 0
 		offset_bottom = 0
+		scale = Vector2(1, 1)  # Ensure scale is 1
 		
 		# Reset margin container to full screen
 		$MarginContainer.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -566,9 +583,3 @@ func update_display_settings():
 static func apply_audio_settings_to_player(audio_player, bus_name):
 	if audio_player != null:
 		audio_player.bus = bus_name 
-
-func set_position_in_center(value):
-	position_in_center = value
-	# If we're already in the scene tree, update positioning immediately
-	if is_inside_tree():
-		set_proper_positioning() 
