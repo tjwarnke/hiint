@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://8iyr4cj2qyud"]
+
+[ext_resource type="Script" uid="uid://ddi7dok0wovj8" path="res://scripts/book.gd" id="1_gf06d"]
+[ext_resource type="Texture2D" uid="uid://dyrib443h8e3d" path="res://dungeon_sidescroller-Raou/HIINT BOOK.png" id="1_ow7xw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wbisa"]
+size = Vector2(637, 523)
+
+[node name="Autobiography" type="RigidBody2D"]
+script = ExtResource("1_gf06d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(0.15, 0.15)
+shape = SubResource("RectangleShape2D_wbisa")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("1_ow7xw")
