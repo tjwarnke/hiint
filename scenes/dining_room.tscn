@@ -17283,8 +17283,8 @@ _data = {
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_lwe0i"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_wrq0i"]
-radius = 133.54
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wrq0i"]
+size = Vector2(84.9998, 202)
 
 [node name="DiningRoom" type="Node2D"]
 script = ExtResource("1_cli76")
@@ -17364,8 +17364,8 @@ script = ExtResource("11_lwe0i")
 position = Vector2(5460, 1953)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ChairHitBox/Area2D"]
-position = Vector2(-5478, -1970)
-shape = SubResource("CircleShape2D_wrq0i")
+position = Vector2(-5482.5, -1980)
+shape = SubResource("RectangleShape2D_wrq0i")
 
 [node name="Penguins" parent="." instance=ExtResource("2_r37lo")]
 z_index = 1

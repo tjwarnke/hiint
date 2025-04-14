@@ -89,10 +89,17 @@ position = Vector2(663, 68)
 
 [node name="Hotbar" parent="UI" instance=ExtResource("22_2lf6f")]
 z_index = 2
-offset_left = -200.0
-offset_top = -100.0
-offset_right = 200.0
-offset_bottom = -36.0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 400.0
+offset_bottom = 64.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(985, 542)

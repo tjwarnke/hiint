@@ -11,14 +11,16 @@ func _ready():
 	update_slot_appearance()
 	
 	# Set up anchors for bottom center positioning
-	anchors_preset = Control.PRESET_BOTTOM_WIDE
-	anchor_bottom = 1.0
-	anchor_left = 0.5
-	anchor_right = 0.5
-	offset_left = -200
-	offset_right = 200
-	offset_bottom = -36
-	offset_top = -100
+	anchors_preset = Control.PRESET_TOP_LEFT
+	anchor_left = 0.0
+	anchor_top = 0.0
+	anchor_right = 0.0
+	anchor_bottom = 0.0
+	
+	offset_left = 0  # Adjust as needed
+	offset_top = 0   # Adjust as needed
+	offset_right = 400  # Width if you want to size it explicitly
+	offset_bottom = 100 # Height if needed
 	
 	# Ensure we're on top of everything
 	z_index = 100

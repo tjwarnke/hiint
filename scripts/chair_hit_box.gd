@@ -34,7 +34,7 @@ func _on_body_entered(body):
 func _on_body_exited(body):
 	if body.is_in_group("player"):
 		player_nearby = false
-		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(.5).timeout
 		text.visible = false
 		dialogue.visible = false
 		
