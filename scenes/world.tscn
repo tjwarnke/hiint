@@ -19,9 +19,9 @@
 [ext_resource type="PackedScene" uid="uid://bp2xka1pwcwry" path="res://scenes/billiards_room.tscn" id="15_pm21f"]
 [ext_resource type="PackedScene" uid="uid://cfrd10xr8oexr" path="res://scenes/dungeon.tscn" id="16_2lf6f"]
 [ext_resource type="AudioStream" uid="uid://dfotkcdfygmdi" path="res://assets/audio/dungeon.mp3" id="17_7iits"]
-[ext_resource type="Script" uid="uid://bdjlnat2pl14w" path="res://scenes/dj.gd" id="21_7iits"]
+[ext_resource type="Script" path="res://scenes/dj.gd" id="21_7iits"]
 [ext_resource type="PackedScene" uid="uid://cjhvjqqvgyv6m" path="res://scenes/hotbar.tscn" id="22_2lf6f"]
-[ext_resource type="Script" uid="uid://drwbnkryc1wcf" path="res://scenes/dash.gd" id="22_oo54l"]
+[ext_resource type="Script" path="res://scenes/dash.gd" id="22_oo54l"]
 [ext_resource type="TileSet" uid="uid://d1dkd72yf40tm" path="res://assets/images/level.tres" id="23_kpybi"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2lf6f"]

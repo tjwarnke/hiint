@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://c4rdm8sbbkrjk" path="res://scripts/butler_large.gd" id="7_o5vmx"]
 [ext_resource type="PackedScene" uid="uid://8fkpr6ftlkt0" path="res://scenes/conman.tscn" id="8_1qg2x"]
 [ext_resource type="PackedScene" uid="uid://cxijm118rrsly" path="res://scenes/sarge.tscn" id="9_ulncm"]
-[ext_resource type="Script" uid="uid://ba4g51f443xgh" path="res://scripts/chair_hit_box.gd" id="11_lwe0i"]
+[ext_resource type="Script" path="res://scripts/chair_hit_box.gd" id="11_lwe0i"]
 [ext_resource type="PackedScene" uid="uid://d00pa2rwuh52k" path="res://scenes/girl.tscn" id="12_wrq0i"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_064a2"]

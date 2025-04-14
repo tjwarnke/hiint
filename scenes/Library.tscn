@@ -7,8 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://dxyajowm7yt5g" path="res://assets/images/lever.png" id="5_24kl2"]
 [ext_resource type="Texture2D" uid="uid://d4lno7igr6ti5" path="res://assets/CatumetGamesFurniture.png" id="5_mxqp8"]
 [ext_resource type="Texture2D" uid="uid://cvhhgbt5q8rv0" path="res://assets/images/book_shelf_transparent.png" id="7_ky021"]
-[ext_resource type="Script" uid="uid://clt58776fqx44" path="res://scripts/book_shelf_1.gd" id="8_old6g"]
-[ext_resource type="Script" uid="uid://b0eipyqtfs7et" path="res://scripts/book_shelf_2.gd" id="9_fio33"]
+[ext_resource type="Script" path="res://scripts/book_shelf_1.gd" id="8_old6g"]
+[ext_resource type="Script" path="res://scripts/book_shelf_2.gd" id="9_fio33"]
 [ext_resource type="PackedScene" uid="uid://8iyr4cj2qyud" path="res://scenes/autobiography.tscn" id="10_pa00x"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x4li0"]
