@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=30 format=3 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://ctbtqie8fru15" path="res://scenes/torch.tscn" id="6_lakw3"]
@@ -42,6 +42,10 @@ a = Vector2(-6, -138)
 b = Vector2(0, 208)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oo54l"]
+radius = 53.521
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kpybi"]
+radius = 53.106
 
 [node name="World" type="Node2D"]
 scale = Vector2(2, 2)
@@ -230,16 +234,16 @@ position = Vector2(404, 825)
 script = ExtResource("21_7iits")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Double Jump"]
-position = Vector2(5364.5, 980.5)
+position = Vector2(5369.5, 980.5)
 shape = SubResource("CircleShape2D_oo54l")
 
 [node name="Dash" type="Area2D" parent="."]
-position = Vector2(7128.5, 192.5)
+position = Vector2(7077, 194.5)
 script = ExtResource("22_oo54l")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Dash"]
-position = Vector2(5364.5, 980.5)
-shape = SubResource("CircleShape2D_oo54l")
+position = Vector2(48.5, -6.5)
+shape = SubResource("CircleShape2D_kpybi")
 
 [connection signal="torch_picked" from="cabin/Torch" to="." method="_on_torch_picked"]
 [connection signal="collected" from="Tutorial/Area2D2" to="." method="on_power_up"]
