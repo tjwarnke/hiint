@@ -49,6 +49,10 @@ func _ready():
 	progress_bar.value = 0
 	loading_label.text = LOADING_STATES[0]
 	loading_start_time = Time.get_ticks_msec()
+	
+	# Don't adjust music volume at all during loading screen
+	# This keeps consistent volume from menu to level
+	
 	load_game_async()
 
 func _process(delta):
@@ -152,6 +156,8 @@ func complete_transition():
 	if loaded_scene == null:
 		handle_error("Failed to get loaded cabin scene", true)
 		return
-
+	
+	# Don't adjust music volume here - let the world scene handle it with a timer
+	
 	# Change to cabin scene
 	get_tree().change_scene_to_packed(loaded_scene)

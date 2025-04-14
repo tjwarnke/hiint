@@ -12,6 +12,9 @@ var original_rotation = 0.0
 var original_position = Vector2.ZERO
 var original_parent = null
 
+# Default book content in case it's a book without specified content
+var default_book_content = "This appears to be an old book. The pages are faded and difficult to read."
+
 @onready var text_box = get_node("/root/World/UI/TextBoxMiddleTop")
 @onready var sprite = $Sprite2D
 
@@ -22,6 +25,11 @@ func _ready():
 	original_rotation = rotation
 	original_position = position
 	original_parent = get_parent()
+	
+	# If this is a book and doesn't have content yet, add default content
+	if name.contains("Book") or name.contains("Autobiography"):
+		if not has_meta("book_content"):
+			set_meta("book_content", default_book_content)
 	
 	# Wait for the Player node to be available
 	await get_tree().process_frame
@@ -61,7 +69,10 @@ func _on_body_entered(body):
 		player_in_area = true  # Set player_in_area to true when player enters
 		if can_be_picked_up:
 			text_box.visible = true
-			text_box.text = "Press 'e' to pick up"
+			if name.contains("Book") or name.contains("Autobiography"):
+				text_box.text = "Press 'e' to pick up book"
+			else:
+				text_box.text = "Press 'e' to pick up"
 
 func _on_body_exited(body):
 	if body.is_in_group("player"):

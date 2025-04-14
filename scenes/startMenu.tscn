@@ -1,23 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://svlbq44rfnia"]
+[gd_scene load_steps=6 format=3 uid="uid://svlbq44rfnia"]
 
 [ext_resource type="Script" uid="uid://do8axnurbe1ey" path="res://scripts/startMenu.gd" id="1_yhodh"]
 [ext_resource type="Texture2D" uid="uid://ddtr00s176wej" path="res://assets/images/hiint_logo_transparent.png" id="2_7kfin"]
 [ext_resource type="Texture2D" uid="uid://c34a11rjxt3k7" path="res://assets/images/haunted_mansion.jpg" id="3_nk48g"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="4_bq4j4"]
-[ext_resource type="AudioStream" uid="uid://bc3ng53s4n7ad" path="res://assets/audio/GameSongIntro-MP3.mp3" id="5_1stqc"]
-[ext_resource type="AudioStream" uid="uid://dw2l57an447gx" path="res://assets/audio/rain.mp3" id="6_o2nds"]
 
 [sub_resource type="Gradient" id="Gradient_ew5yv"]
 offsets = PackedFloat32Array(0.146667, 0.153333, 0.986667)
 colors = PackedColorArray(0.165656, 0.165656, 0.165656, 1, 0.377919, 0.377919, 0.377919, 1, 0.310617, 0.310617, 0.310617, 1)
-
-[sub_resource type="GDScript" id="GDScript_8fwge"]
-script/source = "extends AudioStreamPlayer2D
-
-func fade_out_music(duration: float = 10.0):
-	var tween = create_tween()
-	tween.tween_property(self, \"volume_db\", -80, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-"
 
 [node name="startMenu" type="Control"]
 layout_mode = 3
@@ -73,7 +63,7 @@ scale = Vector2(1.87744, 1.05811)
 texture = ExtResource("3_nk48g")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
-position = Vector2(960, -50)
+position = Vector2(604, -297)
 rotation = -0.450062
 amount = 200
 texture = ExtResource("4_bq4j4")
@@ -81,7 +71,7 @@ lifetime = 1.8
 preprocess = 2.0
 local_coords = true
 emission_shape = 3
-emission_rect_extents = Vector2(1100, 1)
+emission_rect_extents = Vector2(1200, 1)
 direction = Vector2(0, 1)
 spread = 0.0
 initial_velocity_min = 20.0
@@ -89,18 +79,6 @@ initial_velocity_max = 200.0
 scale_amount_min = 0.5
 scale_amount_max = 0.75
 color_ramp = SubResource("Gradient_ew5yv")
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-position = Vector2(960, 540)
-stream = ExtResource("5_1stqc")
-volume_db = 20.0
-autoplay = true
-script = SubResource("GDScript_8fwge")
-
-[node name="RainSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("6_o2nds")
-volume_db = -5.0
-autoplay = true
 
 [connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]

@@ -15,14 +15,14 @@ dest_files=["res://.godot/imported/gradient.png-c1930dd83990d75c628fbf3220298432
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.5
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
-mipmaps/limit=-1
+mipmaps/generate=true
+mipmaps/limit=2
 roughness/mode=0
 roughness/src_normal=""
 process/fix_alpha_border=true

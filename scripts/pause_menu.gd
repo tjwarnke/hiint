@@ -1,5 +1,7 @@
 extends Control
 
+signal resume_game
+
 var settings_scene = preload("res://scenes/settings_menu.tscn")
 var settings_instance = null
 var darkness_node = null
@@ -7,6 +9,7 @@ var game_camera = null
 # Scale factors for menu elements
 var panel_scale_factor = 1.3  # Scale factor for the pause menu panel
 var settings_scale_factor = 3  # Scale factor for the settings menu
+var stored_darkness_color = null  # Add this at the top with other variables
 
 func _ready():
 	# Set the pause menu to be on top of everything
@@ -44,8 +47,8 @@ func _ready():
 
 func apply_camera_based_setup():
 	if not game_camera:
-		# Fallback to viewport if camera not found
-		apply_fullscreen_setup()
+		# Fallback to standard positioning method
+		set_proper_positioning()
 		return
 	
 	# Calculate the camera's view size
@@ -56,29 +59,42 @@ func apply_camera_based_setup():
 	scale = Vector2.ONE
 	rotation = 0
 	
-	# Set the size to match camera view
-	size = camera_size
-	custom_minimum_size = camera_size
+	# Set the anchors to full rect
+	set_anchors_preset(Control.PRESET_FULL_RECT)
+	
+	# Set the size using deferred call to avoid anchor warnings
+	call_deferred("set_size", camera_size)
+	call_deferred("set_custom_minimum_size", camera_size)
 	
 	# Center the pause menu on camera's position
-	global_position = get_camera_screen_center() - (camera_size / 2)
+	call_deferred("set_global_position", get_camera_screen_center() - (camera_size / 2))
+	
+	# Adjust panel scale based on camera zoom
+	var zoom_adjustment = 1.0
+	if game_camera and game_camera.has_method("get_zoom"):
+		var camera_zoom = game_camera.zoom
+		# If in library (zoomed in), make the UI elements slightly smaller
+		if camera_zoom.x < 0.8:  # Library has zoom of 0.6
+			zoom_adjustment = 0.8
+		else:
+			zoom_adjustment = 1.0
 	
 	# Make sure color rect covers the full area
 	if has_node("ColorRect"):
 		var color_rect = $ColorRect
 		color_rect.set_anchors_preset(Control.PRESET_FULL_RECT, true)
-		color_rect.size = camera_size
+		call_deferred("_set_color_rect_size", camera_size)
 	
 	# Make sure CenterContainer covers the full area
 	if has_node("CenterContainer"):
 		var center = $CenterContainer
 		center.set_anchors_preset(Control.PRESET_FULL_RECT, true)
-		center.size = camera_size
+		call_deferred("_set_center_container_size", camera_size)
 	
 	# Scale up the panel container and buttons
 	if has_node("CenterContainer/PanelContainer"):
 		var panel = $CenterContainer/PanelContainer
-		panel.scale = Vector2(panel_scale_factor, panel_scale_factor)
+		panel.scale = Vector2(panel_scale_factor * zoom_adjustment, panel_scale_factor * zoom_adjustment)
 		
 		# Make sure all buttons are bigger
 		if panel.has_node("VBoxContainer/ButtonsContainer"):
@@ -87,11 +103,20 @@ func apply_camera_based_setup():
 				if button is Button:
 					# Increase font size for buttons
 					if button.get("theme_override_font_sizes/font_size"):
-						button.set("theme_override_font_sizes/font_size", int(button.get("theme_override_font_sizes/font_size") * panel_scale_factor))
+						button.set("theme_override_font_sizes/font_size", int(button.get("theme_override_font_sizes/font_size") * panel_scale_factor * zoom_adjustment))
 					
 					# Increase button's custom minimum size
 					if button.custom_minimum_size != Vector2.ZERO:
-						button.custom_minimum_size *= panel_scale_factor
+						button.custom_minimum_size *= panel_scale_factor * zoom_adjustment
+
+# Helper methods for deferred calls
+func _set_color_rect_size(size):
+	if has_node("ColorRect"):
+		$ColorRect.size = size
+
+func _set_center_container_size(size):
+	if has_node("CenterContainer"):
+		$CenterContainer.size = size
 
 func get_camera_view_size():
 	if not game_camera:
@@ -108,60 +133,41 @@ func get_camera_screen_center():
 	
 	return game_camera.get_screen_center_position()
 
-# Legacy function kept for fallback
-func apply_fullscreen_setup():
-	# Use viewport size rather than window size
+# Proper positioning function implementation
+func set_proper_positioning():
 	var viewport_size = get_viewport_rect().size
 	
-	# Reset transform and scaling completely
-	position = Vector2.ZERO
-	scale = Vector2.ONE
-	rotation = 0
-	
-	# Reset all constraints to fill the viewport
-	set_anchors_preset(Control.PRESET_FULL_RECT, true) # true = keep margins
-	
-	# Explicitly set the full rect positioning
-	anchor_left = 0
-	anchor_top = 0
-	anchor_right = 1
-	anchor_bottom = 1
+	# Set anchors to fill the screen
+	set_anchors_preset(Control.PRESET_FULL_RECT)
+	anchor_right = 1.0
+	anchor_bottom = 1.0
 	offset_left = 0
 	offset_top = 0
 	offset_right = 0
 	offset_bottom = 0
-	
-	# Set explicit size to match viewport
 	size = viewport_size
-	custom_minimum_size = viewport_size
 	
-	# Make sure color rect covers the full area
+	# Make background fully cover screen
 	if has_node("ColorRect"):
-		var color_rect = $ColorRect
-		color_rect.set_anchors_preset(Control.PRESET_FULL_RECT, true)
-		color_rect.anchor_left = 0
-		color_rect.anchor_top = 0
-		color_rect.anchor_right = 1
-		color_rect.anchor_bottom = 1
-		color_rect.offset_left = 0
-		color_rect.offset_top = 0
-		color_rect.offset_right = 0
-		color_rect.offset_bottom = 0
-		color_rect.size = viewport_size
+		$ColorRect.set_anchors_preset(Control.PRESET_FULL_RECT)
+		$ColorRect.anchor_right = 1.0
+		$ColorRect.anchor_bottom = 1.0
+		$ColorRect.offset_left = 0
+		$ColorRect.offset_top = 0
+		$ColorRect.offset_right = 0
+		$ColorRect.offset_bottom = 0
+		$ColorRect.size = viewport_size
 	
-	# Make sure CenterContainer covers the full area
+	# Set CenterContainer to fill the screen
 	if has_node("CenterContainer"):
-		var center = $CenterContainer
-		center.set_anchors_preset(Control.PRESET_FULL_RECT, true)
-		center.anchor_left = 0
-		center.anchor_top = 0
-		center.anchor_right = 1
-		center.anchor_bottom = 1
-		center.offset_left = 0
-		center.offset_top = 0
-		center.offset_right = 0
-		center.offset_bottom = 0
-		center.size = viewport_size
+		$CenterContainer.set_anchors_preset(Control.PRESET_FULL_RECT)
+		$CenterContainer.anchor_right = 1.0
+		$CenterContainer.anchor_bottom = 1.0
+		$CenterContainer.offset_left = 0
+		$CenterContainer.offset_top = 0
+		$CenterContainer.offset_right = 0
+		$CenterContainer.offset_bottom = 0
+		$CenterContainer.size = viewport_size
 
 func _process(_delta):
 	# Only update if visible to avoid unnecessary processing
@@ -203,6 +209,7 @@ func _unhandled_input(event):
 				_on_resume_pressed()
 				get_viewport().set_input_as_handled()  # Prevent the event from propagating
 		else:
+			# Don't pause the entire tree, just pause the game logic
 			get_tree().paused = true
 			show()
 			# Force update size and position when shown
@@ -226,172 +233,53 @@ func enable_all_buttons():
 func _on_resume_pressed():
 	get_tree().paused = false
 	hide()
-	# Show darkness when the pause menu is hidden
+	# Restore darkness when the pause menu is hidden
 	toggle_darkness(true)
+	# Emit the resume_game signal
+	emit_signal("resume_game")
 
 func _on_settings_pressed():
-	# Disable all pause menu buttons
-	disable_all_buttons()
-	
-	# First check if there's already a settings menu in the scene tree
-	var existing_settings = get_tree().root.get_node_or_null("SettingsMenu")
-	
-	if existing_settings:
-		settings_instance = existing_settings
-		# Set to match pause menu size
-		apply_settings_size(settings_instance)
-		settings_instance.show()
-		return
-	
 	if not settings_instance:
 		settings_instance = settings_scene.instantiate()
-		settings_instance.name = "SettingsMenu"  # Give it a consistent name
+		settings_instance.name = "SettingsMenu"
 		get_tree().root.add_child(settings_instance)
-		# Set to match pause menu size
-		apply_settings_size(settings_instance)
+		
+		# Use camera-based positioning for in-game settings
+		settings_instance.set_position_in_center(true)
+		
+		# Connect the settings closed signal
 		settings_instance.settings_closed.connect(_on_settings_closed)
-		
-		# Make sure game stays paused when settings are open
-		settings_instance.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
 	else:
-		# Set to match pause menu size
-		apply_settings_size(settings_instance)
+		# Update settings positioning
+		settings_instance.set_position_in_center(true)
 		settings_instance.show()
-
-func apply_settings_size(settings_menu):
-	# Ensure settings appears above pause menu
-	settings_menu.z_index = z_index + 10
 	
-	if game_camera:
-		# Use camera dimensions for settings menu
-		var camera_size = get_camera_view_size()
-		
-		# Make settings menu a top-level control to ensure proper positioning
-		settings_menu.top_level = true
-		
-		# Reset transform
-		settings_menu.position = Vector2.ZERO
-		settings_menu.scale = Vector2.ONE
-		settings_menu.rotation = 0
-		
-		# Set size to match camera view
-		settings_menu.size = camera_size
-		settings_menu.custom_minimum_size = camera_size
-		
-		# Center on camera
-		settings_menu.global_position = get_camera_screen_center() - (camera_size / 2)
-		
-		# Make sure the settings menu's internal elements fill the entire area
-		if settings_menu.has_node("CenterContainer"):
-			var center = settings_menu.get_node("CenterContainer")
-			center.set_anchors_preset(Control.PRESET_FULL_RECT, true)
-			center.size = camera_size
-			
-			# Don't scale the panel itself, but scale all its children instead
-			if center.has_node("PanelContainer"):
-				var panel = center.get_node("PanelContainer")
-				
-				# Scale individual elements instead of the whole panel
-				# This ensures interactable elements scale properly
-				_scale_all_controls_recursively(panel, settings_scale_factor)
-	else:
-		# Fallback to viewport size
-		var viewport_size = get_viewport_rect().size
-		
-		# Make settings menu a top-level control
-		settings_menu.top_level = true
-		
-		# Reset transform
-		settings_menu.position = Vector2.ZERO
-		settings_menu.scale = Vector2.ONE
-		settings_menu.rotation = 0
-		
-		# Fill the viewport
-		settings_menu.set_anchors_preset(Control.PRESET_FULL_RECT, true)
-		settings_menu.anchor_left = 0
-		settings_menu.anchor_top = 0
-		settings_menu.anchor_right = 1
-		settings_menu.anchor_bottom = 1
-		settings_menu.offset_left = 0
-		settings_menu.offset_top = 0
-		settings_menu.offset_right = 0
-		settings_menu.offset_bottom = 0
-		settings_menu.size = viewport_size
-		settings_menu.custom_minimum_size = viewport_size
-
-# Helper function to scale controls recursively
-func _scale_all_controls_recursively(node, scale_factor):
-	# Scale font sizes and control sizes for different control types
-	if node is Control:
-		# Handle different controls
-		if node is Label:
-			# Scale label font size
-			if node.has_theme_override("font_size"):
-				var current_size = node.get_theme_font_size("font_size")
-				node.add_theme_font_size_override("font_size", int(current_size * scale_factor))
-			else:
-				node.add_theme_font_size_override("font_size", int(22 * scale_factor))  # Default size
-		
-		elif node is Button:
-			# Scale button font size
-			if node.has_theme_override("font_size"):
-				var current_size = node.get_theme_font_size("font_size")
-				node.add_theme_font_size_override("font_size", int(current_size * scale_factor))
-			else:
-				node.add_theme_font_size_override("font_size", int(22 * scale_factor))  # Default size
-			
-			# Increase button's minimum size
-			if node.custom_minimum_size != Vector2.ZERO:
-				node.custom_minimum_size *= scale_factor
-			else:
-				node.custom_minimum_size = Vector2(100, 50) * scale_factor
-		
-		elif node is LineEdit or node is SpinBox or node is Slider:
-			# Scale input controls
-			if node.has_theme_override("font_size"):
-				var current_size = node.get_theme_font_size("font_size")
-				node.add_theme_font_size_override("font_size", int(current_size * scale_factor))
-			else:
-				node.add_theme_font_size_override("font_size", int(18 * scale_factor))
-				
-			# Increase control size
-			if node.custom_minimum_size != Vector2.ZERO:
-				node.custom_minimum_size *= scale_factor
-			else:
-				node.custom_minimum_size = Vector2(150, 40) * scale_factor
-		
-		elif node is HBoxContainer or node is VBoxContainer:
-			# Increase spacing between elements
-			node.add_theme_constant_override("separation", int(10 * scale_factor))
-			
-			# Set custom minimum size for containers
-			if node.custom_minimum_size != Vector2.ZERO:
-				node.custom_minimum_size *= scale_factor
-		
-		# For all other controls, scale custom minimum size if set
-		elif node.custom_minimum_size != Vector2.ZERO:
-			node.custom_minimum_size *= scale_factor
-	
-	# Process children
-	for child in node.get_children():
-		_scale_all_controls_recursively(child, scale_factor)
+	# Disable pause menu buttons while settings are open
+	disable_all_buttons()
 
 func _on_settings_closed():
-	# Settings were closed
-	if settings_instance:
-		settings_instance.hide()
-		# Re-enable pause menu buttons
-		enable_all_buttons()
+	# Re-enable pause menu buttons
+	enable_all_buttons()
 
 func _on_quit_to_menu_pressed():
+	# Stop all in-game processes
 	get_tree().paused = false
-	queue_free()  # Remove the pause menu before changing scenes
+	
+	# Transition back to start menu
 	get_tree().change_scene_to_file("res://scenes/startMenu.tscn")
 
 func _on_quit_to_desktop_pressed():
-	queue_free()  # Remove the pause menu before quitting
-	get_tree().quit() 
+	get_tree().quit()
 
-func toggle_darkness(show_darkness):
+func toggle_darkness(visible_state):
 	if darkness_node:
-		darkness_node.visible = show_darkness 
+		if visible_state:
+			# If we want darkness visible, restore the stored color or use default
+			if stored_darkness_color:
+				darkness_node.color = stored_darkness_color
+			else:
+				darkness_node.color = Color("555555")  # Default dark gray
+		else:
+			# Store the current color before hiding darkness
+			stored_darkness_color = darkness_node.color
+			darkness_node.color = Color(1, 1, 1, 1)  # White = no darkening 

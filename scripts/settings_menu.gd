@@ -1,7 +1,7 @@
 extends Control
 
 # Constants
-const CONFIG_FILE = "user://settings.cfg"
+const CONFIG_FILE = "user://settings.cfg"  # Base configuration path
 const AUDIO_BUS_MASTER = "Master"
 const AUDIO_BUS_MUSIC = "Music"
 const AUDIO_BUS_AMBIENT = "Ambient"
@@ -111,8 +111,13 @@ func _ready():
 	# Hide the save changes dialog
 	save_changes_dialog.hide()
 	
-	# Set proper UI positioning
-	set_proper_positioning()
+	# Use camera-based setup if in-game (via pause menu)
+	var pause_menu = get_tree().root.get_node_or_null("PauseMenu")
+	if pause_menu and pause_menu.visible:
+		apply_camera_based_setup()
+	else:
+		# Set proper UI positioning
+		set_proper_positioning()
 	
 	# Ensure we're on top
 	top_level = true
@@ -201,7 +206,6 @@ func ensure_input_actions_exist():
 		
 		# Check if action exists, create if not
 		if not InputMap.has_action(action):
-			print("Creating missing input action: ", action)
 			InputMap.add_action(action)
 			needs_default = true
 		elif InputMap.action_get_events(action).size() == 0:
@@ -210,7 +214,6 @@ func ensure_input_actions_exist():
 			
 		# Add a default key binding if needed
 		if needs_default:
-			print("Adding default binding for action: ", action)
 			var default_event = InputEventKey.new()
 			match action:
 				"jump":
@@ -286,7 +289,6 @@ func connect_signals():
 	discard_button.pressed.connect(_on_discard_button_pressed)
 
 func setup_key_binding_buttons():
-	print("Setting up key binding buttons...")
 	# Connect each key binding button
 	for action in key_binding_buttons:
 		var button = key_binding_buttons[action]
@@ -297,7 +299,6 @@ func setup_key_binding_buttons():
 			
 			# Set the initial button text based on the current input mapping
 			update_key_binding_label(action, label)
-			print("Connected key binding button for action: ", action)
 		else:
 			push_error("Button or label for action " + action + " not found!")
 
@@ -318,10 +319,8 @@ func update_key_binding_label(action, label):
 	else:
 		# This should not happen after ensure_input_actions_exist, but just in case
 		label.text = "None"
-		print("Warning: No events for action ", action)
 
 func _on_key_binding_button_pressed(action, button, label):
-	print("Key binding button pressed for action: ", action)
 	# We're now waiting for a key press
 	waiting_for_key = true
 	current_key_binding_button = button
@@ -339,8 +338,6 @@ func _input(event):
 			# Get the action name from the button's metadata
 			var action = current_key_binding_button.get_meta("action")
 			var label = key_binding_labels[action]
-			
-			print("New key assigned to action: ", action, " - Key: ", OS.get_keycode_string(event.keycode))
 			
 			# Update the input mapping
 			update_key_binding(action, event)
@@ -460,7 +457,6 @@ func _on_vsync_toggled(button_pressed):
 func _on_apply_pressed():
 	save_settings()
 	has_unsaved_changes = false
-	print("Settings applied and saved")
 
 func _on_back_pressed():
 	if has_unsaved_changes:
@@ -489,9 +485,16 @@ func _on_discard_button_pressed():
 signal settings_closed
 
 func load_settings():
-	var err = config.load(CONFIG_FILE)
-	if err != OK:
-		print("No settings file found, using defaults")
+	# Get machine-specific configuration path to avoid case sensitivity issues
+	var config_path = get_machine_specific_config_path()
+	var error = config.load(config_path)
+	
+	if error != OK:
+		create_defaults()
+		# Save to the machine-specific path
+		var save_err = config.save(config_path)
+		if save_err != OK:
+			push_error("Failed to save default settings: " + str(save_err))
 		return
 	
 	# Audio settings
@@ -563,8 +566,9 @@ func save_settings():
 		var height = height_text.to_int()
 		config.set_value("display", "resolution", str(width) + "x" + str(height))
 	
-	# Save to file
-	var err = config.save(CONFIG_FILE)
+	# Save to machine-specific config path
+	var config_path = get_machine_specific_config_path()
+	var err = config.save(config_path)
 	if err != OK:
 		push_error("Failed to save settings: " + str(err))
 
@@ -583,3 +587,154 @@ func update_display_settings():
 static func apply_audio_settings_to_player(audio_player, bus_name):
 	if audio_player != null:
 		audio_player.bus = bus_name 
+
+func apply_camera_based_setup():
+	var game_camera = null
+	var world = get_tree().get_root().get_node_or_null("World")
+	if world:
+		game_camera = world.get_node_or_null("Camera2D")
+	
+	if not game_camera:
+		# Fallback to standard positioning method
+		set_proper_positioning()
+		return
+	
+	# Calculate the camera's view size
+	var camera_size = get_camera_view_size(game_camera)
+	
+	# Reset transform and scaling
+	position = Vector2.ZERO
+	scale = Vector2.ONE
+	rotation = 0
+	
+	# Set the size to match camera view
+	size = camera_size
+	custom_minimum_size = camera_size
+	
+	# Center on camera's position
+	global_position = get_camera_screen_center(game_camera) - (camera_size / 2)
+	
+	# Adjust scale based on camera zoom
+	var zoom_adjustment = 1.0
+	if game_camera:
+		var camera_zoom = game_camera.zoom
+		# If in library (zoomed in), make the UI elements slightly smaller
+		if camera_zoom.x < 0.8:  # Library has zoom of 0.6
+			zoom_adjustment = 0.7
+		else:
+			zoom_adjustment = 1.0
+	
+	# Make sure the panel scales appropriately
+	if has_node("MarginContainer"):
+		# Use a consistent scale factor for panels
+		var ui_scale_factor = 1.0
+		$MarginContainer.scale = Vector2(ui_scale_factor * zoom_adjustment, ui_scale_factor * zoom_adjustment)
+		
+		# Adjust all slider widths based on zoom
+		adjust_slider_widths($MarginContainer, zoom_adjustment)
+
+func get_camera_view_size(camera):
+	if not camera:
+		return get_viewport_rect().size
+	
+	# Calculate the camera's view size based on viewport and zoom
+	var viewport_size = get_viewport_rect().size
+	var camera_zoom = camera.zoom
+	return viewport_size / camera_zoom
+
+func get_camera_screen_center(camera):
+	if not camera:
+		return get_viewport_rect().size / 2
+	
+	return camera.get_screen_center_position()
+	
+func adjust_slider_widths(panel, zoom_adjustment):
+	# Find all sliders in settings and adjust their width recursively
+	_adjust_sliders_recursive(panel, zoom_adjustment)
+
+func _adjust_sliders_recursive(node, zoom_adjustment):
+	# Check every child
+	for child in node.get_children():
+		# If child is an HSlider, adjust it
+		if child is HSlider:
+			if child.custom_minimum_size != Vector2.ZERO:
+				child.custom_minimum_size.x *= zoom_adjustment
+		
+		# If child has children, recursively process them
+		if child.get_child_count() > 0:
+			_adjust_sliders_recursive(child, zoom_adjustment) 
+
+func create_defaults():
+	# Create default settings when no config file exists
+	
+	# Default audio settings
+	config.set_value("audio", "master_volume", 1.0)
+	config.set_value("audio", "music_volume", 1.0)
+	config.set_value("audio", "ambient_volume", 1.0)
+	config.set_value("audio", "spooky_volume", 1.0)
+	
+	# Default key bindings
+	var default_keys = {
+		"jump": KEY_W,
+		"left": KEY_A, 
+		"right": KEY_D,
+		"fast_fall": KEY_S,
+		"pick_up": KEY_E,  # Ensure pickup is set to E
+		"set_down": KEY_Q,
+		"dash": KEY_SHIFT
+	}
+	
+	for action in default_keys:
+		# Set in config
+		config.set_value("key_bindings", action, default_keys[action])
+		
+		# Also set in InputMap
+		var event = InputEventKey.new()
+		event.keycode = default_keys[action]
+		
+		# Clear any existing bindings
+		InputMap.action_erase_events(action)
+		
+		# Add the default binding
+		InputMap.action_add_event(action, event)
+	
+	# Default display settings
+	config.set_value("display", "window_mode", 0)  # Default to fullscreen
+	config.set_value("display", "vsync", true)
+	
+	# Get current screen resolution
+	var screen_size = DisplayServer.screen_get_size()
+	config.set_value("display", "resolution", str(screen_size.x) + "x" + str(screen_size.y))
+	
+	# Save the default settings
+	var err = config.save(CONFIG_FILE)
+	if err != OK:
+		push_error("Failed to save default settings: " + str(err))
+		
+	# Update the UI with these defaults
+	master_slider.value = 1.0
+	music_slider.value = 1.0
+	ambient_slider.value = 1.0
+	spooky_slider.value = 1.0
+	
+	window_mode_option.select(0)  # Fullscreen
+	vsync_check.button_pressed = true
+	
+	# Update key binding labels
+	for action in key_binding_labels:
+		var label = key_binding_labels[action]
+		update_key_binding_label(action, label)
+
+# Get a consistent machine-specific configuration path
+func get_machine_specific_config_path() -> String:
+	# Get basic user directory path
+	var base_path = "user://"
+	
+	# Get a unique machine identifier (OS name + hostname)
+	var machine_id = OS.get_name().to_lower() + "_" + OS.get_unique_id().to_lower()
+	
+	# Create a hash of the machine ID for shorter filenames
+	var machine_hash = machine_id.sha1_text().substr(0, 8)
+	
+	# Return the full path with machine-specific suffix
+	return base_path + "settings_" + machine_hash + ".cfg"

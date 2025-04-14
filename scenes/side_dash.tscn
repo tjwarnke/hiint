@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bh5xpj4kmc4b5"]
+[gd_scene load_steps=5 format=3 uid="uid://bh5xpj4kmc4b5"]
 
 [ext_resource type="Script" uid="uid://qqf56q1f03tl" path="res://scripts/side_dash.gd" id="1_ny0hr"]
 [ext_resource type="Texture2D" uid="uid://cclbqo4clissx" path="res://assets/images/side_dash.png" id="2_7lsvu"]
+[ext_resource type="PackedScene" uid="uid://b1ieantwpnovy" path="res://scenes/powerup_effect.tscn" id="3_eaq1i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3p3u7"]
 size = Vector2(169, 122.5)
@@ -31,3 +32,5 @@ orbit_velocity_min = -1.0
 orbit_velocity_max = 1.0
 scale_amount_max = 4.0
 color = Color(0, 1, 1, 0.376471)
+
+[node name="PowerupEffect" parent="." instance=ExtResource("3_eaq1i")]

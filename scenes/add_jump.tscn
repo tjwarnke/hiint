@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ckf6g5rpvthh"]
+[gd_scene load_steps=4 format=3 uid="uid://ckf6g5rpvthh"]
 
 [ext_resource type="Script" uid="uid://d3fckf51y7jci" path="res://scripts/add_jump.gd" id="1_dopcg"]
 [ext_resource type="Texture2D" uid="uid://c0lc4oy2wil5u" path="res://assets/images/plus_jump.png" id="2_pjk5e"]
+[ext_resource type="PackedScene" uid="uid://b1ieantwpnovy" path="res://scenes/powerup_effect.tscn" id="3_ytpjl"]
 
 [node name="Area2D" type="Area2D"]
 script = ExtResource("1_dopcg")
@@ -29,3 +30,5 @@ orbit_velocity_min = -1.0
 orbit_velocity_max = 1.0
 scale_amount_max = 4.0
 color = Color(0, 1, 1, 0.376471)
+
+[node name="PowerupEffect" parent="." instance=ExtResource("3_ytpjl")]
