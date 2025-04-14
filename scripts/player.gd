@@ -222,20 +222,20 @@ func connect_to_powerups():
 
 # Called when powerup is collected
 func _on_powerup_collected(power_type: String, power_value: int) -> void:
-	print("Powerup collected: ", power_type, " with value ", power_value)
+	print("[PLAYER] Powerup collected: ", power_type, " with value ", power_value)
 	
 	match power_type:
 		"Jump":
 			max_jumps = 1 + power_value  # Base jump + power value
 			jumps_left = max_jumps
-			print("Updated jumps: max=", max_jumps, " left=", jumps_left)
+			print("[PLAYER] Updated jumps: max=", max_jumps, " left=", jumps_left)
 		"Dash":
 			dash_able = true
 			max_dash = power_value  # Set max dash to exactly the power value
 			num_dash = max_dash
-			print("Updated dash: max=", max_dash, " current=", num_dash)
+			print("[PLAYER] Updated dash: max=", max_dash, " current=", num_dash)
 		_:
-			print("Unknown powerup type: ", power_type)
+			print("[PLAYER] Unknown powerup type: ", power_type)
 
 func has_item(item_name: String) -> bool:
 	return item_name in inventory
@@ -591,31 +591,31 @@ func remove_powerups() -> void:
 
 # New function to handle direct collision with powerups
 func _on_powerup_collected_directly(body, powerup):
+	print("[PLAYER] Direct powerup collection triggered")
 	if body == self and powerup and powerup.is_in_group("powerup"): # Only react if it's this player
 		var power_type = ""
 		var power_value = 1
 		
 		# Check if already collected to prevent duplicates
 		if "collected" in powerup and powerup.collected:
+			print("[PLAYER] Powerup already collected, ignoring")
 			return
 			
-		# Mark as collected
-		if "collected" in powerup:
-			powerup.collected = true
-		
 		# Determine powerup type and value
 		if powerup.name.contains("Jump") or "jump_power" in powerup:
 			power_type = "Jump"
 			if "jump_power" in powerup:
 				power_value = powerup.jump_power
+			print("[PLAYER] Detected Jump powerup with value: ", power_value)
 		elif powerup.name.contains("Dash") or "dash_power" in powerup:
 			power_type = "Dash"
 			if "dash_power" in powerup:
 				power_value = powerup.dash_power
+			print("[PLAYER] Detected Dash powerup with value: ", power_value)
 		
 		# Apply the powerup effect
 		if power_type != "":
-			print("Directly collecting powerup: ", power_type, " with value ", power_value)
+			print("[PLAYER] Applying powerup: ", power_type, " with value ", power_value)
 			_on_powerup_collected(power_type, power_value)
 			
 		# Show message if text box exists
@@ -634,7 +634,15 @@ func _on_powerup_collected_directly(body, powerup):
 			await timer.timeout
 			if text_box:
 				text_box.visible = false
+		
+		# Mark as collected AFTER applying the effect
+		if "collected" in powerup:
+			powerup.collected = true
+			print("[PLAYER] Marked powerup as collected")
 			
 		# Queue for deletion (deferred to avoid errors)
 		if is_instance_valid(powerup):
+			print("[PLAYER] Removing powerup from scene")
 			powerup.queue_free()
+	else:
+		print("[PLAYER] Ignored powerup collection - not this player or not a powerup")

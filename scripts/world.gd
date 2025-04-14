@@ -40,10 +40,11 @@ func _ready():
 	if darkness:
 		darkness.color = Color("555555")  # Darker gray for tutorial area
 	
-	spawn_player()
+	# Initialize the powerup effect system
+	setup_powerup_effect_system()
 	
-	# REMOVE problematic drop_torch call that caused error
-	# player.call_deferred("drop_torch")  
+	# Spawn the player properly
+	spawn_player()
 	
 	initialize_game_state()
 	
@@ -136,7 +137,7 @@ func _process(delta):
 				camera.position.y = camera.fixed_y
 	
 	# Check for lever interaction - kept simple
-	if Input.is_action_just_pressed("interact") or Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("ui_accept"):  # Changed from "interact" to "ui_accept"
 		var lever = get_node_or_null("Library/Lever")
 		
 		if lever and player:
@@ -202,21 +203,26 @@ func hide_jumpscare():
 
 	
 func spawn_player():
+	print("[WORLD] Spawning player...")
 	player = PlayerScene.instantiate()
 	if not player:
-		push_error("Failed to instantiate player scene")
+		push_error("[WORLD] Failed to instantiate player scene")
 		return
 
 	add_child(player)
+	print("[WORLD] Player added to scene")
 
 	# Ensure spawn exists before setting position
 	if not spawn:
-		push_error("Spawn node is missing!")
-		return
-	player.global_position = spawn.global_position
+		push_error("[WORLD] Spawn node is missing! Player will be placed at origin")
+		player.position = Vector2(0, 0)
+	else:
+		print("[WORLD] Setting player position to spawn: ", spawn.global_position)
+		player.global_position = spawn.global_position
 	
 	# Set camera settings
 	if camera:
+		print("[WORLD] Configuring camera settings")
 		camera.position_smoothing_enabled = true
 		camera.position_smoothing_speed = 5.0
 		camera.drag_horizontal_enabled = true
@@ -224,6 +230,8 @@ func spawn_player():
 		camera.drag_top_margin = 0.1
 		camera.drag_right_margin = 0.1
 		camera.drag_bottom_margin = 0.1
+	else:
+		push_error("[WORLD] Camera not found when spawning player")
 
 func initialize_camera():
 	camera.position = Vector2(player.position.x, camera.fixed_y)
@@ -632,6 +640,8 @@ func setup_dungeon_music():
 
 # Set up the powerup effect system
 func setup_powerup_effect_system():
+	print("[WORLD] Setting up powerup effect system...")
+	
 	# Connect to all powerups to handle visual effects
 	call_deferred("connect_to_powerups_for_effects")
 	
@@ -641,33 +651,70 @@ func setup_powerup_effect_system():
 	powerup_check_timer.autostart = true
 	powerup_check_timer.timeout.connect(connect_to_powerups_for_effects)
 	add_child(powerup_check_timer)
-	print("[WORLD] Powerup effect system initialized")
+	print("[WORLD] Powerup effect system initialized with periodic check timer")
 
 # Connect to all powerups to add visual effects when collected
 func connect_to_powerups_for_effects():
 	var powerups = get_tree().get_nodes_in_group("powerup")
+	print("[WORLD] Found ", powerups.size(), " powerups to connect")
 	
 	for powerup in powerups:
-		if not powerup.is_connected("body_entered", Callable(self, "handle_powerup_collection_effect")):
+		print("[WORLD] Checking powerup: ", powerup.name, " at position ", powerup.global_position)
+		
+		# Check if this powerup is already connected
+		var is_connected = false
+		if powerup.get_signal_connection_list("body_entered").size() > 0:
+			for connection in powerup.get_signal_connection_list("body_entered"):
+				if connection.callable.get_method() == "handle_powerup_collection_effect":
+					is_connected = true
+					break
+		
+		if not is_connected:
+			print("[WORLD] Connecting to powerup: ", powerup.name)
 			powerup.connect("body_entered", Callable(self, "handle_powerup_collection_effect").bind(powerup))
-			print("[WORLD] Connected to powerup for effects: ", powerup.name)
+		else:
+			print("[WORLD] Powerup already connected: ", powerup.name)
 
 # Generate a visual effect when a powerup is collected
 func handle_powerup_collection_effect(body, powerup):
+	print("[WORLD] Powerup collection effect triggered by: ", body.name if body else "unknown")
+	
 	# Only proceed if it's the player collecting a powerup that hasn't been collected
-	if body.is_in_group("player") and powerup.is_in_group("powerup") and not ("collected" in powerup and powerup.collected):
-		# Determine the effect type based on powerup
-		var effect_color = Color(1, 1, 1)  # Default white
-		if powerup.name.contains("Jump") or ("jump_power" in powerup):
-			effect_color = Color(0.2, 0.8, 1.0, 1.0)  # Blue for jump
-		elif powerup.name.contains("Dash") or ("dash_power" in powerup):
-			effect_color = Color(1.0, 0.4, 0.0, 1.0)  # Orange for dash
+	if body.is_in_group("player") and powerup.is_in_group("powerup"):
+		print("[WORLD] Player collecting powerup: ", powerup.name)
 		
-		# Create the effect at the powerup's position
-		create_powerup_collection_effect(powerup.global_position, effect_color)
+		# Check if already collected
+		var already_collected = false
+		if "collected" in powerup and powerup.collected:
+			already_collected = true
+			print("[WORLD] Powerup already collected, skipping effect")
+		
+		if not already_collected:
+			# Determine the effect type based on powerup
+			var effect_color = Color(1, 1, 1)  # Default white
+			if powerup.name.contains("Jump") or ("jump_power" in powerup):
+				effect_color = Color(0.2, 0.8, 1.0, 1.0)  # Blue for jump
+				print("[WORLD] Creating blue jump powerup effect")
+			elif powerup.name.contains("Dash") or ("dash_power" in powerup):
+				effect_color = Color(1.0, 0.4, 0.0, 1.0)  # Orange for dash
+				print("[WORLD] Creating orange dash powerup effect")
+			else:
+				print("[WORLD] Creating default white powerup effect")
+			
+			# Create the effect at the powerup's position
+			create_powerup_collection_effect(powerup.global_position, effect_color)
+			
+			# Mark as collected to prevent duplicate effects
+			if "collected" in powerup:
+				powerup.collected = true
+				print("[WORLD] Marked powerup as collected: ", powerup.name)
+	else:
+		print("[WORLD] Powerup collection ignored - not player or not a powerup")
 
 # Create a visual effect for powerup collection
 func create_powerup_collection_effect(position, color):
+	print("[WORLD] Creating powerup collection effect at position: ", position)
+	
 	# Create a new particle system for the effect
 	var effect = CPUParticles2D.new()
 	effect.emitting = false
@@ -685,19 +732,20 @@ func create_powerup_collection_effect(position, color):
 	
 	# Add the effect to the scene
 	add_child(effect)
-	effect.global_position = position
-	
-	# Start the effect
+	effect.position = position
 	effect.emitting = true
-	print("[WORLD] Created powerup collection effect at: ", position)
+	print("[WORLD] Particle effect started emitting")
 	
-	# Remove the effect after it completes
+	# Create a timer to remove the effect after it's done
 	var timer = Timer.new()
-	timer.wait_time = effect.lifetime + 0.2
+	timer.wait_time = effect.lifetime + 0.1  # Add a small buffer
 	timer.one_shot = true
 	timer.autostart = true
 	add_child(timer)
+	
+	# Connect the timer to remove the effect
 	timer.timeout.connect(func():
+		print("[WORLD] Cleaning up powerup effect")
 		effect.queue_free()
 		timer.queue_free()
 	)

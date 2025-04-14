@@ -169,7 +169,7 @@ position = Vector2(2363, 877)
 position = Vector2(2363, 877)
 
 [node name="Spawn" type="Node2D" parent="."]
-position = Vector2(335, 740)
+position = Vector2(361, 757.5)
 
 [node name="Tutorial" parent="." instance=ExtResource("12_dss4m")]
 position = Vector2(2366, -146.5)
