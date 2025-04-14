@@ -30,6 +30,7 @@ func _on_body_entered(body):
 		text.visible = true
 		text.text = "Press 'f' to take a seat"
 		
+		
 func _on_body_exited(body):
 	if body.is_in_group("player"):
 		player_nearby = false
@@ -113,3 +114,4 @@ func _input(event):
 				player.set_can_move(true)
 				text.visible = false
 				dialogue.visible = false
+				dialogue_active = false
