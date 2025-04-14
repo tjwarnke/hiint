@@ -36,12 +36,10 @@ var camera_smooth_speed = 0.0001  # Adjust this value for smoother/slower moveme
 var dungeon_music_player = null
 
 func _ready():
-	# Set the default darker color for tutorial area
 	if darkness:
 		darkness.color = Color("555555")  # Darker gray for tutorial area
-	
-	# Initialize the powerup effect system
-	setup_powerup_effect_system()
+	else:
+		push_error("[WORLD] Darkness node not found in _ready!")
 	
 	# Spawn the player properly
 	spawn_player()
@@ -58,7 +56,6 @@ func _ready():
 	var dungeon_entered = get_node_or_null("Billiards/dungeon_entered")
 	if dungeon_entered and dungeon_entered is Area2D:
 		dungeon_entered.body_entered.connect(_on_dungeon_entered)
-		print("[WORLD] Connected dungeon entrance trigger")
 	else:
 		push_warning("Dungeon entrance trigger not found")
 	
@@ -118,6 +115,10 @@ func _ready():
 	if not wall_fall:
 		push_error("Wall fall animation not found!")
 
+	# Connect to pause menu signals
+	if pause_menu:
+		pause_menu.connect("resume_game", Callable(self, "_on_game_resumed"))
+
 func _process(delta):
 	# Original code
 	if Engine.get_process_frames() % 10 == 0:
@@ -158,15 +159,20 @@ func set_camera_target():
 		push_error("Player is missing when setting camera target!")
 		
 func initialize_game_state():
-	darkness.show()
+	if darkness:
+		darkness.color = Color("555555")  # Darker gray for tutorial area
+		darkness.show()
+	else:
+		push_error("[WORLD] Darkness node not found!")
+	
 	$cabin/Torch.show()
 	jumpscare_timer.timeout.connect(hide_jumpscare)  
 	
-	# Set music to extremely quiet initially (-200db)
+	# Set music to consistent volume initially
 	var main_music = get_node_or_null("/root/MainMusic")
-	if main_music and main_music.has_method("set_volume_db"):
-		main_music.set_volume_db(-200.0)
-		print("[WORLD] Set initial music to silent (-200db)")
+	if main_music:
+		# Don't change the volume here - let the main_music singleton handle it
+		print("[WORLD] Using existing music volume")
 	
 	# Add ambient noise (but make sure its volume is moderate)
 	add_child(ambient_noise)
@@ -203,26 +209,22 @@ func hide_jumpscare():
 
 	
 func spawn_player():
-	print("[WORLD] Spawning player...")
 	player = PlayerScene.instantiate()
 	if not player:
 		push_error("[WORLD] Failed to instantiate player scene")
 		return
 
 	add_child(player)
-	print("[WORLD] Player added to scene")
 
 	# Ensure spawn exists before setting position
 	if not spawn:
 		push_error("[WORLD] Spawn node is missing! Player will be placed at origin")
 		player.position = Vector2(0, 0)
 	else:
-		print("[WORLD] Setting player position to spawn: ", spawn.global_position)
 		player.global_position = spawn.global_position
 	
 	# Set camera settings
 	if camera:
-		print("[WORLD] Configuring camera settings")
 		camera.position_smoothing_enabled = true
 		camera.position_smoothing_speed = 5.0
 		camera.drag_horizontal_enabled = true
@@ -245,6 +247,9 @@ func initialize_camera():
 	
 func on_power_up(power_type: String, power_value: int) -> void:
 	if player:
+		# Create the powerup collection effect first
+		handle_powerup_collection_effect(power_type)
+		# Then notify the player about the powerup
 		player._on_powerup_collected(power_type, power_value)
 
 func _on_dining_threshold_entered(body):
@@ -262,27 +267,15 @@ func _on_dining_threshold_entered(body):
 		# Ensure ambient noise plays the dining sound
 		if ambient_noise and ambient_noise.has_method("on_dining"):
 			ambient_noise.on_dining()
-			print("[WORLD] Playing dining room ambient sounds")
-		
+			
 		# Make the dining room area lighter
 		if darkness:
 			darkness.color = Color("a8a8a8")  # Use a lighter gray for dining room
 			
-		# Start playing the game_level.mp3 music
+		# Transition to level music
 		var main_music = get_node_or_null("/root/MainMusic")
 		if main_music:
-			if main_music.has_method("play_level_music"):
-				main_music.play_level_music("res://assets/audio/game_level.mp3")
-				print("[WORLD] Playing game_level.mp3 in dining room")
-			elif main_music.has_method("play"):
-				var stream = load("res://assets/audio/game_level.mp3")
-				if stream:
-					main_music.stream = stream
-					main_music.play()
-					main_music.volume_db = -10.0  # Set to normal volume
-					print("[WORLD] Playing game_level.mp3 in dining room (direct method)")
-				else:
-					push_error("Failed to load game_level.mp3")
+			main_music.transition_to_level_music()
 
 func _on_library_threshold_entered(body):
 	# Only proceed if the colliding body is the player
@@ -290,17 +283,13 @@ func _on_library_threshold_entered(body):
 		level_transition_active = true
 		await wait_until_grounded()  # Ensure player is stable before continuing
 		
-		print("[LIBRARY] Player entered library area")
-		
 		# Verify player's jump ability
 		if player and "max_jumps" in player:
-			print("[LIBRARY] Player jump status - max jumps: ", player.max_jumps, ", jumps left: ", player.jumps_left)
-			
 			# If player doesn't have double jump yet, we can verify they'll be able to get it
 			if player.max_jumps < 2:
-				print("[LIBRARY] Player will be able to obtain double jump in library")
+				pass
 			else:
-				print("[LIBRARY] Player already has double jump capability")
+				pass
 		
 		# Print information about the library area powerups
 		var powerups = get_tree().get_nodes_in_group("powerup")
@@ -309,7 +298,6 @@ func _on_library_threshold_entered(body):
 			# Check if the powerup is in the Library area (assuming it has "Library" in its path)
 			if str(powerup.get_path()).find("Library") >= 0:
 				library_powerups.append(powerup)
-				print("[LIBRARY] Found powerup in library: ", powerup.name, " at position ", powerup.global_position)
 				
 				# If it's a jump powerup, verify its settings
 				if powerup.name.contains("Jump") or ("jump_power" in powerup and powerup.jump_power > 0):
@@ -320,11 +308,6 @@ func _on_library_threshold_entered(body):
 					var is_collected = false  # Default value
 					if "collected" in powerup:
 						is_collected = powerup.collected
-						
-					print("[LIBRARY] This is a jump powerup with jump_power: ", 
-						  jump_power_value, ", collected: ", is_collected)
-		
-		print("[LIBRARY] Found ", library_powerups.size(), " powerups in the library area")
 		
 		# Play a transition animation
 		play_level_transition("library")
@@ -347,7 +330,6 @@ func _on_library_threshold_entered(body):
 		# Reset transition flag
 		level_transition_active = false
 		
-		print("[LIBRARY] Library setup complete, player movement restored")
 	elif body.name.contains("TileMap"):
 		pass
 
@@ -590,14 +572,30 @@ func play_transition():
 # New function to fade music after the level has started
 func fade_music_after_start():
 	var main_music = get_node_or_null("/root/MainMusic")
-	if main_music and main_music.has_method("fade_out_music_only"):
-		main_music.fade_out_music_only(5.0)  # Fade out music after player is in the level
+	if main_music:
+		if main_music.has_method("fade_out_music_only"):
+			main_music.fade_out_music_only(5.0)  # Fade out music over 5 seconds
+		else:
+			# Create a tween to fade out the music if the method doesn't exist
+			var tween = create_tween()
+			tween.tween_property(main_music, "volume_db", -200.0, 5.0)
+			tween.tween_callback(func(): 
+				main_music.stop()
+			)
+	
+	# Also stop any background music in the ambient noise scene
+	if ambient_noise:
+		var bg_music = ambient_noise.get_node_or_null("BackgroundMusic")
+		if bg_music and bg_music.playing:
+			bg_music.stop()
+	
+	# Stop dungeon music if it's playing
+	if dungeon_music_player and dungeon_music_player.playing:
+		dungeon_music_player.stop()
 
 # Handler for dungeon entrance - simplified 
 func _on_dungeon_entered(body):
 	if body.is_in_group("player"):
-		print("[WORLD] Player entered dungeon area")
-		
 		# Zoom in camera for dungeon effect
 		var original_zoom = camera.zoom
 		var tween = create_tween()
@@ -638,118 +636,6 @@ func setup_dungeon_music():
 		add_child(dungeon_music_player)
 		dungeon_music_player.play()
 
-# Set up the powerup effect system
-func setup_powerup_effect_system():
-	print("[WORLD] Setting up powerup effect system...")
-	
-	# Connect to all powerups to handle visual effects
-	call_deferred("connect_to_powerups_for_effects")
-	
-	# Also set up a timer to regularly check for new powerups
-	var powerup_check_timer = Timer.new()
-	powerup_check_timer.wait_time = 2.0  # Check every 2 seconds
-	powerup_check_timer.autostart = true
-	powerup_check_timer.timeout.connect(connect_to_powerups_for_effects)
-	add_child(powerup_check_timer)
-	print("[WORLD] Powerup effect system initialized with periodic check timer")
-
-# Connect to all powerups to add visual effects when collected
-func connect_to_powerups_for_effects():
-	var powerups = get_tree().get_nodes_in_group("powerup")
-	print("[WORLD] Found ", powerups.size(), " powerups to connect")
-	
-	for powerup in powerups:
-		print("[WORLD] Checking powerup: ", powerup.name, " at position ", powerup.global_position)
-		
-		# Check if this powerup is already connected
-		var is_connected = false
-		if powerup.get_signal_connection_list("body_entered").size() > 0:
-			for connection in powerup.get_signal_connection_list("body_entered"):
-				if connection.callable.get_method() == "handle_powerup_collection_effect":
-					is_connected = true
-					break
-		
-		if not is_connected:
-			print("[WORLD] Connecting to powerup: ", powerup.name)
-			powerup.connect("body_entered", Callable(self, "handle_powerup_collection_effect").bind(powerup))
-		else:
-			print("[WORLD] Powerup already connected: ", powerup.name)
-
-# Generate a visual effect when a powerup is collected
-func handle_powerup_collection_effect(body, powerup):
-	print("[WORLD] Powerup collection effect triggered by: ", body.name if body else "unknown")
-	
-	# Only proceed if it's the player collecting a powerup that hasn't been collected
-	if body.is_in_group("player") and powerup.is_in_group("powerup"):
-		print("[WORLD] Player collecting powerup: ", powerup.name)
-		
-		# Check if already collected
-		var already_collected = false
-		if "collected" in powerup and powerup.collected:
-			already_collected = true
-			print("[WORLD] Powerup already collected, skipping effect")
-		
-		if not already_collected:
-			# Determine the effect type based on powerup
-			var effect_color = Color(1, 1, 1)  # Default white
-			if powerup.name.contains("Jump") or ("jump_power" in powerup):
-				effect_color = Color(0.2, 0.8, 1.0, 1.0)  # Blue for jump
-				print("[WORLD] Creating blue jump powerup effect")
-			elif powerup.name.contains("Dash") or ("dash_power" in powerup):
-				effect_color = Color(1.0, 0.4, 0.0, 1.0)  # Orange for dash
-				print("[WORLD] Creating orange dash powerup effect")
-			else:
-				print("[WORLD] Creating default white powerup effect")
-			
-			# Create the effect at the powerup's position
-			create_powerup_collection_effect(powerup.global_position, effect_color)
-			
-			# Mark as collected to prevent duplicate effects
-			if "collected" in powerup:
-				powerup.collected = true
-				print("[WORLD] Marked powerup as collected: ", powerup.name)
-	else:
-		print("[WORLD] Powerup collection ignored - not player or not a powerup")
-
-# Create a visual effect for powerup collection
-func create_powerup_collection_effect(position, color):
-	print("[WORLD] Creating powerup collection effect at position: ", position)
-	
-	# Create a new particle system for the effect
-	var effect = CPUParticles2D.new()
-	effect.emitting = false
-	effect.one_shot = true
-	effect.explosiveness = 1.0
-	effect.lifetime = 0.7
-	effect.amount = 60
-	effect.spread = 180
-	effect.gravity = Vector2(0, 60)
-	effect.initial_velocity_min = 100
-	effect.initial_velocity_max = 250
-	effect.scale_amount_min = 4.0
-	effect.scale_amount_max = 6.0
-	effect.color = color
-	
-	# Add the effect to the scene
-	add_child(effect)
-	effect.position = position
-	effect.emitting = true
-	print("[WORLD] Particle effect started emitting")
-	
-	# Create a timer to remove the effect after it's done
-	var timer = Timer.new()
-	timer.wait_time = effect.lifetime + 0.1  # Add a small buffer
-	timer.one_shot = true
-	timer.autostart = true
-	add_child(timer)
-	
-	# Connect the timer to remove the effect
-	timer.timeout.connect(func():
-		print("[WORLD] Cleaning up powerup effect")
-		effect.queue_free()
-		timer.queue_free()
-	)
-
 # Setup the library lever and hidden platform
 func setup_library_lever():
 	# Find the lever in the library
@@ -781,7 +667,6 @@ func setup_library_lever():
 				break
 	
 	if lever and hidden_platform:
-		print("[WORLD] Found library lever and hidden platform")
 		# Make the platform initially invisible/inactive
 		if hidden_platform.has_method("set_visible"):
 			hidden_platform.set_visible(false)
@@ -793,17 +678,16 @@ func setup_library_lever():
 			lever.connect("body_entered", Callable(self, "_on_lever_body_entered").bind(hidden_platform))
 			lever.set_meta("interactable", true)
 		else:
-			print("[WORLD] Warning: Lever is not an Area2D")
+			push_warning("Lever is not an Area2D")
 	else:
 		if not lever:
-			print("[WORLD] Warning: Could not find library lever")
+			push_warning("Could not find library lever")
 		if not hidden_platform:
-			print("[WORLD] Warning: Could not find hidden platform")
+			push_warning("Could not find hidden platform")
 
 # Handle lever body entered
 func _on_lever_body_entered(body, hidden_platform):
 	if body.is_in_group("player") and hidden_platform:
-		print("[WORLD] Player entered lever area")
 		# Show a hint to the player
 		var text_box = get_node_or_null("UI/TextBoxMiddleTop")
 		if text_box:
@@ -818,8 +702,6 @@ func _on_lever_body_entered(body, hidden_platform):
 
 # Simple lever activation
 func activate_lever(hidden_platform):
-	print("[WORLD] Activating library lever")
-	
 	# Show message
 	var text_box = get_node_or_null("UI/TextBoxMiddleTop")
 	if text_box:
@@ -840,5 +722,42 @@ func activate_lever(hidden_platform):
 		# Enable collision if property exists
 		if "collision_layer" in hidden_platform:
 			hidden_platform.collision_layer = 1
-		
-		print("[WORLD] Hidden platform activated")
+
+# Handle game resume
+func _on_game_resumed():
+	if darkness:
+		# Restore the appropriate darkness color based on current area
+		if get_node_or_null("Library") and player and player.global_position.y < 2000:
+			# Library area
+			darkness.color = Color("767676")
+		elif get_node_or_null("Billiards") and player and player.global_position.y > 2000:
+			# Dungeon area
+			darkness.color = Color("333333")
+		else:
+			# Tutorial area
+			darkness.color = Color("555555")
+
+# New function to handle powerup collection effects
+func handle_powerup_collection_effect(power_type: String) -> void:
+	# Create a powerup effect scene
+	var effect_scene = preload("res://scenes/powerup_effect.tscn")
+	if effect_scene:
+		var effect = effect_scene.instantiate()
+		if effect:
+			# Position the effect at the player's position
+			effect.position = player.position
+			
+			# Set the effect color based on powerup type
+			var effect_color = Color(1, 1, 1)  # Default white
+			if power_type == "Jump":
+				effect_color = Color(0, 0.5, 1)  # Blue for jump
+			elif power_type == "Dash":
+				effect_color = Color(1, 0.5, 0)  # Orange for dash
+			
+			# Set the color and add the effect to the scene
+			effect.set_color(effect_color)
+			add_child(effect)
+		else:
+			push_error("[WORLD] Failed to instantiate powerup effect")
+	else:
+		push_error("[WORLD] Powerup effect scene not found")

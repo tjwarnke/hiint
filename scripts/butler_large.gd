@@ -125,3 +125,13 @@ func end_dialog():
 func _on_body_exited(body):
 	if body.is_in_group("player"):
 		player_nearby = false
+
+func _on_player_entered(body):
+	if body.is_in_group("player"):
+		player = body
+		if player.has_torch:
+			# Tell player to drop torch
+			player.drop_torch.emit()
+		else:
+			# Skip torch dialog
+			pass

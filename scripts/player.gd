@@ -27,6 +27,7 @@ var num_dash = 0
 @export var max_jumps: int = 1  
 var jumps_left: int
 var item_type = ""
+var collected_powerups = []  # Track collected powerups
 
 var can_move = true
 var is_picking_up = false  # Flag to prevent multiple simultaneous pickups
@@ -212,30 +213,25 @@ func _physics_process(delta):
 func connect_to_powerups():
 	# Find all powerups in the scene
 	var powerups = get_tree().get_nodes_in_group("powerup")
-	print("Found ", powerups.size(), " powerups to connect")
 	
-	# Connect directly to the area's body_entered signal
+	# Connect to powerup collection signals
 	for powerup in powerups:
-		if not powerup.is_connected("body_entered", Callable(self, "_on_powerup_collected_directly").bind(powerup)):
-			powerup.connect("body_entered", Callable(self, "_on_powerup_collected_directly").bind(powerup))
-			print("Connected directly to powerup collision: ", powerup.name)
+		if powerup.has_method("_on_powerup_collected"):
+			powerup._on_powerup_collected.connect(_on_powerup_collected)
 
 # Called when powerup is collected
 func _on_powerup_collected(power_type: String, power_value: int) -> void:
-	print("[PLAYER] Powerup collected: ", power_type, " with value ", power_value)
-	
+	# Handle different powerup types
 	match power_type:
 		"Jump":
-			max_jumps = 1 + power_value  # Base jump + power value
+			max_jumps += power_value  # Add to existing jumps instead of replacing
 			jumps_left = max_jumps
-			print("[PLAYER] Updated jumps: max=", max_jumps, " left=", jumps_left)
 		"Dash":
-			dash_able = true
-			max_dash = power_value  # Set max dash to exactly the power value
+			max_dash = power_value
 			num_dash = max_dash
-			print("[PLAYER] Updated dash: max=", max_dash, " current=", num_dash)
+			dash_able = true  # Enable dash ability
 		_:
-			print("[PLAYER] Unknown powerup type: ", power_type)
+			pass
 
 func has_item(item_name: String) -> bool:
 	return item_name in inventory
@@ -591,58 +587,8 @@ func remove_powerups() -> void:
 
 # New function to handle direct collision with powerups
 func _on_powerup_collected_directly(body, powerup):
-	print("[PLAYER] Direct powerup collection triggered")
-	if body == self and powerup and powerup.is_in_group("powerup"): # Only react if it's this player
-		var power_type = ""
-		var power_value = 1
-		
-		# Check if already collected to prevent duplicates
-		if "collected" in powerup and powerup.collected:
-			print("[PLAYER] Powerup already collected, ignoring")
-			return
-			
-		# Determine powerup type and value
-		if powerup.name.contains("Jump") or "jump_power" in powerup:
-			power_type = "Jump"
-			if "jump_power" in powerup:
-				power_value = powerup.jump_power
-			print("[PLAYER] Detected Jump powerup with value: ", power_value)
-		elif powerup.name.contains("Dash") or "dash_power" in powerup:
-			power_type = "Dash"
-			if "dash_power" in powerup:
-				power_value = powerup.dash_power
-			print("[PLAYER] Detected Dash powerup with value: ", power_value)
-		
-		# Apply the powerup effect
-		if power_type != "":
-			print("[PLAYER] Applying powerup: ", power_type, " with value ", power_value)
-			_on_powerup_collected(power_type, power_value)
-			
-		# Show message if text box exists
-		var text_box = get_node_or_null("/root/World/UI/TextBoxMiddleTop")
-		if text_box:
-			text_box.visible = true
-			if power_type == "Jump":
-				text_box.text = "You have collected Double Jump!"
-			elif power_type == "Dash":
-				text_box.text = "You have collected Dash!"
-			else:
-				text_box.text = "You have collected a powerup!"
-				
-			# Use a timer to hide the text after a delay
-			var timer = get_tree().create_timer(1.5)
-			await timer.timeout
-			if text_box:
-				text_box.visible = false
-		
-		# Mark as collected AFTER applying the effect
-		if "collected" in powerup:
-			powerup.collected = true
-			print("[PLAYER] Marked powerup as collected")
-			
-		# Queue for deletion (deferred to avoid errors)
-		if is_instance_valid(powerup):
-			print("[PLAYER] Removing powerup from scene")
+	if body == self and not collected_powerups.has(powerup.power_type):
+		if powerup.has_method("_on_powerup_collected"):
+			powerup._on_powerup_collected(powerup.power_type, powerup.power_value)
+			collected_powerups.append(powerup.power_type)
 			powerup.queue_free()
-	else:
-		print("[PLAYER] Ignored powerup collection - not this player or not a powerup")

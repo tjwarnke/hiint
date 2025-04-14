@@ -1,5 +1,7 @@
 extends Control
 
+signal resume_game
+
 var settings_scene = preload("res://scenes/settings_menu.tscn")
 var settings_instance = null
 var darkness_node = null
@@ -7,6 +9,7 @@ var game_camera = null
 # Scale factors for menu elements
 var panel_scale_factor = 1.3  # Scale factor for the pause menu panel
 var settings_scale_factor = 3  # Scale factor for the settings menu
+var stored_darkness_color = null  # Add this at the top with other variables
 
 func _ready():
 	# Set the pause menu to be on top of everything
@@ -206,6 +209,7 @@ func _unhandled_input(event):
 				_on_resume_pressed()
 				get_viewport().set_input_as_handled()  # Prevent the event from propagating
 		else:
+			# Don't pause the entire tree, just pause the game logic
 			get_tree().paused = true
 			show()
 			# Force update size and position when shown
@@ -231,6 +235,8 @@ func _on_resume_pressed():
 	hide()
 	# Restore darkness when the pause menu is hidden
 	toggle_darkness(true)
+	# Emit the resume_game signal
+	emit_signal("resume_game")
 
 func _on_settings_pressed():
 	if not settings_instance:
@@ -267,9 +273,13 @@ func _on_quit_to_desktop_pressed():
 
 func toggle_darkness(visible_state):
 	if darkness_node:
-		# If we want darkness visible, set the normal color
-		# If we want darkness hidden, set to white (no effect)
 		if visible_state:
-			darkness_node.color = Color("a8a8a8")  # Use the lighter gray from world.gd
+			# If we want darkness visible, restore the stored color or use default
+			if stored_darkness_color:
+				darkness_node.color = stored_darkness_color
+			else:
+				darkness_node.color = Color("555555")  # Default dark gray
 		else:
+			# Store the current color before hiding darkness
+			stored_darkness_color = darkness_node.color
 			darkness_node.color = Color(1, 1, 1, 1)  # White = no darkening 

@@ -206,7 +206,6 @@ func ensure_input_actions_exist():
 		
 		# Check if action exists, create if not
 		if not InputMap.has_action(action):
-			print("Creating missing input action: ", action)
 			InputMap.add_action(action)
 			needs_default = true
 		elif InputMap.action_get_events(action).size() == 0:
@@ -215,7 +214,6 @@ func ensure_input_actions_exist():
 			
 		# Add a default key binding if needed
 		if needs_default:
-			print("Adding default binding for action: ", action)
 			var default_event = InputEventKey.new()
 			match action:
 				"jump":
@@ -291,7 +289,6 @@ func connect_signals():
 	discard_button.pressed.connect(_on_discard_button_pressed)
 
 func setup_key_binding_buttons():
-	print("Setting up key binding buttons...")
 	# Connect each key binding button
 	for action in key_binding_buttons:
 		var button = key_binding_buttons[action]
@@ -302,7 +299,6 @@ func setup_key_binding_buttons():
 			
 			# Set the initial button text based on the current input mapping
 			update_key_binding_label(action, label)
-			print("Connected key binding button for action: ", action)
 		else:
 			push_error("Button or label for action " + action + " not found!")
 
@@ -323,10 +319,8 @@ func update_key_binding_label(action, label):
 	else:
 		# This should not happen after ensure_input_actions_exist, but just in case
 		label.text = "None"
-		print("Warning: No events for action ", action)
 
 func _on_key_binding_button_pressed(action, button, label):
-	print("Key binding button pressed for action: ", action)
 	# We're now waiting for a key press
 	waiting_for_key = true
 	current_key_binding_button = button
@@ -344,8 +338,6 @@ func _input(event):
 			# Get the action name from the button's metadata
 			var action = current_key_binding_button.get_meta("action")
 			var label = key_binding_labels[action]
-			
-			print("New key assigned to action: ", action, " - Key: ", OS.get_keycode_string(event.keycode))
 			
 			# Update the input mapping
 			update_key_binding(action, event)
@@ -465,7 +457,6 @@ func _on_vsync_toggled(button_pressed):
 func _on_apply_pressed():
 	save_settings()
 	has_unsaved_changes = false
-	print("Settings applied and saved")
 
 func _on_back_pressed():
 	if has_unsaved_changes:
@@ -496,11 +487,9 @@ signal settings_closed
 func load_settings():
 	# Get machine-specific configuration path to avoid case sensitivity issues
 	var config_path = get_machine_specific_config_path()
-	print("Loading settings from: ", config_path)
 	var error = config.load(config_path)
 	
 	if error != OK:
-		print("Failed to load settings, creating defaults. Error code: ", error)
 		create_defaults()
 		# Save to the machine-specific path
 		var save_err = config.save(config_path)
@@ -579,7 +568,6 @@ func save_settings():
 	
 	# Save to machine-specific config path
 	var config_path = get_machine_specific_config_path()
-	print("Saving settings to: ", config_path)
 	var err = config.save(config_path)
 	if err != OK:
 		push_error("Failed to save settings: " + str(err))
@@ -678,7 +666,6 @@ func _adjust_sliders_recursive(node, zoom_adjustment):
 
 func create_defaults():
 	# Create default settings when no config file exists
-	print("Creating default settings")
 	
 	# Default audio settings
 	config.set_value("audio", "master_volume", 1.0)

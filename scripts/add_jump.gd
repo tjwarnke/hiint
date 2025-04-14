@@ -5,35 +5,28 @@ extends Area2D
 
 var collected = false  # Flag to prevent multiple collections
 
+var PowerupEffect = preload("res://scenes/powerup_effect.tscn")
+
 func _ready():
 	add_to_group("powerup")
-	print("[JUMP POWERUP] Initialized at position: ", global_position)
 	
 	# Connect to body_entered signal
-	if not is_connected("body_entered", Callable(self, "_on_body_entered")):
-		connect("body_entered", Callable(self, "_on_body_entered"))
-		print("[JUMP POWERUP] Connected to body_entered signal")
+	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body):
-	print("[JUMP POWERUP] Body entered: ", body.name if body else "unknown")
-	
-	# Don't handle collection if already collected
 	if collected:
-		print("[JUMP POWERUP] Already collected, ignoring")
 		return
 		
-	if body.is_in_group("player") and body.has_method("_on_powerup_collected") and not collected:
-		print("[JUMP POWERUP] Player collecting jump powerup")
+	if body.is_in_group("player"):
+		# Create and play the powerup effect
+		var effect = PowerupEffect.instantiate()
+		if effect:
+			effect.position = global_position
+			get_tree().root.add_child(effect)
+			effect.set_color(Color(0, 0.5, 1))  # Blue color for jump
 		
-		# Call the player's powerup collection method
-		body._on_powerup_collected("Jump", jump_power)
-		print("[JUMP POWERUP] Applied jump power to player")
-		
-		# Mark as collected AFTER the effect system has had a chance to create the particle effect
-		collected = true
-		
-		# Remove immediately
-		queue_free()
-		print("[JUMP POWERUP] Removed from scene")
-	else:
-		print("[JUMP POWERUP] Ignored - not player or missing _on_powerup_collected method")
+		# Apply jump power to player
+		if body.has_method("_on_powerup_collected"):
+			body._on_powerup_collected("Jump", jump_power)
+			collected = true
+			queue_free()

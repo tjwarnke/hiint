@@ -98,9 +98,25 @@ func fade_out(audio_player: AudioStreamPlayer, duration: float = 2.0):
 		)
 
 func on_dining():
+	# Fade out outdoor sounds when entering the mansion
+	fade_out_outdoor_sounds(3.0)
+	
+	# Fade out cabin sound and fade in dining sound
 	fade_out(cabin_sound, 3.0)
 	dining_sound.play()
 	fade_in(dining_sound, 3.0)
+
+# New function to fade out outdoor sounds (birds and wind)
+func fade_out_outdoor_sounds(duration: float = 3.0):
+	# Find the birds and wind audio players
+	var birds_player = get_node_or_null("Birds")
+	var wind_player = get_node_or_null("Wind")
+	
+	if birds_player:
+		fade_out(birds_player, duration)
+	
+	if wind_player:
+		fade_out(wind_player, duration)
 
 func on_library():
 	fade_out(cabin_sound, 3.0)
@@ -120,3 +136,7 @@ func set_volume_level(volume_db):
 	for sound in [cabin_sound, dining_sound, library_sound, billiards_sound]:
 		if sound:
 			sound.volume_db = volume_db 
+
+func stop_audio_player(audio_player: AudioStreamPlayer) -> void:
+	if audio_player and audio_player.playing:
+		audio_player.stop() 

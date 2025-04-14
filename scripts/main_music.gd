@@ -1,7 +1,10 @@
-extends AudioStreamPlayer
+extends Node
 
 # Static reference to the single instance of this player
 static var instance = null
+
+# Audio player reference
+@onready var music_player = $MusicPlayer
 
 # Additional audio players for persistent sounds
 var rain_player = null
@@ -10,7 +13,9 @@ var spooky_player = null
 
 # Preload sound resources
 const RAIN_SOUND = preload("res://assets/audio/rain.mp3")
-const AMBIENT_SOUND = preload("res://assets/audio/GameSongIntro-MP3.mp3") # Replace with actual ambient
+const AMBIENT_SOUND = preload("res://assets/audio/GameSongIntro-MP3.mp3")
+const MENU_MUSIC = preload("res://assets/audio/Intro.mp3")
+const LEVEL_MUSIC = preload("res://assets/audio/game_level.mp3")
 
 # Keep track of original volumes for restore functionality
 var original_volumes = {
@@ -21,114 +26,96 @@ var original_volumes = {
 }
 
 func _ready():
-	# Check for existing instance using the singleton pattern
-	if instance != null:
-		# Print debug message to verify the check is working
-		print("Music singleton detected, removing duplicate")
-		# Another music player already exists, remove this duplicate immediately
+	# Check if another instance exists
+	if instance != null and instance != self:
 		queue_free()
 		return
-	
-	# Print debug message to verify a new instance is being created
-	print("Creating music singleton instance")
-	
-	# First instance - become the singleton
+		
 	instance = self
 	
-	# Ensure this node persists between scenes
-	process_mode = PROCESS_MODE_ALWAYS
+	# Set up the audio player
+	music_player.bus = "Music"
 	
-	# Set the audio bus to Music for volume control
-	bus = "Music"
+	# Set initial volume
+	music_player.volume_db = original_volumes["music"]
 	
-	# Set initial volume (not max)
-	volume_db = original_volumes["music"]
+	# Load and play the menu music by default
+	music_player.stream = MENU_MUSIC
+	music_player.play()
 	
-	# Create additional audio players for ambient sounds that persist across scenes
-	setup_persistent_audio()
+	# Ensure the music player is not muted
+	music_player.volume_db = original_volumes["music"]
 	
-	# Make this node persist when changing scenes
-	get_tree().set_auto_accept_quit(false)
-	
-	# Move to root to persist across scene changes if needed
-	if get_parent() != get_tree().root:
-		var parent = get_parent()
-		parent.remove_child(self)
-		get_tree().root.add_child(self)
-	
-	# Start playing music (only once the singleton is established)
-	if not playing:
-		play()
-		print("Started playing music on singleton instance")
+	# Connect to the tree_exiting signal to handle cleanup
+	tree_exiting.connect(_on_tree_exiting)
+
+func _on_tree_exiting():
+	# Clean up when the scene is being removed
+	if instance == self:
+		instance = null
 
 # Set up additional persistent audio players
 func setup_persistent_audio():
 	# Rain sound
 	rain_player = AudioStreamPlayer.new()
 	rain_player.stream = RAIN_SOUND
-	rain_player.volume_db = original_volumes["rain"]
 	rain_player.bus = "Ambient"
-	rain_player.autoplay = true
+	rain_player.volume_db = original_volumes["rain"]
 	add_child(rain_player)
 	
-	# Ambient sounds
+	# Ambient sound
 	ambient_player = AudioStreamPlayer.new()
 	ambient_player.stream = AMBIENT_SOUND
-	ambient_player.volume_db = original_volumes["ambient"]
 	ambient_player.bus = "Ambient"
-	ambient_player.autoplay = true
+	ambient_player.volume_db = original_volumes["ambient"]
 	add_child(ambient_player)
 	
-	# Spooky sounds (to be added based on game state)
+	# Spooky sound
 	spooky_player = AudioStreamPlayer.new()
-	spooky_player.bus = "Spooky"
+	spooky_player.stream = AMBIENT_SOUND  # Using ambient sound for spooky
+	spooky_player.bus = "Ambient"
 	spooky_player.volume_db = original_volumes["spooky"]
 	add_child(spooky_player)
 
-# Fade out only the music while keeping ambient sounds
-func fade_out_music_only(duration: float = 5.0):
-	if playing:
-		# Store the original volume to restore it later if needed
-		original_volumes["music"] = volume_db
-		
-		var tween = create_tween()
-		tween.tween_property(self, "volume_db", -40, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-		await tween.finished
-		# Don't stop - just reduce volume significantly but keep it playing
-		# Don't need to call stop()
-		print("Music faded down but still playing at low volume")
-		
-# Restore music to original volume
-func restore_music_volume(duration: float = 3.0):
-	var target_vol = original_volumes["music"]
-	print("Restoring music volume to: ", target_vol)
-	
-	# Only create a tween if the current volume is different
-	if volume_db < target_vol - 1.0:
-		var tween = create_tween()
-		tween.tween_property(self, "volume_db", target_vol, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-		await tween.finished
-		print("Music volume restored")
-		
-# Generic fade out function for any audio player
-func fade_out(audio_player: AudioStreamPlayer, duration: float = 2.0):
-	if audio_player and audio_player.playing:
-		var tween = create_tween()
-		tween.tween_property(audio_player, "volume_db", -80, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-		await tween.finished
-		audio_player.stop()
+# Function to transition to menu music
+func transition_to_menu_music():
+	if music_player:
+		music_player.stream = MENU_MUSIC
+		music_player.volume_db = original_volumes["music"]
+		music_player.play()
 
-# Mute/unmute ambient sounds without stopping them
-func set_ambient_enabled(enabled: bool):
+# Function to transition to level music
+func transition_to_level_music():
+	if music_player:
+		music_player.stream = LEVEL_MUSIC
+		music_player.volume_db = original_volumes["music"]
+		music_player.play()
+
+# Function to fade out music
+func fade_out_music_only(duration: float = 2.0):
+	if music_player:
+		var tween = create_tween()
+		tween.tween_property(music_player, "volume_db", -80.0, duration)
+		tween.tween_callback(music_player.stop)
+
+# Function to restore music volume
+func restore_music_volume():
+	if music_player:
+		music_player.volume_db = original_volumes["music"]
+
+# Function to mute/unmute ambient sounds
+func set_ambient_muted(muted: bool):
 	if rain_player:
-		rain_player.volume_db = original_volumes["rain"] if enabled else -80.0
+		rain_player.volume_db = -80.0 if muted else original_volumes["rain"]
 	if ambient_player:
-		ambient_player.volume_db = original_volumes["ambient"] if enabled else -80.0
+		ambient_player.volume_db = -80.0 if muted else original_volumes["ambient"]
+	if spooky_player:
+		spooky_player.volume_db = -80.0 if muted else original_volumes["spooky"]
 
-# Reset the singleton when this node is deleted
-func _notification(what):
-	if what == NOTIFICATION_PREDELETE:
-		# Reset the static reference when this node is being deleted
-		if instance == self:
-			print("Music singleton instance destroyed")
-			instance = null
+func stop_ambient_sounds():
+	var ambient = get_node_or_null("/root/World/ambient_noise")
+	if ambient:
+		ambient.stop_all_sounds()
+
+func _exit_tree():
+	instance = null

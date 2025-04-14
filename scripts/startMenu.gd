@@ -9,6 +9,10 @@ var settings_instance = null
 
 func _ready():
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	# Ensure menu music is playing
+	var main_music = get_node_or_null("/root/MainMusic")
+	if main_music:
+		main_music.transition_to_menu_music()
 
 func _on_quit_button_pressed():
 	get_tree().quit()

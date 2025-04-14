@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=4 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=32 format=4 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://ctbtqie8fru15" path="res://scenes/torch.tscn" id="6_lakw3"]
@@ -41,6 +41,9 @@ size = Vector2(278.75, 185)
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_2lf6f"]
 a = Vector2(-6, -138)
 b = Vector2(0, 208)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_kpybi"]
+a = Vector2(326, 8)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oo54l"]
 radius = 53.521
@@ -230,6 +233,12 @@ position = Vector2(193, 1241)
 [node name="BilliardsRoom" parent="." instance=ExtResource("15_pm21f")]
 position = Vector2(15888, 80)
 scale = Vector2(0.5, 0.5)
+
+[node name="dungeon_entered" type="Area2D" parent="BilliardsRoom"]
+position = Vector2(3116, 1610)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BilliardsRoom/dungeon_entered"]
+shape = SubResource("SegmentShape2D_kpybi")
 
 [node name="Book" parent="." instance=ExtResource("8_2lf6f")]
 position = Vector2(404, 825)

@@ -7,6 +7,8 @@ var player = null
 var player_in_area = null
 var light_intensity = 1.0  # Reduced from 1.5 to make the light weaker
 var original_scale = Vector2(1.0, 1.0)  # Store original scale for reference
+var is_held = false
+var is_dropped = false
 
 @onready var text_box = get_node("/root/World/UI/TextBoxMiddleTop")
 @onready var sprite = $Sprite2D
@@ -21,29 +23,21 @@ func _ready():
 	# Store original scale
 	original_scale = scale
 	
-	# Reduce light scale and intensity
-	if light:
-		light.scale = Vector2(0.25, 0.25)  # Smaller light
-		light.energy = 0.8  # Reduced energy
-		light.texture_scale = 0.5  # Shrink texture scale
-
-	add_to_group("item")  # Add to item group for interaction
+	# Connect signals
+	if not is_connected("body_entered", Callable(self, "_on_body_entered")):
+		connect("body_entered", Callable(self, "_on_body_entered"))
 	
-	# Store original properties
-	original_rotation = rotation
-	original_position = position
-	original_parent = get_parent()
-	print("TORCH DEBUG: Initial scale in _ready: ", scale)
-	print("TORCH DEBUG: Original scale stored: ", original_scale)
+	# Initialize state
+	is_held = false
+	is_dropped = false
 	
-	# Wait for the Player node to be available
-	await get_tree().process_frame
-	await get_tree().process_frame  # Wait two frames to ensure World is ready
+	# Set initial collision state
+	update_collision_state()
 	
-	# Try to find the player node
-	var world = get_node_or_null("/root/World")
-	if world:
-		player = world.get_node_or_null("Player")
+	# Connect to player's drop signal if we can find the player
+	var player = get_tree().get_first_node_in_group("player")
+	if player and player.has_signal("drop_torch"):
+		player.drop_torch.connect(_on_dropped)
 
 func _process(_delta):
 	if player_in_area and Input.is_action_just_pressed("pick_up") and can_be_picked_up:
@@ -86,21 +80,18 @@ func _on_body_exited(body):
 
 # Called when the torch is dropped
 func _on_dropped():
-	# Reset torch properties when dropped
-	can_be_picked_up = true
+	is_held = false
+	is_dropped = true
+	update_collision_state()
 	
-	# Make sure the light is at the correct scale when dropped
-	if light:
-		light.scale = Vector2(0.25, 0.25)  # Keep the smaller light scale
-		light.energy = 0.8  # Reduced energy
-		light.texture_scale = 0.5  # Maintain smaller texture scale
+	# Reset scale to original
+	scale = original_scale
 	
 	# Reset the player reference
 	player = null
 	player_in_area = null
 	
 	# Reset the torch's properties to the correct values
-	scale = Vector2(1.0, 1.0)  # Use consistent scale of 1.0
 	rotation = 0  # Reset rotation to upright
 	
 	# Reset the PointLight2D scale to ensure proper light shape
@@ -111,4 +102,15 @@ func _on_dropped():
 	
 	# Make sure the torch is visible and can be picked up again
 	visible = true
-	print("TORCH DEBUG: Final scale after _on_dropped: ", scale) 
+	can_be_picked_up = true
+
+# Update collision state based on whether the torch is held or dropped
+func update_collision_state():
+	if is_held:
+		# When held, disable collision
+		collision_layer = 0
+		collision_mask = 0
+	else:
+		# When dropped, enable collision
+		collision_layer = 1
+		collision_mask = 1
