@@ -116,9 +116,6 @@ func handle_error(error_message: String, is_critical: bool = false):
 		else:
 			# Fatal error - show error screen
 			show_fatal_error(error_context)
-	else:
-		# Non-critical error - just log it
-		print("Non-critical error: ", error_context)
 
 func show_fatal_error(error_context: String):
 	# Create error screen

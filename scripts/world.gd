@@ -4,7 +4,9 @@ extends Node2D
 #TODO: powerup pickup gives text to tell you what they do
 # Load player scene
 var PlayerScene = preload("res://scenes/Player.tscn")  
+var PauseMenuScene = preload("res://scenes/pause_menu.tscn")  
 var player
+var pause_menu
 
 # Nodes
 @onready var spawn = get_node_or_null("Spawn")
@@ -31,19 +33,21 @@ func _ready():
 	spawn_player()
 	initialize_game_state()
 	
+	# Add pause menu
+	pause_menu = PauseMenuScene.instantiate()
+	# Add to the root viewport to ensure it's above everything
+	get_tree().root.add_child(pause_menu)
+	
 	# Initialize camera immediately after player spawning
 	if player and camera:
 		set_camera_target()
-		print("World: Camera initialized in _ready")
 	else:
 		call_deferred("set_camera_target")
-		print("World: Camera initialization deferred")
 	
 	# Initialize dining room components
 	dining_threshold = $DiningRoom/dining_bounds
 	if dining_threshold:
 		dining_threshold.body_entered.connect(_on_dining_threshold_entered)
-		print("World: Connected dining threshold")
 	else:
 		push_error("Dining threshold not found!")
 		
@@ -60,29 +64,22 @@ func _ready():
 		library_threshold = get_node_or_null(path)
 		if library_threshold:
 			found_library_threshold = true
-			print("World: Found library threshold at path:", path)
 			configure_library_threshold(library_threshold)
 			library_threshold.body_entered.connect(_on_library_threshold_entered)
-			print("World: Connected library threshold at position:", library_threshold.global_position)
 			break
 	
 	if not found_library_threshold:
-		print("World: Could not find library threshold in predefined paths, searching all Library children...")
 		var lib_node = get_node_or_null("Library")
 		if lib_node:
-			print("World: Found Library node with", lib_node.get_child_count(), "children")
 			# Recursively search for any Area2D that might be the threshold
 			library_threshold = find_area2d_in_children(lib_node)
 			if library_threshold:
-				print("World: Found potential library threshold:", library_threshold.name)
 				configure_library_threshold(library_threshold)
 				library_threshold.body_entered.connect(_on_library_threshold_entered)
-				print("World: Connected library threshold at position:", library_threshold.global_position)
 				found_library_threshold = true
 	
 	if not found_library_threshold:
 		push_error("Library threshold not found! Camera transitions won't work.")
-		print("World: WARNING - No library threshold found. Camera won't update properly.")
 		
 	wall_fall = $DiningRoom/WallFall
 	if not wall_fall:
@@ -101,7 +98,6 @@ func _process(delta):
 		if Engine.get_process_frames() % 30 == 0:
 			var distance = abs(camera.position.x - player.position.x)
 			if distance > 300 and not moving_player:
-				print("World: Camera is too far from player (", distance, ") - correcting")
 				camera.position.x = player.position.x
 				if camera.in_library_area:
 					camera.position.y = player.position.y
@@ -112,11 +108,8 @@ func set_camera_target():
 	if player:
 		camera.player = player
 		camera.position = Vector2(player.position.x, camera.fixed_y)
-		print("World: Camera target set to player at position: ", player.position)
 		# Force update to match player position immediately
 		get_tree().process_frame
-		# Explicitly check if camera is following player after setup
-		print("World: Camera position after setup: ", camera.position)
 	else:
 		push_error("Player is missing when setting camera target!")
 		
@@ -131,8 +124,6 @@ func initialize_game_state():
 	
 
 func handle_input():
-	if Input.is_action_just_pressed("ui_cancel"):
-		get_tree().quit()
 	if Input.is_action_just_pressed("p"):
 		show_jumpscare()
 		jumpscare_noise.play()
@@ -167,7 +158,6 @@ func spawn_player():
 		push_error("Spawn node is missing!")
 		return
 	player.global_position = spawn.global_position
-	print("World: Player spawned at position: ", player.global_position)
 	
 	# Set camera settings
 	if camera:
@@ -178,7 +168,6 @@ func spawn_player():
 		camera.drag_top_margin = 0.1
 		camera.drag_right_margin = 0.1
 		camera.drag_bottom_margin = 0.1
-		print("World: Camera settings initialized")
 
 func initialize_camera():
 	camera.position = Vector2(player.position.x, camera.fixed_y)
@@ -203,17 +192,12 @@ func _on_dining_threshold_entered(body):
 		darkness.set_color(Color("868686"))
 
 func _on_library_threshold_entered(body):
-	print("World: Library threshold entered by:", body.name if body else "null")
 	# Only proceed if the colliding body is the player
 	if body == player:
-		print("World: Player entered library threshold at position:", player.global_position)
-		print("World: Library threshold position:", library_threshold.global_position)
 		await wait_until_grounded()  # Ensure player is stable before continuing
-		print("World: Player grounded, proceeding with camera adjustments")
 		
 		# Save current camera position for smooth transition
 		var current_position = camera.position
-		print("World: Current camera position before zoom:", current_position)
 		
 		# Zoom in the camera slightly but maintain the camera position
 		camera.zoom = Vector2(0.6, 0.6)  # Increase zoom (adjust value as needed)
@@ -226,10 +210,8 @@ func _on_library_threshold_entered(body):
 		
 		# Change lighting if needed
 		darkness.set_color(Color("767676"))
-		
-		print("World: Library transition complete")
 	elif body.name.contains("TileMap"):
-		print("World: Ignoring TileMap trigger for library threshold")
+		pass
 
 func wait_until_grounded():
 	var timeout = 5.0  # 5 second timeout
@@ -237,13 +219,11 @@ func wait_until_grounded():
 	
 	while not player.is_on_floor():  
 		if Time.get_ticks_msec() - start_time > timeout * 1000:
-			print("Player failed to ground within timeout period")
 			break
 		await get_tree().process_frame  
 
 func update_camera_bounds():
 	if not dining_threshold:
-		print("Dining threshold is null!")
 		return
 
 	# Lock camera's left side at dining_threshold's position
@@ -260,8 +240,6 @@ func move_player_slowly():
 	if player:
 		player.set_can_move(false)
 		moving_player = true
-	else:
-		print("Attempted to move non-existent player")
 
 func drop_wall():
 	if wall_fall:
@@ -269,15 +247,10 @@ func drop_wall():
 		await wall_fall.animation_finished  # Wait until the animation finishes
 		if player:
 			player.set_can_move(true)  # Allow player movement after animation ends
-	else:
-		print("Wall fall animation node is missing!")
 
 func update_library_camera_bounds():
 	if not library_threshold:
-		print("World: Library threshold is null!")
 		return
-	
-	print("World: Setting camera bounds for library area")
 	
 	# Ensure camera is properly set up to follow the player
 	camera.position_smoothing_enabled = true
@@ -288,7 +261,6 @@ func update_library_camera_bounds():
 	
 	# Get the player's current position
 	var player_pos = player.global_position
-	print("World: Player position for bounds calculation:", player_pos)
 	
 	# Set camera bounds to fit the library level
 	# Now using player's position for left boundary, not the threshold position
@@ -300,16 +272,13 @@ func update_library_camera_bounds():
 	
 	camera.limit_left = left_boundary
 	camera.limit_right = right_boundary
-	print("World: Camera bounds set - left:", camera.limit_left, ", right:", camera.limit_right)
 	
 	# Set vertical bounds to much wider values for the library to allow exploration
 	camera.limit_top = -1500  # Allow camera to go up to Y = -1000
 	camera.limit_bottom = 2000
-	print("World: Camera vertical bounds set - top:", camera.limit_top, ", bottom:", camera.limit_bottom)
 	
 	# Optional: Adjust camera offset if needed
 	camera.offset = Vector2(0, 0)
-	print("World: Camera offset reset to zero")
 
 # Helper function to find an Area2D in children recursively
 func find_area2d_in_children(node):
@@ -332,15 +301,10 @@ func configure_library_threshold(threshold):
 		if ClassDB.class_exists("PhysicsLayer"):
 			threshold.collision_layer = 0  # Don't be detected by anything
 			threshold.collision_mask = 1   # Only detect player (assuming player is on layer 1)
-			print("World: Configured library threshold collision layers")
 		
 		# For extra certainty, check if we can use the monitoring property
 		if threshold.has_method("set_monitorable"):
 			threshold.set_monitorable(false)  # Don't let others detect this area
-			print("World: Set threshold monitorable to false")
 		
 		if threshold.has_method("set_monitoring"):
 			threshold.set_monitoring(true)   # Allow this area to detect others
-			print("World: Set threshold monitoring to true")
-			
-		print("World: Library threshold configured for player-only detection")
