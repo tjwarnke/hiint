@@ -1,7 +1,15 @@
 extends Node2D
 
 #TODO: You cant take your powerups with you into dining
-#TODO: powerup pickup gives text to tell you what they do
+#TODO: Change pause menu and settings for camera zoom in in library
+#TODO: Pick up book
+#TODO: Fix book drop
+#TODO: Each level transition with easy animation
+#TODO: Dungeon tramsition
+#TODO: Andrew: Buttler follows you to table
+#TODO: Andrew: See if you can fix settings size while in game
+#TODO: Andrew: Hide the item bar on pause + any other item bar refactor
+
 # Load player scene
 var PlayerScene = preload("res://scenes/Player.tscn")  
 var PauseMenuScene = preload("res://scenes/pause_menu.tscn")  
