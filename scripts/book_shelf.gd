@@ -43,7 +43,24 @@ func grab_item(response):
 	dialogue.visible = false
 	text_box.text = response
 	dialogue_active = false
-	player.pick_up_item(book)
+	
+	# Make the existing book physically interactive
+	if book:
+		# Make sure the book is visible
+		book.visible = true
+		
+		# Enable physics on the book if it's a RigidBody2D
+		if book is RigidBody2D:
+			book.freeze = false
+			book.sleeping = false
+			book.gravity_scale = 1.0
+			book.can_be_picked_up = true
+			
+			# Make sure collision is enabled
+			var collision = book.get_node_or_null("CollisionShape2D")
+			if collision:
+				collision.disabled = false
+	
 	player.set_can_move(true)
 	await get_tree().create_timer(2).timeout
 	text_box.visible = false

@@ -17,19 +17,21 @@ func _ready():
 	platform = get_parent().get_node("Platform")
 	area.body_entered.connect(_on_body_entered)
 	area.body_exited.connect(_on_body_exited)
-	platform.enabled = false
+	
+	# Make sure platform starts disabled
+	if platform and platform.has_method("set_enabled"):
+		platform.set_enabled(false)
+	elif platform and "enabled" in platform:
+		platform.enabled = false
 	
 	# Try to find UI elements in the scene tree
 	text_box = get_node_or_null("../../UI/TextBoxMiddleTop")
 	dialogue = get_node_or_null("../../UI/DialogOptions")
-	#book = get_node_or_null("../../Book")
 	
 	if not text_box:
 		push_warning("TextBoxMiddleTop not found in scene")
 	if not dialogue:
 		push_warning("DialogOptions not found in scene")
-	if not book:
-		push_warning("Book not found in scene")
 
 func _on_body_entered(body):
 	if body.is_in_group("player"):
@@ -81,17 +83,52 @@ func _input(event):
 			#This texxt should be changed cause it sucks
 			give_dialogue("\"The Kusnetzov family rose to power in the early 1700s. In 1845, I became the first to move to america, the my younger siblings following soon after\"")
 		if event.is_action_pressed("Option2"):
-			give_dialogue("The book can't be pulled of the shelf")
+			give_dialogue("You feel a click as you pull on the book. It seems to be hiding something...")
 			reveal_platform()
 		if event.is_action_pressed("Option3"):
 			give_dialogue("A classic, you laugh, you get scared, then you remember you should be chasing the killer")
 			
 func reveal_platform():
+	if not platform:
+		push_warning("Platform not found!")
+		return
+		
+	# Toggle platform state
 	if is_on:
-		#play a sound
-		platform.enabled = false
+		# Disable platform
+		if platform.has_method("set_enabled"):
+			platform.set_enabled(false)
+		else:
+			platform.enabled = false
+		
+		# Play sound effect if available
+		var sound = get_node_or_null("DisableSound")
+		if sound:
+			sound.play()
+			
+		# Visual feedback
+		text_box.text = "The platform disappears!"
+		text_box.visible = true
+		await get_tree().create_timer(1.0).timeout
+		text_box.visible = false
 	else:
-		#play a sound
-		platform.enabled = true
-	is_on = !is_on # Toggle the state
+		# Enable platform
+		if platform.has_method("set_enabled"):
+			platform.set_enabled(true)
+		else:
+			platform.enabled = true
+		
+		# Play sound effect if available
+		var sound = get_node_or_null("EnableSound")
+		if sound:
+			sound.play()
+			
+		# Visual feedback
+		text_box.text = "A hidden platform appears!"
+		text_box.visible = true
+		await get_tree().create_timer(1.0).timeout
+		text_box.visible = false
+		
+	# Toggle state
+	is_on = !is_on
 	

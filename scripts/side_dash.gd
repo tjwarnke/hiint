@@ -1,20 +1,25 @@
-extends "res://scripts/powerup_base.gd"
+extends Area2D
 
-var text_box = null
+# Set dash power as 1 to allow only one dash
+@export var dash_power = 1
+
+var collected = false  # Flag to prevent multiple collections
 
 func _ready():
-	# Set the power type and value
-	power_type = "Dash"
-	power_value = 1
-	
-	# Call parent _ready to set up signal and group
-	super._ready()
-	text_box = get_node_or_null("../../UI/TextBoxMiddleTop")
+	add_to_group("powerup")
+	print("[DASH POWERUP] Initialized at position: ", global_position)
 
-func _on_body_entered_dash(_body):
-	collected.emit(power_type, power_value)  # Emit signal to notify collection
-	queue_free()  # Remove the power-up
-	text_box.visible = true
-	text_box.text = "You have collected Double Jump!"
-	await get_tree().create_timer(1.5).timeout
-	text_box.visible = false
+func _on_body_entered(body):
+	# Don't handle collection if already collected
+	if collected:
+		return
+		
+	if body.is_in_group("player") and body.has_method("_on_powerup_collected") and not collected:
+		collected = true
+		print("[DASH POWERUP] Collection triggered by player at position:", global_position)
+		
+		# Call the player's powerup collection method
+		body._on_powerup_collected("Dash", dash_power)
+		
+		# Remove immediately
+		queue_free()

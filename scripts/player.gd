@@ -36,14 +36,102 @@ var num_items := 0
 var selected_item_index := 0
 var held_items = []
 
+# Book reading UI elements
+var read_dialog = null
+var is_reading_book = false
+var close_button = null
+
 func _ready():
 	jumps_left = max_jumps  # Ensure jumps are initialized correctly
 	add_to_group("player")
-
 	
-	# Connect to powerup signals
-	for powerup in get_tree().get_nodes_in_group("powerup"):
-		powerup.collected.connect(_on_powerup_collected)
+	# Create read dialog for books
+	create_read_dialog()
+	
+	# Create an area detector for item pickups
+	create_pickup_detector()
+	
+	# Connect to powerup signals more robustly
+	call_deferred("connect_to_powerups")
+	# Also set up a timer to regularly check for new powerups
+	var powerup_check_timer = Timer.new()
+	powerup_check_timer.wait_time = 1.0  # Check every second
+	powerup_check_timer.autostart = true
+	powerup_check_timer.timeout.connect(connect_to_powerups)
+	add_child(powerup_check_timer)
+
+# Create a read dialog for displaying book content
+func create_read_dialog():
+	# Create the read dialog if it doesn't exist already
+	if read_dialog != null:
+		return
+	
+	# Create a panel for the book content
+	read_dialog = RichTextLabel.new()
+	read_dialog.name = "ReadDialog"
+	read_dialog.size = Vector2(800, 400)
+	read_dialog.position = Vector2(get_viewport().size.x / 2 - 400, get_viewport().size.y / 2 - 200)
+	read_dialog.visible = false
+	read_dialog.bbcode_enabled = true
+	read_dialog.scroll_active = true
+	get_tree().root.add_child(read_dialog)
+	
+	# Create a panel background
+	var panel = Panel.new()
+	panel.name = "Panel"
+	panel.size = read_dialog.size
+	panel.position = Vector2.ZERO
+	read_dialog.add_child(panel)
+	
+	# Move the RichTextLabel content to be on top of the panel
+	read_dialog.position = panel.position
+	read_dialog.size = panel.size
+	
+	# Create a close button
+	close_button = Button.new()
+	close_button.name = "CloseButton"
+	close_button.size = Vector2(30, 30)
+	close_button.position = Vector2(read_dialog.size.x - 40, 10)
+	close_button.text = "X"
+	close_button.visible = false  # Start hidden
+	
+	# Connect the close button signal
+	close_button.pressed.connect(close_read_dialog)
+	
+	# Add the close button to the UI
+	get_tree().root.add_child(close_button)
+	
+	# Ensure the read dialog is on top
+	read_dialog.z_index = 100
+
+# Close the read dialog and resume gameplay
+func close_read_dialog():
+	if read_dialog and read_dialog.visible:
+		read_dialog.visible = false
+		close_button.visible = false  # Ensure close button is hidden
+		is_reading_book = false
+		# Don't set can_move here, as it might override other movement restrictions
+		# Instead check if there are no other restrictions in place
+		if not is_picking_up and not is_dashing:
+			can_move = true
+
+# Open the read dialog with book content
+func open_read_dialog(content):
+	if not read_dialog:
+		create_read_dialog()
+	
+	is_reading_book = true
+	can_move = false
+	
+	# Set read dialog content and show it
+	read_dialog.text = content
+	read_dialog.visible = true
+	
+	# Position close button
+	var dialog_size = read_dialog.size
+	close_button.position = Vector2(dialog_size.x - 30, 10)  # Position in top-right corner
+	close_button.text = "X"  # Simple X button
+	close_button.visible = true
 
 func get_input(delta):
 	if not can_move:
@@ -121,15 +209,33 @@ func _physics_process(delta):
 	# Move the character
 	move_and_slide()
 
+func connect_to_powerups():
+	# Find all powerups in the scene
+	var powerups = get_tree().get_nodes_in_group("powerup")
+	print("Found ", powerups.size(), " powerups to connect")
+	
+	# Connect directly to the area's body_entered signal
+	for powerup in powerups:
+		if not powerup.is_connected("body_entered", Callable(self, "_on_powerup_collected_directly").bind(powerup)):
+			powerup.connect("body_entered", Callable(self, "_on_powerup_collected_directly").bind(powerup))
+			print("Connected directly to powerup collision: ", powerup.name)
+
+# Called when powerup is collected
 func _on_powerup_collected(power_type: String, power_value: int) -> void:
+	print("Powerup collected: ", power_type, " with value ", power_value)
+	
 	match power_type:
 		"Jump":
-			max_jumps += power_value
+			max_jumps = 1 + power_value  # Base jump + power value
 			jumps_left = max_jumps
+			print("Updated jumps: max=", max_jumps, " left=", jumps_left)
 		"Dash":
 			dash_able = true
-			max_dash += power_value
+			max_dash = power_value  # Set max dash to exactly the power value
 			num_dash = max_dash
+			print("Updated dash: max=", max_dash, " current=", num_dash)
+		_:
+			print("Unknown powerup type: ", power_type)
 
 func has_item(item_name: String) -> bool:
 	return item_name in inventory
@@ -138,18 +244,33 @@ func pick_up_item(item):
 	# Check if already picking up an item
 	if is_picking_up:
 		return
+	
+	# Close any open read dialog first
+	if is_reading_book:
+		close_read_dialog()
+		# Manually hide the close button to be sure
+		if close_button and close_button.visible:
+			close_button.visible = false
+	
+	# Don't try to pick up items that don't exist or are already held
+	if not is_instance_valid(item) or held_items.has(item):
+		return
 		
-	if not held_items.has(item):
-		is_picking_up = true  # Set flag to prevent multiple pickups
-		# Play pickup animation
-		$player_anim.play("pickup item")
-		
-		# Wait for the animation to finish before picking up the item
-		await $player_anim.animation_finished
-		
-		# Check if the item still exists and has a parent
-		if is_instance_valid(item) and item.get_parent():
-			item.get_parent().remove_child(item)
+	is_picking_up = true  # Set flag to prevent multiple pickups
+	
+	# Block movement only during pickup animation
+	var was_movement_enabled = can_move
+	can_move = false
+	
+	# Play pickup animation
+	$player_anim.play("pickup item")
+	
+	# Wait for the animation to finish before picking up the item
+	await $player_anim.animation_finished
+	
+	# Check if the item still exists and has a parent
+	if is_instance_valid(item) and item.get_parent():
+		item.get_parent().remove_child(item)
 		
 		# Find the next available slot in the hotbar
 		var next_available_slot = selected_item_index
@@ -168,8 +289,9 @@ func pick_up_item(item):
 						break
 			
 			# If still no slot found, the hotbar is full
-			if next_available_slot == selected_item_index:
+			if next_available_slot == selected_item_index and hotbar.items[selected_item_index] != null:
 				is_picking_up = false  # Reset flag
+				can_move = was_movement_enabled  # Restore movement state
 				return
 		
 		# Add to held items
@@ -191,7 +313,7 @@ func pick_up_item(item):
 		
 		# Keep track of the original scale value for later use
 		if not item.has_meta("original_scale_stored"):
-			item.set_meta("original_scale_stored", item.original_scale)
+			item.set_meta("original_scale_stored", item.scale)
 		
 		# Set appropriate scale and rotation for torch
 		if item.name.contains("Torch"):
@@ -199,10 +321,12 @@ func pick_up_item(item):
 			item.scale = Vector2(1.0, 1.0)
 			item.rotation = 0
 			
-			# Reset the PointLight2D scale to ensure proper light shape
+			# Maintain the smaller light scale for torch
 			var light = item.get_node_or_null("PointLight2D")
 			if light:
-				light.scale = Vector2(1.0, 1.0)  # Set light scale to 1.0, 1.0
+				light.scale = Vector2(0.25, 0.25)  # Keep the smaller light scale
+				light.energy = 0.8  # Keep reduced energy
+				light.texture_scale = 0.5  # Maintain smaller texture scale
 		else:
 			# For all other items, keep original scale
 			item.scale = item.original_scale
@@ -210,20 +334,31 @@ func pick_up_item(item):
 		
 		# Update held item display
 		update_held_item()
-		
-		# Reset animation state
-		$player_anim.play("RESET")
-		
-		# Reset the pickup flag
-		is_picking_up = false
+	
+	# Reset animation state
+	$player_anim.play("RESET")
+	
+	# Restore movement to previous state
+	can_move = was_movement_enabled
+	
+	# Reset the pickup flag
+	is_picking_up = false
+	
+	# Debug message to confirm pickup completed
+	print("Pickup completed, movement restored to: ", can_move)
 
 func drop_item():
 	if not held_items.is_empty() and is_on_floor() and not is_picking_up:  
-		# Play throw animation
-		$player_anim.play("throw item")
+		# Play throw animation only once
+		if not $player_anim.is_playing():
+			$player_anim.play("throw item")
 		
 		# Wait for the animation to finish before dropping the item
 		await $player_anim.animation_finished
+		
+		# Ensure we don't continue if the player no longer has items
+		if held_items.is_empty():
+			return
 		
 		# Get the World node
 		var world = get_node("/root/World")
@@ -264,10 +399,12 @@ func drop_item():
 				item_to_drop.scale = Vector2(1.0, 1.0)
 				item_to_drop.rotation = 0  # Reset rotation to upright
 				
-				# Reset the PointLight2D scale to ensure proper light shape
+				# Maintain the smaller light scale for torch
 				var light = item_to_drop.get_node_or_null("PointLight2D")
 				if light:
-					light.scale = Vector2(1.0, 1.0)  # Set light scale to 1.0, 1.0
+					light.scale = Vector2(0.25, 0.25)  # Keep the smaller light scale
+					light.energy = 0.8  # Keep reduced energy
+					light.texture_scale = 0.5  # Maintain smaller texture scale
 			else:
 				# For other items, use their original scale
 				item_to_drop.scale = stored_original_scale
@@ -312,6 +449,18 @@ func set_can_move(state):
 	can_move = state
 
 func _input(event):
+	# Check if player is trying to read a book
+	if event.is_action_pressed("pick_up") and not is_reading_book and not held_items.is_empty():
+		var current_item = held_items[selected_item_index]
+		if is_instance_valid(current_item):
+			# Check if the item is a book and has content to read
+			var is_book = current_item.name.contains("Autobiography") or current_item.name.contains("Book")
+			if is_book and current_item.has_meta("book_content"):
+				var content = current_item.get_meta("book_content")
+				open_read_dialog(content)
+				return
+	
+	# Handle inventory item selection with numpad (more reliable)
 	if event.is_action_pressed("number_1"):
 		switch_item(0)
 	elif event.is_action_pressed("number_2"):
@@ -360,10 +509,12 @@ func update_held_item():
 			selected_item.scale = Vector2(1.0, 1.0)
 			selected_item.rotation = 0
 			
-			# Reset the PointLight2D scale to ensure proper light shape
+			# Maintain the smaller light scale for torch
 			var light = selected_item.get_node_or_null("PointLight2D")
 			if light:
-				light.scale = Vector2(1.0, 1.0)  # Set light scale to 1.0, 1.0
+				light.scale = Vector2(0.25, 0.25)  # Keep the smaller light scale
+				light.energy = 0.8  # Keep reduced energy
+				light.texture_scale = 0.5  # Maintain smaller texture scale
 		else:
 			# For other items, use their original scale
 			selected_item.scale = stored_original_scale
@@ -372,3 +523,118 @@ func update_held_item():
 		# Update hotbar selection
 		if hotbar:
 			hotbar.set_selected(selected_item_index)
+
+func _process(delta):
+	# Close dialog if escape is pressed
+	if is_reading_book and Input.is_action_just_pressed("ui_cancel"):
+		close_read_dialog()
+		
+		# Ensure the close button is hidden
+		if close_button:
+			close_button.visible = false
+		
+		# Reset movement control after closing
+		if not is_picking_up and not is_dashing:
+			can_move = true
+	
+	# Process pickups with direct input check
+	if Input.is_action_just_pressed("pick_up"):
+		process_pickup_input()
+
+# Create an area detector for detecting nearby items
+func create_pickup_detector():
+	if has_node("PickupDetector"):
+		return # Already exists
+		
+	var detector = Area2D.new()
+	detector.name = "PickupDetector"
+	
+	var collision = CollisionShape2D.new()
+	var shape = CircleShape2D.new()
+	shape.radius = 60  # Detection radius
+	collision.shape = shape
+	
+	detector.add_child(collision)
+	add_child(detector)
+
+# Separate function to handle pickup input
+func process_pickup_input():
+	# First check if we're looking at a book in inventory
+	if not is_reading_book and not held_items.is_empty():
+		var current_item = held_items[selected_item_index]
+		if is_instance_valid(current_item):
+			# Check if the item is a book and has content to read
+			var is_book = current_item.name.contains("Autobiography") or current_item.name.contains("Book")
+			if is_book and current_item.has_meta("book_content"):
+				var content = current_item.get_meta("book_content")
+				open_read_dialog(content)
+				return
+	
+	# Check for items to pick up using our detector area
+	var detector = get_node_or_null("PickupDetector")
+	if detector:
+		for area in detector.get_overlapping_areas():
+			if area.is_in_group("item") and area.has_method("_process"):
+				# The item will handle pickup logic in its own _process method
+				return
+
+# Function to remove powerups when entering dining room
+func remove_powerups() -> void:
+	# Reset jumps to base value
+	max_jumps = 1
+	jumps_left = max_jumps
+	
+	# Remove dash ability
+	dash_able = false
+	max_dash = 0
+	num_dash = 0
+
+# New function to handle direct collision with powerups
+func _on_powerup_collected_directly(body, powerup):
+	if body == self and powerup and powerup.is_in_group("powerup"): # Only react if it's this player
+		var power_type = ""
+		var power_value = 1
+		
+		# Check if already collected to prevent duplicates
+		if "collected" in powerup and powerup.collected:
+			return
+			
+		# Mark as collected
+		if "collected" in powerup:
+			powerup.collected = true
+		
+		# Determine powerup type and value
+		if powerup.name.contains("Jump") or "jump_power" in powerup:
+			power_type = "Jump"
+			if "jump_power" in powerup:
+				power_value = powerup.jump_power
+		elif powerup.name.contains("Dash") or "dash_power" in powerup:
+			power_type = "Dash"
+			if "dash_power" in powerup:
+				power_value = powerup.dash_power
+		
+		# Apply the powerup effect
+		if power_type != "":
+			print("Directly collecting powerup: ", power_type, " with value ", power_value)
+			_on_powerup_collected(power_type, power_value)
+			
+		# Show message if text box exists
+		var text_box = get_node_or_null("/root/World/UI/TextBoxMiddleTop")
+		if text_box:
+			text_box.visible = true
+			if power_type == "Jump":
+				text_box.text = "You have collected Double Jump!"
+			elif power_type == "Dash":
+				text_box.text = "You have collected Dash!"
+			else:
+				text_box.text = "You have collected a powerup!"
+				
+			# Use a timer to hide the text after a delay
+			var timer = get_tree().create_timer(1.5)
+			await timer.timeout
+			if text_box:
+				text_box.visible = false
+			
+		# Queue for deletion (deferred to avoid errors)
+		if is_instance_valid(powerup):
+			powerup.queue_free()
