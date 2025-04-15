@@ -20,5 +20,5 @@ func _on_body_entered(body):
 		# Apply powerup to player
 		if body.has_method("_on_powerup_collected"):
 			body._on_powerup_collected(power_type, power_value)
-			collected = true
+			collected.emit(true)
 			queue_free() 
