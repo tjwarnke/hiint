@@ -81,7 +81,7 @@ func _input(event):
 	if dialogue_active:
 		if event.is_action_pressed("Option1"):
 			#This texxt should be changed cause it sucks
-			give_dialogue("\"The Kusnetzov family rose to power in the early 1700s. In 1845, I became the first to move to america, the my younger siblings following soon after\"")
+			give_dialogue("\"The Kusnetzov family rose to power in the early 1700s. \nIn 1845, I became the first to move to america, the my younger siblings following soon after\"")
 		if event.is_action_pressed("Option2"):
 			give_dialogue("You feel a click as you pull on the book. It seems to be hiding something...")
 			reveal_platform()

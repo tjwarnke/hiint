@@ -17,9 +17,9 @@ var nanas = null
 
 # Book content for reading
 var book_contents = {
-	"Anna_Autobiography": "\"Dear Diary, I suspected something was off about Vlad from the beginning. The way he would disappear at night, the strange noises from the basement. I fear what I might discover if I investigate further...\"",
-	"Vlad_Autobiography": "\"Upon Alena's death, there was a battle between me and Anna over who would inherit the mansion. As the first twin to see the light, I claimed birthright. The family secrets must remain hidden in these walls.\"",
-	"Nana_Autobiography": "\"The Kusnetzov family rose to power in the early 1700s. In 1845, I became the first to move to America, with my younger siblings following soon after. Our family's gifts must be protected at all costs.\""
+	"Anna_Autobiography": "\"Dear Diary, I suspected something was off about Vlad from the beginning. \nThe way he would disappear at night, the strange noises from the basement. I fear what I might discover if I investigate further...\"",
+	"Vlad_Autobiography": "\"Upon Alena's death, Anna and I fought over who would inherit the mansion. \nAs the first twin to see the light, I claimed birthright. The family secrets must remain hidden in these walls.\"",
+	"Nana_Autobiography": "\"The Kusnetzov family rose to power in the early 1700s. In 1845, I became the first to move to America, with my younger siblings following soon after. \nOur family's gifts must be protected at all costs.\""
 }
 
 func _ready():
@@ -115,7 +115,7 @@ func _input(event):
 			give_dialogue("The book gives resistance when yanked")
 			drop_books()
 		if event.is_action_pressed("Option2"):
-			give_dialogue("\"Upon Alena's death, there was a battle between me and Anna over who would inherit the mansion. As the first twin to see the light, I claimed birthright\"")
+			give_dialogue("\"Upon Alena's death, there was a battle between me and Anna over who would inherit the mansion. \nAs the first twin to see the light, I claimed birthright\"")
 		if event.is_action_pressed("Option3"):
 			give_dialogue("You read of a race called the Dohwar, who were three foot avians not unlike penguins. It seems fictional...")
 			

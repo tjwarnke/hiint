@@ -54,7 +54,7 @@ func play_butler_dialog():
 		end_dialog()
 		return
 	
-	text.text = "I'm afraid you cannot take your powerups into the mansion."
+	text.text = "I'm afraid you cannot take your \npowerups into the mansion."
 	
 	# Remove powerups when mentioned
 	if player.has_method("remove_powerups"):
