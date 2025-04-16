@@ -88,13 +88,13 @@ func play_butler_dialog():
 		text.text = "Please set down your torch."
 		
 		# Check if player has a torch and make them drop it
-		if player.has_method("drop_item"):
+		if player.has_method("drop_torch"):
 			for i in range(player.held_items.size()):
 				if player.held_items[i].name.contains("Torch"):
 					player.switch_item(i)
 					
 					# Drop the torch now when it's mentioned
-					player.drop_item()
+					player.drop_torch()
 					break
 		
 		await get_tree().create_timer(2).timeout

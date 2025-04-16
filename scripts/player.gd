@@ -23,6 +23,7 @@ var is_fast_falling = false  # Track fast-fall state
 var max_dash = 0
 var num_dash = 0
 @onready var dash_sound = $dash_sound
+var droped_item
 
 @export var max_jumps: int = 1  
 var jumps_left: int
@@ -360,7 +361,7 @@ func drop_item():
 		var world = get_node("/root/World")
 		if world:
 			var item_to_drop = held_items[selected_item_index]
-			
+			droped_item = item_to_drop
 			# Store original properties for torch
 			var is_torch = item_to_drop.name.contains("Torch")
 			var stored_original_scale = item_to_drop.original_scale
@@ -592,3 +593,8 @@ func _on_powerup_collected_directly(body, powerup):
 			powerup._on_powerup_collected(powerup.power_type, powerup.power_value)
 			collected_powerups.append(powerup.power_type)
 			powerup.queue_free()
+			
+func drop_torch():
+	drop_item()
+	droped_item.queue.free()
+	$DiningRoom/Torch.show()

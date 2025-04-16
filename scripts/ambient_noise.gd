@@ -111,12 +111,16 @@ func fade_out_outdoor_sounds(duration: float = 3.0):
 	# Find the birds and wind audio players
 	var birds_player = get_node_or_null("Birds")
 	var wind_player = get_node_or_null("Wind")
+	var rain_player = get_node_or_null("Rain")
 	
 	if birds_player:
 		fade_out(birds_player, duration)
 	
 	if wind_player:
 		fade_out(wind_player, duration)
+		
+	if rain_player:
+		fade_out(rain_player, duration)
 
 func on_library():
 	fade_out(cabin_sound, 3.0)

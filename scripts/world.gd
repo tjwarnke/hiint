@@ -277,9 +277,10 @@ func _on_dining_threshold_entered(body):
 		if ambient_noise and ambient_noise.has_method("on_dining"):
 			ambient_noise.on_dining()
 			
+			
 		# Make the dining room area lighter
 		if darkness:
-			darkness.color = Color("a8a8a8")  # Use a lighter gray for dining room
+			darkness.color = Color("a5a5a5")  # Use a lighter gray for dining room
 			
 		# Transition to level music
 		var main_music = get_node_or_null("/root/MainMusic")
