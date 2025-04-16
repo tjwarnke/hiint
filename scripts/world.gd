@@ -7,8 +7,9 @@ extends Node2D
 #TODO: Each level transition with easy animation
 #TODO: Dungeon tramsition
 #TODO: Andrew: Buttler follows you to table, Complete
+#TODO: Andrew: Add the rest of the characters to the table, Complete
 #TODO: Andrew: See if you can fix settings size while in game
-#TODO: Andrew: Hide the item bar on pause + any other item bar refactor, new look
+#TODO: Andrew: Hide the item bar on pause + any other item bar refactor, new look/location
 
 # Load player scene
 var PlayerScene = preload("res://scenes/Player.tscn")  
