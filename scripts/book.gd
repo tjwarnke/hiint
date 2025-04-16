@@ -5,6 +5,7 @@ var can_be_picked_up = true
 var original_scale = Vector2(1, 1)  # Store original scale for player holding
 
 @onready var text_box = get_node_or_null("/root/World/UI/TextBoxMiddleTop")
+@onready var area = get_node("Area2D")
 
 func _ready(): 
 	add_to_group("item")
