@@ -604,22 +604,21 @@ func fade_music_after_start():
 
 # Handler for dungeon entrance - simplified 
 func _on_dungeon_entered(body):
-	if body.is_in_group("player"):
-		# Zoom in camera for dungeon effect
-		var original_zoom = camera.zoom
-		var tween = create_tween()
-		tween.tween_property(camera, "zoom", Vector2(0.3, 0.3), 0.5)
+	# Zoom in camera for dungeon effect
+	var original_zoom = camera.zoom
+	var tween = create_tween()
+	tween.tween_property(camera, "zoom", Vector2(0.3, 0.3), 0.5)
 		
-		# Wait until player touches ground to zoom back out
-		create_timer_to_check_grounded(original_zoom)
+	# Wait until player touches ground to zoom back out
+	create_timer_to_check_grounded(original_zoom)
 		
-		# Fade out current music
-		var main_music = get_node_or_null("/root/MainMusic")
-		if main_music and main_music.has_method("fade_out_music_only"):
-			main_music.fade_out_music_only(2.0)
+	# Fade out current music
+	var main_music = get_node_or_null("/root/MainMusic")
+	if main_music and main_music.has_method("fade_out_music_only"):
+		main_music.fade_out_music_only(2.0)
 		
 		# Start dungeon music
-		setup_dungeon_music()
+	setup_dungeon_music()
 
 # Simple timer to check if player is grounded
 func create_timer_to_check_grounded(original_zoom):
