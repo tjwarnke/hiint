@@ -266,7 +266,7 @@ func _on_dining_threshold_entered(body):
 		level_transition_active = true
 		await wait_until_grounded()
 		update_camera_bounds()
-		
+		$Rain.queue_free()
 		# Play a transition animation
 		play_level_transition("dining")
 		
@@ -286,6 +286,8 @@ func _on_dining_threshold_entered(body):
 		var main_music = get_node_or_null("/root/MainMusic")
 		if main_music:
 			main_music.transition_to_level_music()
+		
+		
 
 func _on_library_threshold_entered(body):
 	# Only proceed if the colliding body is the player
