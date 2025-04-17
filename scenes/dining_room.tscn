@@ -1,6 +1,6 @@
-[gd_scene load_steps=31 format=4 uid="uid://t35a8wmq30e1"]
+[gd_scene load_steps=33 format=4 uid="uid://t35a8wmq30e1"]
 
-[ext_resource type="Script" path="res://scripts/dining_room.gd" id="1_cli76"]
+[ext_resource type="Script" uid="uid://cg5owrlrb3yao" path="res://scripts/dining_room.gd" id="1_cli76"]
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_evklq"]
 [ext_resource type="Texture2D" uid="uid://y0dxq16y7wu0" path="res://dungeon_sidescroller-Raou/Tilesetv3.png" id="2_7wveb"]
 [ext_resource type="PackedScene" uid="uid://prawu0c35qs" path="res://scenes/penguins.tscn" id="2_r37lo"]
@@ -15,6 +15,8 @@
 [ext_resource type="Texture2D" uid="uid://bfgrfseyxamfh" path="res://assets/images/victim.png" id="13_oam2j"]
 [ext_resource type="Script" uid="uid://4xd10dkh103l" path="res://scenes/butler_move.gd" id="13_yqh7e"]
 [ext_resource type="Texture2D" uid="uid://6ja13qn7yb0e" path="res://assets/images/twin2.png" id="14_soh6j"]
+[ext_resource type="Texture2D" uid="uid://i5go4qxcreqg" path="res://assets/images/torch.png" id="16_po025"]
+[ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="17_uvyol"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_064a2"]
 texture = ExtResource("1_evklq")
@@ -17382,23 +17384,28 @@ position = Vector2(5740, 1900)
 scale = Vector2(0.478907, 0.478125)
 
 [node name="Sarge" parent="." instance=ExtResource("9_ulncm")]
+z_index = 1
 position = Vector2(6020, 1903)
 scale = Vector2(0.457032, 0.452343)
 
 [node name="Conman" parent="." instance=ExtResource("8_1qg2x")]
+z_index = 1
 position = Vector2(6281, 1897)
 scale = Vector2(0.400781, 0.460938)
 
 [node name="Girl" parent="." instance=ExtResource("12_wrq0i")]
+z_index = 1
 position = Vector2(6519, 1923)
 scale = Vector2(0.498437, 0.457812)
 
 [node name="Twin1" parent="." instance=ExtResource("12_wrq0i")]
+z_index = 1
 position = Vector2(6997, 1908)
 scale = Vector2(0.498437, 0.457812)
 texture = ExtResource("13_oam2j")
 
 [node name="Twin2" parent="." instance=ExtResource("12_wrq0i")]
+z_index = 1
 position = Vector2(7225, 1904)
 scale = Vector2(0.498437, 0.457812)
 texture = ExtResource("14_soh6j")
@@ -17421,5 +17428,293 @@ texture = ExtResource("5_dytne")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ButlerLarge2/Area2D"]
 position = Vector2(4, 6)
 shape = SubResource("CircleShape2D_oam2j")
+
+[node name="Torch110" type="Sprite2D" parent="."]
+position = Vector2(2097, 1709.5)
+scale = Vector2(0.463543, 0.662946)
+texture = ExtResource("16_po025")
+
+[node name="TorchLight" type="PointLight2D" parent="Torch110"]
+position = Vector2(-32.3595, 49.0236)
+texture = ExtResource("17_uvyol")
+texture_scale = 0.75
+height = 1.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Torch110"]
+position = Vector2(-34.5168, 8.29636)
+scale = Vector2(7, 7)
+amount = 40
+lifetime = 0.25
+preprocess = 1.14
+speed_scale = 0.56
+explosiveness = 0.18
+randomness = 0.3
+emission_shape = 1
+emission_sphere_radius = 23.23
+gravity = Vector2(0, 20)
+initial_velocity_max = 20.0
+tangential_accel_min = -100.0
+tangential_accel_max = 100.0
+scale_amount_min = 2.0
+scale_amount_max = 8.0
+color = Color(1, 0.317647, 0, 1)
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+
+[node name="Torch2" type="Sprite2D" parent="."]
+position = Vector2(3120, 1709.5)
+scale = Vector2(0.463543, 0.662946)
+texture = ExtResource("16_po025")
+
+[node name="TorchLight" type="PointLight2D" parent="Torch2"]
+position = Vector2(-32.3595, 49.0236)
+texture = ExtResource("17_uvyol")
+texture_scale = 0.75
+height = 1.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Torch2"]
+position = Vector2(-34.5168, 8.29636)
+scale = Vector2(7, 7)
+amount = 40
+lifetime = 0.25
+preprocess = 1.14
+speed_scale = 0.56
+explosiveness = 0.18
+randomness = 0.3
+emission_shape = 1
+emission_sphere_radius = 23.23
+gravity = Vector2(0, 20)
+initial_velocity_max = 20.0
+tangential_accel_min = -100.0
+tangential_accel_max = 100.0
+scale_amount_min = 2.0
+scale_amount_max = 8.0
+color = Color(1, 0.317647, 0, 1)
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+
+[node name="Torch3" type="Sprite2D" parent="."]
+position = Vector2(4146, 1709.5)
+scale = Vector2(0.463543, 0.662946)
+texture = ExtResource("16_po025")
+
+[node name="TorchLight" type="PointLight2D" parent="Torch3"]
+position = Vector2(-32.3595, 49.0236)
+texture = ExtResource("17_uvyol")
+texture_scale = 0.75
+height = 1.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Torch3"]
+position = Vector2(-34.5168, 8.29636)
+scale = Vector2(7, 7)
+amount = 40
+lifetime = 0.25
+preprocess = 1.14
+speed_scale = 0.56
+explosiveness = 0.18
+randomness = 0.3
+emission_shape = 1
+emission_sphere_radius = 23.23
+gravity = Vector2(0, 20)
+initial_velocity_max = 20.0
+tangential_accel_min = -100.0
+tangential_accel_max = 100.0
+scale_amount_min = 2.0
+scale_amount_max = 8.0
+color = Color(1, 0.317647, 0, 1)
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+
+[node name="Torch4" type="Sprite2D" parent="."]
+position = Vector2(5170, 1709.5)
+scale = Vector2(0.463543, 0.662946)
+texture = ExtResource("16_po025")
+
+[node name="TorchLight" type="PointLight2D" parent="Torch4"]
+position = Vector2(-32.3595, 49.0236)
+texture = ExtResource("17_uvyol")
+texture_scale = 0.75
+height = 1.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Torch4"]
+position = Vector2(-34.5168, 8.29636)
+scale = Vector2(7, 7)
+amount = 40
+lifetime = 0.25
+preprocess = 1.14
+speed_scale = 0.56
+explosiveness = 0.18
+randomness = 0.3
+emission_shape = 1
+emission_sphere_radius = 23.23
+gravity = Vector2(0, 20)
+initial_velocity_max = 20.0
+tangential_accel_min = -100.0
+tangential_accel_max = 100.0
+scale_amount_min = 2.0
+scale_amount_max = 8.0
+color = Color(1, 0.317647, 0, 1)
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+
+[node name="Torch5" type="Sprite2D" parent="."]
+position = Vector2(6196, 1709.5)
+scale = Vector2(0.463543, 0.662946)
+texture = ExtResource("16_po025")
+
+[node name="TorchLight" type="PointLight2D" parent="Torch5"]
+position = Vector2(-32.3595, 49.0236)
+texture = ExtResource("17_uvyol")
+texture_scale = 0.75
+height = 1.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Torch5"]
+position = Vector2(-34.5168, 8.29636)
+scale = Vector2(7, 7)
+amount = 40
+lifetime = 0.25
+preprocess = 1.14
+speed_scale = 0.56
+explosiveness = 0.18
+randomness = 0.3
+emission_shape = 1
+emission_sphere_radius = 23.23
+gravity = Vector2(0, 20)
+initial_velocity_max = 20.0
+tangential_accel_min = -100.0
+tangential_accel_max = 100.0
+scale_amount_min = 2.0
+scale_amount_max = 8.0
+color = Color(1, 0.317647, 0, 1)
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+
+[node name="Torch6" type="Sprite2D" parent="."]
+position = Vector2(7218, 1709.5)
+scale = Vector2(0.463543, 0.662946)
+texture = ExtResource("16_po025")
+
+[node name="TorchLight" type="PointLight2D" parent="Torch6"]
+position = Vector2(-32.3595, 49.0236)
+texture = ExtResource("17_uvyol")
+texture_scale = 0.75
+height = 1.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Torch6"]
+position = Vector2(-34.5168, 8.29636)
+scale = Vector2(7, 7)
+amount = 40
+lifetime = 0.25
+preprocess = 1.14
+speed_scale = 0.56
+explosiveness = 0.18
+randomness = 0.3
+emission_shape = 1
+emission_sphere_radius = 23.23
+gravity = Vector2(0, 20)
+initial_velocity_max = 20.0
+tangential_accel_min = -100.0
+tangential_accel_max = 100.0
+scale_amount_min = 2.0
+scale_amount_max = 8.0
+color = Color(1, 0.317647, 0, 1)
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+
+[node name="Torch7" type="Sprite2D" parent="."]
+position = Vector2(8240, 1709.5)
+scale = Vector2(0.463543, 0.662946)
+texture = ExtResource("16_po025")
+
+[node name="TorchLight" type="PointLight2D" parent="Torch7"]
+position = Vector2(-32.3595, 49.0236)
+texture = ExtResource("17_uvyol")
+texture_scale = 0.75
+height = 1.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Torch7"]
+position = Vector2(-34.5168, 8.29636)
+scale = Vector2(7, 7)
+amount = 40
+lifetime = 0.25
+preprocess = 1.14
+speed_scale = 0.56
+explosiveness = 0.18
+randomness = 0.3
+emission_shape = 1
+emission_sphere_radius = 23.23
+gravity = Vector2(0, 20)
+initial_velocity_max = 20.0
+tangential_accel_min = -100.0
+tangential_accel_max = 100.0
+scale_amount_min = 2.0
+scale_amount_max = 8.0
+color = Color(1, 0.317647, 0, 1)
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+
+[node name="Torch8" type="Sprite2D" parent="."]
+position = Vector2(9264, 1709.5)
+scale = Vector2(0.463543, 0.662946)
+texture = ExtResource("16_po025")
+
+[node name="TorchLight" type="PointLight2D" parent="Torch8"]
+position = Vector2(-32.3595, 49.0236)
+texture = ExtResource("17_uvyol")
+texture_scale = 0.75
+height = 1.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Torch8"]
+position = Vector2(-34.5168, 8.29636)
+scale = Vector2(7, 7)
+amount = 40
+lifetime = 0.25
+preprocess = 1.14
+speed_scale = 0.56
+explosiveness = 0.18
+randomness = 0.3
+emission_shape = 1
+emission_sphere_radius = 23.23
+gravity = Vector2(0, 20)
+initial_velocity_max = 20.0
+tangential_accel_min = -100.0
+tangential_accel_max = 100.0
+scale_amount_min = 2.0
+scale_amount_max = 8.0
+color = Color(1, 0.317647, 0, 1)
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+
+[node name="Torch9" type="Sprite2D" parent="."]
+position = Vector2(10288, 1709.5)
+scale = Vector2(0.463543, 0.662946)
+texture = ExtResource("16_po025")
+
+[node name="TorchLight" type="PointLight2D" parent="Torch9"]
+position = Vector2(-32.3595, 49.0236)
+texture = ExtResource("17_uvyol")
+texture_scale = 0.75
+height = 1.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Torch9"]
+position = Vector2(-34.5168, 8.29636)
+scale = Vector2(7, 7)
+amount = 40
+lifetime = 0.25
+preprocess = 1.14
+speed_scale = 0.56
+explosiveness = 0.18
+randomness = 0.3
+emission_shape = 1
+emission_sphere_radius = 23.23
+gravity = Vector2(0, 20)
+initial_velocity_max = 20.0
+tangential_accel_min = -100.0
+tangential_accel_max = 100.0
+scale_amount_min = 2.0
+scale_amount_max = 8.0
+color = Color(1, 0.317647, 0, 1)
+hue_variation_min = -1.0
+hue_variation_max = 1.0
 
 [connection signal="body_entered" from="dining_bounds" to="." method="_on_dining_threshold_entered"]
