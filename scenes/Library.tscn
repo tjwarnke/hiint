@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=4 uid="uid://dhh62wmxavnow"]
+[gd_scene load_steps=28 format=4 uid="uid://dhh62wmxavnow"]
 
 [ext_resource type="Script" uid="uid://clpleomktaup1" path="res://scripts/library.gd" id="1_cupxr"]
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_gl8ag"]
@@ -30178,6 +30178,15 @@ size = Vector2(305, 147)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pggvk"]
 size = Vector2(184.517, 210.39)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_ky021"]
+radius = 192.094
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_old6g"]
+radius = 0.240735
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fio33"]
+radius = 172.235
+
 [node name="Library" type="Node2D"]
 script = ExtResource("1_cupxr")
 metadata/_edit_horizontal_guides_ = [3656.0]
@@ -30277,5 +30286,31 @@ scale = Vector2(4, 4)
 tile_map_data = PackedByteArray("AAAXAPv/AQAFABkAAAAYAPv/AQAGABkAAAAaAPj/AQAKAAgAAAAbAPj/AQAKAAgAAAAcAPj/AQAKAAgAAAAdAPj/AQAKAAgAAAAeAPj/AQAKAAgAAAAfAPj/AQAKAAgAAAAgAPj/AQAKAAgAAAAhAPj/AQAKAAgAAAAiAPj/AQAKAAgAAAAjAPj/AQAKAAgAAAAkAPj/AQAKAAgAAAAlAPj/AQAKAAgAAAAmAPj/AQAKAAgAAAA=")
 tile_set = SubResource("TileSet_154se")
 
-[connection signal="body_entered" from="Lever" to="." method="_on_body_entered"]
-[connection signal="body_exited" from="Lever" to="." method="_on_body_exited"]
+[node name="Lectern1" type="Area2D" parent="."]
+position = Vector2(1627, -1527)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lectern1"]
+shape = SubResource("CircleShape2D_ky021")
+
+[node name="Lectern2" type="Area2D" parent="."]
+position = Vector2(2073, -1536)
+scale = Vector2(1.48, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lectern2"]
+position = Vector2(0, 20)
+scale = Vector2(-543.344, -747.671)
+shape = SubResource("CircleShape2D_old6g")
+
+[node name="Lectern3" type="Area2D" parent="."]
+position = Vector2(2527, -1511)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lectern3"]
+position = Vector2(-5, -15)
+shape = SubResource("CircleShape2D_fio33")
+
+[connection signal="body_entered" from="Lectern1" to="." method="_on_lectern_1_body_entered"]
+[connection signal="body_exited" from="Lectern1" to="." method="_on_lectern_1_body_exited"]
+[connection signal="body_entered" from="Lectern2" to="." method="_on_lectern_2_body_entered"]
+[connection signal="body_exited" from="Lectern2" to="." method="_on_lectern_2_body_exited"]
+[connection signal="body_entered" from="Lectern3" to="." method="_on_lectern_3_body_entered"]
+[connection signal="body_exited" from="Lectern3" to="." method="_on_lectern_3_body_exited"]
