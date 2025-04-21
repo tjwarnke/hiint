@@ -30308,5 +30308,9 @@ position = Vector2(2527, -1511)
 position = Vector2(-5, -15)
 shape = SubResource("CircleShape2D_fio33")
 
-[connection signal="body_entered" from="Lever" to="." method="_on_body_entered"]
-[connection signal="body_exited" from="Lever" to="." method="_on_body_exited"]
+[connection signal="body_entered" from="Lectern1" to="." method="_on_lectern_1_body_entered"]
+[connection signal="body_exited" from="Lectern1" to="." method="_on_lectern_1_body_exited"]
+[connection signal="body_entered" from="Lectern2" to="." method="_on_lectern_2_body_entered"]
+[connection signal="body_exited" from="Lectern2" to="." method="_on_lectern_2_body_exited"]
+[connection signal="body_entered" from="Lectern3" to="." method="_on_lectern_3_body_entered"]
+[connection signal="body_exited" from="Lectern3" to="." method="_on_lectern_3_body_exited"]
