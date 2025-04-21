@@ -67,7 +67,7 @@ func lectern(event, number):
 		await get_tree().create_timer(2).timeout
 		text_box.text = "Place a book?"
 		await get_tree().create_timer(1).timeout
-		if player.has_method("has_item"):
+w		if player.has_method("has_item"):
 			hasNanas = player.has_item("Nana_Autobiography")
 			hasAnnas = player.has_item("Anna_Autobiography")
 			hasVlads = player.has_item("Vlad_Autobiography")
