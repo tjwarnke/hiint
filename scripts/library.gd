@@ -26,7 +26,7 @@ var annas
 var nanas
 
 func _ready():
-	player = get_node("/root/World/Player")
+	player = get_node_or_null("/root/World/Player")
 	print(player)
 	text_box = get_node_or_null("../UI/TextBoxMiddleTop")
 	dialogue = get_node_or_null("../UI/DialogOptions")
@@ -40,11 +40,13 @@ func _ready():
 		push_warning("DialogOptions not found in scene")
 	
 func _input(event):
-	if event.is_action_pressed("pick_up") and player_in_1:
+	if !player:
+		player = get_node("/root/World/Player")
+	if player_in_1 and event.is_action_pressed("pick_up"):
 		lectern(event, 1)
-	if event.is_action_pressed("pick_up") and player_in_2:
+	if  player_in_2 and event.is_action_pressed("pick_up"):
 		lectern(event, 2)
-	if event.is_action_pressed("pick_up") and player_in_3:
+	if  player_in_3 and event.is_action_pressed("pick_up"):
 		lectern(event, 3)
 		
 func lectern(event, number):
@@ -67,7 +69,7 @@ func lectern(event, number):
 		await get_tree().create_timer(2).timeout
 		text_box.text = "Place a book?"
 		await get_tree().create_timer(1).timeout
-w		if player.has_method("has_item"):
+		if player.has_method("has_item"):
 			hasNanas = player.has_item("Nana_Autobiography")
 			hasAnnas = player.has_item("Anna_Autobiography")
 			hasVlads = player.has_item("Vlad_Autobiography")
@@ -243,12 +245,15 @@ func open_door():
 	
 func _on_lectern_1_body_entered(body: Node2D) -> void:
 	player_in_1 = true
+	print("player_in_1")
 
 func _on_lectern_2_body_entered(body: Node2D) -> void:
 	player_in_2 = true
+	print("player_in_2")
 
 func _on_lectern_3_body_entered(body: Node2D) -> void:
 	player_in_3 = true
+	print("player_in_3")
 
 func _on_lectern_1_body_exited(body: Node2D) -> void:
 	player_in_1 = false

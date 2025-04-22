@@ -30286,31 +30286,37 @@ scale = Vector2(4, 4)
 tile_map_data = PackedByteArray("AAAXAPv/AQAFABkAAAAYAPv/AQAGABkAAAAaAPj/AQAKAAgAAAAbAPj/AQAKAAgAAAAcAPj/AQAKAAgAAAAdAPj/AQAKAAgAAAAeAPj/AQAKAAgAAAAfAPj/AQAKAAgAAAAgAPj/AQAKAAgAAAAhAPj/AQAKAAgAAAAiAPj/AQAKAAgAAAAjAPj/AQAKAAgAAAAkAPj/AQAKAAgAAAAlAPj/AQAKAAgAAAAmAPj/AQAKAAgAAAA=")
 tile_set = SubResource("TileSet_154se")
 
-[node name="Lectern1" type="Area2D" parent="."]
+[node name="Lec1" type="Node2D" parent="."]
+
+[node name="Lectern1" type="Area2D" parent="Lec1"]
 position = Vector2(1627, -1527)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Lectern1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lec1/Lectern1"]
 shape = SubResource("CircleShape2D_ky021")
 
-[node name="Lectern2" type="Area2D" parent="."]
+[node name="Lec2" type="Node2D" parent="."]
+
+[node name="Lectern2" type="Area2D" parent="Lec2"]
 position = Vector2(2073, -1536)
 scale = Vector2(1.48, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Lectern2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lec2/Lectern2"]
 position = Vector2(0, 20)
 scale = Vector2(-543.344, -747.671)
 shape = SubResource("CircleShape2D_old6g")
 
-[node name="Lectern3" type="Area2D" parent="."]
+[node name="Lec3" type="Node2D" parent="."]
+
+[node name="Lectern3" type="Area2D" parent="Lec3"]
 position = Vector2(2527, -1511)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Lectern3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lec3/Lectern3"]
 position = Vector2(-5, -15)
 shape = SubResource("CircleShape2D_fio33")
 
-[connection signal="body_entered" from="Lectern1" to="." method="_on_lectern_1_body_entered"]
-[connection signal="body_exited" from="Lectern1" to="." method="_on_lectern_1_body_exited"]
-[connection signal="body_entered" from="Lectern2" to="." method="_on_lectern_2_body_entered"]
-[connection signal="body_exited" from="Lectern2" to="." method="_on_lectern_2_body_exited"]
-[connection signal="body_entered" from="Lectern3" to="." method="_on_lectern_3_body_entered"]
-[connection signal="body_exited" from="Lectern3" to="." method="_on_lectern_3_body_exited"]
+[connection signal="body_entered" from="Lec1/Lectern1" to="." method="_on_lectern_1_body_entered"]
+[connection signal="body_exited" from="Lec1/Lectern1" to="." method="_on_lectern_1_body_exited"]
+[connection signal="body_entered" from="Lec2/Lectern2" to="." method="_on_lectern_2_body_entered"]
+[connection signal="body_exited" from="Lec2/Lectern2" to="." method="_on_lectern_2_body_exited"]
+[connection signal="body_entered" from="Lec3/Lectern3" to="." method="_on_lectern_3_body_entered"]
+[connection signal="body_exited" from="Lec3/Lectern3" to="." method="_on_lectern_3_body_exited"]
