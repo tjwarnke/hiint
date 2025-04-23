@@ -524,7 +524,7 @@ func update_held_item():
 		if hotbar:
 			hotbar.set_selected(selected_item_index)
 
-func _process(delta):
+func _process(_delta):
 	# Close dialog if escape is pressed
 	if is_reading_book and Input.is_action_just_pressed("ui_cancel"):
 		close_read_dialog()

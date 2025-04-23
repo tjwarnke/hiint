@@ -47,7 +47,7 @@ func _process(_delta):
 		player.pick_up_item(self)
 		# Don't free the item here - let the player handle it
 
-func _on_player_powerup_ready(powerup_name, value):
+func _on_player_powerup_ready(powerup_name, _value):
 	if powerup_name == "Jump":
 		# Handle jump powerup
 		pass

@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://byo3543r4sqx3"]
+
+[ext_resource type="Texture2D" uid="uid://b50oeysb36o17" path="res://assets/images/conman.png" id="1_blhqs"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jcrqy"]
+radius = 363.55
+height = 727.101
+
+[node name="Conman" type="Sprite2D"]
+position = Vector2(235.5, 231)
+scale = Vector2(0.264062, 0.278125)
+texture = ExtResource("1_blhqs")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(-13.2544, 10.7865)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_jcrqy")

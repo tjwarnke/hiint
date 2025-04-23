@@ -110,11 +110,11 @@ func apply_camera_based_setup():
 						button.custom_minimum_size *= panel_scale_factor * zoom_adjustment
 
 # Helper methods for deferred calls
-func _set_color_rect_size(size):
+func _set_color_rect_size():
 	if has_node("ColorRect"):
 		$ColorRect.size = size
 
-func _set_center_container_size(size):
+func _set_center_container_size():
 	if has_node("CenterContainer"):
 		$CenterContainer.size = size
 

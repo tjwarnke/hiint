@@ -128,6 +128,7 @@ func _ready():
 	if pause_menu:
 		pause_menu.connect("resume_game", Callable(self, "_on_game_resumed"))
 
+
 func _process(delta):
 	# Original code
 	if Engine.get_process_frames() % 10 == 0:
@@ -163,7 +164,6 @@ func set_camera_target():
 		camera.player = player
 		camera.position = Vector2(player.position.x, camera.fixed_y)
 		# Force update to match player position immediately
-		get_tree().process_frame
 	else:
 		push_error("Player is missing when setting camera target!")
 		

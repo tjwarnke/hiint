@@ -228,17 +228,20 @@ scale = Vector2(0.5, 0.5)
 script = null
 
 [node name="Torch" type="Sprite2D" parent="DiningRoom"]
+visible = false
 position = Vector2(1072, 1709.5)
 scale = Vector2(0.463543, 0.662946)
 texture = ExtResource("18_xgqkh")
 
 [node name="TorchLight" type="PointLight2D" parent="DiningRoom/Torch"]
+visible = false
 position = Vector2(-36.674, 53.5489)
 texture = ExtResource("19_munwf")
 texture_scale = 0.75
 height = 1.0
 
 [node name="TorchParticles" type="CPUParticles2D" parent="DiningRoom/Torch"]
+visible = false
 position = Vector2(-34.5168, 8.29636)
 scale = Vector2(7, 7)
 amount = 40

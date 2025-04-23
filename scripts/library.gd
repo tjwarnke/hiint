@@ -19,15 +19,19 @@ var dialogue = null
 var book_on_lectern1 = null # Holds the reference to the book on lectern 1
 var book_on_lectern2 = null
 var book_on_lectern3 = null
-
-var player
 var vlads
 var annas
 var nanas
+var player 
 
 func _ready():
-	player = get_node("/root/World/Player")
-	print(player)
+	player = get_tree().get_root().get_node_or_null("World/Player")
+	if player == null:
+		push_warning("Player not found. Delaying fetch...")
+		await get_tree().create_timer(0.1).timeout
+		player = get_tree().get_root().get_node_or_null("World/Player")
+		if player == null:
+			push_error("Player still not found after delay.")
 	text_box = get_node_or_null("../UI/TextBoxMiddleTop")
 	dialogue = get_node_or_null("../UI/DialogOptions")
 	vlads = get_node("Vlad_Autobiography")
@@ -51,16 +55,16 @@ func lectern(event, number):
 	if number == 1 and lec1:
 		text_box.text = "You take the book from the lectern"
 		player.pick_up(book_on_lectern1)
-		book_on_lectern1 == null
+		book_on_lectern1 = null
 		#TODO: show the book on the lectern
 	elif number == 2 and lec2:
 		text_box.text = "You take the book from the lectern"
 		player.pick_up(book_on_lectern2)
-		book_on_lectern2 == null
-	elif number == 2 and lec2:
+		book_on_lectern2 = null
+	elif number == 3 and lec3:
 		text_box.text = "You take the book from the lectern"
 		player.pick_up(book_on_lectern3)
-		book_on_lectern3 == null
+		book_on_lectern3 = null
 	else:
 		text_box.text = "A lectern sits, awaiting a book."
 		text_box.visible = true
@@ -171,7 +175,7 @@ func lectern(event, number):
 						book_on_lectern2 = vlads
 					if number == 3:
 						book_on_lectern3 = vlads
-						lec3 == true
+						lec3 = true
 					player.drop_item(vlads)
 					
 			if books_collected == "NV":	
@@ -179,7 +183,7 @@ func lectern(event, number):
 					give_dialogue("You have placed Nana's Autobiography on the lectern")
 					if number == 1:
 						book_on_lectern1 = nanas 
-						lec1 == true
+						lec1 = true
 					if number == 2:
 						book_on_lectern2 = nanas
 					if number == 3:
@@ -193,7 +197,7 @@ func lectern(event, number):
 						book_on_lectern2 = vlads
 					if number == 3:
 						book_on_lectern3 = vlads
-						lec3 == true
+						lec3 = true
 					player.drop_item(vlads)
 					
 			if books_collected == "A":	
@@ -213,7 +217,7 @@ func lectern(event, number):
 					give_dialogue("You have placed Nana's Autobiography on the lectern")
 					if number == 1:
 						book_on_lectern1 = nanas 
-						lec1 == true
+						lec1 = true
 					if number == 2:
 						book_on_lectern2 = nanas
 					if number == 3:
@@ -229,7 +233,7 @@ func lectern(event, number):
 						book_on_lectern2 = vlads
 					if number == 3:
 						book_on_lectern3 = vlads
-						lec3 == true
+						lec3 = true
 					player.drop_item(vlads)
 				
 		check_puzzle()
@@ -239,7 +243,7 @@ func check_puzzle():
 		open_door()
 
 func open_door():
-	pass #TODO: open the door
+	play_billiards_door_animation()
 	
 func _on_lectern_1_body_entered(body: Node2D) -> void:
 	player_in_1 = true
@@ -267,3 +271,16 @@ func give_dialogue(response):
 	player.set_can_move(true)
 	await get_tree().create_timer(2).timeout
 	text_box.visible = false
+
+func play_billiards_door_animation():
+	var billiards_room = get_tree().get_root().get_node_or_null("World/BilliardsRoom")
+	if billiards_room == null:
+		push_error("BilliardsRoom not found.")
+		return
+	
+	var anim_player = billiards_room.get_node_or_null("AnimationPlayer")
+	if anim_player == null:
+		push_error("AnimationPlayer not found in BilliardsRoom.")
+		return
+	
+	anim_player.play("door_open")

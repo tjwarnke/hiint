@@ -1,6 +1,6 @@
 extends Area2D
 
-signal item_picked
+
 
 var can_be_picked_up = true
 var player = null
@@ -35,7 +35,6 @@ func _ready():
 	update_collision_state()
 	
 	# Connect to player's drop signal if we can find the player
-	var player = get_tree().get_first_node_in_group("player")
 	if player and player.has_signal("drop_torch"):
 		player.drop_torch.connect(_on_dropped)
 
