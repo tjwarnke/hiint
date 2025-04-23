@@ -97,7 +97,7 @@ func play_butler_dialog():
 					player.drop_item(true)
 					get_node("/root/World/DiningRoom/Torch").visible = true
 					get_node("/root/World/DiningRoom/Torch/TorchLight").visible = true
-					get_node("root/World/DiningRoom/Torch/TorchParticles").visible = true
+					#get_node("root/World/DiningRoom/Torch/TorchParticles").visible = true
 					break
 		
 		await get_tree().create_timer(2).timeout

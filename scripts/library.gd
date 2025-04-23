@@ -26,6 +26,12 @@ var annas
 var nanas
 
 func _ready():
+	lecturn1.body_entered.connect( _on_lectern_1_body_entered)
+	lecturn2.body_entered.connect( _on_lectern_2_body_entered)
+	lecturn3.body_entered.connect( _on_lectern_3_body_entered)
+	lecturn1.body_exited.connect( _on_lectern_1_body_exited)
+	lecturn2.body_exited.connect( _on_lectern_2_body_exited)
+	lecturn3.body_exited.connect( _on_lectern_3_body_exited)
 	player = get_node_or_null("/root/World/Player")
 	print(player)
 	text_box = get_node_or_null("../UI/TextBoxMiddleTop")
@@ -64,15 +70,6 @@ func lectern(event, number):
 		player.pick_up(book_on_lectern3)
 		book_on_lectern3 == null
 	else:
-		text_box.text = "A lectern sits, awaiting a book."
-		text_box.visible = true
-		await get_tree().create_timer(2).timeout
-		text_box.text = "Place a book?"
-		await get_tree().create_timer(1).timeout
-		if player.has_method("has_item"):
-			hasNanas = player.has_item("Nana_Autobiography")
-			hasAnnas = player.has_item("Anna_Autobiography")
-			hasVlads = player.has_item("Vlad_Autobiography")
 		var books_collected = ""
 		if hasAnnas:
 			books_collected += "A"
@@ -82,21 +79,38 @@ func lectern(event, number):
 			books_collected += "V"
 		dialogue.text = ""
 		if books_collected == "A":
+			dialogue.visible = true
 			dialogue.text = "1: Place Anna's Autobiography"
 		if books_collected == "N":
+			dialogue.visible = true
 			dialogue.text = "1: Place Nana's Autobiography"
 		if books_collected == "V":
+			dialogue.visible = true
 			dialogue.text = "1: Place Vlads's Autobiography"
 		if books_collected == "AN":
+			dialogue.visible = true
 			dialogue.text = "1: Place Anna's Autobiography\n2: Place Nana's Autobiography"
 		if books_collected == "AV":
+			dialogue.visible = true
 			dialogue.text = "1: Place Anna's Autobiography\n2: Place Vlad's Autobiography"
 		if books_collected == "NV":
+			dialogue.visible = true
 			dialogue.text = "1: Place Nana's Autobiography\n2: Place Vlad's Autobiography"
 		if books_collected == "ANV":
+			dialogue.visible = true
 			dialogue.text = "1: Place Anna's Autobiography\n2: Place Nana's Autobiography\n3: Place Vlad's Autobiography"
 			
-		dialogue.visible = true
+		text_box.text = "A lectern sits, awaiting a book."
+		text_box.visible = true
+		await get_tree().create_timer(2).timeout
+		if books_collected.length() != 0:
+			text_box.text = "Place a book?"
+		await get_tree().create_timer(1).timeout
+		if player.has_method("has_item"):
+			hasNanas = player.has_item("Nana_Autobiography")
+			hasAnnas = player.has_item("Anna_Autobiography")
+			hasVlads = player.has_item("Vlad_Autobiography")
+			
 		dialogue_active = true
 		
 		if dialogue_active:
@@ -243,25 +257,41 @@ func check_puzzle():
 func open_door():
 	pass #TODO: open the door
 	
+@onready var lecturn1 = $Lec1/Lectern1
+@onready var lecturn2 = $Lec2/Lectern2
+@onready var lecturn3 = $Lec3/Lectern3
+	
 func _on_lectern_1_body_entered(body: Node2D) -> void:
-	player_in_1 = true
-	print("player_in_1")
+	if body.is_in_group("player"):
+		player_in_1 = true
+		player = body
+		print("player_in_1")
 
 func _on_lectern_2_body_entered(body: Node2D) -> void:
-	player_in_2 = true
-	print("player_in_2")
+	if body.is_in_group("player"):
+		player_in_2 = true
+		player = body
+		print("player_in_2")
 
 func _on_lectern_3_body_entered(body: Node2D) -> void:
-	player_in_3 = true
-	print("player_in_3")
+	if body.is_in_group("player"):
+		player_in_3 = true
+		player = body
+		print("player_in_3")
 
 func _on_lectern_1_body_exited(body: Node2D) -> void:
+	text_box.visible = false
+	dialogue.visible = false
 	player_in_1 = false
 
 func _on_lectern_2_body_exited(body: Node2D) -> void:
+	text_box.visible = false
+	dialogue.visible = false
 	player_in_2 = false
 
 func _on_lectern_3_body_exited(body: Node2D) -> void:
+	text_box.visible = false
+	dialogue.visible = false
 	player_in_3 = false
 
 func give_dialogue(response):
