@@ -30331,10 +30331,4 @@ npc = NodePath("../Killer")
 position = Vector2(18, 1019)
 shape = SubResource("CapsuleShape2D_pa00x")
 
-[connection signal="body_entered" from="Lec1/Lectern1" to="." method="_on_lectern_1_body_entered"]
-[connection signal="body_exited" from="Lec1/Lectern1" to="." method="_on_lectern_1_body_exited"]
-[connection signal="body_entered" from="Lec2/Lectern2" to="." method="_on_lectern_2_body_entered"]
-[connection signal="body_exited" from="Lec2/Lectern2" to="." method="_on_lectern_2_body_exited"]
-[connection signal="body_entered" from="Lec3/Lectern3" to="." method="_on_lectern_3_body_entered"]
-[connection signal="body_exited" from="Lec3/Lectern3" to="." method="_on_lectern_3_body_exited"]
 [connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]

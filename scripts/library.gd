@@ -33,7 +33,6 @@ func _ready():
 	lecturn2.body_exited.connect( _on_lectern_2_body_exited)
 	lecturn3.body_exited.connect( _on_lectern_3_body_exited)
 	player = get_node_or_null("/root/World/Player")
-	print(player)
 	text_box = get_node_or_null("../UI/TextBoxMiddleTop")
 	dialogue = get_node_or_null("../UI/DialogOptions")
 	vlads = get_node("Vlad_Autobiography")
@@ -65,11 +64,15 @@ func lectern(event, number):
 		text_box.text = "You take the book from the lectern"
 		player.pick_up(book_on_lectern2)
 		book_on_lectern2 == null
-	elif number == 2 and lec2:
+	elif number == 3 and lec3:
 		text_box.text = "You take the book from the lectern"
 		player.pick_up(book_on_lectern3)
 		book_on_lectern3 == null
 	else:
+		if player.has_method("has_item"):
+			hasNanas = player.has_item("Nana_Autobiography")
+			hasAnnas = player.has_item("Anna_Autobiography")
+			hasVlads = player.has_item("Vlad_Autobiography")
 		var books_collected = ""
 		if hasAnnas:
 			books_collected += "A"
@@ -106,11 +109,6 @@ func lectern(event, number):
 		if books_collected.length() != 0:
 			text_box.text = "Place a book?"
 		await get_tree().create_timer(1).timeout
-		if player.has_method("has_item"):
-			hasNanas = player.has_item("Nana_Autobiography")
-			hasAnnas = player.has_item("Anna_Autobiography")
-			hasVlads = player.has_item("Vlad_Autobiography")
-			
 		dialogue_active = true
 		
 		if dialogue_active:
@@ -265,19 +263,19 @@ func _on_lectern_1_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		player_in_1 = true
 		player = body
-		print("player_in_1")
+		#print("player_in_1")
 
 func _on_lectern_2_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		player_in_2 = true
 		player = body
-		print("player_in_2")
+		#print("player_in_2")
 
 func _on_lectern_3_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		player_in_3 = true
 		player = body
-		print("player_in_3")
+		#print("player_in_3")
 
 func _on_lectern_1_body_exited(body: Node2D) -> void:
 	text_box.visible = false

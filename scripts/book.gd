@@ -47,8 +47,10 @@ func _process(_delta):
 	if player and Input.is_action_just_pressed("pick_up") and can_be_picked_up and player_in_area:
 		can_be_picked_up = false  # Prevent multiple pickups
 		emit_signal("item_picked")
-		self.mass = 0
+		self.gravity_scale=0
+		self.collision_layer = 100
 		player.pick_up_item(self)
+		
 		
 		# Don't free the item here - let the player handle it
 
