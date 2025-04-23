@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=4 uid="uid://dhh62wmxavnow"]
+[gd_scene load_steps=31 format=4 uid="uid://dhh62wmxavnow"]
 
 [ext_resource type="Script" uid="uid://clpleomktaup1" path="res://scripts/library.gd" id="1_cupxr"]
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_gl8ag"]
@@ -10,6 +10,8 @@
 [ext_resource type="Script" uid="uid://clt58776fqx44" path="res://scripts/book_shelf_1.gd" id="8_old6g"]
 [ext_resource type="Script" uid="uid://b0eipyqtfs7et" path="res://scripts/book_shelf_2.gd" id="9_fio33"]
 [ext_resource type="PackedScene" uid="uid://8iyr4cj2qyud" path="res://scenes/autobiography.tscn" id="10_pa00x"]
+[ext_resource type="PackedScene" uid="uid://bhyo0x8braslp" path="res://scenes/killer.tscn" id="11_old6g"]
+[ext_resource type="Script" uid="uid://dmrv5hga4p1oq" path="res://scripts/move_killer.gd" id="12_fio33"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x4li0"]
 texture = ExtResource("1_gl8ag")
@@ -30187,6 +30189,10 @@ radius = 0.240735
 [sub_resource type="CircleShape2D" id="CircleShape2D_fio33"]
 radius = 172.235
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pa00x"]
+radius = 29.0
+height = 710.0
+
 [node name="Library" type="Node2D"]
 script = ExtResource("1_cupxr")
 metadata/_edit_horizontal_guides_ = [3656.0]
@@ -30314,9 +30320,21 @@ position = Vector2(2527, -1511)
 position = Vector2(-5, -15)
 shape = SubResource("CircleShape2D_fio33")
 
+[node name="Killer" parent="." instance=ExtResource("11_old6g")]
+position = Vector2(1609, 1020)
+
+[node name="MoveKiller" type="Area2D" parent="." node_paths=PackedStringArray("npc")]
+script = ExtResource("12_fio33")
+npc = NodePath("../Killer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MoveKiller"]
+position = Vector2(18, 1019)
+shape = SubResource("CapsuleShape2D_pa00x")
+
 [connection signal="body_entered" from="Lec1/Lectern1" to="." method="_on_lectern_1_body_entered"]
 [connection signal="body_exited" from="Lec1/Lectern1" to="." method="_on_lectern_1_body_exited"]
 [connection signal="body_entered" from="Lec2/Lectern2" to="." method="_on_lectern_2_body_entered"]
 [connection signal="body_exited" from="Lec2/Lectern2" to="." method="_on_lectern_2_body_exited"]
 [connection signal="body_entered" from="Lec3/Lectern3" to="." method="_on_lectern_3_body_entered"]
 [connection signal="body_exited" from="Lec3/Lectern3" to="." method="_on_lectern_3_body_exited"]
+[connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]
