@@ -45,6 +45,9 @@ var camera_smooth_speed = 0.0001  # Adjust this value for smoother/slower moveme
 var dungeon_music_player = null
 
 func _ready():
+	$DiningRoom/Torch.visible = false
+	$DiningRoom/Torch/TorchLight.visible = false
+	$DiningRoom/Torch/TorchParticles.visible = false
 	if darkness:
 		darkness.color = Color("555555")  # Darker gray for tutorial area
 	else:
