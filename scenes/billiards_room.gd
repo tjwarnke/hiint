@@ -13,6 +13,8 @@ var safePlatform
 var in_lever1 = false
 var in_lever2 = false
 var in_safe = false
+
+var player
 func _ready():
 	safe = get_node("Safe/Area2D")
 	chandelierLight = get_node("MidgroundTilemap/Chandalier2/PointLight2D")
@@ -56,13 +58,19 @@ func safe_action():
 	pass
 
 func _on_lever_1_body_entered(body):
-	in_lever1 = true
+	if body.is_in_group("player"):
+		in_lever1 = true
+		player = body
 	
 func _on_lever_2_body_entered(body):
-	in_lever2 = true
+	if body.is_in_group("player"):
+		in_lever2= true
+		player = body
 	
 func _on_safe_body_entered(body):
-	in_safe = true
+	if body.is_in_group("player"):
+		in_safe = true
+		player = body
 	
 func _on_lever_1_body_exited(body):
 	in_lever1 = false
