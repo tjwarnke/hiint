@@ -67,7 +67,7 @@ func setup_book(book):
 			book.add_to_group("item")
 		
 		# Make sure the book uses can_be_picked_up property (for item.gd script)
-		book.can_be_picked_up = false
+		#book.can_be_picked_up = false
 			
 		# If it's a RigidBody2D, freeze it and adjust physics
 		if book is RigidBody2D:
