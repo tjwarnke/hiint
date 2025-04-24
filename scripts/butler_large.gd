@@ -46,21 +46,13 @@ func play_butler_dialog():
 	# First dialog
 	text.text = "Welcome to the Castle Kuznetsov."
 	await get_tree().create_timer(2).timeout
-	
-	# Check if player reference is still valid
-	if not is_instance_valid(player):
-		end_dialog()
-		return
+
 		
 	text.text = "Take a seat at the table!"
 	await get_tree().create_timer(2).timeout
 	
-	# Check if player reference is still valid
-	if not is_instance_valid(player):
-		end_dialog()
-		return
 	
-	text.text = "I can take your things, you won’t be needing them here. \nEveryone else is waiting for you at the table, miss-ter?.. my friend."
+	text.text = "I can take your things, \nyou won’t be needing them here. \nEveryone else is waiting for you at the table, \nmiss-ter?.. my friend."
 	
 	# Remove powerups when mentioned
 	if player.has_method("remove_powerups"):
@@ -68,10 +60,12 @@ func play_butler_dialog():
 	
 	await get_tree().create_timer(3).timeout
 	sprite.texture = twin2
-	text.text = "Is this guy going to get here soon? I’m hungry!"
+	text.text = "Is this guy going to get here soon? \nI’m hungry!"
 	await get_tree().create_timer(2).timeout
+	
 	sprite.texture = twin1
 	text.text = "Be patient, I’m sure she’ll be here soon"
+	await get_tree().create_timer(3).timeout
 	
 	# End the dialog sequence
 	end_dialog()
