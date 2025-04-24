@@ -345,105 +345,108 @@ func pick_up_item(item):
 	print("Pickup completed, movement restored to: ", can_move)
 
 func drop_item(perma: bool):
-	var item_to_drop = held_items[selected_item_index]
-	if not held_items.is_empty() and is_on_floor() and not is_picking_up:  
-		# Play throw animation only once
-		if not $player_anim.is_playing():
-			$player_anim.play("throw item")
-		
-		# Wait for the animation to finish before dropping the item
-		await $player_anim.animation_finished
-		
-		# Ensure we don't continue if the player no longer has items
-		if held_items.is_empty():
-			return
-		
-		if perma:
-			item_to_drop.queue_free()
-		else:
-		
-			# Get the World node
-			var world = get_node("/root/World")
-			if world:
-				# Store original properties for torch
-				var is_torch = item_to_drop.name.contains("Torch")
-				var stored_original_scale = item_to_drop.original_scale
-				if item_to_drop.has_meta("original_scale_stored"):
-					stored_original_scale = item_to_drop.get_meta("original_scale_stored")
-			
-				# Remove from TorchHolder first
-				if item_to_drop.get_parent() == $TorchHolder:
-					$TorchHolder.remove_child(item_to_drop)
-			
-				# Add to world and set position
-				world.add_child(item_to_drop)
-			
-				# Position relative to the World node
-				var drop_position = global_position  # Start with player's global position
-			
-				# Convert to World's local space
-				var world_local_pos = world.to_local(drop_position)
-			
-				# Set drop position in World's local space
-				drop_position = world_local_pos
-				# Adjust Y position to be at ground level
-				drop_position.y += 20  # Small offset to place on ground
-				drop_position.x += 10  # Small offset to the right
-			
-				# Set the item's position and scale
-				item_to_drop.position = drop_position
-			
-				# Reset scale and rotation based on item type
-				if is_torch:
-					# For torch, use a consistent scale of 1.0
-					item_to_drop.scale = Vector2(1.0, 1.0)
-					item_to_drop.rotation = 0  # Reset rotation to upright
-				
-					# Maintain the smaller light scale for torch
-					var light = item_to_drop.get_node_or_null("PointLight2D")
-					if light:
-						light.scale = Vector2(0.25, 0.25)  # Keep the smaller light scale
-						light.energy = 0.8  # Keep reduced energy
-						light.texture_scale = 0.5  # Maintain smaller texture scale
-				else:
-					# For other items, use their original scale
-					item_to_drop.scale = stored_original_scale
-					item_to_drop.rotation = 0
-			
-				item_to_drop.can_be_picked_up = true
-			
-				# Call the _on_dropped function on the item
-				if item_to_drop.has_method("_on_dropped"):
-					item_to_drop._on_dropped()
-			
-				# Update hotbar first
-				if hotbar:
-					hotbar.remove_item(selected_item_index)
-					num_items -= 1
-			
-				# Remove from held items
-				held_items.remove_at(selected_item_index)
-			
-				# Update selection and held item
-				if held_items.is_empty():
-					selected_item_index = 0
-				else:
-					selected_item_index = min(selected_item_index, held_items.size() - 1)
-				update_held_item()
-			
-				# Reset TorchHolder position and rotation to consistent values
-				$TorchHolder.position = Vector2(26, 8)
-				$TorchHolder.scale = Vector2(0.5, 0.5)  # Set a consistent scale
-				$TorchHolder.rotation = deg_to_rad(25)  # Set a consistent rotation of 25 degrees
-				$TorchHolder.set_skew(0)
-			else:
-				# Reset animation state even if we couldn't drop the item
-				$player_anim.play("RESET")
+	if held_items.is_empty():
+			pass
 	else:
-		if held_items.is_empty():
-			pass  # No items to drop
-		if not is_on_floor():
-			pass  # Player is not on floor
+		var item_to_drop = held_items[selected_item_index]
+		if not held_items.is_empty() and is_on_floor() and not is_picking_up:  
+			# Play throw animation only once
+			if not $player_anim.is_playing():
+				$player_anim.play("throw item")
+			
+			# Wait for the animation to finish before dropping the item
+			await $player_anim.animation_finished
+			
+			# Ensure we don't continue if the player no longer has items
+			if held_items.is_empty():
+				return
+			
+			if perma:
+				item_to_drop.queue_free()
+			else:
+			
+				# Get the World node
+				var world = get_node("/root/World")
+				if world:
+					# Store original properties for torch
+					var is_torch = item_to_drop.name.contains("Torch")
+					var stored_original_scale = item_to_drop.original_scale
+					if item_to_drop.has_meta("original_scale_stored"):
+						stored_original_scale = item_to_drop.get_meta("original_scale_stored")
+				
+					# Remove from TorchHolder first
+					if item_to_drop.get_parent() == $TorchHolder:
+						$TorchHolder.remove_child(item_to_drop)
+				
+					# Add to world and set position
+					world.add_child(item_to_drop)
+				
+					# Position relative to the World node
+					var drop_position = global_position  # Start with player's global position
+				
+					# Convert to World's local space
+					var world_local_pos = world.to_local(drop_position)
+				
+					# Set drop position in World's local space
+					drop_position = world_local_pos
+					# Adjust Y position to be at ground level
+					drop_position.y += 20  # Small offset to place on ground
+					drop_position.x += 10  # Small offset to the right
+				
+					# Set the item's position and scale
+					item_to_drop.position = drop_position
+				
+					# Reset scale and rotation based on item type
+					if is_torch:
+						# For torch, use a consistent scale of 1.0
+						item_to_drop.scale = Vector2(1.0, 1.0)
+						item_to_drop.rotation = 0  # Reset rotation to upright
+					
+						# Maintain the smaller light scale for torch
+						var light = item_to_drop.get_node_or_null("PointLight2D")
+						if light:
+							light.scale = Vector2(0.25, 0.25)  # Keep the smaller light scale
+							light.energy = 0.8  # Keep reduced energy
+							light.texture_scale = 0.5  # Maintain smaller texture scale
+					else:
+						# For other items, use their original scale
+						item_to_drop.scale = stored_original_scale
+						item_to_drop.rotation = 0
+				
+					item_to_drop.can_be_picked_up = true
+				
+					# Call the _on_dropped function on the item
+					if item_to_drop.has_method("_on_dropped"):
+						item_to_drop._on_dropped()
+				
+					# Update hotbar first
+					if hotbar:
+						hotbar.remove_item(selected_item_index)
+						num_items -= 1
+				
+					# Remove from held items
+					held_items.remove_at(selected_item_index)
+				
+					# Update selection and held item
+					if held_items.is_empty():
+						selected_item_index = 0
+					else:
+						selected_item_index = min(selected_item_index, held_items.size() - 1)
+					update_held_item()
+				
+					# Reset TorchHolder position and rotation to consistent values
+					$TorchHolder.position = Vector2(26, 8)
+					$TorchHolder.scale = Vector2(0.5, 0.5)  # Set a consistent scale
+					$TorchHolder.rotation = deg_to_rad(25)  # Set a consistent rotation of 25 degrees
+					$TorchHolder.set_skew(0)
+				else:
+					# Reset animation state even if we couldn't drop the item
+					$player_anim.play("RESET")
+		else:
+			if held_items.is_empty():
+				pass  # No items to drop
+			if not is_on_floor():
+				pass  # Player is not on floor
 
 func set_can_move(state):
 	can_move = state

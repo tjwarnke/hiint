@@ -92,7 +92,7 @@ func give_dialogue(response):
 	text_box.text = response
 	dialogue_active = false
 	player.set_can_move(true)
-	await get_tree().create_timer(2).timeout
+	await get_tree().create_timer(4).timeout
 	text_box.visible = false
 
 func _input(event):

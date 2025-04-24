@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=4 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=36 format=4 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://ctbtqie8fru15" path="res://scenes/torch.tscn" id="6_lakw3"]
@@ -13,9 +13,9 @@
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="13_dss4m"]
 [ext_resource type="Script" uid="uid://bj445s8633ird" path="res://scripts/stump.gd" id="14_7iits"]
 [ext_resource type="PackedScene" uid="uid://dhh62wmxavnow" path="res://scenes/Library.tscn" id="14_lakw3"]
+[ext_resource type="Texture2D" uid="uid://dojh00d05ohit" path="res://assets/images/stump2.png" id="14_munwf"]
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://assets/images/proxy-image-1.jpg" id="14_oo54l"]
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://assets/audio/scream.mp3" id="15_kpybi"]
-[ext_resource type="Texture2D" uid="uid://b13edcjn8gd5" path="res://assets/images/stump.png" id="15_oo54l"]
 [ext_resource type="PackedScene" uid="uid://bp2xka1pwcwry" path="res://scenes/billiards_room.tscn" id="15_pm21f"]
 [ext_resource type="PackedScene" uid="uid://cfrd10xr8oexr" path="res://scenes/dungeon.tscn" id="16_2lf6f"]
 [ext_resource type="AudioStream" uid="uid://dfotkcdfygmdi" path="res://assets/audio/dungeon.mp3" id="17_7iits"]
@@ -39,7 +39,10 @@ _data = [Vector2(0.00729926, 0.54065), 0.0, 0.0, 0, 0, Vector2(0.313869, 0.83333
 point_count = 4
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kpybi"]
-size = Vector2(278.75, 185)
+size = Vector2(147.969, 124)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ts3gi"]
+size = Vector2(78, 164.5)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_2lf6f"]
 a = Vector2(-6, -138)
@@ -189,31 +192,31 @@ position = Vector2(2366, -146.5)
 scale = Vector2(0.5, 0.5)
 
 [node name="AddJump" parent="Tutorial" instance=ExtResource("12_pm21f")]
-position = Vector2(6008, 2254)
+position = Vector2(5531, 2342)
 scale = Vector2(2, 2)
 
 [node name="SideDash2" parent="Tutorial" instance=ExtResource("13_2lf6f")]
 position = Vector2(9521, 676)
 
 [node name="Stump2" type="StaticBody2D" parent="Tutorial"]
-position = Vector2(2000, 1925)
-scale = Vector2(2, 2)
+position = Vector2(6328, 1886)
+scale = Vector2(3, 2.5)
 script = ExtResource("14_7iits")
 
 [node name="Stump" type="Sprite2D" parent="Tutorial/Stump2"]
-position = Vector2(1, 2)
-scale = Vector2(0.396907, 0.385417)
-texture = ExtResource("15_oo54l")
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Tutorial/Stump2"]
-position = Vector2(3, 4)
-polygon = PackedVector2Array(-51, -52, -42, -70, -39, -71, -33, -71, 80, -47, 81, -34, 81, 10, 84, 26, 89, 28, 89, 33, 87, 37, 89, 42, 95, 48, 95, 55, 92, 61, 81, 71, 69, 73, 55, 72, 25, 62, -11, 71, -94, 60, -90, 54, -89, 47, -88, 42, -82, 39, -82, 35, -88, 26, -88, 10, -83, 3, -77, -15)
+position = Vector2(-38.5, -25)
+scale = Vector2(0.5, 0.33)
+texture = ExtResource("14_munwf")
 
 [node name="Area2D" type="Area2D" parent="Tutorial/Stump2"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/Stump2/Area2D"]
-position = Vector2(22.5, -1.90735e-06)
+position = Vector2(-8, 7.5)
 shape = SubResource("RectangleShape2D_kpybi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/Stump2"]
+position = Vector2(-44.5, -17)
+shape = SubResource("RectangleShape2D_ts3gi")
 
 [node name="Dungeon" parent="." instance=ExtResource("16_2lf6f")]
 position = Vector2(11664, 1648)
@@ -288,10 +291,11 @@ shape = SubResource("SegmentShape2D_kpybi")
 position = Vector2(404, 825)
 
 [node name="Double Jump" type="Area2D" parent="."]
+position = Vector2(-183.5, 39)
 script = ExtResource("21_7iits")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Double Jump"]
-position = Vector2(5369.5, 980.5)
+position = Vector2(5316.5, 985)
 shape = SubResource("CircleShape2D_oo54l")
 
 [node name="Dash" type="Area2D" parent="."]

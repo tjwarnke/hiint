@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=4 uid="uid://dhh62wmxavnow"]
+[gd_scene load_steps=31 format=4 uid="uid://dhh62wmxavnow"]
 
 [ext_resource type="Script" uid="uid://clpleomktaup1" path="res://scripts/library.gd" id="1_cupxr"]
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_gl8ag"]
@@ -10,6 +10,8 @@
 [ext_resource type="Script" uid="uid://clt58776fqx44" path="res://scripts/book_shelf_1.gd" id="8_old6g"]
 [ext_resource type="Script" uid="uid://b0eipyqtfs7et" path="res://scripts/book_shelf_2.gd" id="9_fio33"]
 [ext_resource type="PackedScene" uid="uid://8iyr4cj2qyud" path="res://scenes/autobiography.tscn" id="10_pa00x"]
+[ext_resource type="PackedScene" uid="uid://bhyo0x8braslp" path="res://scenes/killer.tscn" id="11_old6g"]
+[ext_resource type="Script" uid="uid://dmrv5hga4p1oq" path="res://scripts/move_killer.gd" id="12_fio33"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x4li0"]
 texture = ExtResource("1_gl8ag")
@@ -30129,7 +30131,7 @@ tracks/0/path = NodePath("Lever/Pivot:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
+"times": PackedFloat32Array(0.233333),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.785398]
@@ -30186,6 +30188,10 @@ radius = 0.240735
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fio33"]
 radius = 172.235
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pa00x"]
+radius = 29.0
+height = 710.0
 
 [node name="Library" type="Node2D"]
 script = ExtResource("1_cupxr")
@@ -30286,31 +30292,43 @@ scale = Vector2(4, 4)
 tile_map_data = PackedByteArray("AAAXAPv/AQAFABkAAAAYAPv/AQAGABkAAAAaAPj/AQAKAAgAAAAbAPj/AQAKAAgAAAAcAPj/AQAKAAgAAAAdAPj/AQAKAAgAAAAeAPj/AQAKAAgAAAAfAPj/AQAKAAgAAAAgAPj/AQAKAAgAAAAhAPj/AQAKAAgAAAAiAPj/AQAKAAgAAAAjAPj/AQAKAAgAAAAkAPj/AQAKAAgAAAAlAPj/AQAKAAgAAAAmAPj/AQAKAAgAAAA=")
 tile_set = SubResource("TileSet_154se")
 
-[node name="Lectern1" type="Area2D" parent="."]
+[node name="Lec1" type="Node2D" parent="."]
+
+[node name="Lectern1" type="Area2D" parent="Lec1"]
 position = Vector2(1627, -1527)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Lectern1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lec1/Lectern1"]
 shape = SubResource("CircleShape2D_ky021")
 
-[node name="Lectern2" type="Area2D" parent="."]
+[node name="Lec2" type="Node2D" parent="."]
+
+[node name="Lectern2" type="Area2D" parent="Lec2"]
 position = Vector2(2073, -1536)
 scale = Vector2(1.48, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Lectern2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lec2/Lectern2"]
 position = Vector2(0, 20)
 scale = Vector2(-543.344, -747.671)
 shape = SubResource("CircleShape2D_old6g")
 
-[node name="Lectern3" type="Area2D" parent="."]
+[node name="Lec3" type="Node2D" parent="."]
+
+[node name="Lectern3" type="Area2D" parent="Lec3"]
 position = Vector2(2527, -1511)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Lectern3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lec3/Lectern3"]
 position = Vector2(-5, -15)
 shape = SubResource("CircleShape2D_fio33")
 
-[connection signal="body_entered" from="Lectern1" to="." method="_on_lectern_1_body_entered"]
-[connection signal="body_exited" from="Lectern1" to="." method="_on_lectern_1_body_exited"]
-[connection signal="body_entered" from="Lectern2" to="." method="_on_lectern_2_body_entered"]
-[connection signal="body_exited" from="Lectern2" to="." method="_on_lectern_2_body_exited"]
-[connection signal="body_entered" from="Lectern3" to="." method="_on_lectern_3_body_entered"]
-[connection signal="body_exited" from="Lectern3" to="." method="_on_lectern_3_body_exited"]
+[node name="Killer" parent="." instance=ExtResource("11_old6g")]
+position = Vector2(1609, 1020)
+
+[node name="MoveKiller" type="Area2D" parent="." node_paths=PackedStringArray("npc")]
+script = ExtResource("12_fio33")
+npc = NodePath("../Killer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MoveKiller"]
+position = Vector2(18, 1019)
+shape = SubResource("CapsuleShape2D_pa00x")
+
+[connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]

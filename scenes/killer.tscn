@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhyo0x8braslp"]
+
+[ext_resource type="Script" uid="uid://c24hkmy7bmuoe" path="res://killer.gd" id="1_u7bjb"]
+[ext_resource type="Texture2D" uid="uid://cvsaqlose2o21" path="res://assets/images/cloak_large.png" id="2_om2as"]
+[ext_resource type="AudioStream" uid="uid://bj4mmgk1uiuu1" path="res://assets/audio/dash.wav" id="3_ore10"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wyvhv"]
+radius = 386.186
+
+[node name="Killer" type="Node2D"]
+script = ExtResource("1_u7bjb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-176.5, 142.5)
+scale = Vector2(0.448438, 0.554687)
+texture = ExtResource("2_om2as")
+
+[node name="Area2D" type="Area2D" parent="Sprite2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Area2D"]
+position = Vector2(17.2043, 38.7879)
+shape = SubResource("CircleShape2D_wyvhv")
+
+[node name="MoveTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="MoveSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_ore10")
+volume_db = 2.862
+pitch_scale = 0.17
