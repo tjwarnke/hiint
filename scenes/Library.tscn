@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=4 uid="uid://dhh62wmxavnow"]
+[gd_scene load_steps=43 format=4 uid="uid://dhh62wmxavnow"]
 
 [ext_resource type="Script" uid="uid://clpleomktaup1" path="res://scripts/library.gd" id="1_cupxr"]
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_gl8ag"]
@@ -17,6 +17,10 @@
 [ext_resource type="Texture2D" uid="uid://tew0cb1d6vlt" path="res://assets/images/2nd.png" id="15_24ltb"]
 [ext_resource type="Texture2D" uid="uid://blwxrsffpybr6" path="res://assets/images/3rd.png" id="16_queiu"]
 [ext_resource type="Texture2D" uid="uid://qftq3opxkymg" path="res://assets/images/Luigio_with frame_darkened.png" id="17_ajy2i"]
+[ext_resource type="PackedScene" uid="uid://caw125fejkkxe" path="res://scenes/Book.tscn" id="18_24ltb"]
+[ext_resource type="Texture2D" uid="uid://bk5j3n67tsf38" path="res://assets/images/Abook.png" id="19_tbs7l"]
+[ext_resource type="Texture2D" uid="uid://bujqa2kqc3p01" path="res://assets/images/Vbook.png" id="20_7vtgg"]
+[ext_resource type="Texture2D" uid="uid://1ywc3yc7k6j3" path="res://assets/images/Nbook.png" id="21_pe02e"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x4li0"]
 texture = ExtResource("1_gl8ag")
@@ -30205,6 +30209,9 @@ radius = 172.235
 radius = 29.0
 height = 710.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oglxf"]
+size = Vector2(97.3076, 62.0953)
+
 [node name="Library" type="Node2D"]
 script = ExtResource("1_cupxr")
 metadata/_edit_horizontal_guides_ = [3656.0]
@@ -30292,14 +30299,29 @@ script = ExtResource("9_fio33")
 position = Vector2(27.1267, -2.52363)
 shape = SubResource("RectangleShape2D_pggvk")
 
-[node name="Nana_Autobiography" parent="." instance=ExtResource("10_pa00x")]
+[node name="Nana_Auto_fall" parent="." instance=ExtResource("10_pa00x")]
 position = Vector2(297, -541)
 
-[node name="Anna_Autobiography" parent="." instance=ExtResource("10_pa00x")]
+[node name="Sprite2D2" type="Sprite2D" parent="Nana_Auto_fall"]
+position = Vector2(-1.32322e-05, 1.19209e-05)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("21_pe02e")
+
+[node name="Anna_Auto_fall" parent="." instance=ExtResource("10_pa00x")]
 position = Vector2(400, -543)
 
-[node name="Vlad_Autobiography" parent="." instance=ExtResource("10_pa00x")]
+[node name="Sprite2D2" type="Sprite2D" parent="Anna_Auto_fall"]
+position = Vector2(3.57628e-06, -1.09673e-05)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("19_tbs7l")
+
+[node name="Vlad_Auto_fall" parent="." instance=ExtResource("10_pa00x")]
 position = Vector2(339, -505)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Vlad_Auto_fall"]
+position = Vector2(1.12057e-05, -5.24521e-06)
+scale = Vector2(0.15, 0.147222)
+texture = ExtResource("20_7vtgg")
 
 [node name="Platform" type="TileMapLayer" parent="."]
 z_index = 1
@@ -30577,7 +30599,7 @@ scale = Vector2(0.463543, 0.662946)
 texture = ExtResource("13_pggvk")
 
 [node name="TorchLight" type="PointLight2D" parent="Torch9"]
-position = Vector2(-32.3595, 49.0236)
+position = Vector2(-34.5167, 54.3031)
 texture = ExtResource("14_wi51l")
 texture_scale = 0.75
 height = 1.0
@@ -30622,5 +30644,44 @@ texture = ExtResource("16_queiu")
 position = Vector2(2078, -732)
 scale = Vector2(1.5, 1)
 texture = ExtResource("17_ajy2i")
+
+[node name="Anna_Autobiography" parent="." instance=ExtResource("18_24ltb")]
+position = Vector2(434, 1307)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Anna_Autobiography"]
+position = Vector2(-0.0184937, -0.764472)
+scale = Vector2(0.139493, 0.109784)
+texture = ExtResource("19_tbs7l")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Anna_Autobiography"]
+position = Vector2(0.427658, -1.6864)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_oglxf")
+
+[node name="Vlad_Autobiography" parent="." instance=ExtResource("18_24ltb")]
+position = Vector2(314, 1309)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Vlad_Autobiography"]
+position = Vector2(-0.0184937, -0.764472)
+scale = Vector2(0.139493, 0.109784)
+texture = ExtResource("20_7vtgg")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Vlad_Autobiography"]
+position = Vector2(0.427658, -1.6864)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_oglxf")
+
+[node name="Nana_Autobiography" parent="." instance=ExtResource("18_24ltb")]
+position = Vector2(193, 1308)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Nana_Autobiography"]
+position = Vector2(-0.0184937, -0.764472)
+scale = Vector2(0.139493, 0.109784)
+texture = ExtResource("21_pe02e")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Nana_Autobiography"]
+position = Vector2(0.427658, -1.6864)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_oglxf")
 
 [connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]

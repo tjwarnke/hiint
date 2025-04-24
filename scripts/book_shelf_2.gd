@@ -15,6 +15,10 @@ var annas = null
 var vlads = null
 var nanas = null
 
+var annas_book = null
+var vlads_book = null
+var nanas_book = null
+
 # Book content for reading
 var book_contents = {
 	"Anna_Autobiography": "\"Dear Diary, I suspected something was off about Vlad from the beginning. \nThe way he would disappear at night, the strange noises from the basement. I fear what I might discover if I investigate further...\"",
@@ -23,9 +27,17 @@ var book_contents = {
 }
 
 func _ready():
-	annas = get_parent().get_node("Anna_Autobiography")
-	vlads = get_parent().get_node("Vlad_Autobiography")
-	nanas = get_parent().get_node("Nana_Autobiography")
+	annas = get_parent().get_node("Anna_Auto_fall")
+	vlads = get_parent().get_node("Vlad_Auto_fall")
+	nanas = get_parent().get_node("Nana_Auto_fall")
+	
+	annas_book = get_parent().get_node("Anna_Autobiography")
+	vlads_book = get_parent().get_node("Vlad_Autobiography")
+	nanas_book = get_parent().get_node("Nana_Autobiography")
+	
+	annas_book.visible = false
+	vlads_book.visible = false
+	nanas_book.visible = false
 	
 	# Set up the autobiography books
 	setup_book(annas)
@@ -140,7 +152,7 @@ func make_book_interactive(book):
 		book.show()
 		
 		# Enable pickups
-		book.can_be_picked_up = true
+		#book.can_be_picked_up = true
 		
 		# If it's a RigidBody2D, unfreeze it and set physics properties
 		if book is RigidBody2D:
@@ -152,9 +164,20 @@ func make_book_interactive(book):
 			# Apply a small random impulse to make books fall differently
 			var random_impulse = Vector2(randf_range(-100, 100), randf_range(-50, 0))
 			book.apply_impulse(random_impulse)
+			await get_tree().create_timer(3.0).timeout
+			book.queue_free()
 			
-		# If it's an Area2D (item.gd), enable collision
+			
+			
+			
+		 #If it's an Area2D (item.gd), enable collision
 		elif book is Area2D:
 			var collision = book.get_node_or_null("CollisionShape2D")
 			if collision:
-				collision.disabled = false
+				collision.disabled = true
+				
+		
+			
+		annas_book.visible = true
+		vlads_book.visible = true
+		nanas_book.visible = true

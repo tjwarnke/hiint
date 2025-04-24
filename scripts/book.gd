@@ -74,7 +74,7 @@ func _on_body_entered(body):
 	if body.is_in_group("player"):
 		player = body
 		player_in_area = true  # Set player_in_area to true when player enters
-		if can_be_picked_up:
+		if can_be_picked_up and sprite.visible == true:
 			text_box.visible = true
 			if name.contains("Book") or name.contains("Autobiography"):
 				text_box.text = "Press 'e' to pick up book"
