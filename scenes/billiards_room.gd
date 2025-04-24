@@ -7,12 +7,14 @@ var lever1
 var lever2
 var writing
 var poolTable
+var poolTableArea
 var safe
 var safePlatform 
 
 var in_lever1 = false
 var in_lever2 = false
 var in_safe = false
+var in_pool_table
 
 var player
 func _ready():
@@ -24,13 +26,16 @@ func _ready():
 	lever2 = get_node("Lever2")
 	writing = get_node("BloodWriting")
 	poolTable = get_node("PoolTable")
+	poolTableArea = get_node("PoolTable/Area2D")
 	safePlatform = get_node("SafePlatform")
 	lever1.body_entered.connect( _on_lever_1_body_entered)
 	lever2.body_entered.connect( _on_lever_2_body_entered)
 	safe.body_entered.connect( _on_safe_body_entered)
+	poolTableArea.body_entered.connect( _on_pool_table_body_entered)
 	lever1.body_exited.connect( _on_lever_1_body_exited)
 	lever2.body_exited.connect( _on_lever_2_body_exited)
 	safe.body_exited.connect( _on_safe_body_exited)
+	poolTableArea.body_exited.connect( _on_pool_table_body_exited)
 	safe.hide()
 	writing.hide()
 	chandelierLight.hide()
@@ -43,6 +48,8 @@ func _input(event: InputEvent) -> void:
 		lever2_action()
 	if in_safe and event.is_action_pressed("pick_up"):
 		safe_action()
+	if in_pool_table and event.is_action_pressed("pick_up") and player.hasItem("8-ball"):
+		dungeon_drop()
 		
 func lever1_action():
 	painting.hide()
@@ -55,7 +62,13 @@ func lever2_action():
 	
 func safe_action():
 	#player has to select the numbers 10-31-84
+	#OR, if player hasnt found the code, doesnt work, if playef has, does work
 	pass
+	
+func dungeon_drop():
+	#TODO: show text and destroy the 8 ball
+	#player.dropItem("8-Ball", true)
+	trapdoor.hide()
 
 func _on_lever_1_body_entered(body):
 	if body.is_in_group("player"):
@@ -71,6 +84,11 @@ func _on_safe_body_entered(body):
 	if body.is_in_group("player"):
 		in_safe = true
 		player = body
+		
+func _on_pool_table_body_entered(body):
+	if body.is_in_group("player"):
+		in_pool_table = true
+		player = body
 	
 func _on_lever_1_body_exited(body):
 	in_lever1 = false
@@ -80,4 +98,7 @@ func _on_lever_2_body_exited(body):
 	
 func _on_safe_body_exited(body):
 	in_safe = false
+	
+func _on_pool_table_body_exited(body):
+	in_pool_table = false
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=4 uid="uid://dhh62wmxavnow"]
+[gd_scene load_steps=38 format=4 uid="uid://dhh62wmxavnow"]
 
 [ext_resource type="Script" uid="uid://clpleomktaup1" path="res://scripts/library.gd" id="1_cupxr"]
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_gl8ag"]
@@ -6,14 +6,17 @@
 [ext_resource type="Texture2D" uid="uid://ctjiur77808b3" path="res://FreeCuteTileset/Tileset.png" id="3_vglhb"]
 [ext_resource type="Texture2D" uid="uid://dxyajowm7yt5g" path="res://assets/images/lever.png" id="5_24kl2"]
 [ext_resource type="Texture2D" uid="uid://d4lno7igr6ti5" path="res://assets/CatumetGamesFurniture.png" id="5_mxqp8"]
-[ext_resource type="Texture2D" uid="uid://cvhhgbt5q8rv0" path="res://assets/images/book_shelf_transparent.png" id="7_ky021"]
 [ext_resource type="Script" uid="uid://clt58776fqx44" path="res://scripts/book_shelf_1.gd" id="8_old6g"]
 [ext_resource type="Script" uid="uid://b0eipyqtfs7et" path="res://scripts/book_shelf_2.gd" id="9_fio33"]
 [ext_resource type="PackedScene" uid="uid://8iyr4cj2qyud" path="res://scenes/autobiography.tscn" id="10_pa00x"]
 [ext_resource type="PackedScene" uid="uid://bhyo0x8braslp" path="res://scenes/killer.tscn" id="11_old6g"]
 [ext_resource type="Script" uid="uid://dmrv5hga4p1oq" path="res://scripts/move_killer.gd" id="12_fio33"]
 [ext_resource type="Texture2D" uid="uid://i5go4qxcreqg" path="res://assets/images/torch.png" id="13_pggvk"]
+[ext_resource type="Texture2D" uid="uid://bf7ourfe65p2t" path="res://assets/images/1st.png" id="14_hdko4"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="14_wi51l"]
+[ext_resource type="Texture2D" uid="uid://tew0cb1d6vlt" path="res://assets/images/2nd.png" id="15_24ltb"]
+[ext_resource type="Texture2D" uid="uid://blwxrsffpybr6" path="res://assets/images/3rd.png" id="16_queiu"]
+[ext_resource type="Texture2D" uid="uid://qftq3opxkymg" path="res://assets/images/Luigio_with frame_darkened.png" id="17_ajy2i"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x4li0"]
 texture = ExtResource("1_gl8ag")
@@ -30182,6 +30185,13 @@ size = Vector2(305, 147)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pggvk"]
 size = Vector2(184.517, 210.39)
 
+[sub_resource type="Gradient" id="Gradient_tbs7l"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7vtgg"]
+gradient = SubResource("Gradient_tbs7l")
+fill_from = Vector2(0, 0.530488)
+fill_to = Vector2(1, 0.542683)
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_ky021"]
 radius = 192.094
 
@@ -30252,11 +30262,10 @@ position = Vector2(1, 1336)
 [node name="AttachRight" type="Node2D" parent="."]
 position = Vector2(4159, 1336)
 
-[node name="Bookshelf" type="Sprite2D" parent="."]
+[node name="Bookshelf" type="Node2D" parent="."]
 z_index = 1
-position = Vector2(4024, 67)
+position = Vector2(4043, 75)
 scale = Vector2(2.54889, 2.57778)
-texture = ExtResource("7_ky021")
 script = ExtResource("8_old6g")
 
 [node name="Area2D" type="Area2D" parent="Bookshelf"]
@@ -30265,11 +30274,16 @@ script = ExtResource("8_old6g")
 position = Vector2(-49.8256, -14.3534)
 shape = SubResource("RectangleShape2D_pggvk")
 
-[node name="Bookshelf2" type="Sprite2D" parent="."]
+[node name="PointLight2D" type="PointLight2D" parent="Bookshelf"]
+position = Vector2(-17.2625, -24.8276)
+scale = Vector2(1.9418, -3.69347)
+color = Color(0.331952, 0.660757, 0.923866, 1)
+texture = SubResource("GradientTexture2D_7vtgg")
+
+[node name="Bookshelf2" type="Node2D" parent="."]
 z_index = 1
 position = Vector2(197, -947)
 scale = Vector2(2.65, 2.46556)
-texture = ExtResource("7_ky021")
 script = ExtResource("9_fio33")
 
 [node name="Area2D" type="Area2D" parent="Bookshelf2"]
@@ -30462,7 +30476,7 @@ hue_variation_min = -1.0
 hue_variation_max = 1.0
 
 [node name="Torch6" type="Sprite2D" parent="."]
-position = Vector2(1467, -1948)
+position = Vector2(1561, -1988)
 scale = Vector2(0.463543, 0.662946)
 texture = ExtResource("13_pggvk")
 
@@ -30588,5 +30602,25 @@ scale_amount_max = 8.0
 color = Color(1, 0.317647, 0, 1)
 hue_variation_min = -1.0
 hue_variation_max = 1.0
+
+[node name="1St" type="Sprite2D" parent="."]
+position = Vector2(1624, -1784)
+scale = Vector2(3, 3)
+texture = ExtResource("14_hdko4")
+
+[node name="2Nd" type="Sprite2D" parent="."]
+position = Vector2(2084, -1778)
+scale = Vector2(3, 3)
+texture = ExtResource("15_24ltb")
+
+[node name="3Rd" type="Sprite2D" parent="."]
+position = Vector2(2529, -1784)
+scale = Vector2(3, 3)
+texture = ExtResource("16_queiu")
+
+[node name="LuigioWithFrameDarkened" type="Sprite2D" parent="."]
+position = Vector2(2078, -732)
+scale = Vector2(1.5, 1)
+texture = ExtResource("17_ajy2i")
 
 [connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]

@@ -1,4 +1,4 @@
-extends Sprite2D
+extends Node2D
 
 @onready var area = $Area2D
 var player_nearby = false
