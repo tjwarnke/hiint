@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://cfrd10xr8oexr"]
+[gd_scene load_steps=24 format=4 uid="uid://cfrd10xr8oexr"]
 
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_fpimf"]
 [ext_resource type="Script" uid="uid://dytxnrp3hwnna" path="res://scenes/dungeon.gd" id="1_fvacq"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://c0pt58yn38ry4" path="res://assets/images/Hammer.png" id="5_hsn05"]
 [ext_resource type="TileSet" uid="uid://d1dkd72yf40tm" path="res://assets/images/level.tres" id="5_ys5p8"]
 [ext_resource type="Texture2D" uid="uid://c2ssxagsu4jxs" path="res://assets/images/Key.png" id="6_etlrv"]
+[ext_resource type="Texture2D" uid="uid://ckr2mqpwlvqe5" path="res://assets/images/vecteezy_an-8-bit-retro-styled-pixel-art-illustration-of-a-stone-sword_19527033.png" id="8_etlrv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ys5p8"]
 texture = ExtResource("1_fpimf")
@@ -17232,6 +17233,9 @@ sources/2 = SubResource("TileSetAtlasSource_etlrv")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fpimf"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hsn05"]
+size = Vector2(46.25, 110.75)
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_0wj4k"]
 radius = 117.004
 
@@ -17240,6 +17244,9 @@ radius = 72.6154
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ys5p8"]
 radius = 111.306
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_etlrv"]
+size = Vector2(47.75, 110.75)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hsn05"]
 radius = 38.2099
@@ -17263,6 +17270,7 @@ tile_set = SubResource("TileSet_tkjml")
 
 [node name="MidgroundTilemap" type="TileMapLayer" parent="."]
 scale = Vector2(4, 4)
+tile_map_data = PackedByteArray("AACPAB8AAQACABoAAACPACAAAQACABsAAACQAB8AAQADABoAAACQACAAAQADABsAAACuAB8AAQACABoAAACuACAAAQACABsAAACvAB8AAQADABoAAACvACAAAQADABsAAABuAB8AAQACABoAAABuACAAAQACABsAAABvAB8AAQADABoAAABvACAAAQADABsAAAA=")
 tile_set = SubResource("TileSet_tkjml")
 
 [node name="ForegroundTilemap" type="TileMapLayer" parent="."]
@@ -17289,6 +17297,13 @@ tile_set = SubResource("TileSet_tkjml")
 scale = Vector2(4, 4)
 tile_map_data = PackedByteArray("AACgAAEAAQAHAAYAAACgAAIAAQAHAAYAAACgAAMAAQAHAAYAAACgAAQAAQAHAAYAAACgAAUAAQAHAAYAAACgAAYAAQAHAAYAAACgAAcAAQAHAAYAAAA=")
 tile_set = SubResource("TileSet_tkjml")
+
+[node name="Area2D" type="Area2D" parent="Glass1"]
+position = Vector2(2588, 77.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Glass1/Area2D"]
+position = Vector2(10.625, -5.125)
+shape = SubResource("RectangleShape2D_hsn05")
 
 [node name="AttachLeft" type="Node2D" parent="."]
 position = Vector2(1, 1696)
@@ -17361,6 +17376,13 @@ scale = Vector2(4, 4)
 tile_map_data = PackedByteArray("AAB/AAEAAQAHAAcAAAB/AAIAAQAHAAcAAAB/AAMAAQAHAAcAAAB/AAQAAQAHAAcAAAB/AAUAAQAHAAcAAAB/AAYAAQAHAAcAAAB/AAcAAQAHAAcAAAA=")
 tile_set = ExtResource("5_ys5p8")
 
+[node name="Area2D" type="Area2D" parent="Glass2"]
+position = Vector2(2008.5, 79)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Glass2/Area2D"]
+position = Vector2(0.125, -6.875)
+shape = SubResource("RectangleShape2D_etlrv")
+
 [node name="PuzzleLever1" type="Node2D" parent="."]
 position = Vector2(8247, 475)
 
@@ -17401,3 +17423,19 @@ position = Vector2(877, 914)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ladder/Area2D"]
 position = Vector2(-7, -102)
 shape = SubResource("CircleShape2D_5hkx1")
+
+[node name="MiddleSword" type="Sprite2D" parent="."]
+position = Vector2(9270, 2018)
+scale = Vector2(0.02, 0.02)
+texture = ExtResource("8_etlrv")
+
+[node name="LeftSword" type="Sprite2D" parent="."]
+position = Vector2(7049, 2027)
+rotation = -1.5708
+scale = Vector2(0.02, 0.02)
+texture = ExtResource("8_etlrv")
+
+[node name="RightSword" type="Sprite2D" parent="."]
+position = Vector2(11252, 2019)
+scale = Vector2(0.02, 0.02)
+texture = ExtResource("8_etlrv")

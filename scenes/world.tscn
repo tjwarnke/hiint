@@ -231,7 +231,7 @@ scale = Vector2(0.5, 0.5)
 script = null
 
 [node name="Torch" type="Sprite2D" parent="DiningRoom"]
-position = Vector2(1072, 1709.5)
+position = Vector2(1112, 1750)
 scale = Vector2(0.463543, 0.662946)
 texture = ExtResource("18_xgqkh")
 
