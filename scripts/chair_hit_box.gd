@@ -33,7 +33,8 @@ func _on_body_entered(body):
 		player_nearby = true
 		player = body
 		text.visible = true
-		text.text = "Press 'f' to take a seat"
+		sprite.texture = twin2
+		text.text = "Well you finally made it. Press 'e' to sit with us."
 		
 		
 func _on_body_exited(body):
@@ -62,105 +63,11 @@ func _input(event):
 		player.set_can_move(false)
 		dialogue_active = false
 		dialogue.visible = false
-
-		if talked:
-			text.text = "You already talked to everyone."
-			text.visible = true
-			player.set_can_move(true)
-			await get_tree().create_timer(1.5).timeout
-			text.visible = false
-			
-		else:
-			text.text = "You have taken a seat at the table"
-			text.visible = true
-			await get_tree().create_timer(2).timeout
-			text.text = "Who would you like to talk to?"
-			base_dialog()
-			
-	if dialogue_active:
-			if event.is_action_pressed("Option1") and page == 0:
-				sprite.scale = Vector2(.5, .5)
-				sprite.texture = penguins_head
-				sprite.visible = true
-				text.visible = true
-				dialogue.visible = false
-				text.text = "Hello I am the Mysterious Trench Coater"
-				await get_tree().create_timer(1.5).timeout
-				text.text = "Who would you like to talk to?"
-				base_dialog()
-				
-			elif event.is_action_pressed("Option2") and page == 0:
-				sprite.scale = Vector2(.5, .5)
-				sprite.texture = relish_head
-				sprite.visible = true
-				options("Hello I am Sargent Relish")
-				await get_tree().create_timer(1.5).timeout
-				text.text = "Who would you like to talk to?"
-				base_dialog()
-				
-			elif event.is_action_pressed("Option3") and page == 0:
-				sprite.scale = Vector2(.5, .5)
-				sprite.texture = con_head
-				sprite.visible = true
-				options("Hello I am the Mr. Conman")
-				await get_tree().create_timer(1.5).timeout
-				sprite.visible = false
-				text.text = "Who would you like to talk to?"
-				base_dialog()
-				
-			elif event.is_action_pressed("Option4") and page == 0:
-				sprite.scale = Vector2(.5, .5)
-				sprite.texture = girl_head
-				sprite.visible = true
-				options("Hello I am Girl")
-				await get_tree().create_timer(1.5).timeout
-				sprite.visible = false
-				text.text = "Who would you like to talk to?"
-				base_dialog()
-				
-			elif event.is_action_pressed("Option6") and page == 0:
-				player.set_can_move(true)
-				text.visible = false
-				dialogue.visible = false
-				dialogue_active = false
-				
-			if event.is_action_pressed("Option1") and page == 1:
-				sprite.scale = Vector2(.5, .5)
-				sprite.texture = butler
-				sprite.visible = true
-				options("I am the Butler. We have already met")
-				await get_tree().create_timer(1.5).timeout
-				text.text = "Who would you like to talk to?"
-				base_dialog()
-				
-			elif event.is_action_pressed("Option2") and page == 1:
-				sprite.scale = Vector2(.5, .5)
-				sprite.texture = twin1
-				sprite.visible = true
-				options("Hello. I am Twin 1.")
-				await get_tree().create_timer(1.5).timeout
-				text.text = "Who would you like to talk to?"
-				base_dialog()
-				
-			elif event.is_action_pressed("Option3") and page == 1:
-				sprite.scale = Vector2(.5, .5)
-				sprite.texture = twin2
-				sprite.visible = true
-				options("I am Twin 1's brother Twin 2!")
-				await get_tree().create_timer(1.5).timeout
-				text.text = "Who would you like to talk to?"
-				base_dialog()
-				
-			elif event.is_action_pressed("Option4") and page == 1:
-				page = 0
-				base_dialog()
-				
-			if event.is_action_pressed("Option5"):
-				if page == 0:
-					dialogue.text = "1. Butler \n2. Twin 1 \n3. Twin 2 \n4. Back \n5. Leave"
-					page = 1
-				elif page == 1:
-					player.set_can_move(true)
-					text.visible = false
-					dialogue.visible = false
-					dialogue_active = false
+		text.text = "Welcome to the Castle Kuznetsov. I can take your things, you won’t be needing them here. \nEveryone else is waiting for you at the table, miss-ter?.. my friend."
+		text.visible = true
+		sprite.texture = butler
+		await get_tree().create_timer(3).timeout
+		
+		
+		
+		

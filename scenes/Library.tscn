@@ -6,11 +6,11 @@
 [ext_resource type="Texture2D" uid="uid://ctjiur77808b3" path="res://FreeCuteTileset/Tileset.png" id="3_vglhb"]
 [ext_resource type="Texture2D" uid="uid://dxyajowm7yt5g" path="res://assets/images/lever.png" id="5_24kl2"]
 [ext_resource type="Texture2D" uid="uid://d4lno7igr6ti5" path="res://assets/CatumetGamesFurniture.png" id="5_mxqp8"]
-[ext_resource type="Script" uid="uid://clt58776fqx44" path="res://scripts/book_shelf_1.gd" id="8_old6g"]
-[ext_resource type="Script" uid="uid://b0eipyqtfs7et" path="res://scripts/book_shelf_2.gd" id="9_fio33"]
+[ext_resource type="Script" path="res://scripts/book_shelf_1.gd" id="8_old6g"]
+[ext_resource type="Script" path="res://scripts/book_shelf_2.gd" id="9_fio33"]
 [ext_resource type="PackedScene" uid="uid://8iyr4cj2qyud" path="res://scenes/autobiography.tscn" id="10_pa00x"]
 [ext_resource type="PackedScene" uid="uid://bhyo0x8braslp" path="res://scenes/killer.tscn" id="11_old6g"]
-[ext_resource type="Script" uid="uid://dmrv5hga4p1oq" path="res://scripts/move_killer.gd" id="12_fio33"]
+[ext_resource type="Script" path="res://scripts/move_killer.gd" id="12_fio33"]
 [ext_resource type="Texture2D" uid="uid://i5go4qxcreqg" path="res://assets/images/torch.png" id="13_pggvk"]
 [ext_resource type="Texture2D" uid="uid://bf7ourfe65p2t" path="res://assets/images/1st.png" id="14_hdko4"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="14_wi51l"]
@@ -30655,7 +30655,6 @@ texture = ExtResource("19_tbs7l")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Anna_Autobiography"]
 position = Vector2(0.427658, -1.6864)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_oglxf")
 
 [node name="Vlad_Autobiography" parent="." instance=ExtResource("18_24ltb")]
@@ -30668,7 +30667,6 @@ texture = ExtResource("20_7vtgg")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Vlad_Autobiography"]
 position = Vector2(0.427658, -1.6864)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_oglxf")
 
 [node name="Nana_Autobiography" parent="." instance=ExtResource("18_24ltb")]
@@ -30681,7 +30679,6 @@ texture = ExtResource("21_pe02e")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Nana_Autobiography"]
 position = Vector2(0.427658, -1.6864)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_oglxf")
 
 [connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]
