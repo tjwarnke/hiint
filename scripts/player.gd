@@ -235,7 +235,7 @@ func _on_powerup_collected(power_type: String, power_value: int) -> void:
 			pass
 
 func has_item(item_name: String) -> bool:
-	return item_name in inventory
+	return item_name in held_items
 
 func pick_up_item(item):
 	# Check if already picking up an item
@@ -347,6 +347,7 @@ func pick_up_item(item):
 func drop_item(perma: bool):
 	if held_items.is_empty():
 			pass
+			
 	else:
 		var item_to_drop = held_items[selected_item_index]
 		if not held_items.is_empty() and is_on_floor() and not is_picking_up:  
