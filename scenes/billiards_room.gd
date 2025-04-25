@@ -2,7 +2,7 @@ extends Node2D
 
 var chandelierLight
 var painting
-var trapdoor
+
 var lever1
 var lever2
 var writing
@@ -21,7 +21,6 @@ func _ready():
 	safe = get_node("Safe/Area2D")
 	chandelierLight = get_node("MidgroundTilemap/Chandalier2/PointLight2D")
 	painting = get_node("MidgroundTilemap/Painting")
-	trapdoor = get_node("DroppingPlatform")
 	lever1 = get_node("Lever1")
 	lever2 = get_node("Lever2")
 	writing = get_node("BloodWriting")
@@ -68,7 +67,7 @@ func safe_action():
 func dungeon_drop():
 	#TODO: show text and destroy the 8 ball
 	#player.dropItem("8-Ball", true)
-	trapdoor.hide()
+	door_open()
 
 func _on_lever_1_body_entered(body):
 	if body.is_in_group("player"):
@@ -102,3 +101,16 @@ func _on_safe_body_exited(body):
 func _on_pool_table_body_exited(body):
 	in_pool_table = false
 	
+func door_open():
+	var anim_player = get_node_or_null("AnimationPlayer")
+	if anim_player:
+		anim_player.play("door_fall")
+		# Wait for animation to finish
+		await anim_player.animation_finished
+		
+		# Clear the DropNode queue
+		var drop_node = get_node_or_null("DropNode")
+		if drop_node:
+			drop_node.queue_free()
+	else:
+		push_warning("AnimationPlayer not found in billiards room scene")
