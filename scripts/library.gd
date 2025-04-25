@@ -253,8 +253,22 @@ func check_puzzle():
 		open_door()
 
 func open_door():
-	pass #TODO: open the door
-	
+	var billiards_room = get_node_or_null("/root/World/BilliardsRoom")
+	if billiards_room:
+		var anim_player = billiards_room.get_node_or_null("AnimationPlayer")
+		if anim_player:
+			anim_player.play("door open")
+			# Show success message
+			if text_box:
+				text_box.visible = true
+				text_box.text = "The door creaks open..."
+				await get_tree().create_timer(2).timeout
+				text_box.visible = false
+		else:
+			push_warning("AnimationPlayer not found in billiards room scene")
+	else:
+		push_warning("Billiards room scene not found")
+
 @onready var lecturn1 = $Lec1/Lectern1
 @onready var lecturn2 = $Lec2/Lectern2
 @onready var lecturn3 = $Lec3/Lectern3
