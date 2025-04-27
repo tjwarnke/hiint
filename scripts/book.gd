@@ -44,15 +44,35 @@ func _ready():
 		player = world.get_node_or_null("Player")
 
 func _process(_delta):
+	# Prioritize pickup if player is in range of an item
 	if player and Input.is_action_just_pressed("pick_up") and can_be_picked_up and player_in_area:
 		can_be_picked_up = false  # Prevent multiple pickups
 		emit_signal("item_picked")
 		self.gravity_scale=0
 		self.collision_layer = 100
 		player.pick_up_item(self)
-		
-		
-		# Don't free the item here - let the player handle it
+		text_box.visible = false  # Hide tooltip after pickup
+		return  # Exit early to prevent dialog from showing
+	
+	# Show tooltip for selected book
+	if player and player.has_method("get_selected_item"):
+		var selected_item = player.get_selected_item()
+		if selected_item == self and (name.contains("Book") or name.contains("Autobiography")):
+			text_box.visible = true
+			var key = InputMap.action_get_events("pick_up")[0].as_text()
+			text_box.text = "Press '%s' to read book" % key
+			
+			# If the player presses the key to read the book
+			if Input.is_action_just_pressed("pick_up"):
+				text_box.text = get_meta("book_content")
+				# Create a timer to keep the text visible longer
+				var timer = get_tree().create_timer(5.0)  # Show text for 5 seconds
+				await timer.timeout
+				# Only reset the text if this is still the selected item
+				if player and player.has_method("get_selected_item") and player.get_selected_item() == self:
+					text_box.text = "Press '%s' to read book" % key
+		elif selected_item != self:
+			text_box.visible = false
 
 func _on_player_powerup_ready(powerup_name, value):
 	if powerup_name == "Jump":
@@ -74,7 +94,8 @@ func _on_body_entered(body):
 	if body.is_in_group("player"):
 		player = body
 		player_in_area = true  # Set player_in_area to true when player enters
-		if can_be_picked_up and sprite.visible == true:
+		# Only show pickup text if this isn't the currently selected item
+		if can_be_picked_up and not (player.has_method("get_selected_item") and player.get_selected_item() == self):
 			text_box.visible = true
 			if name.contains("Book") or name.contains("Autobiography"):
 				text_box.text = "Press 'e' to pick up book"

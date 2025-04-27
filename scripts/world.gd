@@ -45,9 +45,17 @@ var camera_smooth_speed = 0.0001  # Adjust this value for smoother/slower moveme
 var dungeon_music_player = null
 
 func _ready():
-	$DiningRoom/Torch.visible = false
-	$DiningRoom/Torch/TorchLight.visible = false
-	$DiningRoom/Torch/TorchParticles.visible = false
+	# Initialize dining room torch visibility
+	var dining_torch = get_node_or_null("DiningRoom/Torch")
+	if dining_torch:
+		dining_torch.visible = false
+		var torch_light = dining_torch.get_node_or_null("TorchLight")
+		if torch_light:
+			torch_light.visible = false
+		var torch_particles = dining_torch.get_node_or_null("TorchParticles")
+		if torch_particles:
+			torch_particles.visible = false
+	
 	if darkness:
 		darkness.color = Color("555555")  # Darker gray for tutorial area
 	else:
@@ -268,6 +276,7 @@ func _on_dining_threshold_entered(body):
 	if body == player and not level_transition_active:
 		level_transition_active = true
 		await wait_until_grounded()
+		
 		update_camera_bounds()
 		$Rain.queue_free()
 		# Play a transition animation
@@ -280,7 +289,6 @@ func _on_dining_threshold_entered(body):
 		if ambient_noise and ambient_noise.has_method("on_dining"):
 			ambient_noise.on_dining()
 			
-			
 		# Make the dining room area lighter
 		if darkness:
 			darkness.color = Color("a5a5a5")  # Use a lighter gray for dining room
@@ -289,8 +297,6 @@ func _on_dining_threshold_entered(body):
 		var main_music = get_node_or_null("/root/MainMusic")
 		if main_music:
 			main_music.transition_to_level_music()
-		
-		
 
 func _on_library_threshold_entered(body):
 	# Only proceed if the colliding body is the player
@@ -465,11 +471,11 @@ func play_level_transition(level_name: String):
 	if player:
 		player.set_can_move(false)
 	
+	# Play appropriate transition animation based on level
 	match level_name:
 		"dining":
-			if wall_fall:
-				wall_fall.play("wall")
-				await wall_fall.animation_finished
+			# Wall fall animation is handled in _on_dining_threshold_entered
+			pass
 		"library":
 			# Create a simple door closing animation with ColorRect
 			var transition_rect = ColorRect.new()

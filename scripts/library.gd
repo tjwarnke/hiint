@@ -58,16 +58,16 @@ func lectern(event, number):
 	if number == 1 and lec1:
 		text_box.text = "You take the book from the lectern"
 		player.pick_up(book_on_lectern1)
-		book_on_lectern1 == null
+		book_on_lectern1 = null
 		#TODO: show the book on the lectern
 	elif number == 2 and lec2:
 		text_box.text = "You take the book from the lectern"
 		player.pick_up(book_on_lectern2)
-		book_on_lectern2 == null
+		book_on_lectern2 = null
 	elif number == 3 and lec3:
 		text_box.text = "You take the book from the lectern"
 		player.pick_up(book_on_lectern3)
-		book_on_lectern3 == null
+		book_on_lectern3 = null
 	else:
 		if player.has_method("has_item"):
 			hasNanas = player.has_item("Nana_Autobiography")
@@ -127,7 +127,7 @@ func lectern(event, number):
 					give_dialogue("You have placed Nana's Autobiography on the lectern")
 					if number == 1:
 						book_on_lectern1 = nanas 
-						lec1 == true
+						lec1 = true
 					if number == 2:
 						book_on_lectern2 = nanas
 					if number == 3:
@@ -141,7 +141,7 @@ func lectern(event, number):
 						book_on_lectern2 = vlads
 					if number == 3:
 						book_on_lectern3 = vlads
-						lec3 == true
+						lec3 = true
 					player.drop_item(vlads)
 					
 			if books_collected == "AN":	
@@ -159,7 +159,7 @@ func lectern(event, number):
 					give_dialogue("You have placed Nana's Autobiography on the lectern")
 					if number == 1:
 						book_on_lectern1 = nanas 
-						lec1 == true
+						lec1 = true
 					if number == 2:
 						book_on_lectern2 = nanas
 					if number == 3:
@@ -185,7 +185,7 @@ func lectern(event, number):
 						book_on_lectern2 = vlads
 					if number == 3:
 						book_on_lectern3 = vlads
-						lec3 == true
+						lec3 = true
 					player.drop_item(vlads)
 					
 			if books_collected == "NV":	
@@ -193,7 +193,7 @@ func lectern(event, number):
 					give_dialogue("You have placed Nana's Autobiography on the lectern")
 					if number == 1:
 						book_on_lectern1 = nanas 
-						lec1 == true
+						lec1 = true
 					if number == 2:
 						book_on_lectern2 = nanas
 					if number == 3:
@@ -207,7 +207,7 @@ func lectern(event, number):
 						book_on_lectern2 = vlads
 					if number == 3:
 						book_on_lectern3 = vlads
-						lec3 == true
+						lec3 = true
 					player.drop_item(vlads)
 					
 			if books_collected == "A":	
@@ -227,7 +227,7 @@ func lectern(event, number):
 					give_dialogue("You have placed Nana's Autobiography on the lectern")
 					if number == 1:
 						book_on_lectern1 = nanas 
-						lec1 == true
+						lec1 = true
 					if number == 2:
 						book_on_lectern2 = nanas
 					if number == 3:
@@ -243,7 +243,7 @@ func lectern(event, number):
 						book_on_lectern2 = vlads
 					if number == 3:
 						book_on_lectern3 = vlads
-						lec3 == true
+						lec3 = true
 					player.drop_item(vlads)
 				
 		check_puzzle()

@@ -30200,6 +30200,7 @@ scale = Vector2(2.54889, 2.57778)
 script = ExtResource("8_old6g")
 
 [node name="Area2D" type="Area2D" parent="Bookshelf"]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bookshelf/Area2D"]
 position = Vector2(-49.8256, -14.3534)
@@ -30604,5 +30605,21 @@ texture = ExtResource("21_pe02e")
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Nana_Autobiography"]
 position = Vector2(0.427658, -1.6864)
 shape = SubResource("RectangleShape2D_oglxf")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+position = Vector2(4032, 127)
+amount = 200
+lifetime = 0.4
+preprocess = 1.06
+speed_scale = 0.5
+emission_shape = 3
+emission_rect_extents = Vector2(100, 200)
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 20)
+initial_velocity_min = 10.0
+initial_velocity_max = 50.0
+scale_amount_max = 4.0
+color = Color(0.882353, 0, 0.682353, 0.345098)
 
 [connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]

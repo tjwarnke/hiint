@@ -43,12 +43,11 @@ var read_dialog = null
 var is_reading_book = false
 var close_button = null
 
+@onready var text_box = get_node("/root/World/UI/TextBoxMiddleTop")
+
 func _ready():
 	jumps_left = max_jumps  # Ensure jumps are initialized correctly
 	add_to_group("player")
-	
-	# Create read dialog for books
-	create_read_dialog()
 	
 	# Create an area detector for item pickups
 	create_pickup_detector()
@@ -61,79 +60,6 @@ func _ready():
 	powerup_check_timer.autostart = true
 	powerup_check_timer.timeout.connect(connect_to_powerups)
 	add_child(powerup_check_timer)
-
-# Create a read dialog for displaying book content
-func create_read_dialog():
-	# Create the read dialog if it doesn't exist already
-	if read_dialog != null:
-		return
-	
-	# Create a panel for the book content
-	read_dialog = RichTextLabel.new()
-	read_dialog.name = "ReadDialog"
-	read_dialog.size = Vector2(800, 400)
-	read_dialog.position = Vector2(get_viewport().size.x / 2 - 400, get_viewport().size.y / 2 - 200)
-	read_dialog.visible = false
-	read_dialog.bbcode_enabled = true
-	read_dialog.scroll_active = true
-	get_tree().root.add_child(read_dialog)
-	
-	# Create a panel background
-	var panel = Panel.new()
-	panel.name = "Panel"
-	panel.size = read_dialog.size
-	panel.position = Vector2.ZERO
-	read_dialog.add_child(panel)
-	
-	# Move the RichTextLabel content to be on top of the panel
-	read_dialog.position = panel.position
-	read_dialog.size = panel.size
-	
-	# Create a close button
-	close_button = Button.new()
-	close_button.name = "CloseButton"
-	close_button.size = Vector2(30, 30)
-	close_button.position = Vector2(read_dialog.size.x - 40, 10)
-	close_button.text = "X"
-	close_button.visible = false  # Start hidden
-	
-	# Connect the close button signal
-	close_button.pressed.connect(close_read_dialog)
-	
-	# Add the close button to the UI
-	get_tree().root.add_child(close_button)
-	
-	# Ensure the read dialog is on top
-	read_dialog.z_index = 100
-
-# Close the read dialog and resume gameplay
-func close_read_dialog():
-	if read_dialog and read_dialog.visible:
-		read_dialog.visible = false
-		close_button.visible = false  # Ensure close button is hidden
-		is_reading_book = false
-		# Don't set can_move here, as it might override other movement restrictions
-		# Instead check if there are no other restrictions in place
-		if not is_picking_up and not is_dashing:
-			can_move = true
-
-# Open the read dialog with book content
-func open_read_dialog(content):
-	if not read_dialog:
-		create_read_dialog()
-	
-	is_reading_book = true
-	can_move = false
-	
-	# Set read dialog content and show it
-	read_dialog.text = content
-	read_dialog.visible = true
-	
-	# Position close button
-	var dialog_size = read_dialog.size
-	close_button.position = Vector2(dialog_size.x - 30, 10)  # Position in top-right corner
-	close_button.text = "X"  # Simple X button
-	close_button.visible = true
 
 func get_input(delta):
 	if not can_move:
@@ -240,17 +166,22 @@ func has_item(item_name: String) -> bool:
 func pick_up_item(item):
 	# Check if already picking up an item
 	if is_picking_up:
+		print_debug("Already picking up an item, ignoring: ", item.name)
+		# Restore the item's can_be_picked_up state since we're ignoring it
+		if item.has_method("_process"):
+			item.can_be_picked_up = true
 		return
 	
-	# Close any open read dialog first
-	if is_reading_book:
-		close_read_dialog()
-		# Manually hide the close button to be sure
-		if close_button and close_button.visible:
-			close_button.visible = false
+	print_debug("Starting pickup for: ", item.name)
+	
+	# Close any open read dialog first and set reading flag to false
+	# This prevents book text from showing when picking up items
+	text_box.visible = false
+	is_reading_book = false
 	
 	# Don't try to pick up items that don't exist or are already held
 	if not is_instance_valid(item) or held_items.has(item):
+		print_debug("Invalid item or already in inventory: ", item.name)
 		return
 		
 	is_picking_up = true  # Set flag to prevent multiple pickups
@@ -267,6 +198,18 @@ func pick_up_item(item):
 	
 	# Check if the item still exists and has a parent
 	if is_instance_valid(item) and item.get_parent():
+		print_debug("Removing item from parent: ", item.name)
+		
+		# If this is in the visible book sprites from bookshelf_2, hide it
+		if item.name.contains("Autobiography"):
+			item.visible = false
+		
+		# Store the book content before removing
+		var book_content = null
+		if item.has_meta("book_content"):
+			book_content = item.get_meta("book_content")
+			print_debug("Saved book content: ", book_content)
+		
 		item.get_parent().remove_child(item)
 		
 		# Find the next available slot in the hotbar
@@ -289,11 +232,13 @@ func pick_up_item(item):
 			if next_available_slot == selected_item_index and hotbar.items[selected_item_index] != null:
 				is_picking_up = false  # Reset flag
 				can_move = was_movement_enabled  # Restore movement state
+				print_debug("No available inventory slots for: ", item.name)
 				return
 		
 		# Add to held items
 		held_items.append(item)
 		selected_item_index = next_available_slot
+		print_debug("Added to inventory at slot ", selected_item_index, ": ", item.name)
 		
 		# Update hotbar
 		if hotbar:
@@ -302,15 +247,22 @@ func pick_up_item(item):
 			if sprite_node:
 				var item_texture = sprite_node.texture
 				hotbar.add_item(item_texture, selected_item_index)
+				print_debug("Updated hotbar with item: ", item.name)
 		
 		# Add the item to the TorchHolder
 		$TorchHolder.add_child(item)
 		item.position = Vector2.ZERO
 		item.visible = true
+		print_debug("Added to TorchHolder: ", item.name)
 		
 		# Keep track of the original scale value for later use
 		if not item.has_meta("original_scale_stored"):
 			item.set_meta("original_scale_stored", item.scale)
+		
+		# Restore the book content that we saved
+		if book_content != null:
+			item.set_meta("book_content", book_content)
+			print_debug("Restored book content for: ", item.name)
 		
 		# Set appropriate scale and rotation for torch
 		if item.name.contains("Torch"):
@@ -326,11 +278,13 @@ func pick_up_item(item):
 				light.texture_scale = 0.5  # Maintain smaller texture scale
 		else:
 			# For all other items, keep original scale
-			item.scale = item.original_scale
+			item.scale = item.get_meta("original_scale_stored") if item.has_meta("original_scale_stored") else Vector2(1, 1)
 			item.rotation = 0
 		
 		# Update held item display
 		update_held_item()
+	else:
+		print_debug("Item no longer valid during pickup: ", item.name)
 	
 	# Reset animation state
 	$player_anim.play("RESET")
@@ -338,11 +292,12 @@ func pick_up_item(item):
 	# Restore movement to previous state
 	can_move = was_movement_enabled
 	
-	# Reset the pickup flag
+	# Reset the pickup flag with a slight delay to prevent instant re-pickups
+	await get_tree().create_timer(0.1).timeout
 	is_picking_up = false
 	
 	# Debug message to confirm pickup completed
-	print("Pickup completed, movement restored to: ", can_move)
+	print_debug("Pickup completed, movement restored to: ", can_move)
 
 func drop_item(perma: bool):
 	if held_items.is_empty():
@@ -459,9 +414,27 @@ func _input(event):
 		if is_instance_valid(current_item):
 			# Check if the item is a book and has content to read
 			var is_book = current_item.name.contains("Autobiography") or current_item.name.contains("Book")
-			if is_book and current_item.has_meta("book_content"):
-				var content = current_item.get_meta("book_content")
-				open_read_dialog(content)
+			if is_book:
+				print_debug("Attempting to read book: ", current_item.name)
+				
+				var content = "This book appears to be blank."
+				if current_item.has_meta("book_content"):
+					content = current_item.get_meta("book_content")
+					print_debug("Found book content: ", content)
+				else:
+					print_debug("No book content found for: ", current_item.name)
+				
+				text_box.text = content
+				text_box.visible = true
+				is_reading_book = true
+				# Player can continue to move while reading
+				print_debug("Displaying book content for: ", current_item.name)
+				
+				# Automatically close after 10 seconds
+				await get_tree().create_timer(10.0).timeout
+				text_box.visible = false
+				is_reading_book = false
+				print_debug("Finished reading book: ", current_item.name)
 				return
 	
 	# Handle inventory item selection with numpad (more reliable)
@@ -482,6 +455,11 @@ func switch_item(index: int):
 	if index >= 0 and index < held_items.size():
 		selected_item_index = index
 		update_held_item()
+		
+		# Update tooltips for all held items
+		for item in held_items:
+			if item and item.has_method("_process"):
+				item._process(0)  # Force tooltip update
 
 func update_held_item():
 	# Clear TorchHolder
@@ -498,10 +476,16 @@ func update_held_item():
 	if not held_items.is_empty() and selected_item_index < held_items.size():
 		var selected_item = held_items[selected_item_index]
 		
-		# Get the original scale from meta
-		var stored_original_scale = selected_item.original_scale
+		# Skip if the item is not valid
+		if not is_instance_valid(selected_item):
+			return
+		
+		# Get the original scale from meta or use a default
+		var stored_original_scale = Vector2(1.0, 1.0)  # Default scale
 		if selected_item.has_meta("original_scale_stored"):
 			stored_original_scale = selected_item.get_meta("original_scale_stored")
+		elif selected_item.has_method("get_original_scale"):
+			stored_original_scale = selected_item.get_original_scale()
 		
 		$TorchHolder.add_child(selected_item)
 		selected_item.position = Vector2.ZERO
@@ -527,20 +511,19 @@ func update_held_item():
 		# Update hotbar selection
 		if hotbar:
 			hotbar.set_selected(selected_item_index)
+		
+		# Force tooltip update for the selected item
+		if selected_item.has_method("_process"):
+			selected_item._process(0)
 
 func _process(delta):
 	# Close dialog if escape is pressed
 	if is_reading_book and Input.is_action_just_pressed("ui_cancel"):
-		close_read_dialog()
-		
-		# Ensure the close button is hidden
-		if close_button:
-			close_button.visible = false
-		
-		# Reset movement control after closing
+		text_box.visible = false
+		is_reading_book = false
 		if not is_picking_up and not is_dashing:
 			can_move = true
-	
+		
 	# Process pickups with direct input check
 	if Input.is_action_just_pressed("pick_up"):
 		process_pickup_input()
@@ -563,15 +546,43 @@ func create_pickup_detector():
 
 # Separate function to handle pickup input
 func process_pickup_input():
+	# Skip if already picking up an item
+	if is_picking_up:
+		return
+		
 	# First check if we're looking at a book in inventory
 	if not is_reading_book and not held_items.is_empty():
 		var current_item = held_items[selected_item_index]
 		if is_instance_valid(current_item):
 			# Check if the item is a book and has content to read
 			var is_book = current_item.name.contains("Autobiography") or current_item.name.contains("Book")
-			if is_book and current_item.has_meta("book_content"):
-				var content = current_item.get_meta("book_content")
-				open_read_dialog(content)
+			if is_book:
+				# Check surrounding items before reading
+				var detector = get_node_or_null("PickupDetector")
+				if detector:
+					var nearby_items = false
+					for area in detector.get_overlapping_areas():
+						if area.is_in_group("item") and area != current_item and area.can_be_picked_up:
+							# If there's a nearby item that can be picked up, prioritize that
+							nearby_items = true
+							print_debug("Nearby pickable item detected, skipping book reading")
+							break
+					
+					if nearby_items:
+						return
+				
+				var content = current_item.get_meta("book_content") if current_item.has_meta("book_content") else "You give it a quick skim, but it's not all that interesting."
+				text_box.text = content
+				text_box.visible = true
+				is_reading_book = true
+				# Allow player to move while reading
+				print_debug("Player can move while reading book")
+				
+				# Automatically close after 10 seconds (increased from 4)
+				await get_tree().create_timer(10.0).timeout
+				text_box.visible = false
+				is_reading_book = false
+				print_debug("Finished reading, text hidden")
 				return
 	
 	# Check for items to pick up using our detector area
