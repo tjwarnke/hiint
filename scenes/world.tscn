@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=4 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=37 format=4 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://ctbtqie8fru15" path="res://scenes/torch.tscn" id="6_lakw3"]
@@ -21,7 +21,6 @@
 [ext_resource type="AudioStream" uid="uid://dfotkcdfygmdi" path="res://assets/audio/dungeon.mp3" id="17_7iits"]
 [ext_resource type="Texture2D" uid="uid://i5go4qxcreqg" path="res://assets/images/torch.png" id="18_xgqkh"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="19_munwf"]
-[ext_resource type="Script" uid="uid://bogxs2572akmj" path="res://scenes/dungeon_entered.gd" id="20_ctatt"]
 [ext_resource type="Script" uid="uid://bdjlnat2pl14w" path="res://scenes/dj.gd" id="21_7iits"]
 [ext_resource type="PackedScene" uid="uid://cjhvjqqvgyv6m" path="res://scenes/hotbar.tscn" id="22_2lf6f"]
 [ext_resource type="Script" uid="uid://drwbnkryc1wcf" path="res://scenes/dash.gd" id="22_oo54l"]
@@ -114,7 +113,7 @@ grow_horizontal = 1
 grow_vertical = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(985, 542)
+position = Vector2(985, 546.5)
 process_callback = 0
 limit_left = 5
 limit_right = 100000
@@ -282,11 +281,11 @@ position = Vector2(193, 1241)
 position = Vector2(15888, 80)
 scale = Vector2(0.5, 0.5)
 
-[node name="dungeon_entered" type="Area2D" parent="BilliardsRoom"]
+[node name="dungeon_threshold" type="Area2D" parent="BilliardsRoom"]
 position = Vector2(3116, 1610)
-script = ExtResource("20_ctatt")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BilliardsRoom/dungeon_entered"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BilliardsRoom/dungeon_threshold"]
+position = Vector2(-33, 31)
 shape = SubResource("SegmentShape2D_kpybi")
 
 [node name="Book" parent="." instance=ExtResource("8_2lf6f")]
@@ -305,7 +304,7 @@ position = Vector2(7077, 194.5)
 script = ExtResource("22_oo54l")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Dash"]
-position = Vector2(48.5, -6.5)
+position = Vector2(52, -4.5)
 shape = SubResource("CircleShape2D_kpybi")
 
 [node name="GapFill" type="TileMapLayer" parent="."]
@@ -325,4 +324,4 @@ position = Vector2(13026.5, 630)
 scale = Vector2(0.284373, 0.229948)
 texture = ExtResource("28_37qwj")
 
-[connection signal="area_entered" from="BilliardsRoom/dungeon_entered" to="." method="_on_dungeon_entered"]
+[connection signal="area_entered" from="BilliardsRoom/dungeon_threshold" to="." method="_on_dungeon_entered"]

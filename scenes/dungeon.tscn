@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://cfrd10xr8oexr"]
+[gd_scene load_steps=30 format=4 uid="uid://cfrd10xr8oexr"]
 
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_fpimf"]
 [ext_resource type="Script" uid="uid://dytxnrp3hwnna" path="res://scenes/dungeon.gd" id="1_fvacq"]
@@ -8,6 +8,7 @@
 [ext_resource type="TileSet" uid="uid://d1dkd72yf40tm" path="res://assets/images/level.tres" id="5_ys5p8"]
 [ext_resource type="Texture2D" uid="uid://c2ssxagsu4jxs" path="res://assets/images/Key.png" id="6_etlrv"]
 [ext_resource type="Texture2D" uid="uid://ckr2mqpwlvqe5" path="res://assets/images/vecteezy_an-8-bit-retro-styled-pixel-art-illustration-of-a-stone-sword_19527033.png" id="8_etlrv"]
+[ext_resource type="Texture2D" uid="uid://dxyajowm7yt5g" path="res://assets/images/lever.png" id="9_tkjml"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ys5p8"]
 texture = ExtResource("1_fpimf")
@@ -17260,6 +17261,61 @@ radius = 37.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_5hkx1"]
 radius = 228.178
 
+[sub_resource type="Animation" id="Animation_e6m40"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lever/Area2D/Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.233333),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.785398]
+}
+
+[sub_resource type="Animation" id="Animation_cjn25"]
+resource_name = "lever"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lever/Area2D/Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.785398, -0.785398]
+}
+
+[sub_resource type="Animation" id="Animation_ky021"]
+resource_name = "lever_off"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lever/Area2D/Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-0.785398, 0.785398]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_old6g"]
+_data = {
+&"RESET": SubResource("Animation_e6m40"),
+&"lever": SubResource("Animation_cjn25"),
+&"lever_off": SubResource("Animation_ky021")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5hkx1"]
+size = Vector2(305, 147)
+
 [node name="Dungeon" type="Node2D"]
 script = ExtResource("1_fvacq")
 
@@ -17323,12 +17379,12 @@ shape = SubResource("CircleShape2D_0wj4k")
 position = Vector2(11875, 2067)
 texture = ExtResource("5_hsn05")
 
-[node name="Lever" type="Node2D" parent="."]
+[node name="Lever8" type="Node2D" parent="."]
 position = Vector2(9950, 2085)
 
-[node name="Area2D" type="Area2D" parent="Lever"]
+[node name="Area2D" type="Area2D" parent="Lever8"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Lever/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lever8/Area2D"]
 shape = SubResource("CircleShape2D_fvacq")
 
 [node name="Lever3" type="Node2D" parent="."]
@@ -17439,3 +17495,25 @@ texture = ExtResource("8_etlrv")
 position = Vector2(11252, 2019)
 scale = Vector2(0.02, 0.02)
 texture = ExtResource("8_etlrv")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_old6g")
+}
+
+[node name="Lever" type="Node2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="Lever"]
+position = Vector2(3487, 252)
+
+[node name="Pivot" type="Node2D" parent="Lever/Area2D"]
+position = Vector2(-12, 81)
+rotation = 0.785398
+
+[node name="lever_sprite" type="Sprite2D" parent="Lever/Area2D/Pivot"]
+position = Vector2(-2.82849, -137.179)
+texture = ExtResource("9_tkjml")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lever/Area2D"]
+position = Vector2(-2.5, -3.5)
+shape = SubResource("RectangleShape2D_5hkx1")
