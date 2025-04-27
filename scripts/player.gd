@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal drop_torch
+
 # Movement variables
 var max_speed = 800
 var dash_speed = 2000  # Speed for dashing
@@ -60,6 +62,9 @@ func _ready():
 	powerup_check_timer.autostart = true
 	powerup_check_timer.timeout.connect(connect_to_powerups)
 	add_child(powerup_check_timer)
+	
+	# Connect signal to handler method
+	drop_torch.connect(Callable(self, "drop_torch_handler"))
 
 func get_input(delta):
 	if not can_move:
@@ -161,7 +166,17 @@ func _on_powerup_collected(power_type: String, power_value: int) -> void:
 			pass
 
 func has_item(item_name: String) -> bool:
-	return item_name in held_items
+	if held_items.is_empty():
+		return false
+		
+	for item in held_items:
+		if item.name.contains(item_name):
+			return true
+	return false
+
+# Helper function to check if player has any items
+func has_items() -> bool:
+	return not held_items.is_empty()
 
 func pick_up_item(item):
 	# Check if already picking up an item
@@ -200,9 +215,43 @@ func pick_up_item(item):
 	if is_instance_valid(item) and item.get_parent():
 		print_debug("Removing item from parent: ", item.name)
 		
-		# If this is in the visible book sprites from bookshelf_2, hide it
-		if item.name.contains("Autobiography"):
-			item.visible = false
+		# Store the item name for reference when we look for duplicates
+		var item_name = item.name
+		
+		# Properly disable the hitbox before removing from scene
+		if item is Area2D:
+			item.monitoring = false
+			item.monitorable = false
+			
+			# Get and disable collision shapes
+			for child in item.get_children():
+				if child is CollisionShape2D or child is CollisionPolygon2D:
+					child.disabled = true
+			
+			print_debug("Disabled hitbox for: ", item.name)
+			
+		# Handle autobiographies and books specially
+		if item_name.contains("Autobiography") or item_name.contains("Auto_fall") or item_name.contains("Book"):
+			# Find and disable ALL instances of this book in the scene
+			# This prevents ghost hitboxes from remaining active
+			var world = get_node("/root/World")
+			if world:
+				# First, check all direct children of World
+				_disable_duplicate_hitboxes(world, item_name)
+				
+				# Also check common parent nodes like YSort or Library
+				var library = world.get_node_or_null("Library")
+				if library:
+					_disable_duplicate_hitboxes(library, item_name)
+				
+				var ysort = world.get_node_or_null("YSort")
+				if ysort:
+					_disable_duplicate_hitboxes(ysort, item_name)
+					
+				# Check bookshelf specifically
+				var bookshelf = world.get_node_or_null("Library/bookshelf_2")
+				if bookshelf:
+					_disable_duplicate_hitboxes(bookshelf, item_name)
 		
 		# Store the book content before removing
 		var book_content = null
@@ -437,6 +486,11 @@ func _input(event):
 				print_debug("Finished reading book: ", current_item.name)
 				return
 	
+	# Skip inventory item selection if player is reading
+	if is_reading_book:
+		print_debug("Prevented inventory switching - currently reading")
+		return
+	
 	# Handle inventory item selection with numpad (more reliable)
 	if event.is_action_pressed("number_1"):
 		switch_item(0)
@@ -452,6 +506,11 @@ func _input(event):
 		drop_item(false)
 
 func switch_item(index: int):
+	# Prevent switching if currently reading
+	if is_reading_book:
+		print_debug("Prevented switch_item - currently reading")
+		return
+		
 	if index >= 0 and index < held_items.size():
 		selected_item_index = index
 		update_held_item()
@@ -578,13 +637,17 @@ func process_pickup_input():
 				# Allow player to move while reading
 				print_debug("Player can move while reading book")
 				
-				# Automatically close after 10 seconds (increased from 4)
+				# Automatically close after 10 seconds
 				await get_tree().create_timer(10.0).timeout
 				text_box.visible = false
 				is_reading_book = false
 				print_debug("Finished reading, text hidden")
 				return
 	
+	# Skip if already reading
+	if is_reading_book:
+		return
+		
 	# Check for items to pick up using our detector area
 	var detector = get_node_or_null("PickupDetector")
 	if detector:
@@ -604,6 +667,30 @@ func remove_powerups() -> void:
 	max_dash = 0
 	num_dash = 0
 
+# Function to drop torch when signal is emitted
+func drop_torch_handler():
+	if held_items.is_empty():
+		return
+		
+	# Look for a torch in the inventory
+	for i in range(held_items.size()):
+		if held_items[i].name.contains("Torch"):
+			# Switch to the torch and drop it
+			switch_item(i)
+			drop_item(true)  # Drop permanently
+			
+			# Make the wall torch appear
+			var wall_torch = get_node_or_null("/root/World/DiningRoom/Torch")
+			if wall_torch:
+				wall_torch.visible = true
+				var torch_light = wall_torch.get_node_or_null("TorchLight")
+				if torch_light:
+					torch_light.visible = true
+				var torch_particles = wall_torch.get_node_or_null("TorchParticles")
+				if torch_particles:
+					torch_particles.visible = true
+			break
+
 # New function to handle direct collision with powerups
 func _on_powerup_collected_directly(body, powerup):
 	if body == self and not collected_powerups.has(powerup.power_type):
@@ -611,4 +698,44 @@ func _on_powerup_collected_directly(body, powerup):
 			powerup._on_powerup_collected(powerup.power_type, powerup.power_value)
 			collected_powerups.append(powerup.power_type)
 			powerup.queue_free()
+			
+
+# Helper function to disable duplicate hitboxes in a scene
+func _disable_duplicate_hitboxes(parent_node, item_name):
+	if not is_instance_valid(parent_node):
+		return
+		
+	# Check all children of the parent node
+	for child in parent_node.get_children():
+		# If the child's name contains the item name, it could be a duplicate
+		if child.name.contains(item_name):
+			if child is Area2D:
+				# Disable the Area2D
+				child.monitoring = false
+				child.monitorable = false
+				child.visible = false
+				
+				# Disable collision shapes
+				for shape in child.get_children():
+					if shape is CollisionShape2D or shape is CollisionPolygon2D:
+						shape.disabled = true
+						
+				print_debug("Disabled duplicate hitbox for: ", child.name)
+			elif child is RigidBody2D:
+				# Also handle RigidBody2D objects
+				child.set_process(false)
+				child.set_physics_process(false)
+				child.sleeping = true
+				child.visible = false
+				
+				# Disable collision shapes
+				for shape in child.get_children():
+					if shape is CollisionShape2D or shape is CollisionPolygon2D:
+						shape.disabled = true
+						
+				print_debug("Disabled duplicate physics body for: ", child.name)
+		
+		# Recursively check child's children if it's a Node (but not an Item to avoid infinite recursion)
+		if child is Node and not child.is_in_group("item"):
+			_disable_duplicate_hitboxes(child, item_name)
 			

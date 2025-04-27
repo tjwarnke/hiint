@@ -37,7 +37,12 @@ func _on_body_entered(body):
 	if body.is_in_group("player"):
 		player_nearby = true
 		if text_box_ready and text_box:
-			text_box.text = "Press 'e' to examine stump"
+			# Get the current key binding for pick_up action
+			var key = InputMap.action_get_events("pick_up")[0].as_text()
+			# Remove the "(physical)" part if present
+			if "(" in key:
+				key = key.split("(")[0].strip_edges()
+			text_box.text = "Press '%s' to examine stump" % key
 			text_box.visible = true
 
 func _on_body_exited(body):

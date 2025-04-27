@@ -87,26 +87,8 @@ func play_butler_dialog():
 		# Drop torch at exact time it's mentioned
 		text.text = "Please set down your torch."
 		
-		# Check if player has a torch and make them drop it
-		if player.has_method("drop_item"):
-			for i in range(player.held_items.size()):
-				if player.held_items[i].name.contains("Torch"):
-					player.switch_item(i)
-					
-					# Drop the torch now when it's mentioned
-					player.drop_item(true)  # Drop permanently
-					
-					# Make the wall torch appear
-					var wall_torch = get_node_or_null("/root/World/DiningRoom/Torch")
-					if wall_torch:
-						wall_torch.visible = true
-						var torch_light = wall_torch.get_node_or_null("TorchLight")
-						if torch_light:
-							torch_light.visible = true
-						var torch_particles = wall_torch.get_node_or_null("TorchParticles")
-						if torch_particles:
-							torch_particles.visible = true
-					break
+		# Emit the drop_torch signal on the player
+		player.drop_torch.emit()
 		
 		await get_tree().create_timer(2).timeout
 		

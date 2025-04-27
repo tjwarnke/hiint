@@ -91,6 +91,9 @@ func _process(_delta):
 		if selected_item == self and (name.contains("Book") or name.contains("Autobiography")):
 			text_box.visible = true
 			var key = InputMap.action_get_events("pick_up")[0].as_text()
+			# Remove the "(physical)" part if present
+			if "(" in key:
+				key = key.split("(")[0].strip_edges()
 			text_box.text = "Press '%s' to read book" % key
 			print_debug("Showing read prompt for book: ", name)
 		elif selected_item != self:
@@ -122,6 +125,9 @@ func _on_body_entered(body):
 			text_box.visible = true
 			# Get the current key binding for pick_up action
 			var key = InputMap.action_get_events("pick_up")[0].as_text()
+			# Remove the "(physical)" part if present
+			if "(" in key:
+				key = key.split("(")[0].strip_edges()
 			if name.contains("Book") or name.contains("Autobiography"):
 				text_box.text = "Press '%s' to pick up book" % key
 			else:

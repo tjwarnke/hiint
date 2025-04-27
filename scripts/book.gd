@@ -60,6 +60,9 @@ func _process(_delta):
 		if selected_item == self and (name.contains("Book") or name.contains("Autobiography")):
 			text_box.visible = true
 			var key = InputMap.action_get_events("pick_up")[0].as_text()
+			# Remove the "(physical)" part if present
+			if key.contains("(physical)"):
+				key = key.split(" (physical)")[0]
 			text_box.text = "Press '%s' to read book" % key
 			
 			# If the player presses the key to read the book
@@ -70,6 +73,10 @@ func _process(_delta):
 				await timer.timeout
 				# Only reset the text if this is still the selected item
 				if player and player.has_method("get_selected_item") and player.get_selected_item() == self:
+					key = InputMap.action_get_events("pick_up")[0].as_text()
+					# Remove the "(physical)" part if present
+					if key.contains("(physical)"):
+						key = key.split(" (physical)")[0]
 					text_box.text = "Press '%s' to read book" % key
 		elif selected_item != self:
 			text_box.visible = false
@@ -97,10 +104,15 @@ func _on_body_entered(body):
 		# Only show pickup text if this isn't the currently selected item
 		if can_be_picked_up and not (player.has_method("get_selected_item") and player.get_selected_item() == self):
 			text_box.visible = true
+			# Get the current key binding for pick_up action
+			var key = InputMap.action_get_events("pick_up")[0].as_text()
+			# Remove the "(physical)" part if present
+			if "(" in key:
+				key = key.split("(")[0].strip_edges()
 			if name.contains("Book") or name.contains("Autobiography"):
-				text_box.text = "Press 'e' to pick up book"
+				text_box.text = "Press '%s' to pick up book" % key
 			else:
-				text_box.text = "Press 'e' to pick up"
+				text_box.text = "Press '%s' to pick up" % key
 
 func _on_body_exited(body):
 	if body.is_in_group("player"):

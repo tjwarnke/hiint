@@ -43,6 +43,39 @@ func _ready():
 		push_warning("TextBoxMiddleTop not found in scene")
 	if not dialogue:
 		push_warning("DialogOptions not found in scene")
+
+# Called every frame to update lectern tooltips
+func _process(_delta):
+	update_lectern_tooltips()
+
+# Update tooltips for lecterns
+func update_lectern_tooltips():
+	if !player:
+		player = get_node_or_null("/root/World/Player")
+		return
+	
+	# Check if player has items in inventory
+	if player and player.has_method("has_items") and player.has_items():
+		if player_in_1 and not dialogue_active:
+			show_set_down_tooltip()
+		elif player_in_2 and not dialogue_active:
+			show_set_down_tooltip()
+		elif player_in_3 and not dialogue_active:
+			show_set_down_tooltip()
+	
+# Show tooltip for setting down items
+func show_set_down_tooltip():
+	if text_box and not text_box.visible:
+		# Get the current key binding for set_down action
+		var key = "Q"  # Default fallback
+		if InputMap.has_action("set_down") and InputMap.action_get_events("set_down").size() > 0:
+			key = InputMap.action_get_events("set_down")[0].as_text()
+			# Remove the "(physical)" part if present
+			if "(" in key:
+				key = key.split("(")[0].strip_edges()
+		
+		text_box.visible = true
+		text_box.text = "Press '%s' to set down" % key
 	
 func _input(event):
 	if !player:
@@ -292,19 +325,31 @@ func _on_lectern_3_body_entered(body: Node2D) -> void:
 		#print("player_in_3")
 
 func _on_lectern_1_body_exited(body: Node2D) -> void:
-	text_box.visible = false
-	dialogue.visible = false
-	player_in_1 = false
+	if body.is_in_group("player"):
+		player_in_1 = false
+		# Only hide text if it's showing our tooltip and not another message
+		if text_box and text_box.visible and text_box.text.begins_with("Press"):
+			text_box.visible = false
+		if dialogue and dialogue.visible:
+			dialogue.visible = false
 
 func _on_lectern_2_body_exited(body: Node2D) -> void:
-	text_box.visible = false
-	dialogue.visible = false
-	player_in_2 = false
+	if body.is_in_group("player"):
+		player_in_2 = false
+		# Only hide text if it's showing our tooltip and not another message
+		if text_box and text_box.visible and text_box.text.begins_with("Press"):
+			text_box.visible = false
+		if dialogue and dialogue.visible:
+			dialogue.visible = false
 
 func _on_lectern_3_body_exited(body: Node2D) -> void:
-	text_box.visible = false
-	dialogue.visible = false
-	player_in_3 = false
+	if body.is_in_group("player"):
+		player_in_3 = false
+		# Only hide text if it's showing our tooltip and not another message
+		if text_box and text_box.visible and text_box.text.begins_with("Press"):
+			text_box.visible = false
+		if dialogue and dialogue.visible:
+			dialogue.visible = false
 
 func give_dialogue(response):
 	dialogue.visible = false
