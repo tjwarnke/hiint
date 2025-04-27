@@ -526,32 +526,34 @@ func set_can_move(state):
 func _input(event):
 	# Check if player is trying to read a book
 	if event.is_action_pressed("pick_up") and not is_reading_book and not held_items.is_empty():
-		var current_item = held_items[selected_item_index]
-		if is_instance_valid(current_item):
-			# Check if the item is a book and has content to read
-			var is_book = current_item.name.contains("Autobiography") or current_item.name.contains("Book")
-			if is_book:
-				print_debug("Attempting to read book: ", current_item.name)
-				
-				var content = "This book appears to be blank."
-				if current_item.has_meta("book_content"):
-					content = current_item.get_meta("book_content")
-					print_debug("Found book content: ", content)
-				else:
-					print_debug("No book content found for: ", current_item.name)
-				
-				text_box.text = content
-				text_box.visible = true
-				is_reading_book = true
-				# Player can continue to move while reading
-				print_debug("Displaying book content for: ", current_item.name)
-				
-				# Automatically close after 10 seconds
-				await get_tree().create_timer(10.0).timeout
-				text_box.visible = false
-				is_reading_book = false
-				print_debug("Finished reading book: ", current_item.name)
-				return
+		# Ensure selected_item_index is within bounds
+		if selected_item_index >= 0 and selected_item_index < held_items.size():
+			var current_item = held_items[selected_item_index]
+			if is_instance_valid(current_item):
+				# Check if the item is a book and has content to read
+				var is_book = current_item.name.contains("Autobiography") or current_item.name.contains("Book")
+				if is_book:
+					print_debug("Attempting to read book: ", current_item.name)
+					
+					var content = "This book appears to be blank."
+					if current_item.has_meta("book_content"):
+						content = current_item.get_meta("book_content")
+						print_debug("Found book content: ", content)
+					else:
+						print_debug("No book content found for: ", current_item.name)
+					
+					text_box.text = content
+					text_box.visible = true
+					is_reading_book = true
+					# Player can continue to move while reading
+					print_debug("Displaying book content for: ", current_item.name)
+					
+					# Automatically close after 10 seconds
+					await get_tree().create_timer(10.0).timeout
+					text_box.visible = false
+					is_reading_book = false
+					print_debug("Finished reading book: ", current_item.name)
+					return
 	
 	# Skip inventory item selection if player is reading
 	if is_reading_book:
@@ -758,9 +760,6 @@ func drop_torch_handler():
 		# Force removal of the torch from inventory
 		var torch_to_remove = held_items[torch_index]
 		
-		# First attempt - try using drop_item to handle it properly
-		print_debug("Dropping torch permanently")
-		
 		# Remove from TorchHolder first
 		if torch_to_remove.get_parent() == $TorchHolder:
 			print_debug("Removing torch from TorchHolder")
@@ -786,7 +785,9 @@ func drop_torch_handler():
 			selected_item_index = 0
 		else:
 			selected_item_index = min(selected_item_index, held_items.size() - 1)
-		update_held_item()
+		
+		# Use call_deferred for physics operations
+		call_deferred("update_held_item")
 		
 		# Make the wall torch appear
 		print_debug("Making wall torch visible")
