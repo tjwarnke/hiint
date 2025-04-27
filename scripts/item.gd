@@ -143,6 +143,8 @@ func _on_body_exited(body):
 
 func _on_dropped():
 	# This function is called when the item is dropped
+	print_debug("Running _on_dropped for: ", name)
+	
 	# Reset to original scale
 	scale = original_scale
 	rotation = original_rotation
@@ -151,9 +153,26 @@ func _on_dropped():
 	visible = true
 	can_be_picked_up = true
 	
+	# Ensure proper Area2D properties
+	monitoring = true
+	monitorable = true
+	
+	# Make sure it's in the item group
+	if not is_in_group("item"):
+		add_to_group("item")
+		print_debug("Re-added to 'item' group: ", name)
+	
+	# Enable all collision shapes
+	for child in get_children():
+		if child is CollisionShape2D or child is CollisionPolygon2D:
+			child.disabled = false
+			print_debug("Enabled collision shape for: ", name)
+	
 	# Reset the player reference and area state
 	player = null
 	player_in_area = false
+	
+	print_debug("Item fully restored for pickup: ", name)
 
 # Add a method to get the original scale
 func get_original_scale() -> Vector2:

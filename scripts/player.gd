@@ -230,28 +230,69 @@ func pick_up_item(item):
 			
 			print_debug("Disabled hitbox for: ", item.name)
 			
-		# Handle autobiographies and books specially
+		# Handle autobiographies and books specially - IMPORTANT FIX FOR HITBOX ISSUE
 		if item_name.contains("Autobiography") or item_name.contains("Auto_fall") or item_name.contains("Book"):
-			# Find and disable ALL instances of this book in the scene
-			# This prevents ghost hitboxes from remaining active
-			var world = get_node("/root/World")
-			if world:
-				# First, check all direct children of World
-				_disable_duplicate_hitboxes(world, item_name)
+			print_debug("FIXING ALL HITBOXES for book type: ", item_name)
+			
+			# Get all items in the "item" group
+			var all_items = get_tree().get_nodes_in_group("item")
+			print_debug("Found ", all_items.size(), " items in 'item' group to check")
+			
+			# Disable all items with matching name patterns
+			for other_item in all_items:
+				# Check if this item's name contains any part of the picked up item's name
+				# This handles both the exact name and variations (Auto_fall vs Autobiography)
+				var name_match = false
 				
-				# Also check common parent nodes like YSort or Library
-				var library = world.get_node_or_null("Library")
-				if library:
-					_disable_duplicate_hitboxes(library, item_name)
+				# Special checks for the autobiographies which can have different prefixes
+				if item_name.contains("Anna") and other_item.name.contains("Anna"):
+					name_match = true
+				elif item_name.contains("Vlad") and other_item.name.contains("Vlad"):
+					name_match = true
+				elif item_name.contains("Nana") and other_item.name.contains("Nana"):
+					name_match = true
+				elif other_item.name.contains(item_name):
+					name_match = true
+				elif item_name.contains(other_item.name):
+					name_match = true
 				
-				var ysort = world.get_node_or_null("YSort")
-				if ysort:
-					_disable_duplicate_hitboxes(ysort, item_name)
+				if name_match and other_item != item:
+					print_debug("Disabling related item: ", other_item.name)
 					
-				# Check bookshelf specifically
-				var bookshelf = world.get_node_or_null("Library/bookshelf_2")
-				if bookshelf:
-					_disable_duplicate_hitboxes(bookshelf, item_name)
+					# For Area2D items
+					if other_item is Area2D:
+						other_item.monitoring = false
+						other_item.monitorable = false
+						other_item.visible = false
+						other_item.can_be_picked_up = false
+						
+						# Remove from item group to prevent future detection
+						other_item.remove_from_group("item")
+						
+						# Disable collision shapes
+						for shape in other_item.get_children():
+							if shape is CollisionShape2D or shape is CollisionPolygon2D:
+								shape.disabled = true
+					
+					# For RigidBody2D items
+					elif other_item is RigidBody2D:
+						other_item.set_process(false)
+						other_item.set_physics_process(false)
+						other_item.sleeping = true
+						other_item.visible = false
+						
+						# Remove from item group
+						other_item.remove_from_group("item")
+						
+						# Disable collision
+						for shape in other_item.get_children():
+							if shape is CollisionShape2D or shape is CollisionPolygon2D:
+								shape.disabled = true
+					
+					print_debug("Successfully disabled related item: ", other_item.name)
+			
+			# Also do a direct search in key nodes for the bookshelf
+			_disable_duplicate_hitboxes(get_node("/root/World"), item_name)
 		
 		# Store the book content before removing
 		var book_content = null
@@ -418,8 +459,34 @@ func drop_item(perma: bool):
 						item_to_drop.scale = stored_original_scale
 						item_to_drop.rotation = 0
 				
-					item_to_drop.can_be_picked_up = true
-				
+					# Make sure the item is set up to be picked up again
+					print_debug("Preparing dropped item for pickup: ", item_to_drop.name)
+					
+					# Make sure it's in the item group
+					if not item_to_drop.is_in_group("item"):
+						item_to_drop.add_to_group("item")
+						print_debug("Re-added item to 'item' group: ", item_to_drop.name)
+					
+					# Enable the Area2D properties
+					if item_to_drop is Area2D:
+						item_to_drop.monitoring = true
+						item_to_drop.monitorable = true
+						print_debug("Enabled Area2D properties for: ", item_to_drop.name)
+						
+						# Enable any collision shapes
+						for shape in item_to_drop.get_children():
+							if shape is CollisionShape2D or shape is CollisionPolygon2D:
+								shape.disabled = false
+								print_debug("Enabled collision shape for: ", item_to_drop.name)
+					
+					# Make the item visible
+					item_to_drop.visible = true
+					
+					# Ensure can_be_picked_up flag is set
+					if "can_be_picked_up" in item_to_drop:
+						item_to_drop.can_be_picked_up = true
+						print_debug("Enabled can_be_picked_up for: ", item_to_drop.name)
+					
 					# Call the _on_dropped function on the item
 					if item_to_drop.has_method("_on_dropped"):
 						item_to_drop._on_dropped()
@@ -669,27 +736,93 @@ func remove_powerups() -> void:
 
 # Function to drop torch when signal is emitted
 func drop_torch_handler():
+	print_debug("DROP TORCH HANDLER CALLED")
 	if held_items.is_empty():
+		print_debug("No items in inventory to drop")
 		return
 		
 	# Look for a torch in the inventory
+	var torch_index = -1
 	for i in range(held_items.size()):
-		if held_items[i].name.contains("Torch"):
-			# Switch to the torch and drop it
-			switch_item(i)
-			drop_item(true)  # Drop permanently
-			
-			# Make the wall torch appear
-			var wall_torch = get_node_or_null("/root/World/DiningRoom/Torch")
-			if wall_torch:
-				wall_torch.visible = true
-				var torch_light = wall_torch.get_node_or_null("TorchLight")
-				if torch_light:
-					torch_light.visible = true
-				var torch_particles = wall_torch.get_node_or_null("TorchParticles")
-				if torch_particles:
-					torch_particles.visible = true
+		var item = held_items[i]
+		if item.name.contains("Torch"):
+			torch_index = i
+			print_debug("Found torch at inventory index: ", torch_index)
 			break
+	
+	if torch_index >= 0:
+		print_debug("Attempting to drop torch at index: ", torch_index)
+		# Switch to the torch
+		switch_item(torch_index)
+		
+		# Force removal of the torch from inventory
+		var torch_to_remove = held_items[torch_index]
+		
+		# First attempt - try using drop_item to handle it properly
+		print_debug("Dropping torch permanently")
+		
+		# Remove from TorchHolder first
+		if torch_to_remove.get_parent() == $TorchHolder:
+			print_debug("Removing torch from TorchHolder")
+			$TorchHolder.remove_child(torch_to_remove)
+		
+		# Remove the torch from the inventory directly
+		if torch_index < held_items.size():
+			print_debug("Removing torch from inventory array")
+			held_items.remove_at(torch_index)
+		
+		# Update hotbar to remove the torch
+		if hotbar:
+			print_debug("Removing torch from hotbar UI")
+			hotbar.remove_item(torch_index)
+			num_items -= 1
+		
+		# Queue free the torch item itself
+		print_debug("Deleting torch item")
+		torch_to_remove.queue_free()
+		
+		# Update selection and held item
+		if held_items.is_empty():
+			selected_item_index = 0
+		else:
+			selected_item_index = min(selected_item_index, held_items.size() - 1)
+		update_held_item()
+		
+		# Make the wall torch appear
+		print_debug("Making wall torch visible")
+		var wall_torch = get_node_or_null("/root/World/DiningRoom/Torch")
+		if wall_torch:
+			wall_torch.visible = true
+			print_debug("Wall torch made visible")
+			
+			var torch_light = wall_torch.get_node_or_null("TorchLight")
+			if torch_light:
+				torch_light.visible = true
+				print_debug("Torch light made visible")
+				
+			var torch_particles = wall_torch.get_node_or_null("TorchParticles")
+			if torch_particles:
+				torch_particles.visible = true
+				print_debug("Torch particles made visible")
+		else:
+			print_debug("Failed to find wall torch at /root/World/DiningRoom/Torch")
+			
+			# Try searching the entire scene for the torch as a fallback
+			var all_sprites = get_tree().get_nodes_in_group("wall_torch")
+			if all_sprites.size() > 0:
+				for sprite in all_sprites:
+					sprite.visible = true
+					print_debug("Found wall torch in group and made visible: ", sprite.name)
+					
+					var light = sprite.get_node_or_null("TorchLight")
+					if light:
+						light.visible = true
+					
+					var particles = sprite.get_node_or_null("TorchParticles")
+					if particles:
+						particles.visible = true
+	else:
+		print_debug("No torch found in inventory")
 
 # New function to handle direct collision with powerups
 func _on_powerup_collected_directly(body, powerup):
@@ -708,12 +841,32 @@ func _disable_duplicate_hitboxes(parent_node, item_name):
 	# Check all children of the parent node
 	for child in parent_node.get_children():
 		# If the child's name contains the item name, it could be a duplicate
-		if child.name.contains(item_name):
+		var name_match = false
+		
+		# Special checks for the autobiographies which can have different prefixes
+		if item_name.contains("Anna") and child.name.contains("Anna"):
+			name_match = true
+		elif item_name.contains("Vlad") and child.name.contains("Vlad"):
+			name_match = true
+		elif item_name.contains("Nana") and child.name.contains("Nana"):
+			name_match = true
+		elif child.name.contains(item_name):
+			name_match = true
+		
+		if name_match:
 			if child is Area2D:
 				# Disable the Area2D
 				child.monitoring = false
 				child.monitorable = false
 				child.visible = false
+				
+				# If it's in the item group, remove it
+				if child.is_in_group("item"):
+					child.remove_from_group("item")
+				
+				# If it has the can_be_picked_up property, set it to false
+				if "can_be_picked_up" in child:
+					child.can_be_picked_up = false
 				
 				# Disable collision shapes
 				for shape in child.get_children():
@@ -727,6 +880,10 @@ func _disable_duplicate_hitboxes(parent_node, item_name):
 				child.set_physics_process(false)
 				child.sleeping = true
 				child.visible = false
+				
+				# If it's in the item group, remove it
+				if child.is_in_group("item"):
+					child.remove_from_group("item")
 				
 				# Disable collision shapes
 				for shape in child.get_children():

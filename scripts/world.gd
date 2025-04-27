@@ -282,6 +282,13 @@ func _on_dining_threshold_entered(body):
 		# Play a transition animation
 		play_level_transition("dining")
 		
+		# Check if player has a torch and force torch drop
+		if player and player.has_method("has_item") and player.has_item("Torch"):
+			print_debug("DINING ROOM: Player has torch - forcing drop")
+			player.drop_torch.emit()
+		else:
+			print_debug("DINING ROOM: Player does not have torch")
+		
 		# After animation, continue with existing logic
 		move_player_slowly()
 		
