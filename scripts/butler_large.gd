@@ -9,7 +9,7 @@ var cut_scene_seen = false
 @onready var text = get_node("/root/World/UI/TextBoxMiddleTop")
 @onready var sprite = get_node("/root/World/UI/Speaker")
 
-var twin1 = dpreload("res://assets/images/twin1_head.png")
+var twin1 = preload("res://assets/images/twin1_head.png")
 var twin2= preload("res://assets/images/victim_head.png")
 var butler = preload("res://assets/images/ButlerHead.png")
 
@@ -70,8 +70,6 @@ func play_butler_dialog():
 	sprite.texture = twin1
 	text.text = "Be patient, I’m sure she’ll be here soon"
 	await get_tree().create_timer(3).timeout
-	
-	await get_tree().create_timer(2.5).timeout
 	
 	# Check if player reference is still valid
 	if not is_instance_valid(player):

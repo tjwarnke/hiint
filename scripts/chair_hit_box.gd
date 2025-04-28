@@ -30,7 +30,7 @@ func _ready():
 	sprite = get_node_or_null("../../UI/Speaker")
 	
 func _on_body_entered(body):
-	if body.is_in_group("player"):
+	if body.is_in_group("player") and counter ==0:
 		player_nearby = true
 		player = body
 		text.visible = true
@@ -45,7 +45,7 @@ func _on_body_exited(body):
 		await get_tree().create_timer(.5).timeout
 		text.visible = false
 		dialogue.visible = false
-		sprite.visble = false
+		sprite.visible = false
 		
 func options(response):
 	dialogue.visible = false
@@ -62,11 +62,15 @@ func base_dialog():
 		page -= 1
 		
 func two_a():
+	await get_tree().create_timer(1).timeout
 	dialogue.visible = true
+	text.text = "Talk to:"
 	dialogue.text = "1. Sargent Relish \n2. Magenta Lovelace \n3. Dmitri \n4. Henry Conroy \n5. Let's just eat"
 func final_options():
+	await get_tree().create_timer(1).timeout
+	text.text = "Say:"
 	dialogue.visible = true
-	dialogue.text = "1. This isn't funny, you have a really worried\n2. Is he dead?\n3.Good riddance, he was a jerk anyway"
+	dialogue.text = "1. This isn't funny, you have a really worried\n2. Is he dead?\n3. Good riddance, he was a jerk anyway"
 
 func _input(event):
 	if event.is_action_pressed("Interact2") and player_nearby and counter == 0:
@@ -74,11 +78,11 @@ func _input(event):
 		dialogue_active = false
 		dialogue.visible = false
 		text.visible = true
-		text.text = "Sorry about my brother, ma’am.\n My name is Diane, I’m glad you could make it."
+		text.text = "Sorry about my brother,\nma’am. My name is Diane,\n I’m glad you could make it."
 		await get_tree().create_timer(3).timeout
 		text.text = "Say:"
 		dialogue.visible = true
-		dialogue.text = "1. Thanks for inviting me but why are we here? \n2.Hi, I’m player character, who are you?"
+		dialogue.text = "1. Thanks for inviting me but why are we here?\n2. Hi, I’m player character, who are you?"
 		
 	if event.is_action_pressed("Option6"):
 		dialogue.visible = false
@@ -90,42 +94,42 @@ func _input(event):
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = marvin
-		text.text = "Didn’t you get the letter, it should explain everything"
+		text.text = "Didn’t you get the letter,\nit should explain everything"
 		await get_tree().create_timer(3).timeout
 		sprite.texture = girl_head
-		text.text = "I was wondering why we were here too. \nThe letter was very vague."
+		text.text = "I was wondering why we\n were here too. The letter was\nvery vague."
 		await get_tree().create_timer(3).timeout
 		sprite.texture = relish_head
-		text.text = "My daughter was telling me about this place. \nI’m thankful to be one of the community members invited"
+		text.text = "My daughter was telling me about \nthis place. I’m thankful to\nbe one of the community members invited"
 		await get_tree().create_timer(3).timeout
 		sprite.texture = con_head
-		text.text = "It's a shame he passed away, he was a good man"
+		text.text = "It's a shame he passed away,\nhe was a good man"
 		await get_tree().create_timer(3).timeout
 		sprite.texture = diane
-		text.text = "I miss him. I think that's a common feeling"
+		text.text = "I miss him. I think that's\na common feeling"
 		await get_tree().create_timer(3).timeout
 		sprite.texture = marvin
-		text.text = "It's not the first time we missed him, sister..."
-		two_a()
+		text.text = "It's not the first time\nwe missed him, sister..."
 		counter += 1
+		two_a()
 		
 	if event.is_action_pressed("Option2") and counter == 0:
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = diane
-		text.text = "This is my younger brother Marvin, \nforgive him, he’s a little… much."
+		text.text = "This is my younger brother Marvin,\nforgive him, he’s a little… much."
 		await get_tree().create_timer(3).timeout
 		sprite.texture = marvin
 		text.text = "By one minute"
 		await get_tree().create_timer(2).timeout
+		text.visible = false
 		two_a()
-		counter += 1
 	
 	if event.is_action_pressed("Option1") and counter ==1:
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = relish_head
-		text.text = "Hey there pal, my name is Sargent Relish. It’s good to meet you."
+		text.text = "Hey there pal, my name is Sargent\nRelish. It’s good to meet you."
 		await get_tree().create_timer(3).timeout
 		two_a()
 		
@@ -133,21 +137,21 @@ func _input(event):
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = girl_head
-		text.text = " Sup girlie, I’m Magenta Lovelace. I like your hair, I can braid it later if you want. "
+		text.text = " Sup girlie, I’m Magenta Lovelace.\nI like your hair, I can braid \nit later if you want. "
 		await get_tree().create_timer(3).timeout
 		two_a()
 	if event.is_action_pressed("Option3") and counter ==1:
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = penguins_head
-		text.text = "Da, We is Dmitri. I come to mansion for dinner party. "
+		text.text = "Da, We is Dmitri. I come to\nmansion for dinner party. "
 		await get_tree().create_timer(3).timeout
 		two_a()
 	if event.is_action_pressed("Option4") and counter ==1:
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = con_head
-		text.text = "Pleasure to meet you, sir. I am the esteemed Henry Conroy. I used to know your father actually. "
+		text.text = "Pleasure to meet you, sir.\nI am the esteemed Henry Conroy.\nI used to know your father actually. "
 		await get_tree().create_timer(3).timeout
 		two_a()
 		
@@ -156,12 +160,12 @@ func _input(event):
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = butler
-		text.text = "And I’m the butler, here to buttle and such. If you need any buttling, I will be here. On that note, let's eat"
+		text.text = "And I’m the butler, here to buttle and such.\nIf you need any buttling, I will be here.\nOn that note, let's eat"
 		await get_tree().create_timer(3).timeout
 		text.visible = false
 		await get_tree().create_timer(5).timeout
 		text.visible = true
-		text.text = "I see you are all getting along nicely. I hope to see that continue."
+		text.text = "I see you are all getting along nicely.\nI hope to see that continue."
 		await get_tree().create_timer(3).timeout
 		#kill_marvin()
 		sprite.texture = girl_head
@@ -186,7 +190,7 @@ func _input(event):
 		text.text = "Marvin..."
 		await get_tree().create_timer(3).timeout
 		sprite.texture = con_head
-		text.text = "It doesn’t look like he’s breathing. Diane, is he ok?"
+		text.text = "It doesn’t look like he’s breathing.\nDiane, is he ok?"
 		await get_tree().create_timer(3).timeout
 		sprite.texture = diane
 		text.text = "He’s dead. You are insensitive"
@@ -195,7 +199,7 @@ func _input(event):
 		text.text = "I’m sure they didn’t mean it, Diane"
 		await get_tree().create_timer(3).timeout
 		sprite.texture = diane
-		text.text = "I’m sorry, this is all so much for me. First my father, now my brother"
+		text.text = "I’m sorry, this is all so much for me.\nFirst my father, now my brother"
 		await get_tree().create_timer(3).timeout
 		sprite.texture = girl_head
 		text.text = "Do you need a hug, darling?"
@@ -210,7 +214,7 @@ func _input(event):
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = con_head
-		text.text = "It doesn’t look like he’s breathing. Diane, is he ok?"
+		text.text = "It doesn’t look like he’s breathing.\nDiane, is he ok?"
 		await get_tree().create_timer(3).timeout
 		sprite.texture = girl_head
 		text.text = "oh dear..."
@@ -225,13 +229,13 @@ func _input(event):
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = penguins_head
-		text.text = "Da, he was worst. Shut up Boris. Who is Boris, I am Dmitri, Marvin was not nice guy"
+		text.text = "Da, he was worst. Shut up Boris.\nWho is Boris, I am Dmitri,\nMarvin was not nice guy"
 		await get_tree().create_timer(3).timeout
 		sprite.texture = relish_head
-		text.text = "Are you ok sir? Your voice sounds a little weird. "
+		text.text = "Are you ok sir?\nYour voice sounds a little weird. "
 		await get_tree().create_timer(3).timeout
 		sprite.texture = penguins_head
-		text.text = "Da, I am fine, it is Marvin we should be worried about."
+		text.text = "Da, I am fine, it is\nMarvin we should be worried about."
 		await get_tree().create_timer(3).timeout
 		sprite.texture = girl_head
 		text.text = "Oh my, he’s not breathing!"
@@ -240,7 +244,7 @@ func _input(event):
 		text.text = " Diane, is he alive?"
 		await get_tree().create_timer(3).timeout
 		sprite.texture = diane
-		text.text = "Noooooooo, Marvy. How could you? You can’t die on me "
+		text.text = "Noooooooo, Marvy. How could you?\nYou can’t die on me "
 		await get_tree().create_timer(3).timeout
 		dialogue.visible = false
 		text.visible = false
