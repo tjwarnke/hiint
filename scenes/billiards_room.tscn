@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=4 uid="uid://bp2xka1pwcwry"]
+[gd_scene load_steps=35 format=4 uid="uid://bp2xka1pwcwry"]
 
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_esvl0"]
 [ext_resource type="Script" uid="uid://c4uebrtkux85g" path="res://scenes/billiards_room.gd" id="1_l7vr2"]
@@ -10,6 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://b313fngm6japp" path="res://assets/images/comp_sci_painting.png" id="7_hoi34"]
 [ext_resource type="TileSet" uid="uid://d1dkd72yf40tm" path="res://assets/images/level.tres" id="7_rxcbk"]
 [ext_resource type="Texture2D" uid="uid://bnukkoerv8j41" path="res://assets/images/10-31-84-4-14-2025 (1).png" id="9_8up5l"]
+[ext_resource type="PackedScene" uid="uid://bhyo0x8braslp" path="res://scenes/killer.tscn" id="11_uv42u"]
+[ext_resource type="Script" path="res://scripts/move_killer.gd" id="12_iglv8"]
+[ext_resource type="PackedScene" uid="uid://dcdv6e0x7117h" path="res://scenes/8Ball.tscn" id="13_iglv8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l7vr2"]
 texture = ExtResource("1_esvl0")
@@ -18441,6 +18444,10 @@ b = Vector2(6, -32)
 a = Vector2(2, 1516)
 b = Vector2(4, -13)
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_c2bqx"]
+radius = 29.0
+height = 710.0
+
 [node name="BilliardsRoom" type="Node2D"]
 script = ExtResource("1_l7vr2")
 
@@ -18611,3 +18618,19 @@ shape = SubResource("SegmentShape2D_l7vr2")
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(-1745, 2088)
 shape = SubResource("SegmentShape2D_oe2j6")
+
+[node name="Killer" parent="." instance=ExtResource("11_uv42u")]
+position = Vector2(1462, 1268)
+
+[node name="MoveKiller" type="Area2D" parent="."]
+position = Vector2(1462, 1268)
+script = ExtResource("12_iglv8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MoveKiller"]
+position = Vector2(-1429, -15)
+shape = SubResource("CapsuleShape2D_c2bqx")
+
+[node name="8Ball" parent="." instance=ExtResource("13_iglv8")]
+position = Vector2(1762, 498)
+
+[connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]

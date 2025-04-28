@@ -9,6 +9,9 @@ var talked = false
 var text = null
 var dialogue = null
 var sprite = null
+var dark = null
+var marvin = null
+var marvin_dead = null
 
 var con_head = preload("res://assets/images/conman_head.png")
 var relish_head = preload("res://assets/images/relish_head.png")
@@ -27,19 +30,21 @@ func _ready():
 	text = get_node_or_null("../../UI/TextBoxMiddleTop")
 	dialogue = get_node_or_null("../../UI/DialogOptions")
 	sprite = get_node_or_null("../../UI/Speaker")
+	dark =  get_node_or_null("../../DiningRoom/Black")
+	marvin = get_node_or_null("../../DiningRoom/Twin1")
+	marvin_dead = get_node_or_null("../../DiningRoom/Twin1Dead")
 	
 func _on_body_entered(body):
 	if body.is_in_group("player"):
 		player_nearby = true
 		player = body
 		text.visible = true
-		text.text = "Press 'f' to take a seat"
+		text.text = "Press 'e' to take a seat"
 		
 		
 func _on_body_exited(body):
 	if body.is_in_group("player"):
 		player_nearby = false
-		await get_tree().create_timer(.5).timeout
 		text.visible = false
 		dialogue.visible = false
 		
@@ -119,10 +124,7 @@ func _input(event):
 				base_dialog()
 				
 			elif event.is_action_pressed("Option6") and page == 0:
-				player.set_can_move(true)
-				text.visible = false
-				dialogue.visible = false
-				dialogue_active = false
+				death_scene()
 				
 			if event.is_action_pressed("Option1") and page == 1:
 				sprite.scale = Vector2(.5, .5)
@@ -164,3 +166,23 @@ func _input(event):
 					text.visible = false
 					dialogue.visible = false
 					dialogue_active = false
+					
+func death_scene():
+	dialogue.visible = false
+	dark.visible = true
+	await get_tree().create_timer(.2).timeout
+	dark.visible = false
+	await get_tree().create_timer(.2).timeout
+	dark.visible = true
+	await get_tree().create_timer(.2).timeout
+	dark.visible = false
+	await get_tree().create_timer(.2).timeout
+	dark.visible = true
+	text.visible = true
+	text.text = "AHHHHHHHHHHHHHHH"
+	marvin.visible = false
+	marvin_dead.visible = true
+	await get_tree().create_timer(2).timeout
+	dark.visible = false
+	text.visible = false
+	player.set_can_move(true)

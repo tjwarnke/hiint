@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bhyo0x8braslp"]
 
-[ext_resource type="Script" uid="uid://c24hkmy7bmuoe" path="res://killer.gd" id="1_u7bjb"]
+[ext_resource type="Script" path="res://killer.gd" id="1_u7bjb"]
 [ext_resource type="Texture2D" uid="uid://cvsaqlose2o21" path="res://assets/images/cloak_large.png" id="2_om2as"]
 [ext_resource type="AudioStream" uid="uid://bj4mmgk1uiuu1" path="res://assets/audio/dash.wav" id="3_ore10"]
 
@@ -22,6 +22,7 @@ position = Vector2(17.2043, 38.7879)
 shape = SubResource("CircleShape2D_wyvhv")
 
 [node name="MoveTimer" type="Timer" parent="."]
+wait_time = 1.5
 one_shot = true
 
 [node name="MoveSound" type="AudioStreamPlayer2D" parent="."]
