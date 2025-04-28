@@ -83,7 +83,6 @@ func play_butler_dialog():
 	
 	# Only tell them to put down torch if they actually have one
 	if has_torch:
-		print("Player has torch - telling them to drop it")
 		# Drop torch at exact time it's mentioned
 		text.text = "Please set down your torch."
 		
@@ -96,8 +95,6 @@ func play_butler_dialog():
 		if not is_instance_valid(player):
 			end_dialog()
 			return
-	else:
-		print("Player does not have torch - skipping torch dialog")
 	
 	text.text = "The dinner will start shortly!"
 	await get_tree().create_timer(2).timeout

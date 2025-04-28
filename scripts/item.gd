@@ -20,7 +20,6 @@ var default_book_content = "You give it a quick skim, but it's not all that inte
 
 func _ready():
 	add_to_group("item")
-	print_debug("Initializing item: ", name)
 	# Store original properties
 	original_scale = scale
 	original_rotation = rotation
@@ -32,7 +31,6 @@ func _ready():
 	
 	# If this is a book and doesn't have content yet, add default content
 	if name.contains("Book") or name.contains("Autobiography"):
-		print_debug("Setting up book content for: ", name)
 		if not has_meta("book_content"):
 			# Set different content based on the book name
 			var book_content = default_book_content
@@ -43,13 +41,11 @@ func _ready():
 			elif name.contains("Nana_Autobiography"):
 				book_content = "\"The Kusnetzov family rose to power in the early 1700s.\n\nIn 1845, I became the first to move to America, with my younger siblings following soon after.\n\nOur family's gifts must be protected at all costs.\""
 			set_meta("book_content", book_content)
-			print_debug("Book content set for: ", name)
 		
 		# Ensure the book can be picked up
 		can_be_picked_up = true
 		monitoring = true
 		monitorable = true
-		print_debug("Book pickup enabled for: ", name)
 	
 	# Wait for the Player node to be available
 	await get_tree().process_frame
@@ -67,7 +63,6 @@ func _process(_delta):
 		
 	# Prioritize pickup if player is in range of an item
 	if Input.is_action_just_pressed("pick_up") and can_be_picked_up and player_in_area:
-		print_debug("Attempting to pick up item: ", name)
 		can_be_picked_up = false  # Prevent multiple pickups
 		
 		# Add a small delay before pickup to prevent conflicts with other items
@@ -78,11 +73,9 @@ func _process(_delta):
 			emit_signal("item_picked")
 			player.pick_up_item(self)
 			text_box.visible = false  # Hide tooltip after pickup
-			print_debug("Item picked up: ", name)
 		else:
 			# Reset if pickup failed
 			can_be_picked_up = true
-			print_debug("Pickup canceled - player moved away: ", name)
 		return  # Exit early to prevent dialog from showing
 	
 	# Show tooltip for selected book
@@ -95,7 +88,6 @@ func _process(_delta):
 			if "(" in key:
 				key = key.split("(")[0].strip_edges()
 			text_box.text = "Press '%s' to read book" % key
-			print_debug("Showing read prompt for book: ", name)
 		elif selected_item != self:
 			text_box.visible = false
 
@@ -117,7 +109,6 @@ func _on_player_powerup_used(powerup_name):
 
 func _on_body_entered(body):
 	if body.is_in_group("player"):
-		print_debug("Player entered area for item: ", name)
 		player = body
 		player_in_area = true  # Set player_in_area to true when player enters
 		# Only show pickup text if this isn't the currently selected item
@@ -132,18 +123,15 @@ func _on_body_entered(body):
 				text_box.text = "Press '%s' to pick up book" % key
 			else:
 				text_box.text = "Press '%s' to pick up" % key
-			print_debug("Showing pickup prompt for item: ", name)
 
 func _on_body_exited(body):
 	if body.is_in_group("player"):
-		print_debug("Player exited area for item: ", name)
 		player = null
 		player_in_area = false  # Set player_in_area to false when player exits
 		text_box.visible = false
 
 func _on_dropped():
 	# This function is called when the item is dropped
-	print_debug("Running _on_dropped for: ", name)
 	
 	# Reset to original scale
 	scale = original_scale
@@ -160,19 +148,15 @@ func _on_dropped():
 	# Make sure it's in the item group
 	if not is_in_group("item"):
 		add_to_group("item")
-		print_debug("Re-added to 'item' group: ", name)
 	
 	# Enable all collision shapes
 	for child in get_children():
 		if child is CollisionShape2D or child is CollisionPolygon2D:
 			child.disabled = false
-			print_debug("Enabled collision shape for: ", name)
 	
 	# Reset the player reference and area state
 	player = null
 	player_in_area = false
-	
-	print_debug("Item fully restored for pickup: ", name)
 
 # Add a method to get the original scale
 func get_original_scale() -> Vector2:

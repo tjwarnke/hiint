@@ -26,9 +26,16 @@ var book_contents = {
 	"Nana_Autobiography": "\"The Kusnetzov family rose to power in the early 1700s.\n\nIn 1845, I became the first to move to America, with my younger siblings following soon after.\n\nOur family's gifts must be protected at all costs.\""
 }
 
+func find_node_by_name(root: Node, name: String) -> Node:
+	if root.name == name:
+		return root
+	for child in root.get_children():
+		var found = find_node_by_name(child, name)
+		if found:
+			return found
+	return null
+
 func _ready():
-	print_debug("Initializing bookshelf_2")
-	
 	area.body_entered.connect(_on_body_entered)
 	area.body_exited.connect(_on_body_exited)
 	
@@ -40,7 +47,30 @@ func _ready():
 		push_warning("TextBoxMiddleTop not found in scene")
 	if not dialogue:
 		push_warning("DialogOptions not found in scene")
-	print_debug("Bookshelf_2 initialization complete")
+	
+	# Initialize rigid bodies
+	var library = get_node_or_null("/root/World/Library")
+	if library:
+		# Search for rigid bodies in the Library scene
+		annas = library.get_node_or_null("Anna")
+		vlads = library.get_node_or_null("Vlad")
+		nanas = library.get_node_or_null("Nana")
+		
+		# Initially disable and hide the rigid bodies
+		if annas:
+			annas.freeze = true
+			annas.visible = false
+			annas.can_be_picked_up = false
+		if vlads:
+			vlads.freeze = true
+			vlads.visible = false
+			vlads.can_be_picked_up = false
+		if nanas:
+			nanas.freeze = true
+			nanas.visible = false
+			nanas.can_be_picked_up = false
+	else:
+		push_warning("Library node not found")
 
 func _on_body_entered(body):
 	if body.is_in_group("player"):
@@ -59,9 +89,9 @@ func give_dialogue(response):
 	text_box.text = response
 	dialogue_active = false
 	player.set_can_move(true)
-	await get_tree().create_timer(10.0).timeout  # Increased from 4 seconds
+	await get_tree().create_timer(10.0).timeout
 	text_box.visible = false
-	dialogue_active = false  # Ensure dialogue state is reset
+	dialogue_active = false
 
 func _input(event):
 	if event.is_action_pressed("Interact2") and player_nearby:
@@ -69,28 +99,22 @@ func _input(event):
 		dialogue_active = false
 		dialogue.visible = false
 		
-		# Show initial text
 		text_box.text = "It looks like some books have been taken off the shelf recently"
 		text_box.visible = true
 		
-		# Create a timer for the text change
 		var timer = get_tree().create_timer(2.0)
 		await timer.timeout
 		
-		# Check if the player is still nearby before continuing
 		if player_nearby:
 			text_box.text = "Would you like to read any? Read:"
 			
-			# Create another timer for the dialogue
 			timer = get_tree().create_timer(1.0)
 			await timer.timeout
 			
-			# Check if the player is still nearby before showing dialogue
 			if player_nearby:
 				dialogue.text = "1. Solving Puzzles - Enser Giver \n2. The Kusnetzov Mansion - Vlad Kusnetzov \n3.  The Maelstrom's Eye - Roger E Moore"
 				dialogue.visible = true
 				dialogue_active = true
-				print_debug("Showing book selection dialogue")
 	
 	if dialogue_active:
 		if event.is_action_pressed("Option1"):
@@ -104,7 +128,6 @@ func _input(event):
 func drop_books():
 	if not books_dropped:
 		books_dropped = true
-		# Find the books in their original positions
 		var books = []
 		
 		# First try to find books in the library scene
@@ -129,8 +152,6 @@ func drop_books():
 				book.freeze = false
 				book.gravity_scale = 1.0
 				book.visible = true
-				book.monitoring = true
-				book.monitorable = true
 				book.can_be_picked_up = true
 				
 				# Enable collision shapes
@@ -141,5 +162,17 @@ func drop_books():
 				# Apply a small random impulse to make books fall differently
 				var random_impulse = Vector2(randf_range(-100, 100), randf_range(-50, 0))
 				book.apply_impulse(random_impulse)
-				
-				print_debug("Dropped book: ", book.name)
+		
+		# Enable and show the rigid bodies
+		if annas:
+			annas.freeze = false
+			annas.visible = true
+			annas.can_be_picked_up = true
+		if vlads:
+			vlads.freeze = false
+			vlads.visible = true
+			vlads.can_be_picked_up = true
+		if nanas:
+			nanas.freeze = false
+			nanas.visible = true
+			nanas.can_be_picked_up = true

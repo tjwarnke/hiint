@@ -21,6 +21,7 @@ var default_book_content = "This appears to be an old book. The pages are faded 
 
 func _ready():
 	add_to_group("item")
+	add_to_group("books")  # Add to books group for lectern detection
 	# Store original properties
 	area.body_entered.connect(_on_body_entered)
 	area.body_exited.connect(_on_body_exited)
@@ -28,6 +29,16 @@ func _ready():
 	original_rotation = rotation
 	original_position = position
 	original_parent = get_parent()
+	
+	print("[BOOK] Book initialized: ", name)
+	print("[BOOK] Initial position: ", global_position)
+	print("[BOOK] Initial parent: ", get_parent().name if get_parent() else "None")
+	print("[BOOK] Initial physics state:")
+	print("  - gravity_scale: ", gravity_scale)
+	print("  - freeze: ", freeze)
+	print("  - sleeping: ", sleeping)
+	print("  - collision_layer: ", collision_layer)
+	print("  - collision_mask: ", collision_mask)
 	
 	# If this is a book and doesn't have content yet, add default content
 	if name.contains("Book") or name.contains("Autobiography"):
@@ -43,13 +54,84 @@ func _ready():
 	if world:
 		player = world.get_node_or_null("Player")
 
+# Override _set method to track property changes
+func _set(property, value):
+	if property == "global_position" or property == "position":
+		print("[BOOK] Position changing for ", name, " - New pos: ", value)
+		return false  # Continue with normal property setting
+	elif property == "gravity_scale" or property == "freeze" or property == "sleeping" or property == "collision_layer" or property == "collision_mask":
+		print("[BOOK] Physics property changing: ", property, " = ", value, " for book ", name)
+		return false  # Continue with normal property setting
+	return false
+
+# Add a new method to monitor when the transform changes
+func _notification(what):
+	if what == NOTIFICATION_TRANSFORM_CHANGED:
+		print("[BOOK] Transform changed for ", name, " - New position: ", global_position)
+
+# Add physics process to monitor position
+func _physics_process(_delta):
+	# Track if this book should be on a lectern
+	var library = get_node_or_null("/root/World/Library")
+	if library and (library.book_on_lectern1 == self or library.book_on_lectern2 == self or library.book_on_lectern3 == self):
+		# This book should be on a lectern, verify its position is stable
+		var lectern_number = 0
+		var expected_position = Vector2.ZERO
+		
+		if library.book_on_lectern1 == self:
+			lectern_number = 1
+			expected_position = Vector2(1627.0, -1527.0)
+		elif library.book_on_lectern2 == self:
+			lectern_number = 2
+			expected_position = Vector2(2073.0, -1536.0)
+		elif library.book_on_lectern3 == self:
+			lectern_number = 3
+			expected_position = Vector2(2525.0, -1520.0)
+			
+		var distance = global_position.distance_to(expected_position)
+		if distance > 5.0:  # If drifted more than 5 pixels
+			print("[BOOK-DRIFT] Book ", name, " has drifted ", distance, " pixels from its expected position on lectern ", lectern_number)
+			print("[BOOK-DRIFT] Current position: ", global_position, " | Expected: ", expected_position)
+			
+			# Try to correct position
+			global_position = expected_position
+			
+			# Make sure physics properties are still correct
+			if not freeze or not sleeping:
+				print("[BOOK-DRIFT] Physics properties have changed, resetting...")
+				freeze = true
+				sleeping = true
+				gravity_scale = 0
+				collision_layer = 2
+				collision_mask = 0
+
 func _process(_delta):
 	# Prioritize pickup if player is in range of an item
 	if player and Input.is_action_just_pressed("pick_up") and can_be_picked_up and player_in_area:
+		print("[DEBUG] Book pickup initiated for: ", name)
+		print("[DEBUG] Book physics state before pickup:")
+		print("  - gravity_scale: ", gravity_scale)
+		print("  - freeze: ", freeze)
+		print("  - sleeping: ", sleeping)
+		print("  - collision_layer: ", collision_layer)
+		print("  - collision_mask: ", collision_mask)
+		
 		can_be_picked_up = false  # Prevent multiple pickups
 		emit_signal("item_picked")
-		self.gravity_scale=0
-		self.collision_layer = 100
+		# Disable all physics properties
+		self.gravity_scale = 0
+		self.freeze = true
+		self.sleeping = true
+		self.collision_layer = 0  # Disable all collision layers
+		self.collision_mask = 0   # Disable all collision masks
+		
+		print("[DEBUG] Book physics state after pickup:")
+		print("  - gravity_scale: ", gravity_scale)
+		print("  - freeze: ", freeze)
+		print("  - sleeping: ", sleeping)
+		print("  - collision_layer: ", collision_layer)
+		print("  - collision_mask: ", collision_mask)
+		
 		player.pick_up_item(self)
 		text_box.visible = false  # Hide tooltip after pickup
 		return  # Exit early to prevent dialog from showing
@@ -81,22 +163,6 @@ func _process(_delta):
 		elif selected_item != self:
 			text_box.visible = false
 
-func _on_player_powerup_ready(powerup_name, value):
-	if powerup_name == "Jump":
-		# Handle jump powerup
-		pass
-	elif powerup_name == "Dash":
-		# Handle dash powerup
-		pass
-
-func _on_player_powerup_used(powerup_name):
-	if powerup_name == "Jump":
-		# Handle jump powerup used
-		pass
-	elif powerup_name == "Dash":
-		# Handle dash powerup used
-		pass
-
 func _on_body_entered(body):
 	if body.is_in_group("player"):
 		player = body
@@ -120,16 +186,90 @@ func _on_body_exited(body):
 		player_in_area = false  # Set player_in_area to false when player exits
 		text_box.visible = false
 
+# Override _on_dropped to add more debugging
 func _on_dropped():
-	# This function is called when the item is dropped
-	# Reset to original scale
-	scale = original_scale
-	rotation = original_rotation
+	print("\n[DEBUG] Book dropped: ", name)
+	print("[DEBUG] Book physics state before reset:")
+	print("  - gravity_scale: ", gravity_scale)
+	print("  - freeze: ", freeze)
+	print("  - sleeping: ", sleeping)
+	print("  - collision_layer: ", collision_layer)
+	print("  - collision_mask: ", collision_mask)
+	print("  - parent: ", get_parent().name if get_parent() else "None")
+	print("  - position: ", global_position)
 	
-	# Make sure the item is visible and can be picked up again
-	visible = true
-	can_be_picked_up = true
+	# Check if this book is on a lectern - if so, don't modify its physics properties
+	var on_lectern = false
+	var library = get_node_or_null("/root/World/Library")
+	
+	if library:
+		print("[DEBUG] Library found, checking book placement...")
+		print("  - book_on_lectern1: ", library.book_on_lectern1.name if library.book_on_lectern1 else "None")
+		print("  - book_on_lectern2: ", library.book_on_lectern2.name if library.book_on_lectern2 else "None")
+		print("  - book_on_lectern3: ", library.book_on_lectern3.name if library.book_on_lectern3 else "None")
+		
+		if library.book_on_lectern1 == self:
+			on_lectern = true
+			print("[DEBUG] This book is on lectern 1")
+		elif library.book_on_lectern2 == self:
+			on_lectern = true
+			print("[DEBUG] This book is on lectern 2")
+		elif library.book_on_lectern3 == self:
+			on_lectern = true
+			print("[DEBUG] This book is on lectern 3")
+	else:
+		print("[DEBUG] Library node not found")
+	
+	if not on_lectern:
+		print("[DEBUG] Book is NOT on a lectern - resetting physics properties")
+		# This is a normal drop, reset to original scale
+		scale = original_scale
+		rotation = original_rotation
+		
+		# Make sure the item is visible and can be picked up again
+		visible = true
+		can_be_picked_up = true
+		
+		# Reset physics properties
+		self.gravity_scale = 1.0
+		self.freeze = false
+		self.sleeping = false
+		self.collision_layer = 1  # Enable default collision layer
+		self.collision_mask = 1   # Enable default collision mask
+		
+		print("[DEBUG] Book physics state after reset:")
+		print("  - gravity_scale: ", gravity_scale)
+		print("  - freeze: ", freeze)
+		print("  - sleeping: ", sleeping)
+		print("  - collision_layer: ", collision_layer)
+		print("  - collision_mask: ", collision_mask)
+	else:
+		print("[DEBUG] Book IS on a lectern - maintaining special physics properties")
+		print("[DEBUG] Book special physics properties being set:")
+		
+		# Even if on a lectern, set these explicitly to make sure
+		self.freeze = true
+		self.sleeping = true
+		self.gravity_scale = 0
+		self.collision_layer = 2  # Set to a different layer than player (layer 2)
+		self.collision_mask = 0   # Don't need the book to detect collisions
+		self.linear_velocity = Vector2.ZERO
+		self.angular_velocity = 0
+		
+		# Most important - make sure the book stays visible!
+		self.visible = true
+		
+		print("[DEBUG] Book physics state after lectern property setup:")
+		print("  - gravity_scale: ", gravity_scale)
+		print("  - freeze: ", freeze)
+		print("  - sleeping: ", sleeping)
+		print("  - collision_layer: ", collision_layer)
+		print("  - collision_mask: ", collision_mask)
+		print("  - linear_velocity: ", linear_velocity)
+		print("  - angular_velocity: ", angular_velocity)
 	
 	# Reset the player reference and area state
 	player = null
 	player_in_area = false
+	
+	print("[DEBUG] Book drop complete for: ", name, "\n")
