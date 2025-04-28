@@ -191,6 +191,7 @@ func _input(event):
 	
 	# Keep existing pick_up logic for taking books from lecterns
 	if event.is_action_pressed("pick_up"):
+		pass
 		# ... existing code ...
 
 func lectern(event, number):

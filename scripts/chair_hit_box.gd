@@ -124,6 +124,7 @@ func _input(event):
 				base_dialog()
 				
 			elif event.is_action_pressed("Option6") and page == 0:
+				dialogue_active = false
 				death_scene()
 				
 			if event.is_action_pressed("Option1") and page == 1:

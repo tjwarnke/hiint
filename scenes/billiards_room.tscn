@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=4 uid="uid://bp2xka1pwcwry"]
+[gd_scene load_steps=36 format=4 uid="uid://bp2xka1pwcwry"]
 
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_esvl0"]
 [ext_resource type="Script" uid="uid://c4uebrtkux85g" path="res://scenes/billiards_room.gd" id="1_l7vr2"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://b313fngm6japp" path="res://assets/images/comp_sci_painting.png" id="7_hoi34"]
 [ext_resource type="TileSet" uid="uid://d1dkd72yf40tm" path="res://assets/images/level.tres" id="7_rxcbk"]
 [ext_resource type="Texture2D" uid="uid://bnukkoerv8j41" path="res://assets/images/10-31-84-4-14-2025 (1).png" id="9_8up5l"]
+[ext_resource type="Texture2D" uid="uid://b48vnnvk3q066" path="res://assets/images/PoolTable.png" id="11_c2bqx"]
 [ext_resource type="PackedScene" uid="uid://bhyo0x8braslp" path="res://scenes/killer.tscn" id="11_uv42u"]
 [ext_resource type="Script" path="res://scripts/move_killer.gd" id="12_iglv8"]
 [ext_resource type="PackedScene" uid="uid://dcdv6e0x7117h" path="res://scenes/8Ball.tscn" id="13_iglv8"]
@@ -18428,7 +18429,7 @@ _data = {
 radius = 142.972
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l7vr2"]
-size = Vector2(348.272, 320.473)
+size = Vector2(1316.23, 320.473)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oe2j6"]
 radius = 121.413
@@ -18499,7 +18500,7 @@ scale = Vector2(0.12, 0.133)
 texture = ExtResource("4_hoi34")
 
 [node name="PointLight2D" type="PointLight2D" parent="MidgroundTilemap/Chandalier2"]
-position = Vector2(54.1666, 411.654)
+position = Vector2(37.4999, 349.624)
 scale = Vector2(2.27885, 3.26058)
 color = Color(0.819608, 0.819608, 0.709804, 1)
 energy = 2.03
@@ -18566,11 +18567,17 @@ texture = ExtResource("9_8up5l")
 position = Vector2(3537, 1486)
 scale = Vector2(0.624512, 0.561966)
 
+[node name="Sprite2D" type="Sprite2D" parent="PoolTable"]
+position = Vector2(166.53, -12.4564)
+scale = Vector2(3.17228, 3.02152)
+texture = ExtResource("11_c2bqx")
+
 [node name="Area2D" type="Area2D" parent="PoolTable"]
 position = Vector2(-9.6075, -3.55893)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PoolTable/Area2D"]
-position = Vector2(-484.779, 48.1301)
+position = Vector2(0.000488281, 48.1301)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_l7vr2")
 
 [node name="Safe" type="Node2D" parent="."]

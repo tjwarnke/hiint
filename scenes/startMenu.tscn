@@ -1,9 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://svlbq44rfnia"]
+[gd_scene load_steps=14 format=3 uid="uid://svlbq44rfnia"]
 
 [ext_resource type="Script" uid="uid://do8axnurbe1ey" path="res://scripts/startMenu.gd" id="1_yhodh"]
-[ext_resource type="Texture2D" uid="uid://ddtr00s176wej" path="res://assets/images/hiint_logo_transparent.png" id="2_7kfin"]
-[ext_resource type="Texture2D" uid="uid://c34a11rjxt3k7" path="res://assets/images/haunted_mansion.jpg" id="3_nk48g"]
+[ext_resource type="Texture2D" uid="uid://b222pixs53dmf" path="res://assets/images/NewLoad (3).png" id="3_pwyin"]
+[ext_resource type="Texture2D" uid="uid://020ubl5bfdec" path="res://assets/images/New Piskel-2.png.png" id="4_5126e"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="4_bq4j4"]
+[ext_resource type="Texture2D" uid="uid://b50oeysb36o17" path="res://assets/images/conman.png" id="5_pgtcr"]
+[ext_resource type="Texture2D" uid="uid://dlfid7yanwimm" path="res://assets/images/butler_large.png" id="6_at2ir"]
+[ext_resource type="Texture2D" uid="uid://5rjn6pbr58gg" path="res://assets/images/sargent_relish_large.png" id="7_maf4s"]
+[ext_resource type="Texture2D" uid="uid://i5go4qxcreqg" path="res://assets/images/torch.png" id="8_5eyee"]
+[ext_resource type="Texture2D" uid="uid://b6y0ovgi0j4yl" path="res://assets/images/HIINT BOOK.png" id="9_rccna"]
+[ext_resource type="Texture2D" uid="uid://c0pt58yn38ry4" path="res://assets/images/Hammer.png" id="10_sodb8"]
+[ext_resource type="Texture2D" uid="uid://c2ssxagsu4jxs" path="res://assets/images/Key.png" id="11_4a6ig"]
+[ext_resource type="Texture2D" uid="uid://dr0nbg5alwfwb" path="res://assets/images/8Ball.png" id="12_t462v"]
 
 [sub_resource type="Gradient" id="Gradient_ew5yv"]
 offsets = PackedFloat32Array(0.146667, 0.153333, 0.986667)
@@ -25,10 +33,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = 50.0
-offset_right = 100.0
-offset_bottom = 350.0
+offset_left = -183.0
+offset_top = -99.0
+offset_right = 120.0
+offset_bottom = 229.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
@@ -48,20 +56,6 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "QUIT"
 
-[node name="Logo" type="Node2D" parent="."]
-position = Vector2(960, 250)
-
-[node name="HIINT" type="Sprite2D" parent="Logo"]
-texture = ExtResource("2_7kfin")
-
-[node name="Background" type="Node2D" parent="."]
-
-[node name="hauntedMansion" type="Sprite2D" parent="Background"]
-z_index = -1
-position = Vector2(960, 540)
-scale = Vector2(1.87744, 1.05811)
-texture = ExtResource("3_nk48g")
-
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 position = Vector2(604, -297)
 rotation = -0.450062
@@ -79,6 +73,61 @@ initial_velocity_max = 200.0
 scale_amount_min = 0.5
 scale_amount_max = 0.75
 color_ramp = SubResource("Gradient_ew5yv")
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="hauntedMansion" type="Sprite2D" parent="Background"]
+z_index = -1
+position = Vector2(967.5, 544.5)
+scale = Vector2(1.34831, 1.14749)
+texture = ExtResource("3_pwyin")
+
+[node name="Sprite2D" type="Sprite2D" parent="Background"]
+position = Vector2(1702, 735)
+scale = Vector2(3.98438, 3.71875)
+texture = ExtResource("4_5126e")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background"]
+position = Vector2(334, 621)
+rotation = -0.370824
+scale = Vector2(0.598437, 0.576563)
+texture = ExtResource("5_pgtcr")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Background"]
+position = Vector2(1702, 321)
+rotation = 0.313068
+scale = Vector2(0.538364, 0.491767)
+texture = ExtResource("6_at2ir")
+
+[node name="Sprite2D4" type="Sprite2D" parent="Background"]
+position = Vector2(317, 247)
+scale = Vector2(0.632813, 0.551562)
+texture = ExtResource("7_maf4s")
+
+[node name="Sprite2D5" type="Sprite2D" parent="Background"]
+position = Vector2(395, 944)
+scale = Vector2(0.648438, 0.544643)
+texture = ExtResource("8_5eyee")
+
+[node name="Sprite2D6" type="Sprite2D" parent="Background"]
+position = Vector2(669, 1008)
+scale = Vector2(0.294792, 0.338889)
+texture = ExtResource("9_rccna")
+
+[node name="Sprite2D7" type="Sprite2D" parent="Background"]
+position = Vector2(954, 998)
+scale = Vector2(1.79, 1.62)
+texture = ExtResource("10_sodb8")
+
+[node name="Sprite2D8" type="Sprite2D" parent="Background"]
+position = Vector2(1250, 1011)
+scale = Vector2(2.8, 2.38)
+texture = ExtResource("11_4a6ig")
+
+[node name="Sprite2D9" type="Sprite2D" parent="Background"]
+position = Vector2(1541, 1000)
+scale = Vector2(4.98438, 4.125)
+texture = ExtResource("12_t462v")
 
 [connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
