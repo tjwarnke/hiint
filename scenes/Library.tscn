@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=4 uid="uid://dhh62wmxavnow"]
+[gd_scene load_steps=37 format=4 uid="uid://dhh62wmxavnow"]
 
 [ext_resource type="Script" uid="uid://clpleomktaup1" path="res://scripts/library.gd" id="1_cupxr"]
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_gl8ag"]
@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://qftq3opxkymg" path="res://assets/images/Luigio_with frame_darkened.png" id="17_ajy2i"]
 [ext_resource type="Texture2D" uid="uid://bk5j3n67tsf38" path="res://assets/images/Abook.png" id="19_tbs7l"]
 [ext_resource type="Texture2D" uid="uid://bujqa2kqc3p01" path="res://assets/images/Vbook.png" id="20_7vtgg"]
+[ext_resource type="Texture2D" uid="uid://bt7hok5t0swy1" path="res://assets/images/armband.png" id="20_ajy2i"]
 [ext_resource type="Texture2D" uid="uid://1ywc3yc7k6j3" path="res://assets/images/Nbook.png" id="21_pe02e"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x4li0"]
@@ -30298,7 +30299,8 @@ position = Vector2(-5, -15)
 shape = SubResource("CircleShape2D_fio33")
 
 [node name="Killer" parent="." instance=ExtResource("11_old6g")]
-position = Vector2(1609, 1020)
+z_index = 4
+position = Vector2(1567, 1162)
 
 [node name="MoveKiller" type="Area2D" parent="." node_paths=PackedStringArray("npc")]
 script = ExtResource("12_fio33")
@@ -30599,5 +30601,10 @@ initial_velocity_min = 10.0
 initial_velocity_max = 50.0
 scale_amount_max = 4.0
 color = Color(0.882353, 0, 0.682353, 0.345098)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1536, 1320)
+scale = Vector2(0.528571, 0.528571)
+texture = ExtResource("20_ajy2i")
 
 [connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]

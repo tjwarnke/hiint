@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=4 uid="uid://bp2xka1pwcwry"]
+[gd_scene load_steps=37 format=4 uid="uid://bp2xka1pwcwry"]
 
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_esvl0"]
 [ext_resource type="Script" uid="uid://c4uebrtkux85g" path="res://scenes/billiards_room.gd" id="1_l7vr2"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://bhyo0x8braslp" path="res://scenes/killer.tscn" id="11_uv42u"]
 [ext_resource type="Script" path="res://scripts/move_killer.gd" id="12_iglv8"]
 [ext_resource type="PackedScene" uid="uid://dcdv6e0x7117h" path="res://scenes/8Ball.tscn" id="13_iglv8"]
+[ext_resource type="Texture2D" uid="uid://cxj8to4ptdso" path="res://assets/images/medal.png" id="15_bub4c"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l7vr2"]
 texture = ExtResource("1_esvl0")
@@ -18626,17 +18627,23 @@ position = Vector2(-1745, 2088)
 shape = SubResource("SegmentShape2D_oe2j6")
 
 [node name="Killer" parent="." instance=ExtResource("11_uv42u")]
-position = Vector2(1462, 1268)
+z_index = 4
+position = Vector2(1312, 1422)
 
-[node name="MoveKiller" type="Area2D" parent="."]
-position = Vector2(1462, 1268)
+[node name="MoveKiller" type="Area2D" parent="." node_paths=PackedStringArray("npc")]
+position = Vector2(5, 1286)
 script = ExtResource("12_iglv8")
+npc = NodePath("../Killer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MoveKiller"]
-position = Vector2(-1429, -15)
+position = Vector2(5, -1)
 shape = SubResource("CapsuleShape2D_c2bqx")
 
 [node name="8Ball" parent="." instance=ExtResource("13_iglv8")]
 position = Vector2(1762, 498)
+
+[node name="Clue 2" type="Sprite2D" parent="."]
+position = Vector2(1261, 1580)
+texture = ExtResource("15_bub4c")
 
 [connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]

@@ -415,6 +415,7 @@ func drop_item(perma: bool):
 		
 		if perma:
 			item_to_drop.queue_free()
+			$TorchHolder.remove_child(item_to_drop)
 		else:
 			# Get the World node
 			var world = get_node("/root/World")

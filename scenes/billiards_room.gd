@@ -88,7 +88,7 @@ func _input(event: InputEvent) -> void:
 				
 	
 	if in_pool_table and event.is_action_pressed("pick_up") and player.has_item("Ball"):
-		player.drop_item()
+		player.drop_item(true)
 		ball8.hide()
 		door_open()
 			

@@ -1,7 +1,7 @@
 [gd_scene load_steps=30 format=4 uid="uid://cfrd10xr8oexr"]
 
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_fpimf"]
-[ext_resource type="Script" uid="uid://dytxnrp3hwnna" path="res://scenes/dungeon.gd" id="1_fvacq"]
+[ext_resource type="Script" path="res://scenes/dungeon.gd" id="1_fvacq"]
 [ext_resource type="Texture2D" uid="uid://y0dxq16y7wu0" path="res://dungeon_sidescroller-Raou/Tilesetv3.png" id="2_0wj4k"]
 [ext_resource type="Texture2D" uid="uid://ctjiur77808b3" path="res://FreeCuteTileset/Tileset.png" id="3_fvacq"]
 [ext_resource type="Texture2D" uid="uid://c0pt58yn38ry4" path="res://assets/images/Hammer.png" id="5_hsn05"]

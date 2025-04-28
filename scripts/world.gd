@@ -43,6 +43,7 @@ var camera_smooth_speed = 0.0001  # Adjust this value for smoother/slower moveme
 
 # Audio for the dungeon area
 var dungeon_music_player = null
+var is_in_dungeon = false
 
 func _ready():
 	# Initialize dining room torch visibility
@@ -152,8 +153,9 @@ func _process(delta):
 		var distance = abs(camera.position.x - player.position.x)
 		if distance > 300 and not moving_player:
 			camera.position.x = player.position.x
-			if camera.in_library_area:
+			if camera.in_library_area or camera.in_dungeon_area:
 				camera.position.y = player.position.y
+			
 			else:
 				camera.position.y = camera.fixed_y
 	
@@ -358,18 +360,49 @@ func _on_library_threshold_entered(body):
 	elif body.name.contains("TileMap"):
 		pass
 
+func update_dungeon_camera_bounds():
+	camera.position_smoothing_enabled = true
+	camera.position_smoothing_speed = 5.0
+	
+	# Turn off drag to avoid interference with custom following logic
+	camera.drag_horizontal_enabled = false
+	
+	# Get the player's current position
+	var player_pos = player.global_position
+	
+	# Set camera bounds to fit the library level
+	# Now using player's position for left boundary, not the threshold position
+	var right_boundary = player_pos.x - 1000  # Generous padding to the left
+	var left_boundary = right_boundary + 100000  # Approximate width of library area
+	
+	# Ensure we don't go too far left
+	right_boundary = max(left_boundary, 12000)  # Don't go below X=12000
+	
+	camera.limit_left = left_boundary
+	camera.limit_right = right_boundary
+	
+	# Set vertical bounds to much wider values for the library to allow exploration
+	camera.limit_top = -1500  # Allow camera to go up to Y = -1000
+	camera.limit_bottom = 7450
+	
+	# Optional: Adjust camera offset if needed
+	camera.offset = Vector2(0, 0)
+
 func _on_dungeon_threshold_entered(body):
-	if body == player and not level_transition_active:
-		level_transition_active = true
-		await wait_until_grounded()  # Ensure player is stable before continuing
-		
-		# Play a transition animation
-		play_level_transition("dungeon")
-		
-		# Additional dungeon-specific camera and lighting adjustments could go here
-		
-		# Reset transition flag
-		level_transition_active = false
+	var original_zoom = camera.zoom
+	var tween = create_tween()
+	tween.tween_property(camera, "zoom", Vector2(0.3, 0.3), 0.5)
+	
+	create_timer_to_check_grounded(original_zoom)
+	
+	var main_music = get_node_or_null("/root/MainMusic")
+	if main_music and main_music.has_method("fade_out_music_only"):
+		main_music.fade_out_music_only(2.0)
+	
+	setup_dungeon_music()
+	
+	# Update the camera bounds for the dungeon
+	update_dungeon_camera_bounds()
 
 func wait_until_grounded():
 	var timeout = 5.0  # 5 second timeout
@@ -620,6 +653,10 @@ func fade_music_after_start():
 
 # Handler for dungeon entrance - simplified 
 func _on_dungeon_entered(body):
+	is_in_dungeon = true
+	if body.name != "Player":
+		return  # Only react if it's the player
+	
 	# Zoom in camera for dungeon effect
 	var original_zoom = camera.zoom
 	var tween = create_tween()
@@ -633,8 +670,12 @@ func _on_dungeon_entered(body):
 	if main_music and main_music.has_method("fade_out_music_only"):
 		main_music.fade_out_music_only(2.0)
 		
-		# Start dungeon music
+	# Start dungeon music
 	setup_dungeon_music()
+	
+	#  Tell the camera to enter dungeon mode!
+	if camera:
+		camera.set_dungeon_mode(true)
 
 # Simple timer to check if player is grounded
 func create_timer_to_check_grounded(original_zoom):
