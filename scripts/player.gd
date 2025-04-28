@@ -430,7 +430,11 @@ func drop_item(perma: bool):
 					$TorchHolder.remove_child(item_to_drop)
 			
 				# Add to world and set position
-				world.add_child(item_to_drop)
+				if item_to_drop.get_parent() != world:
+					# Only add to world if it's not already there
+					world.add_child(item_to_drop)
+				else:
+					print("[DEBUG] Item is already a child of World, skipping add_child")
 			
 				# Position relative to the World node
 				var drop_position = global_position  # Start with player's global position

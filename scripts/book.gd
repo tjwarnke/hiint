@@ -30,15 +30,9 @@ func _ready():
 	original_position = position
 	original_parent = get_parent()
 	
-	print("[BOOK] Book initialized: ", name)
-	print("[BOOK] Initial position: ", global_position)
-	print("[BOOK] Initial parent: ", get_parent().name if get_parent() else "None")
-	print("[BOOK] Initial physics state:")
-	print("  - gravity_scale: ", gravity_scale)
-	print("  - freeze: ", freeze)
-	print("  - sleeping: ", sleeping)
-	print("  - collision_layer: ", collision_layer)
-	print("  - collision_mask: ", collision_mask)
+	print("[BOOK PUZZLE] Book initialized: ", name)
+	print("[BOOK PUZZLE] Initial position: ", global_position)
+	print("[BOOK PUZZLE] Initial parent: ", get_parent().name if get_parent() else "None")
 	
 	# If this is a book and doesn't have content yet, add default content
 	if name.contains("Book") or name.contains("Autobiography"):
@@ -90,15 +84,15 @@ func _physics_process(_delta):
 			
 		var distance = global_position.distance_to(expected_position)
 		if distance > 5.0:  # If drifted more than 5 pixels
-			print("[BOOK-DRIFT] Book ", name, " has drifted ", distance, " pixels from its expected position on lectern ", lectern_number)
-			print("[BOOK-DRIFT] Current position: ", global_position, " | Expected: ", expected_position)
+			print("[BOOK PUZZLE] Book ", name, " has drifted ", distance, " pixels from its expected position on lectern ", lectern_number)
+			print("[BOOK PUZZLE] Current position: ", global_position, " | Expected: ", expected_position)
 			
 			# Try to correct position
 			global_position = expected_position
 			
 			# Make sure physics properties are still correct
 			if not freeze or not sleeping:
-				print("[BOOK-DRIFT] Physics properties have changed, resetting...")
+				print("[BOOK PUZZLE] Physics properties have changed, resetting...")
 				freeze = true
 				sleeping = true
 				gravity_scale = 0
@@ -188,37 +182,39 @@ func _on_body_exited(body):
 
 # Override _on_dropped to add more debugging
 func _on_dropped():
-	print("\n[DEBUG] Book dropped: ", name)
-	print("[DEBUG] Book physics state before reset:")
-	print("  - gravity_scale: ", gravity_scale)
-	print("  - freeze: ", freeze)
-	print("  - sleeping: ", sleeping)
-	print("  - collision_layer: ", collision_layer)
-	print("  - collision_mask: ", collision_mask)
-	print("  - parent: ", get_parent().name if get_parent() else "None")
-	print("  - position: ", global_position)
+	print("\n[BOOK PUZZLE] Book dropped: ", name)
+	print("[BOOK PUZZLE] Book position: ", global_position)
+	print("[BOOK PUZZLE] Book parent: ", get_parent().name if get_parent() else "None")
 	
 	# Check if this book is on a lectern - if so, don't modify its physics properties
 	var on_lectern = false
 	var library = get_node_or_null("/root/World/Library")
+	var being_processed_by_library = false
 	
 	if library:
-		print("[DEBUG] Library found, checking book placement...")
+		print("[BOOK PUZZLE] Library found, checking book placement...")
 		print("  - book_on_lectern1: ", library.book_on_lectern1.name if library.book_on_lectern1 else "None")
 		print("  - book_on_lectern2: ", library.book_on_lectern2.name if library.book_on_lectern2 else "None")
 		print("  - book_on_lectern3: ", library.book_on_lectern3.name if library.book_on_lectern3 else "None")
 		
+		# Check if this book is currently in the process of being placed by the library
+		being_processed_by_library = library.is_placing_book
+		
+		if being_processed_by_library:
+			print("[BOOK PUZZLE] This book is currently being placed by the library - skipping _on_dropped handling")
+			return
+		
 		if library.book_on_lectern1 == self:
 			on_lectern = true
-			print("[DEBUG] This book is on lectern 1")
+			print("[BOOK PUZZLE] This book is on lectern 1")
 		elif library.book_on_lectern2 == self:
 			on_lectern = true
-			print("[DEBUG] This book is on lectern 2")
+			print("[BOOK PUZZLE] This book is on lectern 2")
 		elif library.book_on_lectern3 == self:
 			on_lectern = true
-			print("[DEBUG] This book is on lectern 3")
+			print("[BOOK PUZZLE] This book is on lectern 3")
 	else:
-		print("[DEBUG] Library node not found")
+		print("[BOOK PUZZLE] Library node not found")
 	
 	if not on_lectern:
 		print("[DEBUG] Book is NOT on a lectern - resetting physics properties")

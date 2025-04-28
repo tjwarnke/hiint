@@ -183,7 +183,7 @@ func initialize_game_state():
 		darkness.color = Color("555555")  # Darker gray for tutorial area
 		darkness.show()
 	else:
-		push_error("[WORLD] Darkness node not found!")
+		push_error("Darkness node not found!")
 	
 	$cabin/Torch.show()
 	jumpscare_timer.timeout.connect(hide_jumpscare)  
@@ -192,7 +192,7 @@ func initialize_game_state():
 	var main_music = get_node_or_null("/root/MainMusic")
 	if main_music:
 		# Don't change the volume here - let the main_music singleton handle it
-		print("[WORLD] Using existing music volume")
+		pass
 	
 	# Add ambient noise (but make sure its volume is moderate)
 	add_child(ambient_noise)
@@ -231,14 +231,14 @@ func hide_jumpscare():
 func spawn_player():
 	player = PlayerScene.instantiate()
 	if not player:
-		push_error("[WORLD] Failed to instantiate player scene")
+		push_error("Failed to instantiate player scene")
 		return
 
 	add_child(player)
 
 	# Ensure spawn exists before setting position
 	if not spawn:
-		push_error("[WORLD] Spawn node is missing! Player will be placed at origin")
+		push_error("Spawn node is missing! Player will be placed at origin")
 		player.position = Vector2(0, 0)
 	else:
 		player.global_position = spawn.global_position
@@ -253,7 +253,7 @@ func spawn_player():
 		camera.drag_right_margin = 0.1
 		camera.drag_bottom_margin = 0.1
 	else:
-		push_error("[WORLD] Camera not found when spawning player")
+		push_error("Camera not found when spawning player")
 
 func initialize_camera():
 	camera.position = Vector2(player.position.x, camera.fixed_y)
@@ -787,6 +787,6 @@ func handle_powerup_collection_effect(power_type: String) -> void:
 			effect.set_color(effect_color)
 			add_child(effect)
 		else:
-			push_error("[WORLD] Failed to instantiate powerup effect")
+			push_error("Failed to instantiate powerup effect")
 	else:
-		push_error("[WORLD] Powerup effect scene not found")
+		push_error("Powerup effect scene not found")
