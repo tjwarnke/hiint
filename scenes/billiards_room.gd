@@ -56,22 +56,23 @@ func _input(event: InputEvent) -> void:
 		lever1_action()
 	if in_lever2 and event.is_action_pressed("pick_up"):
 		lever2_action()
-	if in_safe and blood_shown == true and painting_gone == true:
+	if in_safe and blood_shown == true and painting_gone == true and safe_talked == false:
 			safe_talked = true
 			text.visible = true
 			text.text = "What is the password?"
 			dialogue.visible = true
 			dialogue.text = "1. 12-25-34 \n2. 10-31-84 \n3. 34-10-84"
-			safe_talked = false
 
 			# Check for each option separately
-			if event.is_action_pressed("Option2"):  # Correct password option
+			if event.is_action_pressed("Option2"):
+				safe_talked = true
+				dialogue.visible = false
 				text.text = "An 8 Ball has fallen out of the safe"
-				dialogue.visible = false  # <-- Hide dialogue immediately
 				ball8.show()
 				await get_tree().create_timer(1.0).timeout  # Wait just 1 second
-				text.visible = false  # <-- Then hide the text
+				text.visible = false
 				in_safe = false
+				safe_talked = true
 			elif event.is_action_pressed("Option1") or event.is_action_pressed("Option3"):  # Wrong password options
 				text.text = "Wrong Password has been entered"
 				dialogue.visible = false
@@ -80,8 +81,8 @@ func _input(event: InputEvent) -> void:
 				in_safe = false
 				safe_talked = false
 	
-	if in_pool_table and event.is_action_pressed("pick_up") and player.hasItem("8-ball"):
-		dungeon_drop()
+	if in_pool_table and event.is_action_pressed("pick_up") and player.has_item("Ball"):
+		door_open()
 			
 func lever1_action():
 	painting_gone = true
@@ -114,7 +115,7 @@ func _on_lever_2_body_entered(body):
 		player = body
 	
 func _on_safe_body_entered(body):
-	if body.is_in_group("player")
+	if body.is_in_group("player"):
 		in_safe = true
 		player = body
 		

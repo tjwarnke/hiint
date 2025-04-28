@@ -130,6 +130,8 @@ func _on_body_entered(body):
 				key = key.split("(")[0].strip_edges()
 			if name.contains("Book") or name.contains("Autobiography"):
 				text_box.text = "Press '%s' to pick up book" % key
+			if name.contains('Ball'):
+				text_box.visible = false
 			else:
 				text_box.text = "Press '%s' to pick up" % key
 			print_debug("Showing pickup prompt for item: ", name)

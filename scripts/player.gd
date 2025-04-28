@@ -165,7 +165,7 @@ func _on_powerup_collected(power_type: String, power_value: int) -> void:
 		_:
 			pass
 
-func has_item(item_name: String) -> bool:
+func has_item(item_name: String):
 	if held_items.is_empty():
 		return false
 		
