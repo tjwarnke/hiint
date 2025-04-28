@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://bp2xka1pwcwry"]
+[gd_scene load_steps=35 format=4 uid="uid://bp2xka1pwcwry"]
 
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_esvl0"]
 [ext_resource type="Script" uid="uid://c4uebrtkux85g" path="res://scenes/billiards_room.gd" id="1_l7vr2"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://bnukkoerv8j41" path="res://assets/images/10-31-84-4-14-2025 (1).png" id="9_8up5l"]
 [ext_resource type="PackedScene" uid="uid://bhyo0x8braslp" path="res://scenes/killer.tscn" id="11_uv42u"]
 [ext_resource type="Script" path="res://scripts/move_killer.gd" id="12_iglv8"]
+[ext_resource type="PackedScene" uid="uid://dcdv6e0x7117h" path="res://scenes/8Ball.tscn" id="13_iglv8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l7vr2"]
 texture = ExtResource("1_esvl0")
@@ -18628,5 +18629,8 @@ script = ExtResource("12_iglv8")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MoveKiller"]
 position = Vector2(-1429, -15)
 shape = SubResource("CapsuleShape2D_c2bqx")
+
+[node name="8Ball" parent="." instance=ExtResource("13_iglv8")]
+position = Vector2(1762, 498)
 
 [connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]

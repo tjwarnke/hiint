@@ -53,7 +53,7 @@ b = Vector2(0, 208)
 a = Vector2(326, 8)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oo54l"]
-radius = 53.521
+radius = 37.5
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kpybi"]
 radius = 53.106
@@ -111,6 +111,14 @@ offset_right = 400.0
 offset_bottom = 64.0
 grow_horizontal = 1
 grow_vertical = 1
+
+[node name="Label" type="Label" parent="UI"]
+offset_left = 10077.0
+offset_top = 1858.0
+offset_right = 10475.0
+offset_bottom = 1897.0
+theme_override_font_sizes/font_size = 28
+text = "Press 'up' 'up' to double jump"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(985, 546.5)
