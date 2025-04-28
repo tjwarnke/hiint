@@ -18577,7 +18577,6 @@ position = Vector2(-9.6075, -3.55893)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PoolTable/Area2D"]
 position = Vector2(0.000488281, 48.1301)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_l7vr2")
 
 [node name="Safe" type="Node2D" parent="."]

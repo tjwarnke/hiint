@@ -24,61 +24,6 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_yufpw")
 
-[node name="Background" type="Node2D" parent="."]
-
-[node name="hauntedMansion" type="Sprite2D" parent="Background"]
-z_index = -1
-position = Vector2(967.5, 544.5)
-scale = Vector2(1.32619, 1.13494)
-texture = ExtResource("2_0fa16")
-
-[node name="Sprite2D" type="Sprite2D" parent="Background"]
-position = Vector2(1702, 735)
-scale = Vector2(3.98438, 3.71875)
-texture = ExtResource("3_mvujh")
-
-[node name="Sprite2D2" type="Sprite2D" parent="Background"]
-position = Vector2(334, 621)
-rotation = -0.370824
-scale = Vector2(0.598437, 0.576563)
-texture = ExtResource("4_ugp6p")
-
-[node name="Sprite2D3" type="Sprite2D" parent="Background"]
-position = Vector2(1702, 321)
-rotation = 0.313068
-scale = Vector2(0.538364, 0.491767)
-texture = ExtResource("5_ft6lo")
-
-[node name="Sprite2D4" type="Sprite2D" parent="Background"]
-position = Vector2(317, 247)
-scale = Vector2(0.632813, 0.551562)
-texture = ExtResource("6_xddgo")
-
-[node name="Sprite2D5" type="Sprite2D" parent="Background"]
-position = Vector2(395, 944)
-scale = Vector2(0.648438, 0.544643)
-texture = ExtResource("7_ssit6")
-
-[node name="Sprite2D6" type="Sprite2D" parent="Background"]
-position = Vector2(669, 1008)
-scale = Vector2(0.294792, 0.338889)
-texture = ExtResource("8_u21f3")
-
-[node name="Sprite2D7" type="Sprite2D" parent="Background"]
-position = Vector2(954, 998)
-scale = Vector2(1.79, 1.62)
-texture = ExtResource("9_5vdes")
-
-[node name="Sprite2D8" type="Sprite2D" parent="Background"]
-position = Vector2(1250, 1011)
-scale = Vector2(2.8, 2.38)
-texture = ExtResource("10_ds6ux")
-
-[node name="Sprite2D9" type="Sprite2D" parent="Background"]
-position = Vector2(1541, 1000)
-scale = Vector2(4.98438, 4.125)
-texture = ExtResource("11_6lhaf")
-
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 position = Vector2(479, -272)
 rotation = -0.450062
@@ -128,3 +73,58 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 32
 text = "Loading..."
 horizontal_alignment = 1
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="hauntedMansion" type="Sprite2D" parent="Background"]
+z_index = -1
+position = Vector2(967.5, 544.5)
+scale = Vector2(1.34831, 1.14749)
+texture = ExtResource("2_0fa16")
+
+[node name="Sprite2D" type="Sprite2D" parent="Background"]
+position = Vector2(1702, 735)
+scale = Vector2(3.98438, 3.71875)
+texture = ExtResource("3_mvujh")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background"]
+position = Vector2(334, 621)
+rotation = -0.370824
+scale = Vector2(0.598437, 0.576563)
+texture = ExtResource("4_ugp6p")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Background"]
+position = Vector2(1702, 321)
+rotation = 0.313068
+scale = Vector2(0.538364, 0.491767)
+texture = ExtResource("5_ft6lo")
+
+[node name="Sprite2D4" type="Sprite2D" parent="Background"]
+position = Vector2(317, 247)
+scale = Vector2(0.632813, 0.551562)
+texture = ExtResource("6_xddgo")
+
+[node name="Sprite2D5" type="Sprite2D" parent="Background"]
+position = Vector2(395, 944)
+scale = Vector2(0.648438, 0.544643)
+texture = ExtResource("7_ssit6")
+
+[node name="Sprite2D6" type="Sprite2D" parent="Background"]
+position = Vector2(669, 1008)
+scale = Vector2(0.294792, 0.338889)
+texture = ExtResource("8_u21f3")
+
+[node name="Sprite2D7" type="Sprite2D" parent="Background"]
+position = Vector2(954, 998)
+scale = Vector2(1.79, 1.62)
+texture = ExtResource("9_5vdes")
+
+[node name="Sprite2D8" type="Sprite2D" parent="Background"]
+position = Vector2(1250, 1011)
+scale = Vector2(2.8, 2.38)
+texture = ExtResource("10_ds6ux")
+
+[node name="Sprite2D9" type="Sprite2D" parent="Background"]
+position = Vector2(1541, 1000)
+scale = Vector2(4.98438, 4.125)
+texture = ExtResource("11_6lhaf")
