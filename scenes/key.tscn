@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://ckjrh0pq7h17n"]
+
+[ext_resource type="Texture2D" uid="uid://c2ssxagsu4jxs" path="res://assets/images/Key.png" id="1_yk2u2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fttkb"]
+radius = 78.0064
+
+[node name="key" type="Area2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1, 1)
+scale = Vector2(1.805, 2.015)
+texture = ExtResource("1_yk2u2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_fttkb")
