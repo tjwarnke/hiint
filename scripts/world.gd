@@ -373,7 +373,7 @@ func update_dungeon_camera_bounds():
 	
 	# Set camera bounds to fit the library level
 	# Now using player's position for left boundary, not the threshold position
-	var left_boundary = 23000  # Generous padding to the left
+	var left_boundary = 20000  # Generous padding to the left
 	var right_boundary = 36000  # Approximate width of library area
 	
 	# Ensure we don't go too far left

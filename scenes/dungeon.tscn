@@ -11,7 +11,7 @@
 [ext_resource type="Script" path="res://scripts/move_killer.gd" id="10_pnxem"]
 [ext_resource type="PackedScene" uid="uid://bhyo0x8braslp" path="res://scenes/killer.tscn" id="11_7wjui"]
 [ext_resource type="PackedScene" uid="uid://cq0g1vfvhn5q2" path="res://scenes/key.tscn" id="12_7a5bf"]
-[ext_resource type="Script" path="res://scenes/killer_dun.gd" id="12_7wjui"]
+[ext_resource type="Script" uid="uid://colkybm34tm7f" path="res://scenes/killer_dun.gd" id="12_7wjui"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ys5p8"]
 texture = ExtResource("1_fpimf")
@@ -17254,6 +17254,7 @@ sources/1 = SubResource("TileSetAtlasSource_hsn05")
 sources/2 = SubResource("TileSetAtlasSource_etlrv")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fpimf"]
+size = Vector2(29.75, 99.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hsn05"]
 size = Vector2(46.25, 110.75)
@@ -17362,6 +17363,7 @@ tile_set = SubResource("TileSet_tkjml")
 [node name="Area2D" type="Area2D" parent="Door"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Door/Area2D"]
+position = Vector2(1554.13, 480)
 shape = SubResource("RectangleShape2D_fpimf")
 
 [node name="Doors" type="TileMapLayer" parent="."]
@@ -17531,7 +17533,15 @@ position = Vector2(890, 850)
 script = ExtResource("12_7wjui")
 
 [node name="key" parent="." instance=ExtResource("12_7a5bf")]
-position = Vector2(11495, 2059)
+position = Vector2(10008, 2739)
+
+[node name="Label" type="Label" parent="."]
+offset_left = 6282.0
+offset_top = 1724.0
+offset_right = 6675.0
+offset_bottom = 1756.0
+theme_override_font_sizes/font_size = 23
+text = "This door needs a key to be opened"
 
 [connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]
 [connection signal="body_entered" from="key" to="key" method="_on_body_entered"]
