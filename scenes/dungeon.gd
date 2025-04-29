@@ -108,11 +108,11 @@ func _input(event: InputEvent) -> void:
 		lever2_action()
 	if in_lever3 and event.is_action_pressed("pick_up"):
 		lever3_action()
-	if in_glass1 and event.is_action_pressed("pick_up") and player.hasItem(hammer):
+	if in_glass1 and event.is_action_pressed("pick_up") and player.has_item("hammer"):
 		glass1_break()
-	if in_glass2 and event.is_action_pressed("pick_up") and player.hasItem(hammer):
+	if in_glass2 and event.is_action_pressed("pick_up") and player.has_item("hammer"):
 		glass2_break()
-	if in_door and event.is_action_pressed("pick_up") and player.hasItem(key):
+	if in_door and event.is_action_pressed("pick_up") and player.has_item("key"):
 		open_door()
 	if in_puz_lvr_1 and event.is_action_pressed("pick_up"):
 		checkPuz1 = !checkPuz1

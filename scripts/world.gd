@@ -361,6 +361,7 @@ func _on_library_threshold_entered(body):
 		pass
 
 func update_dungeon_camera_bounds():
+	# Ensure camera is properly set up to follow the player
 	camera.position_smoothing_enabled = true
 	camera.position_smoothing_speed = 5.0
 	
@@ -372,11 +373,11 @@ func update_dungeon_camera_bounds():
 	
 	# Set camera bounds to fit the library level
 	# Now using player's position for left boundary, not the threshold position
-	var right_boundary = player_pos.x - 1000  # Generous padding to the left
-	var left_boundary = right_boundary + 100000  # Approximate width of library area
+	var left_boundary = 23000  # Generous padding to the left
+	var right_boundary = 36000  # Approximate width of library area
 	
 	# Ensure we don't go too far left
-	right_boundary = max(left_boundary, 12000)  # Don't go below X=12000
+	#left_boundary = max(left_boundary, 12000)  # Don't go below X=12000
 	
 	camera.limit_left = left_boundary
 	camera.limit_right = right_boundary
@@ -398,6 +399,8 @@ func _on_dungeon_threshold_entered(body):
 	var main_music = get_node_or_null("/root/MainMusic")
 	if main_music and main_music.has_method("fade_out_music_only"):
 		main_music.fade_out_music_only(2.0)
+		
+	camera.set_dungeon_mode(true)
 	
 	setup_dungeon_music()
 	

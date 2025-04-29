@@ -1,13 +1,13 @@
-[gd_scene load_steps=30 format=4 uid="uid://cfrd10xr8oexr"]
+[gd_scene load_steps=29 format=4 uid="uid://cfrd10xr8oexr"]
 
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_fpimf"]
-[ext_resource type="Script" path="res://scenes/dungeon.gd" id="1_fvacq"]
+[ext_resource type="Script" uid="uid://dytxnrp3hwnna" path="res://scenes/dungeon.gd" id="1_fvacq"]
 [ext_resource type="Texture2D" uid="uid://y0dxq16y7wu0" path="res://dungeon_sidescroller-Raou/Tilesetv3.png" id="2_0wj4k"]
 [ext_resource type="Texture2D" uid="uid://ctjiur77808b3" path="res://FreeCuteTileset/Tileset.png" id="3_fvacq"]
-[ext_resource type="Texture2D" uid="uid://c0pt58yn38ry4" path="res://assets/images/Hammer.png" id="5_hsn05"]
 [ext_resource type="TileSet" uid="uid://d1dkd72yf40tm" path="res://assets/images/level.tres" id="5_ys5p8"]
 [ext_resource type="Texture2D" uid="uid://c2ssxagsu4jxs" path="res://assets/images/Key.png" id="6_etlrv"]
 [ext_resource type="Texture2D" uid="uid://ckr2mqpwlvqe5" path="res://assets/images/vecteezy_an-8-bit-retro-styled-pixel-art-illustration-of-a-stone-sword_19527033.png" id="8_etlrv"]
+[ext_resource type="PackedScene" uid="uid://dljxp8sy8p5ps" path="res://scenes/hammer.tscn" id="9_5hkx1"]
 [ext_resource type="Texture2D" uid="uid://dxyajowm7yt5g" path="res://assets/images/lever.png" id="9_tkjml"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ys5p8"]
@@ -17237,9 +17237,6 @@ sources/2 = SubResource("TileSetAtlasSource_etlrv")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hsn05"]
 size = Vector2(46.25, 110.75)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_0wj4k"]
-radius = 117.004
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_fvacq"]
 radius = 72.6154
 
@@ -17366,18 +17363,6 @@ position = Vector2(1, 1696)
 
 [node name="AttachRight" type="Node2D" parent="."]
 position = Vector2(10303, 2089)
-
-[node name="Hammer" type="Node2D" parent="."]
-
-[node name="Area2D" type="Area2D" parent="Hammer"]
-position = Vector2(11866, 2077)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hammer/Area2D"]
-shape = SubResource("CircleShape2D_0wj4k")
-
-[node name="Sprite2D" type="Sprite2D" parent="Hammer"]
-position = Vector2(11875, 2067)
-texture = ExtResource("5_hsn05")
 
 [node name="Lever8" type="Node2D" parent="."]
 position = Vector2(9950, 2085)
@@ -17517,3 +17502,6 @@ texture = ExtResource("9_tkjml")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Lever/Area2D"]
 position = Vector2(-2.5, -3.5)
 shape = SubResource("RectangleShape2D_5hkx1")
+
+[node name="hammer" parent="." instance=ExtResource("9_5hkx1")]
+position = Vector2(11794, 2085)

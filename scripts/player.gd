@@ -168,7 +168,6 @@ func _on_powerup_collected(power_type: String, power_value: int) -> void:
 func has_item(item_name: String):
 	if held_items.is_empty():
 		return false
-		
 	for item in held_items:
 		if item.name.contains(item_name):
 			return true
