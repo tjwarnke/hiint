@@ -1,17 +1,17 @@
-[gd_scene load_steps=33 format=4 uid="uid://cfrd10xr8oexr"]
+[gd_scene load_steps=32 format=4 uid="uid://cfrd10xr8oexr"]
 
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_fpimf"]
 [ext_resource type="Script" uid="uid://dytxnrp3hwnna" path="res://scenes/dungeon.gd" id="1_fvacq"]
 [ext_resource type="Texture2D" uid="uid://y0dxq16y7wu0" path="res://dungeon_sidescroller-Raou/Tilesetv3.png" id="2_0wj4k"]
 [ext_resource type="Texture2D" uid="uid://ctjiur77808b3" path="res://FreeCuteTileset/Tileset.png" id="3_fvacq"]
 [ext_resource type="TileSet" uid="uid://d1dkd72yf40tm" path="res://assets/images/level.tres" id="5_ys5p8"]
-[ext_resource type="Texture2D" uid="uid://c2ssxagsu4jxs" path="res://assets/images/Key.png" id="6_etlrv"]
 [ext_resource type="Texture2D" uid="uid://ckr2mqpwlvqe5" path="res://assets/images/vecteezy_an-8-bit-retro-styled-pixel-art-illustration-of-a-stone-sword_19527033.png" id="8_etlrv"]
 [ext_resource type="PackedScene" uid="uid://dljxp8sy8p5ps" path="res://scenes/hammer.tscn" id="9_5hkx1"]
 [ext_resource type="Texture2D" uid="uid://dxyajowm7yt5g" path="res://assets/images/lever.png" id="9_tkjml"]
 [ext_resource type="Script" path="res://scripts/move_killer.gd" id="10_pnxem"]
 [ext_resource type="PackedScene" uid="uid://bhyo0x8braslp" path="res://scenes/killer.tscn" id="11_7wjui"]
-[ext_resource type="Script" uid="uid://colkybm34tm7f" path="res://scenes/killer_dun.gd" id="12_7wjui"]
+[ext_resource type="PackedScene" uid="uid://cq0g1vfvhn5q2" path="res://scenes/key.tscn" id="12_7a5bf"]
+[ext_resource type="Script" path="res://scenes/killer_dun.gd" id="12_7wjui"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ys5p8"]
 texture = ExtResource("1_fpimf")
@@ -17243,9 +17243,6 @@ size = Vector2(46.25, 110.75)
 [sub_resource type="CircleShape2D" id="CircleShape2D_fvacq"]
 radius = 72.6154
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ys5p8"]
-radius = 111.306
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_etlrv"]
 size = Vector2(47.75, 110.75)
 
@@ -17396,19 +17393,6 @@ position = Vector2(9950, 2085)
 position = Vector2(-1393, 4)
 shape = SubResource("CircleShape2D_fvacq")
 
-[node name="Key" type="Node2D" parent="."]
-position = Vector2(63, -6)
-
-[node name="Area2D" type="Area2D" parent="Key"]
-position = Vector2(10020, 2762)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Key/Area2D"]
-shape = SubResource("CircleShape2D_ys5p8")
-
-[node name="Sprite2D" type="Sprite2D" parent="Key"]
-position = Vector2(10031, 2789)
-texture = ExtResource("6_etlrv")
-
 [node name="CageDoor1" type="TileMapLayer" parent="."]
 scale = Vector2(4, 4)
 tile_map_data = PackedByteArray("AACgABsAAQAJACsAABCgABwAAQAJACwAABCgAB0AAQAJACsAABCgAB4AAQAJACwAABCgAB8AAQAJACsAABCgACAAAQAJACwAABA=")
@@ -17526,5 +17510,8 @@ shape = SubResource("CapsuleShape2D_7a5bf")
 z_index = 4
 position = Vector2(890, 850)
 script = ExtResource("12_7wjui")
+
+[node name="key" parent="." instance=ExtResource("12_7a5bf")]
+position = Vector2(10045, 2746)
 
 [connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]
