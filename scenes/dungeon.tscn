@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=4 uid="uid://cfrd10xr8oexr"]
+[gd_scene load_steps=32 format=4 uid="uid://cfrd10xr8oexr"]
 
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_fpimf"]
 [ext_resource type="Script" uid="uid://dytxnrp3hwnna" path="res://scenes/dungeon.gd" id="1_fvacq"]
@@ -9,6 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://ckr2mqpwlvqe5" path="res://assets/images/vecteezy_an-8-bit-retro-styled-pixel-art-illustration-of-a-stone-sword_19527033.png" id="8_etlrv"]
 [ext_resource type="PackedScene" uid="uid://dljxp8sy8p5ps" path="res://scenes/hammer.tscn" id="9_5hkx1"]
 [ext_resource type="Texture2D" uid="uid://dxyajowm7yt5g" path="res://assets/images/lever.png" id="9_tkjml"]
+[ext_resource type="Script" path="res://scripts/move_killer.gd" id="10_pnxem"]
+[ext_resource type="PackedScene" uid="uid://bhyo0x8braslp" path="res://scenes/killer.tscn" id="11_7wjui"]
+[ext_resource type="PackedScene" uid="uid://cq0g1vfvhn5q2" path="res://scenes/key.tscn" id="12_7a5bf"]
+[ext_resource type="Script" path="res://scenes/killer_dun.gd" id="12_7wjui"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ys5p8"]
 texture = ExtResource("1_fpimf")
@@ -17313,6 +17317,10 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5hkx1"]
 size = Vector2(305, 147)
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7a5bf"]
+radius = 29.0
+height = 1296.0
+
 [node name="Dungeon" type="Node2D"]
 script = ExtResource("1_fvacq")
 
@@ -17505,3 +17513,22 @@ shape = SubResource("RectangleShape2D_5hkx1")
 
 [node name="hammer" parent="." instance=ExtResource("9_5hkx1")]
 position = Vector2(11794, 2085)
+
+[node name="MoveKiller" type="Area2D" parent="." node_paths=PackedStringArray("npc")]
+position = Vector2(5, 1286)
+script = ExtResource("10_pnxem")
+npc = NodePath("../Killer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MoveKiller"]
+position = Vector2(1100, -888)
+shape = SubResource("CapsuleShape2D_7a5bf")
+
+[node name="Killer" parent="." instance=ExtResource("11_7wjui")]
+z_index = 4
+position = Vector2(890, 850)
+script = ExtResource("12_7wjui")
+
+[node name="key" parent="." instance=ExtResource("12_7a5bf")]
+position = Vector2(10045, 2746)
+
+[connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]
