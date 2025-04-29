@@ -218,7 +218,7 @@ func handle_player_movement(delta):
 		player.position.x += move_speed * delta
 		move_distance -= move_speed * delta
 		if move_distance <= 0:
-			moving_player = false  
+			moving_player = false
 			drop_wall()
 
 
@@ -436,6 +436,11 @@ func move_player_slowly():
 		moving_player = true
 		# Set a reasonable limit to prevent infinite movement
 		move_distance = min(move_distance, 1000)  # Prevent excessive movement distance
+		
+func move_player_up_slowly():
+	if player:
+		player.set_can_move(false)
+		moving_player = true
 
 func drop_wall():
 	if wall_fall:

@@ -216,7 +216,7 @@ func _input(event):
 		text.text = "Do you need a hug, darling?"
 		await get_tree().create_timer(3).timeout
 		sprite.texture = butler
-		text.text = "Player, it is your job to fild the killer\n Go now!"
+		text.text = "Player, it is your job to find the killer\n Go now!"
 		await get_tree().create_timer(3).timeout
 		dialogue.visible = false
 		text.visible = false
@@ -235,7 +235,7 @@ func _input(event):
 		text.text = "oh dear..."
 		await get_tree().create_timer(3).timeout
 		sprite.texture = butler
-		text.text = "Player, it is your job to fild the killer\n Go now!"
+		text.text = "Player, it is your job to find the killer\n Go now!"
 		await get_tree().create_timer(3).timeout
 		dialogue.visible = false
 		text.visible = false
@@ -266,7 +266,7 @@ func _input(event):
 		text.text = "Noooooooo, Marvy. How could you?\nYou can’t die on me "
 		await get_tree().create_timer(3).timeout
 		sprite.texture = butler
-		text.text = "Player, it is your job to fild the killer\n Go now!"
+		text.text = "Player, it is your job to find the killer\n Go now!"
 		await get_tree().create_timer(3).timeout
 		dialogue.visible = false
 		text.visible = false
