@@ -280,9 +280,19 @@ func _on_dining_threshold_entered(body):
 		await wait_until_grounded()
 		
 		update_camera_bounds()
-		$Rain.queue_free()
 		# Play a transition animation
 		play_level_transition("dining")
+		
+		# Remove Cabin and Tutorial from the scene tree
+		var cabin = get_node_or_null("Cabin")
+		if cabin:
+			cabin.queue_free()
+		
+		var tutorial = get_node_or_null("Tutorial")
+		if tutorial:
+			await get_tree().create_timer(3.0).timeout
+			if is_instance_valid(tutorial):
+				tutorial.queue_free()
 		
 		# Check if player has a torch and force torch drop
 		if player and player.has_method("has_item") and player.has_item("Torch"):

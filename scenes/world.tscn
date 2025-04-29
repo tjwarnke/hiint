@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=36 format=3 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://ctbtqie8fru15" path="res://scenes/torch.tscn" id="6_lakw3"]
@@ -21,9 +21,9 @@
 [ext_resource type="AudioStream" uid="uid://dfotkcdfygmdi" path="res://assets/audio/dungeon.mp3" id="17_7iits"]
 [ext_resource type="Texture2D" uid="uid://i5go4qxcreqg" path="res://assets/images/torch.png" id="18_xgqkh"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="19_munwf"]
-[ext_resource type="Script" path="res://scenes/dj.gd" id="21_7iits"]
+[ext_resource type="Script" uid="uid://bdjlnat2pl14w" path="res://scenes/dj.gd" id="21_7iits"]
 [ext_resource type="PackedScene" uid="uid://cjhvjqqvgyv6m" path="res://scenes/hotbar.tscn" id="22_2lf6f"]
-[ext_resource type="Script" path="res://scenes/dash.gd" id="22_oo54l"]
+[ext_resource type="Script" uid="uid://drwbnkryc1wcf" path="res://scenes/dash.gd" id="22_oo54l"]
 [ext_resource type="Texture2D" uid="uid://d3ubltkdb3fwi" path="res://assets/images/char_painting.png" id="27_0nbtd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2lf6f"]
@@ -33,15 +33,15 @@ border_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7iits"]
 bg_color = Color(0.6, 0.372549, 0.247059, 1)
 
-[sub_resource type="Curve" id="Curve_7t5mc"]
-_data = [Vector2(0.00729926, 0.54065), 0.0, 0.0, 0, 0, Vector2(0.313869, 0.833333), 0.0, 0.0, 0, 0, Vector2(0.726277, 0.731707), 0.0, 0.0, 0, 0, Vector2(0.981752, 0.678862), 0.0, 0.0, 0, 0]
-point_count = 4
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kpybi"]
 size = Vector2(147.969, 124)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ts3gi"]
 size = Vector2(78, 164.5)
+
+[sub_resource type="Curve" id="Curve_7t5mc"]
+_data = [Vector2(0.00729926, 0.54065), 0.0, 0.0, 0, 0, Vector2(0.313869, 0.833333), 0.0, 0.0, 0, 0, Vector2(0.726277, 0.731707), 0.0, 0.0, 0, 0, Vector2(0.981752, 0.678862), 0.0, 0.0, 0, 0]
+point_count = 4
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_2lf6f"]
 a = Vector2(-6, -138)
@@ -152,23 +152,6 @@ z_index = 1
 position = Vector2(-985, -542)
 color = Color(0.18359, 0.183591, 0.18359, 1)
 
-[node name="Rain" type="CPUParticles2D" parent="."]
-z_index = 2
-position = Vector2(3801, -142)
-amount = 10000
-texture = ExtResource("13_dss4m")
-lifetime = 2.5
-preprocess = 5.0
-fixed_fps = 24
-emission_shape = 3
-emission_rect_extents = Vector2(4200, 1)
-angle_min = -1.0
-angle_max = 1.0
-scale_amount_min = 0.2
-scale_amount_max = 0.8
-scale_amount_curve = SubResource("Curve_7t5mc")
-color = Color(0.442911, 0.442911, 0.442911, 1)
-
 [node name="cabin" parent="." instance=ExtResource("12_e3hyu")]
 
 [node name="Torch" parent="cabin" groups=["item"] instance=ExtResource("6_lakw3")]
@@ -216,6 +199,24 @@ shape = SubResource("RectangleShape2D_kpybi")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/Stump2"]
 position = Vector2(-44.5, -17)
 shape = SubResource("RectangleShape2D_ts3gi")
+
+[node name="Rain" type="CPUParticles2D" parent="Tutorial"]
+z_index = 2
+position = Vector2(2870, 9)
+scale = Vector2(2, 2)
+amount = 10000
+texture = ExtResource("13_dss4m")
+lifetime = 2.5
+preprocess = 5.0
+fixed_fps = 24
+emission_shape = 3
+emission_rect_extents = Vector2(4200, 1)
+angle_min = -1.0
+angle_max = 1.0
+scale_amount_min = 0.2
+scale_amount_max = 0.8
+scale_amount_curve = SubResource("Curve_7t5mc")
+color = Color(0.442911, 0.442911, 0.442911, 1)
 
 [node name="Dungeon" parent="." instance=ExtResource("16_2lf6f")]
 position = Vector2(11664, 1648)
@@ -309,6 +310,13 @@ shape = SubResource("CircleShape2D_kpybi")
 position = Vector2(12974, 615)
 scale = Vector2(0.206641, 0.195833)
 texture = ExtResource("27_0nbtd")
+
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(13026.5, 630)
+scale = Vector2(0.284373, 0.229948)
+texture = ExtResource("28_37qwj")
 
 [node name="LibDoor" type="Camera2D" parent="."]
 position = Vector2(15926.5, 405.5)
