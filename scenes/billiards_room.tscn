@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://bnukkoerv8j41" path="res://assets/images/10-31-84-4-14-2025 (1).png" id="9_8up5l"]
 [ext_resource type="Texture2D" uid="uid://b48vnnvk3q066" path="res://assets/images/PoolTable.png" id="11_c2bqx"]
 [ext_resource type="PackedScene" uid="uid://bhyo0x8braslp" path="res://scenes/killer.tscn" id="11_uv42u"]
-[ext_resource type="Script" path="res://scripts/move_killer.gd" id="12_iglv8"]
+[ext_resource type="Script" uid="uid://dmrv5hga4p1oq" path="res://scripts/move_killer.gd" id="12_iglv8"]
 [ext_resource type="PackedScene" uid="uid://dcdv6e0x7117h" path="res://scenes/8Ball.tscn" id="13_iglv8"]
 [ext_resource type="Texture2D" uid="uid://cxj8to4ptdso" path="res://assets/images/medal.png" id="15_bub4c"]
 
