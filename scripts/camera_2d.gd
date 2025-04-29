@@ -12,6 +12,9 @@ var original_drag_enabled = true
 var last_player_position = Vector2.ZERO
 var smooth_position = Vector2.ZERO
 
+var in_dungeon_area = false
+var dungeon_min_y = 100
+
 func _ready():
 	# Set initial zoom
 	zoom = zoom_level
@@ -27,6 +30,9 @@ func _process(delta):
 		var target_position = Vector2.ZERO
 		if in_library_area:
 			target_position = player.position  # Follow both X and Y in library
+		elif in_dungeon_area:
+			target_position = player.position
+			target_position.y = max(dungeon_min_y, player.position.y)
 		else:
 			target_position = Vector2(player.position.x, fixed_y)  # Fixed Y elsewhere
 		
@@ -75,3 +81,24 @@ func set_library_mode(enabled: bool):
 		drag_horizontal_enabled = original_drag_enabled
 		smooth_position.y = fixed_y
 		position.y = fixed_y
+		
+func set_dungeon_mode(enabled: bool):
+	in_dungeon_area = enabled
+	if enabled:
+		# Zoom in closer for dungeon feel
+		var tween = create_tween()
+		tween.tween_property(self, "zoom", Vector2(0.3, 0.3), 0.5)
+		
+		# Optional: If you want to follow Y axis too, like in library
+		in_library_area = true  # Reuse existing logic
+		
+		# Optional: Smooth transitions even more inside dungeon
+		position_smoothing_enabled = true
+		position_smoothing_speed = 4.0
+	else:
+		# Restore normal zoom and behavior
+		var tween = create_tween()
+		tween.tween_property(self, "zoom", zoom_level, 0.5)
+		
+		in_library_area = false
+		position_smoothing_enabled = false

@@ -8,10 +8,11 @@
 radius = 386.186
 
 [node name="Killer" type="Node2D"]
+position = Vector2(-7, -10)
 script = ExtResource("1_u7bjb")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-176.5, 142.5)
+position = Vector2(-3.05176e-05, -1.52588e-05)
 scale = Vector2(0.448438, 0.554687)
 texture = ExtResource("2_om2as")
 
@@ -22,6 +23,7 @@ position = Vector2(17.2043, 38.7879)
 shape = SubResource("CircleShape2D_wyvhv")
 
 [node name="MoveTimer" type="Timer" parent="."]
+wait_time = 2.0
 one_shot = true
 
 [node name="MoveSound" type="AudioStreamPlayer2D" parent="."]

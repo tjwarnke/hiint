@@ -157,6 +157,9 @@ func complete_transition():
 		handle_error("Failed to get loaded cabin scene", true)
 		return
 	
+	# Hide the mouse cursor when game loads
+	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	
 	# Don't adjust music volume here - let the world scene handle it with a timer
 	
 	# Change to cabin scene

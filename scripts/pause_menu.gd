@@ -212,6 +212,8 @@ func _unhandled_input(event):
 			# Don't pause the entire tree, just pause the game logic
 			get_tree().paused = true
 			show()
+			# Show the mouse cursor when pause menu is shown
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			# Force update size and position when shown
 			apply_camera_based_setup()
 			# Hide darkness when the pause menu is shown
@@ -233,6 +235,8 @@ func enable_all_buttons():
 func _on_resume_pressed():
 	get_tree().paused = false
 	hide()
+	# Hide the mouse cursor when returning to the game
+	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	# Restore darkness when the pause menu is hidden
 	toggle_darkness(true)
 	# Emit the resume_game signal

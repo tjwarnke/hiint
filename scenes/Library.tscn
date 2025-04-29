@@ -1,10 +1,9 @@
-[gd_scene load_steps=43 format=4 uid="uid://dhh62wmxavnow"]
+[gd_scene load_steps=37 format=4 uid="uid://dhh62wmxavnow"]
 
 [ext_resource type="Script" uid="uid://clpleomktaup1" path="res://scripts/library.gd" id="1_cupxr"]
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_gl8ag"]
 [ext_resource type="Texture2D" uid="uid://y0dxq16y7wu0" path="res://dungeon_sidescroller-Raou/Tilesetv3.png" id="2_mfc4n"]
 [ext_resource type="Texture2D" uid="uid://ctjiur77808b3" path="res://FreeCuteTileset/Tileset.png" id="3_vglhb"]
-[ext_resource type="Texture2D" uid="uid://dxyajowm7yt5g" path="res://assets/images/lever.png" id="5_24kl2"]
 [ext_resource type="Texture2D" uid="uid://d4lno7igr6ti5" path="res://assets/CatumetGamesFurniture.png" id="5_mxqp8"]
 [ext_resource type="Script" uid="uid://clt58776fqx44" path="res://scripts/book_shelf_1.gd" id="8_old6g"]
 [ext_resource type="Script" uid="uid://b0eipyqtfs7et" path="res://scripts/book_shelf_2.gd" id="9_fio33"]
@@ -17,9 +16,9 @@
 [ext_resource type="Texture2D" uid="uid://tew0cb1d6vlt" path="res://assets/images/2nd.png" id="15_24ltb"]
 [ext_resource type="Texture2D" uid="uid://blwxrsffpybr6" path="res://assets/images/3rd.png" id="16_queiu"]
 [ext_resource type="Texture2D" uid="uid://qftq3opxkymg" path="res://assets/images/Luigio_with frame_darkened.png" id="17_ajy2i"]
-[ext_resource type="PackedScene" uid="uid://caw125fejkkxe" path="res://scenes/Book.tscn" id="18_24ltb"]
 [ext_resource type="Texture2D" uid="uid://bk5j3n67tsf38" path="res://assets/images/Abook.png" id="19_tbs7l"]
 [ext_resource type="Texture2D" uid="uid://bujqa2kqc3p01" path="res://assets/images/Vbook.png" id="20_7vtgg"]
+[ext_resource type="Texture2D" uid="uid://bt7hok5t0swy1" path="res://assets/images/armband.png" id="20_ajy2i"]
 [ext_resource type="Texture2D" uid="uid://1ywc3yc7k6j3" path="res://assets/images/Nbook.png" id="21_pe02e"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x4li0"]
@@ -30131,61 +30130,6 @@ physics_layer_0/collision_layer = 255
 physics_layer_0/collision_mask = 127
 sources/0 = SubResource("TileSetAtlasSource_24kl2")
 
-[sub_resource type="Animation" id="Animation_e6m40"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Lever/Pivot:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.233333),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.785398]
-}
-
-[sub_resource type="Animation" id="Animation_cjn25"]
-resource_name = "lever"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Lever/Pivot:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.785398, -0.785398]
-}
-
-[sub_resource type="Animation" id="Animation_ky021"]
-resource_name = "lever_off"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Lever/Pivot:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [-0.785398, 0.785398]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_old6g"]
-_data = {
-&"RESET": SubResource("Animation_e6m40"),
-&"lever": SubResource("Animation_cjn25"),
-&"lever_off": SubResource("Animation_ky021")
-}
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fio33"]
-size = Vector2(305, 147)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pggvk"]
 size = Vector2(184.517, 210.39)
 
@@ -30195,6 +30139,9 @@ size = Vector2(184.517, 210.39)
 gradient = SubResource("Gradient_tbs7l")
 fill_from = Vector2(0, 0.530488)
 fill_to = Vector2(1, 0.542683)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_queiu"]
+size = Vector2(99, 89)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ky021"]
 radius = 192.094
@@ -30208,9 +30155,6 @@ radius = 172.235
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pa00x"]
 radius = 29.0
 height = 710.0
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_oglxf"]
-size = Vector2(97.3076, 62.0953)
 
 [node name="Library" type="Node2D"]
 script = ExtResource("1_cupxr")
@@ -30243,32 +30187,6 @@ scale = Vector2(4, 4)
 tile_map_data = PackedByteArray("AAAAABAAAQAAAAIAAAABABAAAQAAAAIAAAACABAAAQAAAAIAAAADABAAAQAAAAIAAAAEABAAAQAAAAIAAAAFABAAAQAAAAIAAAAGABAAAQAAAAIAAAAHABAAAQAAAAIAAAAIABAAAQAAAAIAAAAJABAAAQAAAAIAAAAKABAAAQAAAAIAAAALABAAAQAAAAIAAAAMABAAAQAAAAIAAAANABAAAQAAAAIAAAAOABAAAQAAAAIAAAAPABAAAQAAAAIAAAAQABAAAQAAAAIAAAARABAAAQAAAAIAAAASABAAAQAAAAIAAAATABAAAQAAAAIAAAAUABAAAQAAAAIAAAAVABAAAQAAAAIAAAAWABAAAQAAAAIAAAAXABAAAQAAAAIAAAAYABAAAQAAAAIAAAAZABAAAQAAAAIAAAAaABAAAQAAAAIAAAAbABAAAQAAAAIAAAAcABAAAQAAAAIAAAAdABAAAQAAAAIAAAAeABAAAQAAAAIAAAAfABAAAQAAAAIAAAAgABAAAQAAAAIAAAAhABAAAQAAAAIAAAAiABAAAQAAAAIAAAAjABAAAQAAAAIAAAAkABAAAQAAAAIAAAAlABAAAQAAAAIAAAAmABAAAQAAAAIAAAAnABAAAQAAAAIAAAAoABAAAQAAAAIAAAApABAAAQAAAAIAAAAqABAAAQAAAAIAAAArABAAAQAAAAIAAAAsABAAAQAAAAIAAAAtABAAAQAAAAIAAAAuABAAAQAAAAIAAAAvABAAAQAAAAIAAAAwABAAAQAAAAIAAAAxABAAAQAAAAIAAAAyABAAAQAAAAIAAAAzABAAAQAAAAIAAAA0ABAAAQAAAAIAAAA1ABAAAQAAAAIAAAA2ABAAAQAAAAIAAAA3ABAAAQAAAAIAAAA4ABAAAQAAAAIAAAA5ABAAAQAAAAIAAAA6ABAAAQAAAAIAAAA7ABAAAQAAAAIAAAA8ABAAAQAAAAIAAAA9ABAAAQAAAAIAAAA+ABAAAQAAAAIAAAA/ABAAAQAAAAIAAABAABAAAQAAAAIAAAAQAPD/AQAKAAkAAAAPAPD/AQAKAAkAAAAOAPD/AQAKAAkAAAANAPD/AQAKAAkAAAAMAPD/AQAKAAkAAAALAPD/AQAKAAkAAAAKAPD/AQAKAAkAAAAJAPD/AQAKAAkAAAAIAPD/AQAKAAkAAAAHAPD/AQAKAAkAAAAGAPD/AQAKAAkAAAAFAPD/AQAKAAkAAAAEAPD/AQAKAAkAAAADAPD/AQAKAAkAAAACAPD/AQAKAAkAAAABAPD/AQAKAAkAAAAAAPD/AQAKAAkAAAAwAAAAAQAKAAkAAAAxAAAAAQAKAAkAAAAyAAAAAQAKAAkAAAAzAAAAAQAKAAkAAAA0AAAAAQAKAAkAAAA1AAAAAQAKAAkAAAA2AAAAAQAKAAkAAAA3AAAAAQAKAAkAAAA4AAAAAQAKAAkAAAA5AAAAAQAKAAkAAAA6AAAAAQAKAAkAAAA7AAAAAQAKAAkAAAA8AAAAAQAKAAkAAAA9AAAAAQAKAAkAAAA+AAAAAQAKAAkAAAA/AAAAAQAKAAkAAABAAAAAAQAKAAkAAAAQAOT/AQAKAAkAAAARAOT/AQAKAAkAAAASAOT/AQAKAAkAAAATAOT/AQAKAAkAAAAUAOT/AQAKAAkAAAAVAOT/AQAKAAkAAAAWAOT/AQAKAAkAAAAXAOT/AQAKAAkAAAAYAOT/AQAKAAkAAAAZAOT/AQAKAAkAAAAaAOT/AQAKAAkAAAAbAOT/AQAKAAkAAAAcAOT/AQAKAAkAAAAdAOT/AQAKAAkAAAAeAOT/AQAKAAkAAAAfAOT/AQAKAAkAAAAgAOT/AQAKAAkAAAAhAOT/AQAKAAkAAAAiAOT/AQAKAAkAAAAjAOT/AQAKAAkAAAAkAOT/AQAKAAkAAAAlAOT/AQAKAAkAAAAmAOT/AQAKAAkAAAAnAOT/AQAKAAkAAAAoAOT/AQAKAAkAAAApAOT/AQAKAAkAAAAqAOT/AQAKAAkAAAArAOT/AQAKAAkAAAAsAOT/AQAKAAkAAAAtAOT/AQAKAAkAAAAuAOT/AQAKAAkAAAAvAOT/AQAKAAkAAAAwAOT/AQAKAAkAAAD6/xAAAQABAAIAAAD7/xAAAQABAAIAAAD8/xAAAQABAAIAAAD9/xAAAQABAAIAAAD+/xAAAQABAAIAAAD//xAAAQABAAIAAAA=")
 tile_set = SubResource("TileSet_154se")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_old6g")
-}
-
-[node name="Lever" type="Area2D" parent="."]
-position = Vector2(3487, 252)
-
-[node name="Pivot" type="Node2D" parent="Lever"]
-position = Vector2(-12, 81)
-rotation = 0.785398
-
-[node name="lever_sprite" type="Sprite2D" parent="Lever/Pivot"]
-position = Vector2(-2.82849, -137.179)
-texture = ExtResource("5_24kl2")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Lever"]
-position = Vector2(-2.5, -3.5)
-shape = SubResource("RectangleShape2D_fio33")
-
-[node name="AttachLeft" type="Node2D" parent="."]
-position = Vector2(1, 1336)
-
-[node name="AttachRight" type="Node2D" parent="."]
-position = Vector2(4159, 1336)
-
 [node name="Bookshelf" type="Node2D" parent="."]
 z_index = 1
 position = Vector2(4043, 75)
@@ -30276,6 +30194,7 @@ scale = Vector2(2.54889, 2.57778)
 script = ExtResource("8_old6g")
 
 [node name="Area2D" type="Area2D" parent="Bookshelf"]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bookshelf/Area2D"]
 position = Vector2(-49.8256, -14.3534)
@@ -30299,29 +30218,50 @@ script = ExtResource("9_fio33")
 position = Vector2(27.1267, -2.52363)
 shape = SubResource("RectangleShape2D_pggvk")
 
-[node name="Nana_Auto_fall" parent="." instance=ExtResource("10_pa00x")]
-position = Vector2(297, -541)
+[node name="Nana" parent="." instance=ExtResource("10_pa00x")]
+position = Vector2(195, -559)
+gravity_scale = 0.5
 
-[node name="Sprite2D2" type="Sprite2D" parent="Nana_Auto_fall"]
+[node name="Area2D2" type="Area2D" parent="Nana"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Nana/Area2D2"]
+position = Vector2(1.5, -1.5)
+shape = SubResource("RectangleShape2D_queiu")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Nana"]
 position = Vector2(-1.32322e-05, 1.19209e-05)
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("21_pe02e")
 
-[node name="Anna_Auto_fall" parent="." instance=ExtResource("10_pa00x")]
-position = Vector2(400, -543)
+[node name="Anna" parent="." instance=ExtResource("10_pa00x")]
+position = Vector2(459, -625)
+gravity_scale = 0.5
 
-[node name="Sprite2D2" type="Sprite2D" parent="Anna_Auto_fall"]
+[node name="Sprite2D2" type="Sprite2D" parent="Anna"]
 position = Vector2(3.57628e-06, -1.09673e-05)
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("19_tbs7l")
 
-[node name="Vlad_Auto_fall" parent="." instance=ExtResource("10_pa00x")]
-position = Vector2(339, -505)
+[node name="Area2D2" type="Area2D" parent="Anna"]
 
-[node name="Sprite2D2" type="Sprite2D" parent="Vlad_Auto_fall"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Anna/Area2D2"]
+position = Vector2(1.5, -1.5)
+shape = SubResource("RectangleShape2D_queiu")
+
+[node name="Vlad" parent="." instance=ExtResource("10_pa00x")]
+position = Vector2(339, -505)
+gravity_scale = 0.5
+
+[node name="Sprite2D2" type="Sprite2D" parent="Vlad"]
 position = Vector2(1.12057e-05, -5.24521e-06)
 scale = Vector2(0.15, 0.147222)
 texture = ExtResource("20_7vtgg")
+
+[node name="Area2D2" type="Area2D" parent="Vlad"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Vlad/Area2D2"]
+position = Vector2(1.5, -1.5)
+shape = SubResource("RectangleShape2D_queiu")
 
 [node name="Platform" type="TileMapLayer" parent="."]
 z_index = 1
@@ -30352,14 +30292,15 @@ shape = SubResource("CircleShape2D_old6g")
 [node name="Lec3" type="Node2D" parent="."]
 
 [node name="Lectern3" type="Area2D" parent="Lec3"]
-position = Vector2(2527, -1511)
+position = Vector2(2525, -1520)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Lec3/Lectern3"]
 position = Vector2(-5, -15)
 shape = SubResource("CircleShape2D_fio33")
 
 [node name="Killer" parent="." instance=ExtResource("11_old6g")]
-position = Vector2(1609, 1020)
+z_index = 4
+position = Vector2(1567, 1162)
 
 [node name="MoveKiller" type="Area2D" parent="." node_paths=PackedStringArray("npc")]
 script = ExtResource("12_fio33")
@@ -30599,7 +30540,7 @@ scale = Vector2(0.463543, 0.662946)
 texture = ExtResource("13_pggvk")
 
 [node name="TorchLight" type="PointLight2D" parent="Torch9"]
-position = Vector2(-34.5167, 54.3031)
+position = Vector2(-34.5168, 54.3031)
 texture = ExtResource("14_wi51l")
 texture_scale = 0.75
 height = 1.0
@@ -30645,40 +30586,25 @@ position = Vector2(2078, -732)
 scale = Vector2(1.5, 1)
 texture = ExtResource("17_ajy2i")
 
-[node name="Anna_Autobiography" parent="." instance=ExtResource("18_24ltb")]
-position = Vector2(434, 1307)
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+position = Vector2(4032, 127)
+amount = 200
+lifetime = 0.4
+preprocess = 1.06
+speed_scale = 0.5
+emission_shape = 3
+emission_rect_extents = Vector2(100, 200)
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 20)
+initial_velocity_min = 10.0
+initial_velocity_max = 50.0
+scale_amount_max = 4.0
+color = Color(0.882353, 0, 0.682353, 0.345098)
 
-[node name="Sprite2D2" type="Sprite2D" parent="Anna_Autobiography"]
-position = Vector2(-0.0184937, -0.764472)
-scale = Vector2(0.139493, 0.109784)
-texture = ExtResource("19_tbs7l")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Anna_Autobiography"]
-position = Vector2(0.427658, -1.6864)
-shape = SubResource("RectangleShape2D_oglxf")
-
-[node name="Vlad_Autobiography" parent="." instance=ExtResource("18_24ltb")]
-position = Vector2(314, 1309)
-
-[node name="Sprite2D2" type="Sprite2D" parent="Vlad_Autobiography"]
-position = Vector2(-0.0184937, -0.764472)
-scale = Vector2(0.139493, 0.109784)
-texture = ExtResource("20_7vtgg")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Vlad_Autobiography"]
-position = Vector2(0.427658, -1.6864)
-shape = SubResource("RectangleShape2D_oglxf")
-
-[node name="Nana_Autobiography" parent="." instance=ExtResource("18_24ltb")]
-position = Vector2(193, 1308)
-
-[node name="Sprite2D2" type="Sprite2D" parent="Nana_Autobiography"]
-position = Vector2(-0.0184937, -0.764472)
-scale = Vector2(0.139493, 0.109784)
-texture = ExtResource("21_pe02e")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Nana_Autobiography"]
-position = Vector2(0.427658, -1.6864)
-shape = SubResource("RectangleShape2D_oglxf")
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1536, 1320)
+scale = Vector2(0.528571, 0.528571)
+texture = ExtResource("20_ajy2i")
 
 [connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]

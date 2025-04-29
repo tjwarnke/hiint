@@ -92,22 +92,11 @@ func play_butler_dialog():
 	
 	# Only tell them to put down torch if they actually have one
 	if has_torch:
-		print("Player has torch - telling them to drop it")
 		# Drop torch at exact time it's mentioned
 		text.text = "Please set down your torch."
 		
-		# Check if player has a torch and make them drop it
-		if player.has_method("drop_item"):
-			for i in range(player.held_items.size()):
-				if player.held_items[i].name.contains("Torch"):
-					player.switch_item(i)
-					
-					# Drop the torch now when it's mentioned
-					player.drop_item(true)
-					get_node("/root/World/DiningRoom/Torch").visible = true
-					get_node("/root/World/DiningRoom/Torch/TorchLight").visible = true
-					get_node("/root/World/DiningRoom/Torch/TorchParticles").visible = true
-					break
+		# Emit the drop_torch signal on the player
+		player.drop_torch.emit()
 		
 		await get_tree().create_timer(2).timeout
 		
@@ -115,8 +104,6 @@ func play_butler_dialog():
 		if not is_instance_valid(player):
 			end_dialog()
 			return
-	else:
-		print("Player does not have torch - skipping torch dialog")
 	
 	text.text = "The dinner will start shortly!"
 	await get_tree().create_timer(2).timeout
@@ -141,7 +128,17 @@ func _on_body_exited(body):
 func _on_player_entered(body):
 	if body.is_in_group("player"):
 		player = body
-		if player.has_torch:
+		# Check if player has a torch using the same method as in play_butler_dialog
+		var has_torch = false
+		if player.has_method("has_item"):
+			has_torch = player.has_item("Torch")
+		if not has_torch and "held_items" in player:
+			for item in player.held_items:
+				if item.name.contains("Torch"):
+					has_torch = true
+					break
+		
+		if has_torch:
 			# Tell player to drop torch
 			player.drop_torch.emit()
 		else:

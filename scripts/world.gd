@@ -43,15 +43,24 @@ var camera_smooth_speed = 0.0001  # Adjust this value for smoother/slower moveme
 
 # Audio for the dungeon area
 var dungeon_music_player = null
+var is_in_dungeon = false
 
 func _ready():
-	$DiningRoom/Torch.visible = false
-	$DiningRoom/Torch/TorchLight.visible = false
-	$DiningRoom/Torch/TorchParticles.visible = false
+	# Initialize dining room torch visibility
+	var dining_torch = get_node_or_null("DiningRoom/Torch")
+	if dining_torch:
+		dining_torch.visible = false
+		var torch_light = dining_torch.get_node_or_null("TorchLight")
+		if torch_light:
+			torch_light.visible = false
+		var torch_particles = dining_torch.get_node_or_null("TorchParticles")
+		if torch_particles:
+			torch_particles.visible = false
+	
 	if darkness:
 		darkness.color = Color("555555")  # Darker gray for tutorial area
 	else:
-		push_error("[WORLD] Darkness node not found in _ready!")
+		push_warning("Darkness node not found in _ready!")
 	
 	# Spawn the player properly
 	spawn_player()
@@ -144,8 +153,9 @@ func _process(delta):
 		var distance = abs(camera.position.x - player.position.x)
 		if distance > 300 and not moving_player:
 			camera.position.x = player.position.x
-			if camera.in_library_area:
+			if camera.in_library_area or camera.in_dungeon_area:
 				camera.position.y = player.position.y
+			
 			else:
 				camera.position.y = camera.fixed_y
 	
@@ -175,7 +185,7 @@ func initialize_game_state():
 		darkness.color = Color("555555")  # Darker gray for tutorial area
 		darkness.show()
 	else:
-		push_error("[WORLD] Darkness node not found!")
+		push_error("Darkness node not found!")
 	
 	$cabin/Torch.show()
 	jumpscare_timer.timeout.connect(hide_jumpscare)  
@@ -184,7 +194,7 @@ func initialize_game_state():
 	var main_music = get_node_or_null("/root/MainMusic")
 	if main_music:
 		# Don't change the volume here - let the main_music singleton handle it
-		print("[WORLD] Using existing music volume")
+		pass
 	
 	# Add ambient noise (but make sure its volume is moderate)
 	add_child(ambient_noise)
@@ -223,14 +233,14 @@ func hide_jumpscare():
 func spawn_player():
 	player = PlayerScene.instantiate()
 	if not player:
-		push_error("[WORLD] Failed to instantiate player scene")
+		push_error("Failed to instantiate player scene")
 		return
 
 	add_child(player)
 
 	# Ensure spawn exists before setting position
 	if not spawn:
-		push_error("[WORLD] Spawn node is missing! Player will be placed at origin")
+		push_error("Spawn node is missing! Player will be placed at origin")
 		player.position = Vector2(0, 0)
 	else:
 		player.global_position = spawn.global_position
@@ -245,7 +255,7 @@ func spawn_player():
 		camera.drag_right_margin = 0.1
 		camera.drag_bottom_margin = 0.1
 	else:
-		push_error("[WORLD] Camera not found when spawning player")
+		push_error("Camera not found when spawning player")
 
 func initialize_camera():
 	camera.position = Vector2(player.position.x, camera.fixed_y)
@@ -268,10 +278,15 @@ func _on_dining_threshold_entered(body):
 	if body == player and not level_transition_active:
 		level_transition_active = true
 		await wait_until_grounded()
+		
 		update_camera_bounds()
 		$Rain.queue_free()
 		# Play a transition animation
 		play_level_transition("dining")
+		
+		# Check if player has a torch and force torch drop
+		if player and player.has_method("has_item") and player.has_item("Torch"):
+			player.drop_torch.emit()
 		
 		# After animation, continue with existing logic
 		move_player_slowly()
@@ -279,7 +294,6 @@ func _on_dining_threshold_entered(body):
 		# Ensure ambient noise plays the dining sound
 		if ambient_noise and ambient_noise.has_method("on_dining"):
 			ambient_noise.on_dining()
-			
 			
 		# Make the dining room area lighter
 		if darkness:
@@ -289,8 +303,6 @@ func _on_dining_threshold_entered(body):
 		var main_music = get_node_or_null("/root/MainMusic")
 		if main_music:
 			main_music.transition_to_level_music()
-		
-		
 
 func _on_library_threshold_entered(body):
 	# Only proceed if the colliding body is the player
@@ -348,18 +360,52 @@ func _on_library_threshold_entered(body):
 	elif body.name.contains("TileMap"):
 		pass
 
+func update_dungeon_camera_bounds():
+	# Ensure camera is properly set up to follow the player
+	camera.position_smoothing_enabled = true
+	camera.position_smoothing_speed = 5.0
+	
+	# Turn off drag to avoid interference with custom following logic
+	camera.drag_horizontal_enabled = false
+	
+	# Get the player's current position
+	var player_pos = player.global_position
+	
+	# Set camera bounds to fit the library level
+	# Now using player's position for left boundary, not the threshold position
+	var left_boundary = 23000  # Generous padding to the left
+	var right_boundary = 36000  # Approximate width of library area
+	
+	# Ensure we don't go too far left
+	#left_boundary = max(left_boundary, 12000)  # Don't go below X=12000
+	
+	camera.limit_left = left_boundary
+	camera.limit_right = right_boundary
+	
+	# Set vertical bounds to much wider values for the library to allow exploration
+	camera.limit_top = -1500  # Allow camera to go up to Y = -1000
+	camera.limit_bottom = 7450
+	
+	# Optional: Adjust camera offset if needed
+	camera.offset = Vector2(0, 0)
+
 func _on_dungeon_threshold_entered(body):
-	if body == player and not level_transition_active:
-		level_transition_active = true
-		await wait_until_grounded()  # Ensure player is stable before continuing
+	var original_zoom = camera.zoom
+	var tween = create_tween()
+	tween.tween_property(camera, "zoom", Vector2(0.3, 0.3), 0.5)
+	
+	create_timer_to_check_grounded(original_zoom)
+	
+	var main_music = get_node_or_null("/root/MainMusic")
+	if main_music and main_music.has_method("fade_out_music_only"):
+		main_music.fade_out_music_only(2.0)
 		
-		# Play a transition animation
-		play_level_transition("dungeon")
-		
-		# Additional dungeon-specific camera and lighting adjustments could go here
-		
-		# Reset transition flag
-		level_transition_active = false
+	camera.set_dungeon_mode(true)
+	
+	setup_dungeon_music()
+	
+	# Update the camera bounds for the dungeon
+	update_dungeon_camera_bounds()
 
 func wait_until_grounded():
 	var timeout = 5.0  # 5 second timeout
@@ -465,11 +511,11 @@ func play_level_transition(level_name: String):
 	if player:
 		player.set_can_move(false)
 	
+	# Play appropriate transition animation based on level
 	match level_name:
 		"dining":
-			if wall_fall:
-				wall_fall.play("wall")
-				await wall_fall.animation_finished
+			# Wall fall animation is handled in _on_dining_threshold_entered
+			pass
 		"library":
 			# Create a simple door closing animation with ColorRect
 			var transition_rect = ColorRect.new()
@@ -610,6 +656,10 @@ func fade_music_after_start():
 
 # Handler for dungeon entrance - simplified 
 func _on_dungeon_entered(body):
+	is_in_dungeon = true
+	if body.name != "Player":
+		return  # Only react if it's the player
+	
 	# Zoom in camera for dungeon effect
 	var original_zoom = camera.zoom
 	var tween = create_tween()
@@ -623,8 +673,12 @@ func _on_dungeon_entered(body):
 	if main_music and main_music.has_method("fade_out_music_only"):
 		main_music.fade_out_music_only(2.0)
 		
-		# Start dungeon music
+	# Start dungeon music
 	setup_dungeon_music()
+	
+	#  Tell the camera to enter dungeon mode!
+	if camera:
+		camera.set_dungeon_mode(true)
 
 # Simple timer to check if player is grounded
 func create_timer_to_check_grounded(original_zoom):
@@ -706,7 +760,12 @@ func _on_lever_body_entered(body, hidden_platform):
 		var text_box = get_node_or_null("UI/TextBoxMiddleTop")
 		if text_box:
 			text_box.visible = true
-			text_box.text = "Press 'E' to activate the lever"
+			# Get the current key binding for pick_up action
+			var key = InputMap.action_get_events("pick_up")[0].as_text()
+			# Remove the "(physical)" part if present
+			if "(" in key:
+				key = key.split("(")[0].strip_edges()
+			text_box.text = "Press '%s' to activate the lever" % key
 			
 			# Create a timer to hide the text after a delay
 			var timer = get_tree().create_timer(3.0)
@@ -772,6 +831,6 @@ func handle_powerup_collection_effect(power_type: String) -> void:
 			effect.set_color(effect_color)
 			add_child(effect)
 		else:
-			push_error("[WORLD] Failed to instantiate powerup effect")
+			push_error("Failed to instantiate powerup effect")
 	else:
-		push_error("[WORLD] Powerup effect scene not found")
+		push_error("Powerup effect scene not found")

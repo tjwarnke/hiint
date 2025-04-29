@@ -10,6 +10,9 @@ var counter = 0
 var text = null
 var dialogue = null
 var sprite = null
+var dark = null
+var marvin = null
+var marvin_dead = null
 
 var con_head = preload("res://assets/images/conman_head.png")
 var relish_head = preload("res://assets/images/relish_head.png")
@@ -46,7 +49,7 @@ func _on_body_exited(body):
 		text.visible = false
 		dialogue.visible = false
 		sprite.visible = false
-		
+
 func options(response):
 	dialogue.visible = false
 	text.visible = true
@@ -60,7 +63,7 @@ func base_dialog():
 	dialogue_active = true
 	if page == 1:
 		page -= 1
-		
+
 func two_a():
 	await get_tree().create_timer(1).timeout
 	dialogue.visible = true
@@ -83,13 +86,13 @@ func _input(event):
 		text.text = "Say:"
 		dialogue.visible = true
 		dialogue.text = "1. Thanks for inviting me but why are we here?\n2. Hi, I’m player character, who are you?"
-		
+
 	if event.is_action_pressed("Option6"):
 		dialogue.visible = false
 		text.visivle = false
 		sprite.visible = false
 		player.set_can_move(true)
-		
+
 	if event.is_action_pressed("Option1") and counter == 0:
 		dialogue.visible = false
 		text.visible = true
@@ -112,7 +115,7 @@ func _input(event):
 		text.text = "It's not the first time\nwe missed him, sister..."
 		counter += 1
 		two_a()
-		
+
 	if event.is_action_pressed("Option2") and counter == 0:
 		dialogue.visible = false
 		text.visible = true
@@ -124,7 +127,7 @@ func _input(event):
 		await get_tree().create_timer(2).timeout
 		text.visible = false
 		two_a()
-	
+
 	if event.is_action_pressed("Option1") and counter ==1:
 		dialogue.visible = false
 		text.visible = true
@@ -132,7 +135,7 @@ func _input(event):
 		text.text = "Hey there pal, my name is Sargent\nRelish. It’s good to meet you."
 		await get_tree().create_timer(3).timeout
 		two_a()
-		
+
 	if event.is_action_pressed("Option2") and counter ==1:
 		dialogue.visible = false
 		text.visible = true
@@ -154,7 +157,7 @@ func _input(event):
 		text.text = "Pleasure to meet you, sir.\nI am the esteemed Henry Conroy.\nI used to know your father actually. "
 		await get_tree().create_timer(3).timeout
 		two_a()
-		
+
 	if event.is_action_pressed("Option5") and counter ==1:
 		counter += 1
 		dialogue.visible = false
@@ -181,7 +184,7 @@ func _input(event):
 		text.text = "Marvin!"
 		await get_tree().create_timer(3).timeout
 		final_options()
-		
+
 	if event.is_action_pressed("Option1") and counter == 2:
 		counter += 1
 		dialogue.visible = false
@@ -208,7 +211,7 @@ func _input(event):
 		text.visible = false
 		sprite.visible = false
 		player.set_can_move(true)
-		
+
 	if event.is_action_pressed("Option2") and counter == 2:
 		counter += 1
 		dialogue.visible = false
@@ -223,7 +226,7 @@ func _input(event):
 		text.visible = false
 		sprite.visible = false
 		player.set_can_move(true)
-	
+
 	if event.is_action_pressed("Option3") and counter == 2:
 		counter += 1
 		dialogue.visible = false
@@ -250,6 +253,24 @@ func _input(event):
 		text.visible = false
 		sprite.visible = false
 		player.set_can_move(true)
-	
-		
-		
+
+func death_scene():
+	dialogue.visible = false
+	dark.visible = true
+	await get_tree().create_timer(.2).timeout
+	dark.visible = false
+	await get_tree().create_timer(.2).timeout
+	dark.visible = true
+	await get_tree().create_timer(.2).timeout
+	dark.visible = false
+	await get_tree().create_timer(.2).timeout
+	dark.visible = true
+	text.visible = true
+	text.text = "AHHHHHHHHHHHHHHH"
+	marvin.visible = false
+	marvin_dead.visible = true
+	await get_tree().create_timer(2).timeout
+	dark.visible = false
+	text.visible = false
+	player.set_can_move(true)
+

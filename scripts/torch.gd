@@ -70,7 +70,12 @@ func _on_body_entered(body):
 		player_in_area = body
 		if can_be_picked_up:
 			text_box.visible = true
-			text_box.text = "Press 'e' to pick up torch"
+			# Get the current key binding for pick_up action
+			var key = InputMap.action_get_events("pick_up")[0].as_text()
+			# Remove the "(physical)" part if present
+			if "(" in key:
+				key = key.split("(")[0].strip_edges()
+			text_box.text = "Press '%s' to pick up torch" % key
 
 func _on_body_exited(body):
 	if body.is_in_group("player"):
