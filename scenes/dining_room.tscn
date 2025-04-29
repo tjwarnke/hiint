@@ -15,7 +15,7 @@
 [ext_resource type="Script" uid="uid://ba4g51f443xgh" path="res://scripts/chair_hit_box.gd" id="11_lwe0i"]
 [ext_resource type="PackedScene" uid="uid://d00pa2rwuh52k" path="res://scenes/girl.tscn" id="12_wrq0i"]
 [ext_resource type="Texture2D" uid="uid://bfgrfseyxamfh" path="res://assets/images/victim.png" id="13_oam2j"]
-[ext_resource type="Script" uid="uid://4xd10dkh103l" path="res://scenes/butler_move.gd" id="13_yqh7e"]
+[ext_resource type="Script" path="res://scenes/butler_move.gd" id="13_yqh7e"]
 [ext_resource type="Texture2D" uid="uid://6ja13qn7yb0e" path="res://assets/images/twin2.png" id="14_soh6j"]
 [ext_resource type="Texture2D" uid="uid://i5go4qxcreqg" path="res://assets/images/torch.png" id="16_po025"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="17_uvyol"]
