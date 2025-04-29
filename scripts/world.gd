@@ -470,7 +470,7 @@ func update_library_camera_bounds():
 	
 	# Set camera bounds to fit the library level
 	# Now using player's position for left boundary, not the threshold position
-	var left_boundary = player_pos.x - 1000  # Generous padding to the left
+	var left_boundary = 19750  # Generous padding to the left
 	var right_boundary = left_boundary + 100000  # Approximate width of library area
 	
 	# Ensure we don't go too far left

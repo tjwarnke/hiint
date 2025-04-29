@@ -9,6 +9,8 @@ var cut_scene_seen = false
 @onready var text = get_node("/root/World/UI/TextBoxMiddleTop")
 @onready var sprite = get_node("/root/World/UI/Speaker")
 
+var twin1 = preload("res://assets/images/twin1_head.png")
+var twin2= preload("res://assets/images/victim_head.png")
 var butler = preload("res://assets/images/ButlerHead.png")
 
 func _ready():
@@ -59,8 +61,15 @@ func play_butler_dialog():
 	# Remove powerups when mentioned
 	if player.has_method("remove_powerups"):
 		player.remove_powerups()
+		
+	await get_tree().create_timer(3).timeout
+	sprite.texture = twin2
+	text.text = "Is this guy going to get here soon? \nI’m hungry!"
+	await get_tree().create_timer(2).timeout
 	
-	await get_tree().create_timer(2.5).timeout
+	sprite.texture = twin1
+	text.text = "Be patient, I’m sure she’ll be here soon"
+	await get_tree().create_timer(3).timeout
 	
 	# Check if player reference is still valid
 	if not is_instance_valid(player):
