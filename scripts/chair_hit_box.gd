@@ -294,7 +294,7 @@ func _input(event):
 		dialogue.visible = false
 		sprite.visible = true
 		sprite.texture = relish_head
-		text.text = "I never thought you would catch me\n I knew these medals would be my down fall"
+		text.text = "I never thought you would catch me\n These fake medals... \n I knew I shouldn't have worn them"
 		await get_tree().create_timer(3).timeout
 		player.set_can_move(true)
 		text.text = "You have guessed the correct killer"

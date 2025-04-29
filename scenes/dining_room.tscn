@@ -18813,6 +18813,4 @@ shape = SubResource("RectangleShape2D_vph1c")
 
 [connection signal="body_entered" from="dining_bounds" to="." method="_on_dining_threshold_entered"]
 [connection signal="body_entered" from="Chair2" to="ChairHitBox" method="_on_chair_2_body_entered"]
-[connection signal="body_exited" from="Chair2" to="." method="_on_chair_2_body_exited"]
-[connection signal="body_exited" from="Chair2" to="ButlerLarge" method="_on_chair_2_body_exited"]
 [connection signal="body_exited" from="Chair2" to="ChairHitBox" method="_on_chair_2_body_exited"]
