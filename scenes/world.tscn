@@ -315,4 +315,20 @@ position = Vector2(15926.5, 405.5)
 enabled = false
 zoom = Vector2(0.4, 0.4)
 
+[node name="Label" type="Label" parent="."]
+offset_left = 4983.0
+offset_top = 919.0
+offset_right = 5296.0
+offset_bottom = 950.0
+theme_override_font_sizes/font_size = 22
+text = "Press 'up' 'up' to double jump"
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 2251.0
+offset_top = 648.0
+offset_right = 2564.0
+offset_bottom = 679.0
+theme_override_font_sizes/font_size = 22
+text = "Press 'up' 'shift' to dash"
+
 [connection signal="area_entered" from="BilliardsRoom/dungeon_threshold" to="." method="_on_dungeon_entered"]
