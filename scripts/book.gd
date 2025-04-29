@@ -48,20 +48,7 @@ func _ready():
 	if world:
 		player = world.get_node_or_null("Player")
 
-# Override _set method to track property changes
-func _set(property, value):
-	if property == "global_position" or property == "position":
-		print("[BOOK] Position changing for ", name, " - New pos: ", value)
-		return false  # Continue with normal property setting
-	elif property == "gravity_scale" or property == "freeze" or property == "sleeping" or property == "collision_layer" or property == "collision_mask":
-		print("[BOOK] Physics property changing: ", property, " = ", value, " for book ", name)
-		return false  # Continue with normal property setting
-	return false
 
-# Add a new method to monitor when the transform changes
-func _notification(what):
-	if what == NOTIFICATION_TRANSFORM_CHANGED:
-		print("[BOOK] Transform changed for ", name, " - New position: ", global_position)
 
 # Add physics process to monitor position
 func _physics_process(_delta):
@@ -84,9 +71,6 @@ func _physics_process(_delta):
 			
 		var distance = global_position.distance_to(expected_position)
 		if distance > 5.0:  # If drifted more than 5 pixels
-			print("[BOOK PUZZLE] Book ", name, " has drifted ", distance, " pixels from its expected position on lectern ", lectern_number)
-			print("[BOOK PUZZLE] Current position: ", global_position, " | Expected: ", expected_position)
-			
 			# Try to correct position
 			global_position = expected_position
 			

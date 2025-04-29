@@ -1,15 +1,15 @@
-[gd_scene load_steps=37 format=4 uid="uid://dhh62wmxavnow"]
+[gd_scene load_steps=43 format=4 uid="uid://dhh62wmxavnow"]
 
 [ext_resource type="Script" uid="uid://clpleomktaup1" path="res://scripts/library.gd" id="1_cupxr"]
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_gl8ag"]
 [ext_resource type="Texture2D" uid="uid://y0dxq16y7wu0" path="res://dungeon_sidescroller-Raou/Tilesetv3.png" id="2_mfc4n"]
 [ext_resource type="Texture2D" uid="uid://ctjiur77808b3" path="res://FreeCuteTileset/Tileset.png" id="3_vglhb"]
 [ext_resource type="Texture2D" uid="uid://d4lno7igr6ti5" path="res://assets/CatumetGamesFurniture.png" id="5_mxqp8"]
-[ext_resource type="Script" path="res://scripts/book_shelf_1.gd" id="8_old6g"]
+[ext_resource type="Script" uid="uid://clt58776fqx44" path="res://scripts/book_shelf_1.gd" id="8_old6g"]
 [ext_resource type="Script" uid="uid://b0eipyqtfs7et" path="res://scripts/book_shelf_2.gd" id="9_fio33"]
 [ext_resource type="PackedScene" uid="uid://8iyr4cj2qyud" path="res://scenes/autobiography.tscn" id="10_pa00x"]
 [ext_resource type="PackedScene" uid="uid://bhyo0x8braslp" path="res://scenes/killer.tscn" id="11_old6g"]
-[ext_resource type="Script" path="res://scripts/move_killer.gd" id="12_fio33"]
+[ext_resource type="Script" uid="uid://dmrv5hga4p1oq" path="res://scripts/move_killer.gd" id="12_fio33"]
 [ext_resource type="Texture2D" uid="uid://i5go4qxcreqg" path="res://assets/images/torch.png" id="13_pggvk"]
 [ext_resource type="Texture2D" uid="uid://bf7ourfe65p2t" path="res://assets/images/1st.png" id="14_hdko4"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="14_wi51l"]
@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://bujqa2kqc3p01" path="res://assets/images/Vbook.png" id="20_7vtgg"]
 [ext_resource type="Texture2D" uid="uid://bt7hok5t0swy1" path="res://assets/images/armband.png" id="20_ajy2i"]
 [ext_resource type="Texture2D" uid="uid://1ywc3yc7k6j3" path="res://assets/images/Nbook.png" id="21_pe02e"]
+[ext_resource type="Texture2D" uid="uid://dxyajowm7yt5g" path="res://assets/images/lever.png" id="21_tbs7l"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x4li0"]
 texture = ExtResource("1_gl8ag")
@@ -30156,6 +30157,61 @@ radius = 172.235
 radius = 29.0
 height = 710.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7vtgg"]
+size = Vector2(305, 147)
+
+[sub_resource type="Animation" id="Animation_e6m40"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lever/Area2D/Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.233333),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.785398]
+}
+
+[sub_resource type="Animation" id="Animation_cjn25"]
+resource_name = "lever"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lever/Area2D/Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.785398, -0.785398]
+}
+
+[sub_resource type="Animation" id="Animation_ky021"]
+resource_name = "lever_off"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lever/Area2D/Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-0.785398, 0.785398]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_old6g"]
+_data = {
+&"RESET": SubResource("Animation_e6m40"),
+&"lever": SubResource("Animation_cjn25"),
+&"lever_off": SubResource("Animation_ky021")
+}
+
 [node name="Library" type="Node2D"]
 script = ExtResource("1_cupxr")
 metadata/_edit_horizontal_guides_ = [3656.0]
@@ -30599,7 +30655,23 @@ spread = 180.0
 gravity = Vector2(0, 20)
 initial_velocity_min = 10.0
 initial_velocity_max = 50.0
-scale_amount_max = 4.0
+scale_amount_max = 10.0
+color = Color(0.882353, 0, 0.682353, 0.345098)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="CPUParticles2D"]
+position = Vector2(-3875, -1025)
+amount = 200
+lifetime = 0.4
+preprocess = 1.06
+speed_scale = 0.5
+emission_shape = 3
+emission_rect_extents = Vector2(100, 200)
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 20)
+initial_velocity_min = 10.0
+initial_velocity_max = 50.0
+scale_amount_max = 10.0
 color = Color(0.882353, 0, 0.682353, 0.345098)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -30607,4 +30679,28 @@ position = Vector2(1536, 1320)
 scale = Vector2(0.528571, 0.528571)
 texture = ExtResource("20_ajy2i")
 
+[node name="Lever" type="Node2D" parent="."]
+position = Vector2(200, 1020)
+
+[node name="Area2D" type="Area2D" parent="Lever"]
+position = Vector2(3487, 252)
+
+[node name="Pivot" type="Node2D" parent="Lever/Area2D"]
+position = Vector2(-12, 81)
+rotation = 0.785398
+
+[node name="lever_sprite" type="Sprite2D" parent="Lever/Area2D/Pivot"]
+position = Vector2(-2.82849, -137.179)
+texture = ExtResource("21_tbs7l")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lever/Area2D"]
+position = Vector2(-2.5, -3.5)
+shape = SubResource("RectangleShape2D_7vtgg")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_old6g")
+}
+
 [connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]
+[connection signal="body_entered" from="Lever/Area2D" to="." method="lever_interact"]
