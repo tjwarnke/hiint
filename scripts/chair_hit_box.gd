@@ -30,6 +30,7 @@ func _ready():
 	text = get_node_or_null("../../UI/TextBoxMiddleTop")
 	dialogue = get_node_or_null("../../UI/DialogOptions")
 	sprite = get_node_or_null("../../UI/Speaker")
+	dark =  get_node_or_null("../../DiningRoom/Black")
 	
 func _on_body_entered(body):
 	if body.is_in_group("player") and counter ==0:
