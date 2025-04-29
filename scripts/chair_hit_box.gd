@@ -11,7 +11,6 @@ var text = null
 var dialogue = null
 var sprite = null
 var dark = null
-var marvin = null
 var marvin_dead = null
 
 var con_head = preload("res://assets/images/conman_head.png")
@@ -170,7 +169,7 @@ func _input(event):
 		text.visible = true
 		text.text = "I see you are all getting along nicely.\nI hope to see that continue."
 		await get_tree().create_timer(3).timeout
-		#kill_marvin()
+		death_scene()
 		sprite.texture = girl_head
 		text.text = "Good heavens, sir are you ok?"
 		await get_tree().create_timer(3).timeout
@@ -271,6 +270,3 @@ func death_scene():
 	marvin_dead.visible = true
 	await get_tree().create_timer(2).timeout
 	dark.visible = false
-	text.visible = false
-	player.set_can_move(true)
-
