@@ -5,11 +5,11 @@
 [ext_resource type="Texture2D" uid="uid://y0dxq16y7wu0" path="res://dungeon_sidescroller-Raou/Tilesetv3.png" id="2_mfc4n"]
 [ext_resource type="Texture2D" uid="uid://ctjiur77808b3" path="res://FreeCuteTileset/Tileset.png" id="3_vglhb"]
 [ext_resource type="Texture2D" uid="uid://d4lno7igr6ti5" path="res://assets/CatumetGamesFurniture.png" id="5_mxqp8"]
-[ext_resource type="Script" path="res://scripts/book_shelf_1.gd" id="8_old6g"]
+[ext_resource type="Script" uid="uid://clt58776fqx44" path="res://scripts/book_shelf_1.gd" id="8_old6g"]
 [ext_resource type="Script" uid="uid://b0eipyqtfs7et" path="res://scripts/book_shelf_2.gd" id="9_fio33"]
 [ext_resource type="PackedScene" uid="uid://8iyr4cj2qyud" path="res://scenes/autobiography.tscn" id="10_pa00x"]
 [ext_resource type="PackedScene" uid="uid://bhyo0x8braslp" path="res://scenes/killer.tscn" id="11_old6g"]
-[ext_resource type="Script" path="res://scripts/move_killer.gd" id="12_fio33"]
+[ext_resource type="Script" uid="uid://dmrv5hga4p1oq" path="res://scripts/move_killer.gd" id="12_fio33"]
 [ext_resource type="Texture2D" uid="uid://i5go4qxcreqg" path="res://assets/images/torch.png" id="13_pggvk"]
 [ext_resource type="Texture2D" uid="uid://bf7ourfe65p2t" path="res://assets/images/1st.png" id="14_hdko4"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="14_wi51l"]
@@ -30356,7 +30356,7 @@ shape = SubResource("CircleShape2D_fio33")
 
 [node name="Killer" parent="." instance=ExtResource("11_old6g")]
 z_index = 4
-position = Vector2(1454, 1159)
+position = Vector2(1567, 1162)
 
 [node name="MoveKiller" type="Area2D" parent="." node_paths=PackedStringArray("npc")]
 script = ExtResource("12_fio33")
@@ -30404,7 +30404,7 @@ scale = Vector2(0.463543, 0.662946)
 texture = ExtResource("13_pggvk")
 
 [node name="TorchLight" type="PointLight2D" parent="Torch3"]
-position = Vector2(-163.955, 49.7778)
+position = Vector2(-32.3595, 49.0236)
 texture = ExtResource("14_wi51l")
 texture_scale = 0.75
 height = 1.0
