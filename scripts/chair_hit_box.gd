@@ -98,9 +98,10 @@ func _input(event):
 		await get_tree().create_timer(3).timeout
 		text.text = "Say:"
 		dialogue.visible = true
-		dialogue.text = "1. Thanks for inviting me but why are we here?\n2. Hi, I’m player character, who are you?"
+		dialogue.text = "1. Thanks for inviting me but why are we here?\n2. Hi, who are you?"
+		counter += 1
 
-	if event.is_action_pressed("Option1") and counter == 0:
+	if event.is_action_pressed("Option1") and counter == 1:
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = marvin
@@ -123,7 +124,7 @@ func _input(event):
 		counter += 1
 		two_a()
 
-	if event.is_action_pressed("Option2") and counter == 0:
+	if event.is_action_pressed("Option2") and counter == 1:
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = diane
@@ -135,7 +136,7 @@ func _input(event):
 		text.visible = false
 		two_a()
 
-	if event.is_action_pressed("Option1") and counter ==1:
+	if event.is_action_pressed("Option1") and counter ==2:
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = relish_head
@@ -143,21 +144,21 @@ func _input(event):
 		await get_tree().create_timer(3).timeout
 		two_a()
 
-	if event.is_action_pressed("Option2") and counter ==1:
+	if event.is_action_pressed("Option2") and counter ==2:
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = girl_head
 		text.text = " Sup girlie, I’m Magenta Lovelace.\nI like your hair, I can braid \nit later if you want. "
 		await get_tree().create_timer(3).timeout
 		two_a()
-	if event.is_action_pressed("Option3") and counter ==1:
+	if event.is_action_pressed("Option3") and counter ==2:
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = penguins_head
 		text.text = "Da, We is Dmitri. I come to\nmansion for dinner party. "
 		await get_tree().create_timer(3).timeout
 		two_a()
-	if event.is_action_pressed("Option4") and counter ==1:
+	if event.is_action_pressed("Option4") and counter ==2:
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = con_head
@@ -165,15 +166,15 @@ func _input(event):
 		await get_tree().create_timer(3).timeout
 		two_a()
 
-	if event.is_action_pressed("Option5") and counter ==1:
+	if event.is_action_pressed("Option5") and counter ==2:
 		counter += 1
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = butler
 		text.text = "And I’m the butler, here to buttle and such.\nIf you need any buttling, I will be here.\nOn that note, let's eat"
-		await get_tree().create_timer(3).timeout
-		text.visible = false
 		await get_tree().create_timer(5).timeout
+		text.visible = false
+		await get_tree().create_timer(2).timeout
 		text.visible = true
 		text.text = "I see you are all getting along nicely.\nI hope to see that continue."
 		await get_tree().create_timer(3).timeout
@@ -192,7 +193,7 @@ func _input(event):
 		await get_tree().create_timer(3).timeout
 		final_options()
 
-	if event.is_action_pressed("Option1") and counter == 2:
+	if event.is_action_pressed("Option1") and counter == 3:
 		counter += 1
 		dialogue.visible = false
 		text.visible = true
@@ -223,7 +224,7 @@ func _input(event):
 		player.set_can_move(true)
 		intro_complete = true
 
-	if event.is_action_pressed("Option2") and counter == 2:
+	if event.is_action_pressed("Option2") and counter == 3:
 		counter += 1
 		dialogue.visible = false
 		text.visible = true
@@ -242,7 +243,7 @@ func _input(event):
 		player.set_can_move(true)
 		intro_complete = true
 
-	if event.is_action_pressed("Option3") and counter == 2:
+	if event.is_action_pressed("Option3") and counter == 3:
 		counter += 1
 		dialogue.visible = false
 		text.visible = true

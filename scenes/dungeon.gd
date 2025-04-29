@@ -56,7 +56,7 @@ func _ready():
 	glass1Area = get_node("Glass1/Area2D")
 	glass2 = get_node("Glass2")
 	glass2Area = get_node("Glass2/Area2D")
-	hammer = get_node("Hammer")
+	#hammer = get_node("Hammer")
 	lever1 = get_node("Lever")
 	lever1Area = get_node("Lever/Area2D")
 	lever2 = get_node("Lever2")
@@ -127,32 +127,52 @@ func _input(event: InputEvent) -> void:
 		climb_ladder()
 		
 func lever1_action():
-	cageDoor1.hide()
+	if cageDoor1.has_method("set_enabled"):
+		cageDoor1.set_enabled(false)
+	else:
+		cageDoor1.enabled = false
 	#TODO: play sound and animation
 	
 func lever2_action():
-	cageDoor2.hide()
-	#TODO: play sound and animation
+	if cageDoor2.has_method("set_enabled"):
+		cageDoor2.set_enabled(false)
+	else:
+		cageDoor2.enabled = false
 	
 func lever3_action():
-	doors.hide()
+	if doors.has_method("set_enabled"):
+		doors.set_enabled(false)
+	else:
+		doors.enabled = false
 	#TODO: play sound and animation
 	
 func glass1_break():
 	#TODO: play a sound
-	glass1.hide()
+	if glass1.has_method("set_enabled"):
+		glass1.set_enabled(false)
+	else:
+		glass1.enabled = false
 	
 func glass2_break():
 	#TODO: play a sound
-	glass2.hide()
+	if glass2.has_method("set_enabled"):
+		glass2.set_enabled(false)
+	else:
+		glass2.enabled = false
 	
 func open_door():
-	door.hide()
+	if door.has_method("set_enabled"):
+		door.set_enabled(false)
+	else:
+		door.enabled = false
 	#TODO: play a sound
 
 func check_puzzle():
 	if checkPuz1 and checkPuz2 and checkPuz3:
-		trapdoor.hide()
+		if trapdoor.has_method("set_enabled"):
+			trapdoor.set_enabled(false)
+		else:
+			trapdoor.enabled = false
 		
 func climb_ladder():
 	#TODO: change scene back to dining room and play final cutscene

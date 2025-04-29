@@ -21,9 +21,9 @@
 [ext_resource type="AudioStream" uid="uid://dfotkcdfygmdi" path="res://assets/audio/dungeon.mp3" id="17_7iits"]
 [ext_resource type="Texture2D" uid="uid://i5go4qxcreqg" path="res://assets/images/torch.png" id="18_xgqkh"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="19_munwf"]
-[ext_resource type="Script" path="res://scenes/dj.gd" id="21_7iits"]
+[ext_resource type="Script" uid="uid://bdjlnat2pl14w" path="res://scenes/dj.gd" id="21_7iits"]
 [ext_resource type="PackedScene" uid="uid://cjhvjqqvgyv6m" path="res://scenes/hotbar.tscn" id="22_2lf6f"]
-[ext_resource type="Script" path="res://scenes/dash.gd" id="22_oo54l"]
+[ext_resource type="Script" uid="uid://drwbnkryc1wcf" path="res://scenes/dash.gd" id="22_oo54l"]
 [ext_resource type="Texture2D" uid="uid://d3ubltkdb3fwi" path="res://assets/images/char_painting.png" id="27_0nbtd"]
 [ext_resource type="Texture2D" uid="uid://ba7cv5n403sr3" path="res://assets/images/person_painting.png" id="28_37qwj"]
 
