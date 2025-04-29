@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=35 format=3 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://ctbtqie8fru15" path="res://scenes/torch.tscn" id="6_lakw3"]
@@ -21,11 +21,10 @@
 [ext_resource type="AudioStream" uid="uid://dfotkcdfygmdi" path="res://assets/audio/dungeon.mp3" id="17_7iits"]
 [ext_resource type="Texture2D" uid="uid://i5go4qxcreqg" path="res://assets/images/torch.png" id="18_xgqkh"]
 [ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="19_munwf"]
-[ext_resource type="Script" uid="uid://bdjlnat2pl14w" path="res://scenes/dj.gd" id="21_7iits"]
+[ext_resource type="Script" path="res://scenes/dj.gd" id="21_7iits"]
 [ext_resource type="PackedScene" uid="uid://cjhvjqqvgyv6m" path="res://scenes/hotbar.tscn" id="22_2lf6f"]
-[ext_resource type="Script" uid="uid://drwbnkryc1wcf" path="res://scenes/dash.gd" id="22_oo54l"]
+[ext_resource type="Script" path="res://scenes/dash.gd" id="22_oo54l"]
 [ext_resource type="Texture2D" uid="uid://d3ubltkdb3fwi" path="res://assets/images/char_painting.png" id="27_0nbtd"]
-[ext_resource type="Texture2D" uid="uid://ba7cv5n403sr3" path="res://assets/images/person_painting.png" id="28_37qwj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2lf6f"]
 bg_color = Color(0.6, 0.372549, 0.247059, 1)
@@ -307,14 +306,9 @@ position = Vector2(26.5, 14.5)
 shape = SubResource("CircleShape2D_kpybi")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(12466, 630)
+position = Vector2(12974, 615)
 scale = Vector2(0.206641, 0.195833)
 texture = ExtResource("27_0nbtd")
-
-[node name="Sprite2D2" type="Sprite2D" parent="."]
-position = Vector2(13026.5, 630)
-scale = Vector2(0.284373, 0.229948)
-texture = ExtResource("28_37qwj")
 
 [node name="LibDoor" type="Camera2D" parent="."]
 position = Vector2(15926.5, 405.5)
