@@ -70,10 +70,13 @@ func base_dialog():
 		page -= 1
 
 func two_a():
+	counter += 1
 	await get_tree().create_timer(1).timeout
 	dialogue.visible = true
+	text.visible = true
 	text.text = "Talk to:"
 	dialogue.text = "1. Sargent Relish \n2. Magenta Lovelace \n3. Dmitri \n4. Henry Conroy \n5. Let's just eat"
+	
 func final_options():
 	await get_tree().create_timer(1).timeout
 	text.text = "Say:"
@@ -134,7 +137,9 @@ func _input(event):
 		text.text = "By one minute"
 		await get_tree().create_timer(2).timeout
 		text.visible = false
+		counter = 1
 		two_a()
+		
 
 	if event.is_action_pressed("Option1") and counter ==2:
 		dialogue.visible = false
@@ -142,6 +147,7 @@ func _input(event):
 		sprite.texture = relish_head
 		text.text = "Hey there pal, my name is Sargent\nRelish. It’s good to meet you."
 		await get_tree().create_timer(3).timeout
+		counter = 1
 		two_a()
 
 	if event.is_action_pressed("Option2") and counter ==2:
@@ -150,6 +156,7 @@ func _input(event):
 		sprite.texture = girl_head
 		text.text = " Sup girlie, I’m Magenta Lovelace.\nI like your hair, I can braid \nit later if you want. "
 		await get_tree().create_timer(3).timeout
+		counter = 1
 		two_a()
 	if event.is_action_pressed("Option3") and counter ==2:
 		dialogue.visible = false
@@ -157,6 +164,7 @@ func _input(event):
 		sprite.texture = penguins_head
 		text.text = "Da, We is Dmitri. I come to\nmansion for dinner party. "
 		await get_tree().create_timer(3).timeout
+		counter = 1
 		two_a()
 	if event.is_action_pressed("Option4") and counter ==2:
 		dialogue.visible = false
@@ -164,6 +172,7 @@ func _input(event):
 		sprite.texture = con_head
 		text.text = "Pleasure to meet you, sir.\nI am the esteemed Henry Conroy.\nI used to know your father actually. "
 		await get_tree().create_timer(3).timeout
+		counter = 1
 		two_a()
 
 	if event.is_action_pressed("Option5") and counter ==2:
