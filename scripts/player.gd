@@ -47,8 +47,6 @@ var close_button = null
 
 @onready var text_box = get_node("/root/World/UI/TextBoxMiddleTop")
 
-
-
 func _ready():
 	jumps_left = max_jumps  # Ensure jumps are initialized correctly
 	add_to_group("player")

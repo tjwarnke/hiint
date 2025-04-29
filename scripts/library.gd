@@ -24,21 +24,7 @@ var is_placing_book = false # Flag to track when a book is being placed by the l
 @onready var lecturn2 = $Lec2/Lectern2
 @onready var lecturn3 = $Lec3/Lectern3
 
-
-@onready var anim_player = $AnimationPlayer
-var is_on = false
-var has_been_activated = false
-var lever
-var leverarea
-var player_in_area = false  # Track if player is inside the lever's area
-
-
-
 func _ready():
-	lever = get_node("/root/World/Library/Lever")
-	leverarea = get_node("/root/World/Library/Lever/Area2D")
-	leverarea.connect("body_entered", Callable(self, "_on_LeverArea_body_entered"))
-	leverarea.connect("body_exited", Callable(self, "_on_LeverArea_body_exited"))
 	# Find collision areas for each lectern if they exist
 	for i in range(3):
 		var lectern = get_node_or_null("Lec%d/Lectern%d" % [i+1, i+1])
@@ -81,35 +67,10 @@ func _ready():
 		push_warning("TextBoxMiddleTop not found in scene")
 	if not dialogue:
 		push_warning("DialogOptions not found in scene")
-		
-
 
 # Called every frame to update lectern tooltips
 func _process(_delta):
-	if player_in_area and Input.is_action_just_pressed("Interact2"):
-		if is_on:
-			anim_player.play("lever_off")
-			is_on = false
-		else:
-			anim_player.play("lever")
-			is_on = true
-			if not has_been_activated:
-				has_been_activated = true
-				call_deferred("open_door")  # or emit signal if door is external
-
-		
 	update_lectern_tooltips()
-
-# Called when the player enters the lever's area
-func _on_LeverArea_body_entered(body):
-	if body.is_in_group("player"):  # Assuming your player has a "player" group
-		player_in_area = true
-
-# Called when the player exits the lever's area
-func _on_LeverArea_body_exited(body):
-	if body.is_in_group("player"):
-		player_in_area = false
-
 
 # Update tooltips for lecterns
 func update_lectern_tooltips():
@@ -229,9 +190,9 @@ func _input(event):
 				return
 	
 	# Keep existing pick_up logic for taking books from lecterns
-	if Input.is_action_just_pressed("pick_up") and player and not player.is_picking_up:
-		player.process_pickup_input()
-
+	if event.is_action_pressed("pick_up"):
+		pass
+		# ... existing code ...
 
 func lectern(event, number):
 	print("=== BOOK REMOVAL STARTED ===")
@@ -387,7 +348,7 @@ func open_door():
 		var anim_player = billiards_room.get_node_or_null("AnimationPlayer")
 		if anim_player:
 			print("Playing door open animation")
-			anim_player.play("door_open")
+			anim_player.play("door open")
 			# Show success message
 			if text_box:
 				text_box.visible = true
@@ -428,32 +389,17 @@ func place_book_on_lectern(book, lectern_number):
 			lectern = lecturn1
 			book_on_lectern1 = book
 			lec1 = true
-			target_position = Vector2(1627.0, -1527.0)
-			book.visible = true
-			book.can_be_picked_up = true
-			for shape in book.get_children():
-				if shape is CollisionShape2D or shape is CollisionPolygon2D:
-					shape.disabled = false
+			target_position = Vector2(1627.0, -1527.0)  # Exact position for lectern 1
 		2:
 			lectern = lecturn2
 			book_on_lectern2 = book
 			lec2 = true
-			target_position = Vector2(2073.0, -1536.0)
-			book.visible = true
-			book.can_be_picked_up = true
-			for shape in book.get_children():
-				if shape is CollisionShape2D or shape is CollisionPolygon2D:
-					shape.disabled = false
+			target_position = Vector2(2073.0, -1536.0)  # Exact position for lectern 2
 		3:
 			lectern = lecturn3
 			book_on_lectern3 = book
 			lec3 = true
-			target_position = Vector2(2525.0, -1520.0)
-			book.visible = true
-			book.can_be_picked_up = true
-			for shape in book.get_children():
-				if shape is CollisionShape2D or shape is CollisionPolygon2D:
-					shape.disabled = false
+			target_position = Vector2(2525.0, -1520.0)  # Exact position for lectern 3
 	
 	if lectern:
 		print("Lectern found, proceeding with book placement")

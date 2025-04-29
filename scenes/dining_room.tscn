@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=4 uid="uid://t35a8wmq30e1"]
+[gd_scene load_steps=40 format=4 uid="uid://t35a8wmq30e1"]
 
 [ext_resource type="Script" uid="uid://cg5owrlrb3yao" path="res://scripts/dining_room.gd" id="1_cli76"]
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_evklq"]
@@ -18804,33 +18804,12 @@ position = Vector2(6502, 1377.5)
 scale = Vector2(255, 96.9062)
 texture = ExtResource("20_vph1c")
 
-
-[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
-z_index = 13
-position = Vector2(7458, 1944)
-amount = 50
-lifetime = 0.8
-preprocess = 1.0
-speed_scale = 0.8
-emission_shape = 3
-emission_rect_extents = Vector2(60, 100)
-direction = Vector2(0, 0)
-spread = 180.0
-gravity = Vector2(0, 40)
-initial_velocity_min = 1.0
-initial_velocity_max = 50.0
-scale_amount_min = 2.0
-scale_amount_max = 6.0
-color = Color(0.592157, 0, 0.423529, 0.541176)
-
-
 [node name="Chair2" type="Area2D" parent="."]
 position = Vector2(5460, 1951)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Chair2"]
 position = Vector2(-3.5, -21.75)
 shape = SubResource("RectangleShape2D_vph1c")
-
 
 [connection signal="body_entered" from="dining_bounds" to="." method="_on_dining_threshold_entered"]
 [connection signal="body_entered" from="Chair2" to="ChairHitBox" method="_on_chair_2_body_entered"]
