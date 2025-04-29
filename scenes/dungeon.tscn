@@ -8,10 +8,10 @@
 [ext_resource type="Texture2D" uid="uid://ckr2mqpwlvqe5" path="res://assets/images/vecteezy_an-8-bit-retro-styled-pixel-art-illustration-of-a-stone-sword_19527033.png" id="8_etlrv"]
 [ext_resource type="PackedScene" uid="uid://dljxp8sy8p5ps" path="res://scenes/hammer.tscn" id="9_5hkx1"]
 [ext_resource type="Texture2D" uid="uid://dxyajowm7yt5g" path="res://assets/images/lever.png" id="9_tkjml"]
-[ext_resource type="Script" uid="uid://dmrv5hga4p1oq" path="res://scripts/move_killer.gd" id="10_pnxem"]
+[ext_resource type="Script" path="res://scripts/move_killer.gd" id="10_pnxem"]
 [ext_resource type="PackedScene" uid="uid://bhyo0x8braslp" path="res://scenes/killer.tscn" id="11_7wjui"]
 [ext_resource type="PackedScene" uid="uid://cq0g1vfvhn5q2" path="res://scenes/key.tscn" id="12_7a5bf"]
-[ext_resource type="Script" uid="uid://colkybm34tm7f" path="res://scenes/killer_dun.gd" id="12_7wjui"]
+[ext_resource type="Script" path="res://scenes/killer_dun.gd" id="12_7wjui"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ys5p8"]
 texture = ExtResource("1_fpimf")
@@ -17526,6 +17526,8 @@ position = Vector2(890, 850)
 script = ExtResource("12_7wjui")
 
 [node name="key" parent="." instance=ExtResource("12_7a5bf")]
-position = Vector2(10045, 2746)
+position = Vector2(11495, 2059)
 
 [connection signal="body_entered" from="MoveKiller" to="MoveKiller" method="_on_body_entered"]
+[connection signal="body_entered" from="key" to="key" method="_on_body_entered"]
+[connection signal="body_exited" from="key" to="key" method="_on_body_exited"]
