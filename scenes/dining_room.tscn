@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=4 uid="uid://t35a8wmq30e1"]
+[gd_scene load_steps=40 format=4 uid="uid://t35a8wmq30e1"]
 
 [ext_resource type="Script" uid="uid://cg5owrlrb3yao" path="res://scripts/dining_room.gd" id="1_cli76"]
 [ext_resource type="Texture2D" uid="uid://bxtuwig5x2srv" path="res://assets/images/dirt_texture.png" id="1_evklq"]
@@ -18401,6 +18401,9 @@ size = Vector2(59.5, 2055)
 [sub_resource type="CircleShape2D" id="CircleShape2D_oam2j"]
 radius = 338.479
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vph1c"]
+size = Vector2(89, 196.5)
+
 [node name="DiningRoom" type="Node2D"]
 script = ExtResource("1_cli76")
 
@@ -18498,7 +18501,7 @@ position = Vector2(3, 2048)
 position = Vector2(10559, 2048)
 
 [node name="ChairHitBox" type="Sprite2D" parent="."]
-position = Vector2(5453, 1975)
+position = Vector2(7450, 1979)
 rotation = 3.14159
 scale = Vector2(1, -1)
 texture = SubResource("PlaceholderTexture2D_lwe0i")
@@ -18801,4 +18804,15 @@ position = Vector2(6502, 1377.5)
 scale = Vector2(255, 96.9062)
 texture = ExtResource("20_vph1c")
 
+[node name="Chair2" type="Area2D" parent="."]
+position = Vector2(5460, 1951)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair2"]
+position = Vector2(-3.5, -21.75)
+shape = SubResource("RectangleShape2D_vph1c")
+
 [connection signal="body_entered" from="dining_bounds" to="." method="_on_dining_threshold_entered"]
+[connection signal="body_entered" from="Chair2" to="ChairHitBox" method="_on_chair_2_body_entered"]
+[connection signal="body_exited" from="Chair2" to="." method="_on_chair_2_body_exited"]
+[connection signal="body_exited" from="Chair2" to="ButlerLarge" method="_on_chair_2_body_exited"]
+[connection signal="body_exited" from="Chair2" to="ChairHitBox" method="_on_chair_2_body_exited"]

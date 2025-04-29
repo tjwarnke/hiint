@@ -13,6 +13,8 @@ var sprite = null
 var dark = null
 var marvin_dead = null
 var marvin_alive = null
+var intro_complete = false
+var guess_time = false
 
 var con_head = preload("res://assets/images/conman_head.png")
 var relish_head = preload("res://assets/images/relish_head.png")
@@ -77,6 +79,13 @@ func final_options():
 	text.text = "Say:"
 	dialogue.visible = true
 	dialogue.text = "1. This isn't funny, you have me really worried\n2. Is he dead?\n3. Good riddance, he was a jerk anyway"
+func guess_killer():
+	sprite.visible = false
+	guess_time = true
+	text.visible = true
+	text.text = "Who killed Marvin"
+	dialogue.visible = true
+	dialogue.text = "1. Dmitri \n2. Sargent Relish \n3. Henry Conroy \n4. Magenta Lovelace \n5. Butler \n6. Diane"
 
 func _input(event):
 	if event.is_action_pressed("Interact2") and player_nearby and counter == 0:
@@ -90,12 +99,6 @@ func _input(event):
 		text.text = "Say:"
 		dialogue.visible = true
 		dialogue.text = "1. Thanks for inviting me but why are we here?\n2. Hi, I’m player character, who are you?"
-
-	if event.is_action_pressed("Option6"):
-		dialogue.visible = false
-		text.visivle = false
-		sprite.visible = false
-		player.set_can_move(true)
 
 	if event.is_action_pressed("Option1") and counter == 0:
 		dialogue.visible = false
@@ -218,6 +221,7 @@ func _input(event):
 		text.visible = false
 		sprite.visible = false
 		player.set_can_move(true)
+		intro_complete = true
 
 	if event.is_action_pressed("Option2") and counter == 2:
 		counter += 1
@@ -236,6 +240,7 @@ func _input(event):
 		text.visible = false
 		sprite.visible = false
 		player.set_can_move(true)
+		intro_complete = true
 
 	if event.is_action_pressed("Option3") and counter == 2:
 		counter += 1
@@ -266,6 +271,68 @@ func _input(event):
 		text.visible = false
 		sprite.visible = false
 		player.set_can_move(true)
+		intro_complete = true
+		
+	if event.is_action_pressed("Interact2") and in_chair2 == true:
+		sprite.visible = true
+		sprite.texture = butler
+		text.visible = true
+		text.text = "Player, tell us who the killer is"
+		await get_tree().create_timer(3).timeout
+		sprite.visible = false
+		guess_killer()
+		
+	if in_chair2 and guess_time and event.is_action_pressed("Option1"):
+		dialogue.visible = false
+		sprite.visible = true
+		sprite.texture = penguins_head
+		text.text = "Uhhh. We... I mean I did not kill him"
+		await get_tree().create_timer(3).timeout
+		guess_killer()
+	
+	if in_chair2 and guess_time and event.is_action_pressed("Option2"):
+		dialogue.visible = false
+		sprite.visible = true
+		sprite.texture = relish_head
+		text.text = "I never thought you would catch me\n I knew these medals would be my down fall"
+		await get_tree().create_timer(3).timeout
+		player.set_can_move(true)
+		text.text = "You have guessed the correct killer"
+		await get_tree().create_timer(3).timeout
+		text.text = "Congrats!!!"
+		
+	if in_chair2 and guess_time and event.is_action_pressed("Option3"):
+		dialogue.visible = false
+		sprite.visible = true
+		sprite.texture = con_head
+		text.text = "I may not be trustworthy... \nBut I would never kill anyone"
+		await get_tree().create_timer(3).timeout
+		guess_killer()
+		
+	if in_chair2 and guess_time and event.is_action_pressed("Option4"):
+		dialogue.visible = false
+		sprite.visible = true
+		sprite.texture = girl_head
+		text.text = "Why would I kill a person?\n I would not hurt a fly!"
+		await get_tree().create_timer(3).timeout
+		guess_killer()
+		
+	if in_chair2 and guess_time and event.is_action_pressed("Option5"):
+		dialogue.visible = false
+		sprite.visible = true
+		sprite.texture = butler
+		text.text = "I have no tme for such cruel things\n I have been busy buttling!"
+		await get_tree().create_timer(3).timeout
+		guess_killer()
+		
+	if in_chair2 and guess_time and event.is_action_pressed("Option6"):
+		dialogue.visible = false
+		sprite.visible = true
+		sprite.texture = diane
+		text.text = "ME? Kill my OWN brother?!?!"
+		await get_tree().create_timer(3).timeout
+		guess_killer()
+		
 
 func death_scene():
 	text.visible = false
@@ -287,3 +354,22 @@ func death_scene():
 	await get_tree().create_timer(2).timeout
 	dark.visible = false
 	sprite.visible = true
+	
+var in_chair2 = false
+func _on_chair_2_body_entered(body: Node2D) -> void:
+	if body.is_in_group("player") and intro_complete == true:
+		player_nearby = true
+		player = body
+		in_chair2 = true
+		sprite.visible = true
+		sprite.texture = butler
+		text.visible = true
+		text.text = "You made it back!. \nPress 'e' to sit with us."
+
+func _on_chair_2_body_exited(body):
+	if body.is_in_group("player"):
+		player_nearby = false
+		await get_tree().create_timer(.5).timeout
+		text.visible = false
+		dialogue.visible = false
+		sprite.visible = false
