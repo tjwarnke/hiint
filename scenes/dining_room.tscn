@@ -18516,6 +18516,19 @@ position = Vector2(5460, 1953)
 position = Vector2(-5482.5, -1980)
 shape = SubResource("RectangleShape2D_wrq0i")
 
+[node name="CPUParticles2D" type="CPUParticles2D" parent="ChairHitBox/Area2D/CollisionShape2D"]
+amount = 50
+lifetime = 0.5
+preprocess = 0.5
+speed_scale = 0.8
+emission_shape = 3
+emission_rect_extents = Vector2(50, 120)
+spread = 180.0
+gravity = Vector2(0, 20)
+initial_velocity_max = 50.0
+scale_amount_max = 8.0
+color = Color(0.654902, 0, 0.556863, 0.603922)
+
 [node name="Penguins" parent="." instance=ExtResource("2_r37lo")]
 z_index = 1
 position = Vector2(5740, 1900)
