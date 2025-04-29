@@ -12,6 +12,7 @@ var dialogue = null
 var sprite = null
 var dark = null
 var marvin_dead = null
+var marvin_alive = null
 
 var con_head = preload("res://assets/images/conman_head.png")
 var relish_head = preload("res://assets/images/relish_head.png")
@@ -31,6 +32,8 @@ func _ready():
 	dialogue = get_node_or_null("../../UI/DialogOptions")
 	sprite = get_node_or_null("../../UI/Speaker")
 	dark =  get_node_or_null("../../DiningRoom/Black")
+	marvin_alive = get_node_or_null("../../DiningRoom/Twin1")
+	marvin_dead = get_node_or_null("../../DiningRoom/Twin1Dead")
 	
 func _on_body_entered(body):
 	if body.is_in_group("player") and counter ==0:
@@ -73,7 +76,7 @@ func final_options():
 	await get_tree().create_timer(1).timeout
 	text.text = "Say:"
 	dialogue.visible = true
-	dialogue.text = "1. This isn't funny, you have a really worried\n2. Is he dead?\n3. Good riddance, he was a jerk anyway"
+	dialogue.text = "1. This isn't funny, you have me really worried\n2. Is he dead?\n3. Good riddance, he was a jerk anyway"
 
 func _input(event):
 	if event.is_action_pressed("Interact2") and player_nearby and counter == 0:
@@ -81,6 +84,7 @@ func _input(event):
 		dialogue_active = false
 		dialogue.visible = false
 		text.visible = true
+		sprite.texture = diane
 		text.text = "Sorry about my brother,\nma’am. My name is Diane,\n I’m glad you could make it."
 		await get_tree().create_timer(3).timeout
 		text.text = "Say:"
@@ -207,6 +211,9 @@ func _input(event):
 		sprite.texture = girl_head
 		text.text = "Do you need a hug, darling?"
 		await get_tree().create_timer(3).timeout
+		sprite.texture = butler
+		text.text = "Player, it is your job to fild the killer\n Go now!"
+		await get_tree().create_timer(3).timeout
 		dialogue.visible = false
 		text.visible = false
 		sprite.visible = false
@@ -221,6 +228,9 @@ func _input(event):
 		await get_tree().create_timer(3).timeout
 		sprite.texture = girl_head
 		text.text = "oh dear..."
+		await get_tree().create_timer(3).timeout
+		sprite.texture = butler
+		text.text = "Player, it is your job to fild the killer\n Go now!"
 		await get_tree().create_timer(3).timeout
 		dialogue.visible = false
 		text.visible = false
@@ -249,12 +259,17 @@ func _input(event):
 		sprite.texture = diane
 		text.text = "Noooooooo, Marvy. How could you?\nYou can’t die on me "
 		await get_tree().create_timer(3).timeout
+		sprite.texture = butler
+		text.text = "Player, it is your job to fild the killer\n Go now!"
+		await get_tree().create_timer(3).timeout
 		dialogue.visible = false
 		text.visible = false
 		sprite.visible = false
 		player.set_can_move(true)
 
 func death_scene():
+	text.visible = false
+	sprite.visible = false
 	dialogue.visible = false
 	dark.visible = true
 	await get_tree().create_timer(.2).timeout
@@ -267,7 +282,8 @@ func death_scene():
 	dark.visible = true
 	text.visible = true
 	text.text = "AHHHHHHHHHHHHHHH"
-	marvin.visible = false
+	marvin_alive.visible = false
 	marvin_dead.visible = true
 	await get_tree().create_timer(2).timeout
 	dark.visible = false
+	sprite.visible = true
