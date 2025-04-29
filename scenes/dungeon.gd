@@ -63,7 +63,7 @@ func _ready():
 	lever2Area = get_node("Lever2/Area2D")
 	lever3 = get_node("Lever3")
 	lever3Area = get_node("Lever3/Area2D")
-	key = get_node("Key")
+	#key = get_node("Key")
 	cageDoor1 = get_node("CageDoor1")
 	cageDoor2 = get_node("CageDoor2")
 	player = get_node_or_null("/root/World/Player")
