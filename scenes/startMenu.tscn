@@ -1,80 +1,63 @@
-[gd_scene load_steps=8 format=3 uid="uid://svlbq44rfnia"]
+[gd_scene load_steps=14 format=3 uid="uid://svlbq44rfnia"]
 
 [ext_resource type="Script" uid="uid://do8axnurbe1ey" path="res://scripts/startMenu.gd" id="1_yhodh"]
-[ext_resource type="Texture2D" uid="uid://ddtr00s176wej" path="res://assets/images/hiint_logo_transparent.png" id="2_7kfin"]
-[ext_resource type="Texture2D" uid="uid://c34a11rjxt3k7" path="res://assets/images/haunted_mansion.jpg" id="3_nk48g"]
+[ext_resource type="Texture2D" uid="uid://b222pixs53dmf" path="res://assets/images/NewLoad (3).png" id="3_pwyin"]
+[ext_resource type="Texture2D" uid="uid://020ubl5bfdec" path="res://assets/images/New Piskel-2.png.png" id="4_5126e"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="4_bq4j4"]
-[ext_resource type="AudioStream" uid="uid://bc3ng53s4n7ad" path="res://assets/audio/GameSongIntro-MP3.mp3" id="5_1stqc"]
+[ext_resource type="Texture2D" uid="uid://b50oeysb36o17" path="res://assets/images/conman.png" id="5_pgtcr"]
+[ext_resource type="Texture2D" uid="uid://dlfid7yanwimm" path="res://assets/images/butler_large.png" id="6_at2ir"]
+[ext_resource type="Texture2D" uid="uid://5rjn6pbr58gg" path="res://assets/images/sargent_relish_large.png" id="7_maf4s"]
+[ext_resource type="Texture2D" uid="uid://i5go4qxcreqg" path="res://assets/images/torch.png" id="8_5eyee"]
+[ext_resource type="Texture2D" uid="uid://b6y0ovgi0j4yl" path="res://assets/images/HIINT BOOK.png" id="9_rccna"]
+[ext_resource type="Texture2D" uid="uid://c0pt58yn38ry4" path="res://assets/images/Hammer.png" id="10_sodb8"]
+[ext_resource type="Texture2D" uid="uid://c2ssxagsu4jxs" path="res://assets/images/Key.png" id="11_4a6ig"]
+[ext_resource type="Texture2D" uid="uid://dr0nbg5alwfwb" path="res://assets/images/8Ball.png" id="12_t462v"]
 
 [sub_resource type="Gradient" id="Gradient_ew5yv"]
 offsets = PackedFloat32Array(0.146667, 0.153333, 0.986667)
 colors = PackedColorArray(0.165656, 0.165656, 0.165656, 1, 0.377919, 0.377919, 0.377919, 1, 0.310617, 0.310617, 0.310617, 1)
 
-[sub_resource type="GDScript" id="GDScript_8fwge"]
-script/source = "extends AudioStreamPlayer2D
-
-func fade_out_music(duration: float = 10.0):
-	var tween = create_tween()
-	tween.tween_property(self, \"volume_db\", -80, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-"
-
 [node name="startMenu" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_yhodh")
 
-[node name="StartButton" type="Button" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 842.0
-offset_top = 562.0
-offset_right = 1041.0
-offset_bottom = 658.0
+offset_left = -183.0
+offset_top = -99.0
+offset_right = 120.0
+offset_bottom = 229.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="StartButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
 theme_override_font_sizes/font_size = 64
-text = "START
-"
+text = "START"
 
-[node name="QuitButton" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 842.0
-offset_top = 666.0
-offset_right = 1041.0
-offset_bottom = 762.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="SettingsButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
 theme_override_font_sizes/font_size = 64
-text = "QUIT
-"
+text = "SETTINGS"
 
-[node name="Logo" type="Node2D" parent="."]
-
-[node name="HIINT" type="Sprite2D" parent="Logo"]
-position = Vector2(1018, 278)
-texture = ExtResource("2_7kfin")
-
-[node name="Background" type="Node2D" parent="."]
-
-[node name="hauntedMansion" type="Sprite2D" parent="Background"]
-z_index = -1
-position = Vector2(961.25, 539.25)
-scale = Vector2(1.87744, 1.05811)
-texture = ExtResource("3_nk48g")
+[node name="QuitButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "QUIT"
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
-position = Vector2(479, -272)
+position = Vector2(604, -297)
 rotation = -0.450062
 amount = 200
 texture = ExtResource("4_bq4j4")
@@ -82,7 +65,7 @@ lifetime = 1.8
 preprocess = 2.0
 local_coords = true
 emission_shape = 3
-emission_rect_extents = Vector2(1100, 1)
+emission_rect_extents = Vector2(1200, 1)
 direction = Vector2(0, 1)
 spread = 0.0
 initial_velocity_min = 20.0
@@ -91,11 +74,61 @@ scale_amount_min = 0.5
 scale_amount_max = 0.75
 color_ramp = SubResource("Gradient_ew5yv")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("5_1stqc")
-volume_db = 20.0
-autoplay = true
-script = SubResource("GDScript_8fwge")
+[node name="Background" type="Node2D" parent="."]
 
-[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
+[node name="hauntedMansion" type="Sprite2D" parent="Background"]
+z_index = -1
+position = Vector2(967.5, 544.5)
+scale = Vector2(1.34831, 1.14749)
+texture = ExtResource("3_pwyin")
+
+[node name="Sprite2D" type="Sprite2D" parent="Background"]
+position = Vector2(1702, 735)
+scale = Vector2(3.98438, 3.71875)
+texture = ExtResource("4_5126e")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background"]
+position = Vector2(334, 621)
+rotation = -0.370824
+scale = Vector2(0.598437, 0.576563)
+texture = ExtResource("5_pgtcr")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Background"]
+position = Vector2(1702, 321)
+rotation = 0.313068
+scale = Vector2(0.538364, 0.491767)
+texture = ExtResource("6_at2ir")
+
+[node name="Sprite2D4" type="Sprite2D" parent="Background"]
+position = Vector2(317, 247)
+scale = Vector2(0.632813, 0.551562)
+texture = ExtResource("7_maf4s")
+
+[node name="Sprite2D5" type="Sprite2D" parent="Background"]
+position = Vector2(395, 944)
+scale = Vector2(0.648438, 0.544643)
+texture = ExtResource("8_5eyee")
+
+[node name="Sprite2D6" type="Sprite2D" parent="Background"]
+position = Vector2(669, 1008)
+scale = Vector2(0.294792, 0.338889)
+texture = ExtResource("9_rccna")
+
+[node name="Sprite2D7" type="Sprite2D" parent="Background"]
+position = Vector2(954, 998)
+scale = Vector2(1.79, 1.62)
+texture = ExtResource("10_sodb8")
+
+[node name="Sprite2D8" type="Sprite2D" parent="Background"]
+position = Vector2(1250, 1011)
+scale = Vector2(2.8, 2.38)
+texture = ExtResource("11_4a6ig")
+
+[node name="Sprite2D9" type="Sprite2D" parent="Background"]
+position = Vector2(1541, 1000)
+scale = Vector2(4.98438, 4.125)
+texture = ExtResource("12_t462v")
+
+[connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

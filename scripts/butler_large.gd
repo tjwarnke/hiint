@@ -6,12 +6,11 @@ var dialogue_active = false
 var player = null
 var cut_scene_seen = false
 
-@onready var text_box = get_node("/root/World/UI/TextBoxMiddleTop")
-@onready var text_box2 = get_node("/root/World/UI/TextBoxMiddleTop2")
-@onready var dialogue = get_node("/root/World/UI/DialogOptions")
+@onready var text = get_node("/root/World/UI/TextBoxMiddleTop")
 @onready var sprite = get_node("/root/World/UI/Speaker")
-@onready var Box1 = get_node("/root/World/UI/TextBoxMiddleTopBack")
-@onready var Box2 = get_node("/root/World/UI/TextBoxMiddleTopBack2")
+
+var twin1 = preload("res://assets/images/twin1_head.png")
+var twin2= preload("res://assets/images/victim_head.png")
 var butler = preload("res://assets/images/ButlerHead.png")
 
 func _ready():
@@ -22,28 +21,126 @@ func _ready():
 func _on_body_entered(body):
 	if body.is_in_group("player"):
 		if cut_scene_seen == false:
-			sprite.scale = Vector2(.5, .5)
-			player_nearby = true
-			sprite.texture = butler
-			sprite.visible = true
-			text_box.visible = true
-			Box2.visible = true
-			text_box.text = "Welcome to the Kusnetzov Mansion!"
-			await get_tree().create_timer(2).timeout
-			text_box2.visible = true
-			text_box2.text = "Take a seat at the table!"
-			await get_tree().create_timer(2).timeout
-			text_box2.visible = false
-			text_box.text = "The dinner will start shortly!"
-			await get_tree().create_timer(2).timeout
-			text_box.visible = false
-			sprite.visible = false
-			Box2.visible = false
-			cut_scene_seen = true
+			# Store player reference
+			player = body
+			
+			# Prevent player movement during the cutscene
+			if player.has_method("set_can_move"):
+				player.set_can_move(false)
+			
+			# Run the butler dialog sequence
+			play_butler_dialog()
+
+# Separate function to handle the dialog sequence
+func play_butler_dialog():
+	sprite.scale = Vector2(.5, .5)
+	player_nearby = true
+	sprite.texture = butler
+	sprite.visible = true
+	text.visible = true
+	
+	# First dialog
+	text.text = "Welcome to the Kusnetzov Mansion!"
+	await get_tree().create_timer(2).timeout
+	
+	# Check if player reference is still valid
+	if not is_instance_valid(player):
+		end_dialog()
+		return
 		
+	text.text = "Take a seat at the table!"
+	await get_tree().create_timer(2).timeout
+	
+	# Check if player reference is still valid
+	if not is_instance_valid(player):
+		end_dialog()
+		return
+	
+	text.text = "I'm afraid you cannot take your \npowerups into the mansion."
+	
+	# Remove powerups when mentioned
+	if player.has_method("remove_powerups"):
+		player.remove_powerups()
+		
+	await get_tree().create_timer(3).timeout
+	sprite.texture = twin2
+	text.text = "Is this guy going to get here soon? \nI’m hungry!"
+	await get_tree().create_timer(2).timeout
+	
+	sprite.texture = twin1
+	text.text = "Be patient, I’m sure she’ll be here soon"
+	await get_tree().create_timer(3).timeout
+	
+	# Check if player reference is still valid
+	if not is_instance_valid(player):
+		end_dialog()
+		return
+	
+	# Do a more robust check for torch
+	var has_torch = false
+	
+	# First check direct method
+	if player.has_method("has_item"):
+		has_torch = player.has_item("Torch")
+	
+	# If that fails, check held items directly
+	if not has_torch and "held_items" in player:
+		for item in player.held_items:
+			if item.name.contains("Torch"):
+				has_torch = true
+				break
+	
+	# Only tell them to put down torch if they actually have one
+	if has_torch:
+		# Drop torch at exact time it's mentioned
+		text.text = "Please set down your torch."
+		
+		# Emit the drop_torch signal on the player
+		player.drop_torch.emit()
+		
+		await get_tree().create_timer(2).timeout
+		
+		# Check if player reference is still valid
+		if not is_instance_valid(player):
+			end_dialog()
+			return
+	
+	text.text = "The dinner will start shortly!"
+	await get_tree().create_timer(2).timeout
+	
+	# End the dialog sequence
+	end_dialog()
+
+# End the dialog sequence and restore player movement
+func end_dialog():
+	text.visible = false
+	sprite.visible = false
+	cut_scene_seen = true
+	
+	# Allow player movement only after the cutscene
+	if is_instance_valid(player) and player.has_method("set_can_move"):
+		player.set_can_move(true)
+
 func _on_body_exited(body):
 	if body.is_in_group("player"):
 		player_nearby = false
+
+func _on_player_entered(body):
+	if body.is_in_group("player"):
+		player = body
+		# Check if player has a torch using the same method as in play_butler_dialog
+		var has_torch = false
+		if player.has_method("has_item"):
+			has_torch = player.has_item("Torch")
+		if not has_torch and "held_items" in player:
+			for item in player.held_items:
+				if item.name.contains("Torch"):
+					has_torch = true
+					break
 		
-		
-		
+		if has_torch:
+			# Tell player to drop torch
+			player.drop_torch.emit()
+		else:
+			# Skip torch dialog
+			pass

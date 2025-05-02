@@ -11,36 +11,45 @@ func _ready():
 	update_slot_appearance()
 	
 	# Set up anchors for bottom center positioning
-	anchors_preset = Control.PRESET_BOTTOM_WIDE
-	anchor_bottom = 1.0
-	offset_bottom = -400
+	anchors_preset = Control.PRESET_TOP_LEFT
+	anchor_left = 0.0
+	anchor_top = 0.0
+	anchor_right = 0.0
+	anchor_bottom = 0.0
+	
+	offset_left = 0  # Adjust as needed
+	offset_top = 0   # Adjust as needed
+	offset_right = 400  # Width if you want to size it explicitly
+	offset_bottom = 100 # Height if needed
 	
 	# Ensure we're on top of everything
 	z_index = 100
 	show()
 
 func add_item(item_texture, index):
-	print("Adding item to hotbar at index: ", index)  # Debug print
 	if index < max_slots:
 		items[index] = item_texture
-		slots[index].texture = item_texture
+		if slots[index] and item_texture:
+			slots[index].texture = item_texture
 		update_slot_appearance()
 		
 func remove_item(index):
-	print("Removing item from hotbar at index: ", index)  # Debug print
 	if index < max_slots:
 		items[index] = null
-		slots[index].texture = null
+		if slots[index]:
+			slots[index].texture = null
+		
+		# Don't shift items, just clear the slot
 		update_slot_appearance()
 
 func set_selected(index: int):
-	selected_slot = index
-	update_slot_appearance()
+	if index >= 0 and index < max_slots:
+		selected_slot = index
+		update_slot_appearance()
 
 func update_slot_appearance():
 	for i in range(slots.size()):
-		var slot = slots[i]
 		if i == selected_slot:
-			slot.modulate = Color(1, 1, 1, 1)  # Full brightness for selected
+			slots[i].modulate = Color(1, 1, 1, 1)  # Selected slot is fully opaque
 		else:
-			slot.modulate = Color(0.5, 0.5, 0.5, 1)  # Dimmed for unselected
+			slots[i].modulate = Color(1, 1, 1, 0.5)  # Unselected slots are semi-transparent

@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b6y0ovgi0j4yl" path="res://assets/images/HIINT BOOK.png" id="2_retch"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ckbho"]
-size = Vector2(96.4524, 58.7227)
+size = Vector2(97.3076, 62.0953)
 
 [node name="Book" type="Area2D"]
 position = Vector2(192, 947)
@@ -15,12 +15,12 @@ collision_mask = 65535
 script = ExtResource("1_el5v3")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0.0185127, 0.764456)
-scale = Vector2(0.115259, 0.0836588)
+position = Vector2(1.04232, -0.777814)
+scale = Vector2(0.139493, 0.109784)
 texture = ExtResource("2_retch")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(2.09808e-05, -1.71661e-05)
+position = Vector2(0.427658, -1.6864)
 shape = SubResource("RectangleShape2D_ckbho")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

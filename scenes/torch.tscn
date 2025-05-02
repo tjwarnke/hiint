@@ -10,14 +10,13 @@ size = Vector2(57.5, 70)
 [node name="Torch" type="Area2D"]
 position = Vector2(200, 935)
 rotation = 0.0174533
-scale = Vector2(0.942512, 1.30793)
 collision_layer = 65535
 collision_mask = 65535
 script = ExtResource("1_1e30y")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(9.45536, -21.3206)
-scale = Vector2(0.263253, 0.244734)
+position = Vector2(8, -45)
+scale = Vector2(0.263253, 0.369882)
 texture = ExtResource("2_jnefu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -25,20 +24,19 @@ position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_4t2xx")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(-2.08464, 1.55558)
-scale = Vector2(1.429, 1)
+position = Vector2(-0.999842, 0.0174315)
 color = Color(0.878431, 0.878431, 0.878431, 1)
 energy = 0.77
 shadow_enabled = true
 shadow_color = Color(0.796243, 0.796243, 0.796243, 0)
 texture = ExtResource("3_4xckj")
 offset = Vector2(0, -25)
-texture_scale = 0.25
+texture_scale = 0.15
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 position = Vector2(-0.592541, -24.4624)
-amount = 20
-lifetime = 0.29
+amount = 40
+lifetime = 0.25
 preprocess = 1.14
 speed_scale = 0.56
 explosiveness = 0.18
@@ -49,8 +47,8 @@ gravity = Vector2(0, 20)
 initial_velocity_max = 20.0
 tangential_accel_min = -100.0
 tangential_accel_max = 100.0
-scale_amount_min = 3.0
-scale_amount_max = 3.0
+scale_amount_min = 2.0
+scale_amount_max = 8.0
 color = Color(1, 0.317647, 0, 1)
 hue_variation_min = -1.0
 hue_variation_max = 1.0

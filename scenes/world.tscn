@@ -1,8 +1,8 @@
-[gd_scene load_steps=23 format=3 uid="uid://bl007siqf1w1o"]
+[gd_scene load_steps=35 format=3 uid="uid://bl007siqf1w1o"]
 
 [ext_resource type="Script" uid="uid://cf2snns12awvw" path="res://scripts/world.gd" id="1_jhx03"]
 [ext_resource type="PackedScene" uid="uid://ctbtqie8fru15" path="res://scenes/torch.tscn" id="6_lakw3"]
-[ext_resource type="Script" path="res://scripts/torch.gd" id="7_dss4m"]
+[ext_resource type="Script" uid="uid://cvx006n8smlea" path="res://scripts/torch.gd" id="7_dss4m"]
 [ext_resource type="PackedScene" uid="uid://caw125fejkkxe" path="res://scenes/Book.tscn" id="8_2lf6f"]
 [ext_resource type="Script" uid="uid://cxs3k4lmkyg8b" path="res://scripts/camera_2d.gd" id="11_7iits"]
 [ext_resource type="PackedScene" uid="uid://dd41uw5bd62ul" path="res://scenes/second_tutorial.tscn" id="12_dss4m"]
@@ -11,22 +11,50 @@
 [ext_resource type="PackedScene" uid="uid://bh5xpj4kmc4b5" path="res://scenes/side_dash.tscn" id="13_2lf6f"]
 [ext_resource type="PackedScene" uid="uid://t35a8wmq30e1" path="res://scenes/dining_room.tscn" id="13_7t5mc"]
 [ext_resource type="Texture2D" uid="uid://veypfk8kg3vj" path="res://assets/images/RainDrop.png" id="13_dss4m"]
-[ext_resource type="Texture2D" uid="uid://dualh52hqk7gi" path="res://assets/images/TextBoxMiddleTop.png" id="13_jhx03"]
-[ext_resource type="Script" path="res://scripts/stump.gd" id="14_7iits"]
+[ext_resource type="Script" uid="uid://bj445s8633ird" path="res://scripts/stump.gd" id="14_7iits"]
 [ext_resource type="PackedScene" uid="uid://dhh62wmxavnow" path="res://scenes/Library.tscn" id="14_lakw3"]
+[ext_resource type="Texture2D" uid="uid://dojh00d05ohit" path="res://assets/images/stump2.png" id="14_munwf"]
 [ext_resource type="Texture2D" uid="uid://c56wvy6iun4q4" path="res://assets/images/proxy-image-1.jpg" id="14_oo54l"]
 [ext_resource type="AudioStream" uid="uid://85jkufufq7sv" path="res://assets/audio/scream.mp3" id="15_kpybi"]
-[ext_resource type="Texture2D" uid="uid://b13edcjn8gd5" path="res://assets/images/stump.png" id="15_oo54l"]
 [ext_resource type="PackedScene" uid="uid://bp2xka1pwcwry" path="res://scenes/billiards_room.tscn" id="15_pm21f"]
 [ext_resource type="PackedScene" uid="uid://cfrd10xr8oexr" path="res://scenes/dungeon.tscn" id="16_2lf6f"]
+[ext_resource type="AudioStream" uid="uid://dfotkcdfygmdi" path="res://assets/audio/dungeon.mp3" id="17_7iits"]
+[ext_resource type="Texture2D" uid="uid://i5go4qxcreqg" path="res://assets/images/torch.png" id="18_xgqkh"]
+[ext_resource type="Texture2D" uid="uid://id0fuuencf8q" path="res://assets/images/gradient.png" id="19_munwf"]
+[ext_resource type="Script" path="res://scenes/dj.gd" id="21_7iits"]
 [ext_resource type="PackedScene" uid="uid://cjhvjqqvgyv6m" path="res://scenes/hotbar.tscn" id="22_2lf6f"]
+[ext_resource type="Script" path="res://scenes/dash.gd" id="22_oo54l"]
+[ext_resource type="Texture2D" uid="uid://d3ubltkdb3fwi" path="res://assets/images/char_painting.png" id="27_0nbtd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2lf6f"]
+bg_color = Color(0.6, 0.372549, 0.247059, 1)
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7iits"]
+bg_color = Color(0.6, 0.372549, 0.247059, 1)
 
 [sub_resource type="Curve" id="Curve_7t5mc"]
 _data = [Vector2(0.00729926, 0.54065), 0.0, 0.0, 0, 0, Vector2(0.313869, 0.833333), 0.0, 0.0, 0, 0, Vector2(0.726277, 0.731707), 0.0, 0.0, 0, 0, Vector2(0.981752, 0.678862), 0.0, 0.0, 0, 0]
 point_count = 4
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kpybi"]
-size = Vector2(278.75, 185)
+size = Vector2(147.969, 124)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ts3gi"]
+size = Vector2(78, 164.5)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_2lf6f"]
+a = Vector2(-6, -138)
+b = Vector2(0, 208)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_kpybi"]
+a = Vector2(313, 12)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_oo54l"]
+radius = 53.521
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kpybi"]
+radius = 53.106
 
 [node name="World" type="Node2D"]
 scale = Vector2(2, 2)
@@ -36,71 +64,54 @@ script = ExtResource("1_jhx03")
 
 [node name="TextBoxMiddleTop" type="Label" parent="UI"]
 visible = false
+z_index = 2
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -100.0
-offset_top = 50.0
-offset_right = 100.0
-offset_bottom = 75.0
+offset_left = -112.0
+offset_top = 55.0
+offset_right = 88.0
+offset_bottom = 89.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 24
-text = "Press 'e' to pick up"
+theme_override_styles/normal = SubResource("StyleBoxFlat_2lf6f")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextBoxMiddleTop2" type="Label" parent="UI"]
-z_index = 2
-offset_left = 856.0
-offset_top = 41.0
-offset_right = 1478.0
-offset_bottom = 114.0
-
-[node name="TextBoxMiddleTopBack" type="Sprite2D" parent="UI"]
-visible = false
-z_index = 1
-position = Vector2(1002, 53)
-scale = Vector2(0.484616, 0.57)
-texture = ExtResource("13_jhx03")
-
-[node name="TextBoxDialog" type="Sprite2D" parent="UI"]
-visible = false
-z_index = 1
-position = Vector2(1002, 107.25)
-scale = Vector2(0.484616, 0.675)
-texture = ExtResource("13_jhx03")
-
-[node name="TextBoxMiddleTop3" type="Label" parent="UI"]
-z_index = 2
-offset_left = 862.0
-offset_top = 68.0
-offset_right = 1484.0
-offset_bottom = 141.0
-
-[node name="TextBoxMiddleTopBack2" type="Sprite2D" parent="UI"]
-visible = false
-z_index = 1
-position = Vector2(1018.5, 66)
-scale = Vector2(0.524616, 0.7)
-texture = ExtResource("13_jhx03")
-
 [node name="DialogOptions" type="Label" parent="UI"]
+visible = false
 z_index = 2
-offset_left = 865.0
-offset_top = 79.0
-offset_right = 1329.0
-offset_bottom = 199.0
-theme_override_font_sizes/font_size = 20
+offset_left = 776.0
+offset_top = 94.0
+offset_right = 1123.0
+offset_bottom = 239.0
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_7iits")
 
 [node name="Speaker" type="Sprite2D" parent="UI"]
+visible = false
 z_index = 2
-position = Vector2(783, 70)
+position = Vector2(663, 68)
+
+[node name="Hotbar" parent="UI" instance=ExtResource("22_2lf6f")]
+z_index = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 400.0
+offset_bottom = 64.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(985, 542)
+position = Vector2(985, 546.5)
 process_callback = 0
 limit_left = 5
 limit_right = 100000
@@ -128,24 +139,22 @@ wait_time = 0.08
 stream = ExtResource("15_kpybi")
 volume_db = 5.943
 
+[node name="Control" type="Control" parent="Camera2D"]
+layout_direction = 1
+layout_mode = 3
+anchors_preset = 0
+offset_bottom = 750.0
+grow_horizontal = 2
+
 [node name="CanvasModulate" type="CanvasModulate" parent="Camera2D"]
 visible = false
 z_index = 1
 position = Vector2(-985, -542)
-color = Color(0.0475577, 0.0475577, 0.0475576, 1)
+color = Color(0.18359, 0.183591, 0.18359, 1)
 
-[node name="Hotbar" parent="Camera2D" instance=ExtResource("22_2lf6f")]
-anchors_preset = -1
-anchor_left = 0.405
-anchor_right = 1.205
-offset_left = -60.0
-offset_top = -200.0
-offset_right = 373.0
-offset_bottom = -136.0
-
-[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+[node name="Rain" type="CPUParticles2D" parent="."]
 z_index = 2
-position = Vector2(3951.5, -142)
+position = Vector2(3801, -142)
 amount = 10000
 texture = ExtResource("13_dss4m")
 lifetime = 2.5
@@ -164,7 +173,7 @@ color = Color(0.442911, 0.442911, 0.442911, 1)
 
 [node name="Torch" parent="cabin" groups=["item"] instance=ExtResource("6_lakw3")]
 z_index = 2
-position = Vector2(498, 823)
+position = Vector2(527, 838.5)
 rotation = 0.0
 script = ExtResource("7_dss4m")
 
@@ -175,58 +184,151 @@ position = Vector2(2363, 877)
 position = Vector2(2363, 877)
 
 [node name="Spawn" type="Node2D" parent="."]
-position = Vector2(335, 740)
+position = Vector2(361, 757.5)
 
 [node name="Tutorial" parent="." instance=ExtResource("12_dss4m")]
 position = Vector2(2366, -146.5)
 scale = Vector2(0.5, 0.5)
 
-[node name="Area2D2" parent="Tutorial" instance=ExtResource("12_pm21f")]
-position = Vector2(6008, 2254)
+[node name="AddJump" parent="Tutorial" instance=ExtResource("12_pm21f")]
+position = Vector2(5531, 2342)
 scale = Vector2(2, 2)
 
 [node name="SideDash2" parent="Tutorial" instance=ExtResource("13_2lf6f")]
-position = Vector2(9521, 676)
+position = Vector2(0, 1800)
 
 [node name="Stump2" type="StaticBody2D" parent="Tutorial"]
-position = Vector2(2000, 1925)
-scale = Vector2(2, 2)
+position = Vector2(6328, 1886)
+scale = Vector2(3, 2.5)
 script = ExtResource("14_7iits")
 
 [node name="Stump" type="Sprite2D" parent="Tutorial/Stump2"]
-position = Vector2(1, 2)
-scale = Vector2(0.396907, 0.385417)
-texture = ExtResource("15_oo54l")
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Tutorial/Stump2"]
-position = Vector2(3, 4)
-polygon = PackedVector2Array(-51, -52, -42, -70, -39, -71, -33, -71, 80, -47, 81, -34, 81, 10, 84, 26, 89, 28, 89, 33, 87, 37, 89, 42, 95, 48, 95, 55, 92, 61, 81, 71, 69, 73, 55, 72, 25, 62, -11, 71, -94, 60, -90, 54, -89, 47, -88, 42, -82, 39, -82, 35, -88, 26, -88, 10, -83, 3, -77, -15)
+position = Vector2(-38.5, -25)
+scale = Vector2(0.5, 0.33)
+texture = ExtResource("14_munwf")
 
 [node name="Area2D" type="Area2D" parent="Tutorial/Stump2"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/Stump2/Area2D"]
-position = Vector2(22.5, -1.90735e-06)
+position = Vector2(-8, 7.5)
 shape = SubResource("RectangleShape2D_kpybi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial/Stump2"]
+position = Vector2(-44.5, -17)
+shape = SubResource("RectangleShape2D_ts3gi")
 
 [node name="Dungeon" parent="." instance=ExtResource("16_2lf6f")]
 position = Vector2(11664, 1648)
 scale = Vector2(0.5, 0.5)
 
+[node name="DungeonMusic" type="AudioStreamPlayer2D" parent="Dungeon"]
+stream = ExtResource("17_7iits")
+
 [node name="DiningRoom" parent="." instance=ExtResource("13_7t5mc")]
 position = Vector2(8112, -144)
 scale = Vector2(0.5, 0.5)
+script = null
+
+[node name="Torch" type="Sprite2D" parent="DiningRoom"]
+position = Vector2(1112, 1750)
+scale = Vector2(0.463543, 0.662946)
+texture = ExtResource("18_xgqkh")
+
+[node name="TorchLight" type="PointLight2D" parent="DiningRoom/Torch"]
+position = Vector2(-36.674, 53.5489)
+texture = ExtResource("19_munwf")
+texture_scale = 0.75
+height = 1.0
+
+[node name="TorchParticles" type="CPUParticles2D" parent="DiningRoom/Torch"]
+position = Vector2(-34.5168, 8.29636)
+scale = Vector2(7, 7)
+amount = 40
+lifetime = 0.25
+preprocess = 1.14
+speed_scale = 0.56
+explosiveness = 0.18
+randomness = 0.3
+emission_shape = 1
+emission_sphere_radius = 23.23
+gravity = Vector2(0, 20)
+initial_velocity_max = 20.0
+tangential_accel_min = -100.0
+tangential_accel_max = 100.0
+scale_amount_min = 2.0
+scale_amount_max = 8.0
+color = Color(1, 0.317647, 0, 1)
+hue_variation_min = -1.0
+hue_variation_max = 1.0
 
 [node name="Library" parent="." instance=ExtResource("14_lakw3")]
 position = Vector2(13584, 212)
 scale = Vector2(0.5, 0.5)
 
+[node name="LibraryThreshold" type="Area2D" parent="Library"]
+position = Vector2(-241, 1170)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Library/LibraryThreshold"]
+position = Vector2(-9, 0)
+shape = SubResource("SegmentShape2D_2lf6f")
+
+[node name="Area2D" parent="Library" instance=ExtResource("12_pm21f")]
+position = Vector2(193, 1241)
+
 [node name="BilliardsRoom" parent="." instance=ExtResource("15_pm21f")]
 position = Vector2(15888, 80)
 scale = Vector2(0.5, 0.5)
 
-[node name="Book" parent="." instance=ExtResource("8_2lf6f")]
-position = Vector2(558.5, 1772)
+[node name="dungeon_threshold" type="Area2D" parent="BilliardsRoom"]
+position = Vector2(3113, 1651)
 
-[connection signal="torch_picked" from="cabin/Torch" to="." method="_on_torch_picked"]
-[connection signal="collected" from="Tutorial/Area2D2" to="." method="on_power_up"]
-[connection signal="collected" from="Tutorial/SideDash2" to="." method="on_power_up"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BilliardsRoom/dungeon_threshold"]
+position = Vector2(-33, 31)
+shape = SubResource("SegmentShape2D_kpybi")
+
+[node name="Book" parent="." instance=ExtResource("8_2lf6f")]
+position = Vector2(404, 825)
+
+[node name="Double Jump" type="Area2D" parent="."]
+position = Vector2(-183.5, 39)
+script = ExtResource("21_7iits")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Double Jump"]
+position = Vector2(5316.5, 985)
+shape = SubResource("CircleShape2D_oo54l")
+
+[node name="Dash" type="Area2D" parent="."]
+position = Vector2(0, 1800)
+script = ExtResource("22_oo54l")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Dash"]
+position = Vector2(26.5, 14.5)
+shape = SubResource("CircleShape2D_kpybi")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(12974, 615)
+scale = Vector2(0.206641, 0.195833)
+texture = ExtResource("27_0nbtd")
+
+[node name="LibDoor" type="Camera2D" parent="."]
+position = Vector2(15926.5, 405.5)
+enabled = false
+zoom = Vector2(0.4, 0.4)
+
+[node name="Label" type="Label" parent="."]
+offset_left = 4983.0
+offset_top = 919.0
+offset_right = 5296.0
+offset_bottom = 950.0
+theme_override_font_sizes/font_size = 22
+text = "Press 'up' 'up' to double jump"
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 2251.0
+offset_top = 648.0
+offset_right = 2564.0
+offset_bottom = 679.0
+theme_override_font_sizes/font_size = 22
+text = "Press 'up' 'shift' to dash"
+
+[connection signal="area_entered" from="BilliardsRoom/dungeon_threshold" to="." method="_on_dungeon_entered"]

@@ -22,17 +22,16 @@ const LOADING_STATES = [
 
 var current_state_index = 0
 var state_timer = 0.0
-const STATE_CHANGE_TIME = 2.0  # Change state every second
+const STATE_CHANGE_TIME = 7.0  # Change state every second
 
 # Progress animation settings
-var target_progress = 0.0
 var current_progress = 0.0
-const PROGRESS_SPEED = 0.3  # Progress per second (30% per second)
+const PROGRESS_SPEED = 0.04  # Progress per second (5% per second)
+var is_loading_complete = false
 
 # Scene loading queue
 var scene_queue = []
 var current_scene_index = 0
-
 
 # Error tracking
 var error_count = 0
@@ -50,6 +49,10 @@ func _ready():
 	progress_bar.value = 0
 	loading_label.text = LOADING_STATES[0]
 	loading_start_time = Time.get_ticks_msec()
+	
+	# Don't adjust music volume at all during loading screen
+	# This keeps consistent volume from menu to level
+	
 	load_game_async()
 
 func _process(delta):
@@ -61,10 +64,20 @@ func _process(delta):
 		update_loading_text()
 	
 	# Simple linear progress animation
-	if current_progress < target_progress:
-		current_progress = min(current_progress + PROGRESS_SPEED * delta, target_progress)
+	if current_progress < 0.98:  # Only progress up to 98%
+		current_progress = min(current_progress + PROGRESS_SPEED * delta, 0.98)
 		progress_bar.value = current_progress * 100
 		update_loading_text()
+	elif not is_loading_complete:
+		# At 98%, check if loading is actually complete
+		var status = ResourceLoader.load_threaded_get_status(WORLD_SCENE_PATH)
+		if status == ResourceLoader.THREAD_LOAD_LOADED:
+			is_loading_complete = true
+			# Complete the progress bar
+			current_progress = 1.0
+			progress_bar.value = 100
+			update_loading_text()
+			complete_transition()
 	
 	# Check for timeout
 	var current_time = Time.get_ticks_msec()
@@ -78,14 +91,6 @@ func _process(delta):
 			is_retrying = false
 			retry_timer = 0.0
 			load_game_async()
-	
-	# Handle transition timing
-	if is_transitioning:
-		transition_timer += delta
-		if transition_timer >= 0.5:
-			is_transitioning = false
-			transition_timer = 0.0
-			complete_transition()
 
 func update_loading_text():
 	var progress_percent = int(progress_bar.value)
@@ -115,9 +120,6 @@ func handle_error(error_message: String, is_critical: bool = false):
 		else:
 			# Fatal error - show error screen
 			show_fatal_error(error_context)
-	else:
-		# Non-critical error - just log it
-		print("Non-critical error: ", error_context)
 
 func show_fatal_error(error_context: String):
 	# Create error screen
@@ -136,8 +138,6 @@ func show_fatal_error(error_context: String):
 	add_child(error_screen)
 
 func load_game_async():
-	var progress = []
-	
 	# Reset error tracking
 	error_count = 0
 	loading_start_time = Time.get_ticks_msec()
@@ -150,41 +150,17 @@ func load_game_async():
 	# Start loading
 	ResourceLoader.load_threaded_request(WORLD_SCENE_PATH)
 
-	while true:
-		var status = ResourceLoader.load_threaded_get_status(WORLD_SCENE_PATH, progress)
-		
-		if status == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
-			# Update target progress
-			target_progress = progress[0] if progress else 0.0
-			
-			# If we're stuck at 50%, force progress forward
-			if target_progress < 0.5 and current_progress >= 0.5:
-				target_progress = 0.5
-				print("Forcing progress past 50% mark")
-			
-		elif status == ResourceLoader.THREAD_LOAD_LOADED:
-			# Ensure we show 100% before transitioning
-			target_progress = 1.0
-			is_transitioning = true
-			transition_timer = 0.0
-			break
-			
-		elif status == ResourceLoader.THREAD_LOAD_FAILED:
-			handle_error("Failed to load cabin scene: %s" % WORLD_SCENE_PATH, true)
-			break
-			
-		else:
-			handle_error("Unknown loading status: %d" % status, true)
-			break
-
-		await get_tree().process_frame
-
 func complete_transition():
 	# Change to the loaded scene
 	var loaded_scene = ResourceLoader.load_threaded_get(WORLD_SCENE_PATH)
 	if loaded_scene == null:
 		handle_error("Failed to get loaded cabin scene", true)
 		return
-
+	
+	# Hide the mouse cursor when game loads
+	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	
+	# Don't adjust music volume here - let the world scene handle it with a timer
+	
 	# Change to cabin scene
 	get_tree().change_scene_to_packed(loaded_scene)

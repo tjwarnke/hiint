@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://dljxp8sy8p5ps"]
+
+[ext_resource type="Script" uid="uid://bh1h4s8dp03pc" path="res://scripts/item.gd" id="1_puv5m"]
+[ext_resource type="Texture2D" uid="uid://c0pt58yn38ry4" path="res://assets/images/Hammer.png" id="2_01xny"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7cboi"]
+radius = 103.31
+
+[node name="hammer" type="Area2D"]
+script = ExtResource("1_puv5m")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(27, -21.5)
+scale = Vector2(1.54, 1.43)
+texture = ExtResource("2_01xny")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(14, -7)
+shape = SubResource("CircleShape2D_7cboi")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

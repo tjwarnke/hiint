@@ -6,19 +6,19 @@ extends Area2D
 signal collected(power_type, power_value)
 
 func _ready():
-	print("Powerup ready: ", power_type, " with value: ", power_value)  # Debug print
-	# Connect to body_entered signal
-	connect("body_entered", Callable(self, "_on_body_entered"))
-	
-	# Add to powerup group for easy finding
 	add_to_group("powerup")
-	print("Added to powerup group")  # Debug print
+	
+	# Connect to body_entered signal
+	if not is_connected("body_entered", Callable(self, "_on_body_entered")):
+		connect("body_entered", Callable(self, "_on_body_entered"))
 
 func _on_body_entered(body):
-	print("Body entered powerup: ", body)  # Debug print
+	if collected:
+		return
+		
 	if body.is_in_group("player"):
-		print("Player collected powerup!")  # Debug print
-		# Emit signal with power type and value
-		collected.emit(power_type, power_value)
-		# Remove the powerup
-		queue_free() 
+		# Apply powerup to player
+		if body.has_method("_on_powerup_collected"):
+			body._on_powerup_collected(power_type, power_value)
+			collected.emit(true)
+			queue_free() 
