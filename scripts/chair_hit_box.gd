@@ -70,7 +70,6 @@ func base_dialog():
 		page -= 1
 
 func two_a():
-	counter += 1
 	await get_tree().create_timer(1).timeout
 	dialogue.visible = true
 	text.visible = true
@@ -104,7 +103,7 @@ func _input(event):
 		dialogue.text = "1. Thanks for inviting me but why are we here?\n2. Hi, who are you?"
 		counter += 1
 
-	if event.is_action_pressed("Option1") and counter == 1:
+	if event.is_action_pressed("Option1") and player_nearby and counter == 1:
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = marvin
@@ -124,10 +123,16 @@ func _input(event):
 		await get_tree().create_timer(3).timeout
 		sprite.texture = marvin
 		text.text = "It's not the first time\nwe missed him, sister..."
+		text.visible = false
 		counter += 1
-		two_a()
+		await get_tree().create_timer(1).timeout
+		dialogue.visible = true
+		text.visible = true
+		text.text = "Talk to:"
+		dialogue.text = "1. Sargent Relish \n2. Magenta Lovelace \n3. Dmitri \n4. Henry Conroy \n5. Let's just eat"
 
-	if event.is_action_pressed("Option2") and counter == 1:
+	
+	if event.is_action_pressed("Option2") and player_nearby and counter == 1:
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = diane
@@ -137,45 +142,65 @@ func _input(event):
 		text.text = "By one minute"
 		await get_tree().create_timer(2).timeout
 		text.visible = false
-		counter = 1
-		two_a()
+		counter +=1 
+		await get_tree().create_timer(1).timeout
+		dialogue.visible = true
+		text.visible = true
+		text.text = "Talk to:"
+		dialogue.text = "1. Sargent Relish \n2. Magenta Lovelace \n3. Dmitri \n4. Henry Conroy \n5. Let's just eat"
 		
 
-	if event.is_action_pressed("Option1") and counter ==2:
+	if event.is_action_pressed("Option1") and player_nearby and counter ==2:
+		counter = 0
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = relish_head
 		text.text = "Hey there pal, my name is Sargent\nRelish. It’s good to meet you."
 		await get_tree().create_timer(3).timeout
-		counter = 1
-		two_a()
+		dialogue.visible = true
+		text.visible = true
+		text.text = "Talk to:"
+		dialogue.text = "1. Sargent Relish \n2. Magenta Lovelace \n3. Dmitri \n4. Henry Conroy \n5. Let's just eat"
+		counter = 2
 
-	if event.is_action_pressed("Option2") and counter ==2:
+	if event.is_action_pressed("Option2") and player_nearby and counter ==2:
+		counter = 0
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = girl_head
 		text.text = " Sup girlie, I’m Magenta Lovelace.\nI like your hair, I can braid \nit later if you want. "
 		await get_tree().create_timer(3).timeout
-		counter = 1
-		two_a()
-	if event.is_action_pressed("Option3") and counter ==2:
+		dialogue.visible = true
+		text.visible = true
+		text.text = "Talk to:"
+		dialogue.text = "1. Sargent Relish \n2. Magenta Lovelace \n3. Dmitri \n4. Henry Conroy \n5. Let's just eat"
+		counter = 2
+	if event.is_action_pressed("Option3") and player_nearby and counter ==2:
+		counter = 0
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = penguins_head
 		text.text = "Da, We is Dmitri. I come to\nmansion for dinner party. "
 		await get_tree().create_timer(3).timeout
-		counter = 1
-		two_a()
-	if event.is_action_pressed("Option4") and counter ==2:
+		dialogue.visible = true
+		text.visible = true
+		text.text = "Talk to:"
+		dialogue.text = "1. Sargent Relish \n2. Magenta Lovelace \n3. Dmitri \n4. Henry Conroy \n5. Let's just eat"
+		counter = 2
+	if event.is_action_pressed("Option4") and player_nearby and counter ==2:
+		counter = 0
 		dialogue.visible = false
 		text.visible = true
 		sprite.texture = con_head
 		text.text = "Pleasure to meet you, sir.\nI am the esteemed Henry Conroy.\nI used to know your father actually. "
 		await get_tree().create_timer(3).timeout
-		counter = 1
-		two_a()
+		dialogue.visible = true
+		text.visible = true
+		text.text = "Talk to:"
+		dialogue.text = "1. Sargent Relish \n2. Magenta Lovelace \n3. Dmitri \n4. Henry Conroy \n5. Let's just eat"
+		counter = 2
 
-	if event.is_action_pressed("Option5") and counter ==2:
+	if event.is_action_pressed("Option5") and player_nearby and counter ==2:
 		counter += 1
 		dialogue.visible = false
 		text.visible = true
@@ -200,9 +225,10 @@ func _input(event):
 		sprite.texture = diane
 		text.text = "Marvin!"
 		await get_tree().create_timer(3).timeout
+		counter += 1
 		final_options()
 
-	if event.is_action_pressed("Option1") and counter == 3:
+	if event.is_action_pressed("Option1") and player_nearby and counter == 4:
 		counter += 1
 		dialogue.visible = false
 		text.visible = true
@@ -233,7 +259,7 @@ func _input(event):
 		player.set_can_move(true)
 		intro_complete = true
 
-	if event.is_action_pressed("Option2") and counter == 3:
+	if event.is_action_pressed("Option2") and player_nearby and counter == 4:
 		counter += 1
 		dialogue.visible = false
 		text.visible = true
@@ -252,7 +278,7 @@ func _input(event):
 		player.set_can_move(true)
 		intro_complete = true
 
-	if event.is_action_pressed("Option3") and counter == 3:
+	if event.is_action_pressed("Option3") and player_nearby and counter == 4:
 		counter += 1
 		dialogue.visible = false
 		text.visible = true
